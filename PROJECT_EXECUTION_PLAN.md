@@ -1,6 +1,6 @@
 # PROJECT_EXECUTION_PLAN.md
 **Interview IQ — NLP Module (Answer Correctness Evaluation)**
-**الإصدار:** v1.0 — 8 يوليو 2026
+**الإصدار:** v1.1 — 9 يوليو 2026
 **الغرض:** ذاكرة التنفيذ الرسمية للمشروع. أي محادثة جديدة داخل المشروع تبدأ من هذا الملف. لا يُعاد فتح أي قرار موسوم ✅ إلا بقرار صريح من أحمد.
 
 **مفتاح الحالة:** ✅ مقفول ونهائي · ⛔ مفتوح/معلّق · 🔶 Placeholder غير مُتحقق منه · 🗑️ ملغي
@@ -15,7 +15,7 @@
 
 🗑️ **Linguistic Confidence Module خارج النطاق نهائيًا (D20).** أي كود أو تصميم أو نقاش يخصه ملغي ولا يُعاد فتحه.
 
-**النطاق مغلق (Closed-Domain):** 250 سؤالًا ثابتًا عبر خمسة مسارات — Data Analysis (DA)، Data Science (DS)، Computer Science (CS)، Software Engineering (SE)، General (GN) — 50 سؤالًا لكل مسار. لكل سؤال Reference Document مقسّم Chunks (سطر = fact واحد مكتفٍ بذاته، فصحى مبسطة، المصطلحات التقنية بحروف لاتينية).
+**النطاق مغلق (Closed-Domain):** 250 سؤالًا ثابتًا عبر خمسة مسارات — Data Analysis (DA)، Data Science (DS)، Cybersecurity (CS)، Software Engineering (SE)، General (GN) — 50 سؤالًا لكل مسار. *(تصحيح v1.1: كان مكتوبًا خطأً "Computer Science" — `data/questions/questions_250.json` (meta.tracks) يثبّت CS = Cybersecurity.)* لكل سؤال Reference Document مقسّم Chunks (سطر = fact واحد مكتفٍ بذاته، فصحى مبسطة، المصطلحات التقنية بحروف لاتينية).
 
 **الثوابت المعمارية (غير قابلة للتفاوض):**
 1. **Zero LLM at Runtime** — كل الـ inference محلي (Decomposition + Embedding + NLI). الـ LLM مسموح في الـ offline data prep فقط بمنهجية Knowledge Distillation مع مراجعة بشرية.
@@ -146,9 +146,9 @@ interview-iq/                          ← Repo محلي (Git)
 │   ├── fixtures/                      ← عينات صغيرة CPU-friendly
 │   └── test_*.py                      ← Smoke tests لكل مرحلة
 └── kaggle/runners/
-    ├── run_nli_finetune.ipynb         ← clone + pip + أمر CLI فقط
-    ├── run_nli_eval.ipynb
-    └── run_asr.ipynb
+    ├── run-nli-finetune.ipynb         ← clone + pip + أمر CLI فقط (اسم بشرطة — قيد تسمية Kaggle kernel slug)
+    ├── run-nli-eval.ipynb
+    └── run_asr.ipynb                  ← لم يُبنَ بعد (Phase 7) — الاسم قد يتغير لنفس السبب عند البناء
 ```
 
 ملاحظة: تطبيق التسجيل (`app/`) يخص O11 (Tech Stack + Session Spec v1.0 + اعتماد الفريق) وهو ⛔ خارج مسار هذا الـ plan حتى يُحسم.
@@ -169,6 +169,7 @@ interview-iq/                          ← Repo محلي (Git)
 10. **decisions.md يُحدَّث مع كل قرار** بمعرّف D## وحالة (✅/⛔/🔶/🗑️) — القرارات المقفولة immutable إلا بإعادة فتح صريحة.
 11. أي عتبة أو hyperparameter غير مُعايَر يُطبع في اللوجات بوسم `PRE-CALIBRATION DEFAULT — NOT VALIDATED`.
 12. كل ملف بيانات يمر بفحص schema + uniqueness قبل استهلاكه (chunk IDs، pair IDs، تكامل الـ twins).
+13. تجريبي ≠ مُستنتَج من config. أي ادعاء عن سلوك مكتبة (peft, transformers) لا يُكتب في التوثيق إلا بعد تشغيله فعليًا وطباعة الناتج. الاستنتاج من ملف YAML أو من التوثيق الرسمي ليس تحققًا (D31, D38).
 
 ---
 
@@ -206,15 +207,15 @@ interview-iq/                          ← Repo محلي (Git)
 
 ### Phase 4 — NLI Fine-tuning Pipeline (LoRA)
 - **الهدف:** تدريب LoRA على أزواج الـ pilot (150) لعلاج الـ Subject Blindness.
-- **ملفات تُنشأ:** `nli/finetune.py`، `cli/run_nli_finetune.py`، `kaggle/runners/run_nli_finetune.ipynb`، `tests/test_finetune_smoke.py` (خطوة تدريب واحدة CPU على fixture).
+- **ملفات تُنشأ:** `nli/finetune.py`، `cli/run_nli_finetune.py`، `kaggle/runners/run-nli-finetune.ipynb`، `tests/test_finetune_smoke.py` (خطوة تدريب واحدة CPU على fixture).
 - **الإعداد المقفول:** r=16، q/v projections، alpha=32، lr ≈ 2e-4–3e-4، split بمستوى Question-ID.
 - **شرط البدء:** Phase 3 خضراء. **⚠️ بوابة G1 تُذكر صراحةً في الـ Summary:** أي نتيجة تُنتج قبل إغلاق Stage-4/spot-check توسم منهجيًا RISK ACCEPTED (كما هو مسجل في decisions.md).
 - **Deliverables:** checkpoint LoRA منشور كـ `iq-checkpoints-nli-v1` على Kaggle + لوج تدريب كامل.
 
 ### Phase 5 — Gold Set Evaluation
 - **الهدف:** تقييم الموديل المدرَّب على الـ Gold Set (48 زوجًا، DS-014).
-- **ملفات تُنشأ:** `evaluation/gold_eval.py`، `cli/run_nli_eval.py`، `kaggle/runners/run_nli_eval.ipynb`.
-- **المقاييس (pre-registered):** per-class F1 + confusion matrix كاملة، مع تركيز على Contradiction F1 وخلايا E↔C. المقارنة المرجعية: الـ zero-shot baseline من Demo #1.
+- **ملفات تُنشأ:** `evaluation/gold_eval.py`، `cli/run_nli_eval.py`، `kaggle/runners/run-nli-eval.ipynb`.
+- **المقاييس (pre-registered):** per-class F1 + confusion matrix كاملة، مع تركيز على Contradiction F1 وخلايا E↔C. **الـ baseline = الذراع zero-shot على نفس الـ 48 زوج، بنفس الـ code path (`gold_eval.py` بعلم `--zero-shot`) — وليس Demo #1.** Demo #1 (D24) سياق كيفي فقط، لا baseline رقميًا (انظر D39).
 - **شرط البدء:** Phase 4 (checkpoint موجود).
 - **Deliverables:** تقرير مقارنة zero-shot vs fine-tuned؛ حكم صريح: هل انكسر الـ Subject Blindness؟
 
@@ -286,7 +287,7 @@ When done: summary + validation report + problems, then STOP and wait for my rev
 **PROMPT — Phase 4**
 ```
 Phase 3 is approved and validate_data passes. Execute Phase 4 ONLY: LoRA fine-tuning pipeline for MoritzLaurer/mDeBERTa-v3-base-mnli-xnli.
-Locked config: r=16, target modules q/v projections, alpha=32, lr in 2e-4–3e-4, Question-ID-level split, HARD_POS twins never split. Implement nli/finetune.py, cli/run_nli_finetune.py, kaggle/runners/run_nli_finetune.ipynb (clone + pip + one CLI line, ZERO logic), and a CPU smoke test running one training step on fixtures.
+Locked config: r=16, target modules q/v projections, alpha=32, lr in 2e-4–3e-4, Question-ID-level split, HARD_POS twins never split. Implement nli/finetune.py, cli/run_nli_finetune.py, kaggle/runners/run-nli-finetune.ipynb (clone + pip + one CLI line, ZERO logic), and a CPU smoke test running one training step on fixtures.
 Note in your summary: results are methodologically tagged RISK ACCEPTED until the Stage-4 human review / 20% spot-check gate (G1) is closed.
 When done: summary + problems, then STOP and wait for my review.
 ```
@@ -294,7 +295,7 @@ When done: summary + problems, then STOP and wait for my review.
 **PROMPT — Phase 5**
 ```
 Phase 4 is approved and the LoRA checkpoint exists as a Kaggle Dataset. Execute Phase 5 ONLY: Gold Set evaluation.
-Implement evaluation/gold_eval.py, cli/run_nli_eval.py, kaggle/runners/run_nli_eval.ipynb. Metrics are pre-registered: per-class F1 and full confusion matrix, with explicit reporting of Contradiction F1 and E↔C cells, compared against the zero-shot Demo #1 baseline. Output a clear verdict: is Subject Blindness fixed?
+Implement evaluation/gold_eval.py, cli/run_nli_eval.py, kaggle/runners/run-nli-eval.ipynb. Metrics are pre-registered: per-class F1 and full confusion matrix, with explicit reporting of Contradiction F1 and E↔C cells, compared against the zero-shot arm over the same 48 gold pairs (same code path, --zero-shot flag) — not Demo #1, which is qualitative context only (D39). Output a clear verdict: is Subject Blindness fixed?
 CPU-First rule applies for the smoke path. When done: summary + comparison table + problems, then STOP.
 ```
 
@@ -346,17 +347,24 @@ When done: summary + problems, then STOP.
 
 | # | البند | التفصيل |
 |---|---|---|
-| Q1 | **تعارض ترقيم القرارات D##** | ✅ **RESOLVED (9 يوليو 2026)** — السجل الموحّد D1–D34 أصبح في `decisions.md` v2.0 (الجذر): D1–D25 ثابتة بمرجعية الوثيقة الرئيسية، وقرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34 (التفاصيل والـ mapping موثقة داخل الملف نفسه). أي قرار جديد يأخذ D35+. |
+| Q1 | **تعارض ترقيم القرارات D##** | ✅ **CLOSED** — انظر `decisions.md` (السجل الموحّد D1–D40، v2.2). |
 | Q2 | **حالة ملف المراجع** | القفزة من 47 مستندًا مراجَعًا إلى `reference_docs_250_FINAL_v1.json` (250/250) غير موثقة كمرحلة انتقال؛ والاسم FINAL يناقض metadata الداخلية (DRAFT / "AI-generated, pending expert review"). مطلوب: توثيق الانتقال + توحيد الاسم/الميتاداتا قبل التسليم الأكاديمي. أحمد يتحمل مسؤولية الدفاع عن حالة المراجعة. |
-| Q3 | **بوابة G1 (Stage-4)** | مراجعة الأزواج البشرية per-pair غير مكتملة — مسجلة RISK ACCEPTED. التوصية القائمة: 20% retroactive spot-check قبل الاعتماد على نتائج الـ fine-tuning. القرار: متى تُنفذ؟ |
-| Q4 | **stage2_verdict ناقص في 135/150 زوجًا** | رغم أن الميتاداتا تدّعي اكتمال Stages 1–3. يحتاج توضيحًا صريحًا: فجوة توثيق أم فجوة منهجية؟ |
-| Q5 | **مخالفة قاعدة الـ 5-word overlap في 43/150 زوجًا** | التوصية السابقة كانت القبول مع التوثيق (التوزيع متوازن بين C وE فلا يخلق lexical shortcut). يلزم تثبيت القرار كتابيًا في decisions.md. |
+| Q3 | **بوابة G1 (Stage-4)** | ✅ **CLOSED** — انظر `decisions.md` D33 (مغلقة بقرار قبول المخاطرة، لا بإتمام المراجعة). |
+| Q4 | **stage2_verdict ناقص في 135/150 زوجًا** | ✅ **CLOSED** — انظر `decisions.md` (فجوة توثيق في v1 القديم، لا فجوة منهجية؛ `validate_data` أكد وجوده على 15/15). |
+| Q5 | **مخالفة قاعدة الـ 5-word overlap** | ✅ **CLOSED** — انظر `decisions.md` D35 وD40 (الرقم المعتمد 65/150، وارتباط تام وضار بمحور N/¬N موثّق منفصلًا). |
 | Q6 | **اختيار AraT5 vs mT5-base** | لم يُحسم. مؤجل طبيعيًا لبوابة G2 لكنه يظل مفتوحًا. |
 | Q7 | **O11 — تطبيق التسجيل** | Tech Stack + Session Spec v1.0 + اعتماد الفريق كله معلّق؛ فرق الوجه والصوت يعتمدون على نفس التطبيق والـ timestamps. خارج هذا الـ plan لكنه blocking للـ pilot videos (وبالتالي لبوابة G3). |
 | Q8 | **Coverage Asymmetry** | مؤجلة صراحةً لما بعد الـ fine-tuning — تُفتح كبند مستقل بعد Phase 5. |
-| Q9 | **مستودع GitHub** | ✅ **RESOLVED (9 يوليو 2026)** — الريبو الرسمي: https://github.com/HashemIlI/interview-iq (private). نوتبوكات الـ Runners تسحب منه عبر `git clone` + PAT من Kaggle Secrets. (التفاصيل الكاملة موثقة تحت D19 في `decisions.md`.) |
+| Q9 | **مستودع GitHub** | ✅ **CLOSED** — انظر `decisions.md` D19 (الريبو: https://github.com/HashemIlI/interview-iq، private). |
 | Q10 | **الديمو الأساسي D24** | Demo #1 zero-shot نُفذ فعليًا (5 أسئلة). هل عرضه للمشرف تم أم لا يزال deliverable معلقًا؟ |
+| V1 | **تحقق الـ checkpoint** | ⛔ **يحجب تشغيل Phase 5.** إثبات وجود مفاتيح `classifier.*` داخل `adapter_model.safetensors` في `iq-checkpoints-nli-v1` بعد التنظيف — انظر `decisions.md` D38/D40. الفحص الآن مُنفَّذ آليًا كأول خلية في `kaggle/runners/run-nli-eval.ipynb` قبل أي تقييم. |
 
 ---
 
-*نهاية الوثيقة v1.0 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*
+## سجل التغييرات
+- **v1.1 (9 يوليو 2026):** تصحيح CS = Cybersecurity (كانت مكتوبة خطأً Computer Science — راجع Task 2f)؛ تحديث أسماء نوتبوكات Kaggle إلى الصيغة بالشرطة (`run-nli-finetune.ipynb` / `run-nli-eval.ipynb`) في §4 و§7؛ تصحيح baseline الـ Phase 5 إلى الذراع zero-shot على نفس الـ 48 زوج (D39) بدلًا من Demo #1؛ إغلاق Q1/Q4/Q5/Q9 بإحالة إلى `decisions.md`؛ إضافة بند V1 (تحقق الـ checkpoint) كحاجز على تشغيل Phase 5؛ إضافة القاعدة 13 (تجريبي ≠ مُستنتَج من config) إلى §5.
+- **v1.0 (8 يوليو 2026):** الإصدار الأول.
+
+---
+
+*نهاية الوثيقة v1.1 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*

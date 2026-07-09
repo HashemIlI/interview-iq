@@ -5,7 +5,7 @@ Usage:
     python -m interview_iq.cli.run_nli_finetune [--data-dir PATH] [--configs-dir PATH] [--output-dir PATH]
 
 This is the single CLI line the Kaggle thin-runner notebook invokes — zero
-training logic lives in the notebook itself (see kaggle/runners/run_nli_finetune.ipynb).
+training logic lives in the notebook itself (see kaggle/runners/run-nli-finetune.ipynb).
 All hyperparameters come from configs/nli_finetune.yaml via Config, which
 prints/logs the PRE-CALIBRATION tag on load for every unvalidated value.
 
