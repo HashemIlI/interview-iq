@@ -1,6 +1,6 @@
 # PROJECT_EXECUTION_PLAN.md
 **Interview IQ — NLP Module (Answer Correctness Evaluation)**
-**الإصدار:** v1.1 — 9 يوليو 2026
+**الإصدار:** v1.2 — 9 يوليو 2026
 **الغرض:** ذاكرة التنفيذ الرسمية للمشروع. أي محادثة جديدة داخل المشروع تبدأ من هذا الملف. لا يُعاد فتح أي قرار موسوم ✅ إلا بقرار صريح من أحمد.
 
 **مفتاح الحالة:** ✅ مقفول ونهائي · ⛔ مفتوح/معلّق · 🔶 Placeholder غير مُتحقق منه · 🗑️ ملغي
@@ -212,17 +212,20 @@ interview-iq/                          ← Repo محلي (Git)
 - **شرط البدء:** Phase 3 خضراء. **⚠️ بوابة G1 تُذكر صراحةً في الـ Summary:** أي نتيجة تُنتج قبل إغلاق Stage-4/spot-check توسم منهجيًا RISK ACCEPTED (كما هو مسجل في decisions.md).
 - **Deliverables:** checkpoint LoRA منشور كـ `iq-checkpoints-nli-v1` على Kaggle + لوج تدريب كامل.
 
-### Phase 5 — Gold Set Evaluation
+### Phase 5 — Gold Set Evaluation ✅ COMPLETE
 - **الهدف:** تقييم الموديل المدرَّب على الـ Gold Set (48 زوجًا، DS-014).
 - **ملفات تُنشأ:** `evaluation/gold_eval.py`، `cli/run_nli_eval.py`، `kaggle/runners/run-nli-eval.ipynb`.
 - **المقاييس (pre-registered):** per-class F1 + confusion matrix كاملة، مع تركيز على Contradiction F1 وخلايا E↔C. **الـ baseline = الذراع zero-shot على نفس الـ 48 زوج، بنفس الـ code path (`gold_eval.py` بعلم `--zero-shot`) — وليس Demo #1.** Demo #1 (D24) سياق كيفي فقط، لا baseline رقميًا (انظر D39).
 - **شرط البدء:** Phase 4 (checkpoint موجود).
 - **Deliverables:** تقرير مقارنة zero-shot vs fine-tuned؛ حكم صريح: هل انكسر الـ Subject Blindness؟
+- **النتيجة (9 يوليو 2026):** **الحكم = PASSED** مقابل قاعدة D39 المسجَّلة مسبقًا — C→E: 3→0، E→C: 1→0، Contradiction recall: 16/19 بلا تغيّر. التفاصيل الكاملة (المقاصة، الحالات المسمّاة P48/P26/P43، القيود) في `decisions.md` D41. المخرجات الخام per-pair لكل ذراع محفوظة في `results/phase5/`.
 
 ### Phase 6 — Retrieval Cap + Scoring Engine
 - **الهدف:** بناء BGE-M3 Top-k cap + محرك الـ Dual-Channel Scoring كاملًا.
 - **ملفات تُنشأ:** `retrieval/chunk_cap.py`، `nli/engine.py` (full matrix)، `scoring/aggregation.py` (v2 entailment-priority)، `scoring/metrics.py`، `cli/run_scoring.py`، اختبارات وحدات للتجميع (حالات: VERIFIED، contradiction penalty، neutral، الترتيب صح > سكوت > غلط).
 - **شرط البدء:** Phase 5 (لأن سلوك التجميع يُختبر بموديل ما بعد الـ fine-tuning).
+- **⛔ حاجز بدء صلب — V2 (انظر §8 وdecisions.md D41):**
+  > "V2 (⛔): gold_eval_*.json store argmax labels only, no softmax/logits. Raw probabilities MUST be added to evaluation outputs before any threshold (τ_E) work. The scoring engine consumes probabilities, not argmax — see decisions.md D41."
 - **Deliverables:** سكور 0–100 لكل إجابة على fixtures + لوج قرارات per-claim قابل للتفسير.
 
 ### Phase 7 — ASR Module
@@ -302,7 +305,8 @@ CPU-First rule applies for the smoke path. When done: summary + comparison table
 **PROMPT — Phase 6**
 ```
 Phase 5 is approved. Execute Phase 6 ONLY: retrieval cap + scoring engine.
-Implement retrieval/chunk_cap.py (BGE-M3 Top-k, k from config, cap not gate), nli/engine.py (full Claims × Chunks matrix per SummaC), scoring/aggregation.py implementing v2 entailment-priority exactly (max_E ≥ τ_E → VERIFIED ignoring C; elif max_C > τ → score = −max_C; else neutral with weight α), scoring/metrics.py (Precision, Coverage with reversed NLI direction, Harmonic F), cli/run_scoring.py, and unit tests covering: VERIFIED case, contradiction penalty, neutral handling, and the ranking correct > silent > wrong.
+BLOCKER (V2, decisions.md D41): gold_eval_*.json currently store argmax labels only, no softmax/logits. Before any threshold (τ_E) work, nli/engine.py's full Claims × Chunks matrix MUST output raw per-class probabilities (not argmax) for every (claim, chunk) pair — the scoring engine (max_E ≥ τ_E, max_C > τ) consumes probabilities, not labels. If evaluation/gold_eval.py or its CLI is touched in this phase, it must also be extended to persist probabilities, not just argmax.
+Implement retrieval/chunk_cap.py (BGE-M3 Top-k, k from config, cap not gate), nli/engine.py (full Claims × Chunks matrix per SummaC, raw probabilities per pair), scoring/aggregation.py implementing v2 entailment-priority exactly (max_E ≥ τ_E → VERIFIED ignoring C; elif max_C > τ → score = −max_C; else neutral with weight α), scoring/metrics.py (Precision, Coverage with reversed NLI direction, Harmonic F), cli/run_scoring.py, and unit tests covering: VERIFIED case, contradiction penalty, neutral handling, and the ranking correct > silent > wrong.
 All thresholds come from config and log the PRE-CALIBRATION tag. CPU-First applies.
 When done: summary + problems, then STOP.
 ```
@@ -354,17 +358,19 @@ When done: summary + problems, then STOP.
 | Q5 | **مخالفة قاعدة الـ 5-word overlap** | ✅ **CLOSED** — انظر `decisions.md` D35 وD40 (الرقم المعتمد 65/150، وارتباط تام وضار بمحور N/¬N موثّق منفصلًا). |
 | Q6 | **اختيار AraT5 vs mT5-base** | لم يُحسم. مؤجل طبيعيًا لبوابة G2 لكنه يظل مفتوحًا. |
 | Q7 | **O11 — تطبيق التسجيل** | Tech Stack + Session Spec v1.0 + اعتماد الفريق كله معلّق؛ فرق الوجه والصوت يعتمدون على نفس التطبيق والـ timestamps. خارج هذا الـ plan لكنه blocking للـ pilot videos (وبالتالي لبوابة G3). |
-| Q8 | **Coverage Asymmetry** | مؤجلة صراحةً لما بعد الـ fine-tuning — تُفتح كبند مستقل بعد Phase 5. |
+| Q8 | **Coverage Asymmetry** | ⛔ **ACTIVE الآن** — تأجيل D34 انتهى بانتهاء Phase 5. مفتوحة كبند مستقل يحتاج قرارًا صريحًا قبل Phase 6/9. |
 | Q9 | **مستودع GitHub** | ✅ **CLOSED** — انظر `decisions.md` D19 (الريبو: https://github.com/HashemIlI/interview-iq، private). |
 | Q10 | **الديمو الأساسي D24** | Demo #1 zero-shot نُفذ فعليًا (5 أسئلة). هل عرضه للمشرف تم أم لا يزال deliverable معلقًا؟ |
-| V1 | **تحقق الـ checkpoint** | ⛔ **يحجب تشغيل Phase 5.** إثبات وجود مفاتيح `classifier.*` داخل `adapter_model.safetensors` في `iq-checkpoints-nli-v1` بعد التنظيف — انظر `decisions.md` D38/D40. الفحص الآن مُنفَّذ آليًا كأول خلية في `kaggle/runners/run-nli-eval.ipynb` قبل أي تقييم. |
+| V1 | **تحقق الـ checkpoint** | ✅ **CLOSED** — مفاتيح `classifier.*` مؤكَّدة داخل `adapter_model.safetensors` (50 tensor)، نُفِّذ كأول خلية في `kaggle/runners/run-nli-eval.ipynb` قبل Phase 5. انظر `decisions.md` D38/D40/D41. |
+| V2 | **الاحتمالات الخام في مخرجات التقييم** | ⛔ **يحجب Phase 6.** `gold_eval_*.json` لا تحفظان softmax/logits — argmax فقط. محرك الـ scoring يستهلك احتمالات خام، لا labels. انظر `decisions.md` D41. |
 
 ---
 
 ## سجل التغييرات
+- **v1.2 (9 يوليو 2026):** Phase 5 وُسمت ✅ COMPLETE بنتيجة PASSED مقابل D39 (C→E 3→0، E→C 1→0، Contradiction recall 16/19 بلا تغيّر) — التفاصيل في `decisions.md` D41، المخرجات الخام في `results/phase5/`. إضافة حاجز بدء صلب V2 على Phase 6 (الاحتمالات الخام مطلوبة قبل أي عمل على τ_E) في §6 وتحديث Phase 6 prompt في §7 ليطلب مخرجات احتمالية لا argmax. في §8: V1 أُغلقت (✅)، V2 أُضيفت كحاجز مفتوح على Phase 6، Q8 (Coverage Asymmetry) أصبحت ACTIVE بانتهاء تأجيل D34.
 - **v1.1 (9 يوليو 2026):** تصحيح CS = Cybersecurity (كانت مكتوبة خطأً Computer Science — راجع Task 2f)؛ تحديث أسماء نوتبوكات Kaggle إلى الصيغة بالشرطة (`run-nli-finetune.ipynb` / `run-nli-eval.ipynb`) في §4 و§7؛ تصحيح baseline الـ Phase 5 إلى الذراع zero-shot على نفس الـ 48 زوج (D39) بدلًا من Demo #1؛ إغلاق Q1/Q4/Q5/Q9 بإحالة إلى `decisions.md`؛ إضافة بند V1 (تحقق الـ checkpoint) كحاجز على تشغيل Phase 5؛ إضافة القاعدة 13 (تجريبي ≠ مُستنتَج من config) إلى §5.
 - **v1.0 (8 يوليو 2026):** الإصدار الأول.
 
 ---
 
-*نهاية الوثيقة v1.1 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*
+*نهاية الوثيقة v1.2 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*
