@@ -1,0 +1,389 @@
+{
+  "mode": "adapter:/kaggle/input/datasets/hashemili/iq-checkpoints-nli-v1/iq-checkpoints-nli-v1/iq-checkpoints-nli-v1",
+  "n_pairs": 48,
+  "label_order": [
+    "entailment",
+    "neutral",
+    "contradiction"
+  ],
+  "confusion_matrix": {
+    "entailment": {
+      "entailment": 14,
+      "neutral": 3,
+      "contradiction": 0
+    },
+    "neutral": {
+      "entailment": 0,
+      "neutral": 11,
+      "contradiction": 1
+    },
+    "contradiction": {
+      "entailment": 0,
+      "neutral": 3,
+      "contradiction": 16
+    }
+  },
+  "per_class": {
+    "entailment": {
+      "precision": 1.0,
+      "recall": 0.8235294117647058,
+      "f1": 0.9032258064516129,
+      "support": 17.0
+    },
+    "neutral": {
+      "precision": 0.6470588235294118,
+      "recall": 0.9166666666666666,
+      "f1": 0.7586206896551724,
+      "support": 12.0
+    },
+    "contradiction": {
+      "precision": 0.9411764705882353,
+      "recall": 0.8421052631578947,
+      "f1": 0.8888888888888888,
+      "support": 19.0
+    }
+  },
+  "macro_f1": 0.8502451283318914,
+  "e_to_c_count": 0,
+  "e_to_c_rate": 0.0,
+  "c_to_e_count": 0,
+  "c_to_e_rate": 0.0,
+  "predictions": [
+    {
+      "pair_id": "P01",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P02",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P03",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P04",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P05",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P06",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P07",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P08",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P09",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P10",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "neutral",
+      "correct": false
+    },
+    {
+      "pair_id": "P11",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P12",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P13",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P14",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P15",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P16",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P17",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P18",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P19",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P20",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P21",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P22",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P23",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P24",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P25",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P26",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "contradiction",
+      "correct": false
+    },
+    {
+      "pair_id": "P27",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "neutral",
+      "correct": false
+    },
+    {
+      "pair_id": "P28",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P29",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P30",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P31",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "neutral",
+      "correct": false
+    },
+    {
+      "pair_id": "P32",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P33",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P34",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P35",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P36",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P37",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "neutral",
+      "correct": false
+    },
+    {
+      "pair_id": "P38",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P39",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P40",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P41",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P42",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P43",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "neutral",
+      "correct": false
+    },
+    {
+      "pair_id": "P44",
+      "question_id": "DS-014",
+      "gold_label": "neutral",
+      "predicted_label": "neutral",
+      "correct": true
+    },
+    {
+      "pair_id": "P45",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P46",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "contradiction",
+      "correct": true
+    },
+    {
+      "pair_id": "P47",
+      "question_id": "DS-014",
+      "gold_label": "entailment",
+      "predicted_label": "entailment",
+      "correct": true
+    },
+    {
+      "pair_id": "P48",
+      "question_id": "DS-014",
+      "gold_label": "contradiction",
+      "predicted_label": "neutral",
+      "correct": false
+    }
+  ]
+}
