@@ -115,11 +115,43 @@ class TestLoadReferenceDocs:
             load_reference_docs(bad)
 
     def test_unresolved_key_points(self, tmp_path: Path) -> None:
+        """V3: a dangling key_point chunk_id reference is a hard failure —
+        it would permanently cap that document's Coverage."""
         data = json.loads(REFDOCS_MINI.read_text(encoding="utf-8"))
         data["documents"][0]["key_points"].append("ZZ001-C99")
         bad = _write_json(tmp_path / "bad.json", data)
         with pytest.raises(RefDocsSchemaError):
             load_reference_docs(bad)
+
+    def test_duplicate_key_points(self, tmp_path: Path) -> None:
+        """V3: a duplicate chunk_id within one document's key_points list is
+        a hard failure (distinct from the dangling-reference case above)."""
+        data = json.loads(REFDOCS_MINI.read_text(encoding="utf-8"))
+        data["documents"][0]["key_points"].append(data["documents"][0]["key_points"][0])
+        bad = _write_json(tmp_path / "bad.json", data)
+        with pytest.raises(RefDocsSchemaError):
+            load_reference_docs(bad)
+
+    def test_empty_key_points(self, tmp_path: Path) -> None:
+        """V3: an empty key_points list is a hard failure — every document
+        must declare at least one mandatory-coverage chunk."""
+        data = json.loads(REFDOCS_MINI.read_text(encoding="utf-8"))
+        data["documents"][0]["key_points"] = []
+        bad = _write_json(tmp_path / "bad.json", data)
+        with pytest.raises(RefDocsSchemaError):
+            load_reference_docs(bad)
+
+    def test_key_points_happy_path_counts(self) -> None:
+        """Happy path: valid key_points resolve, are unique, non-empty, and
+        their per-document counts are exactly what the fixture declares."""
+        refdocs = load_reference_docs(REFDOCS_MINI)
+        doc1 = refdocs.get_document("ZZ-001")
+        doc2 = refdocs.get_document("ZZ-002")
+        assert doc1 is not None and doc2 is not None
+        assert doc1.key_points == ("ZZ001-C01", "ZZ001-C02")
+        assert doc2.key_points == ("ZZ002-C01",)
+        assert len(set(doc1.key_points)) == len(doc1.key_points)
+        assert len(set(doc2.key_points)) == len(doc2.key_points)
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -421,6 +453,22 @@ def test_validate_data_runs_end_to_end_on_fixtures(mini_data_dir: Path, capsys) 
     assert "DOCUMENTED EXCEPTION (D35)" in out
     assert "Q4 diagnostic (DA001)" in out
     assert "RESULT: FAILED" in out
+    # V3: key_points integrity passed (loader would have raised otherwise)
+    # and the per-document count summary was printed.
+    assert "key_points_integrity (V3): all 2 documents passed" in out
+    assert "key_points_summary" in out and "min=1, max=2" in out
+
+
+def test_validate_data_hard_fails_on_dangling_key_points(mini_data_dir: Path) -> None:
+    """V3 end-to-end: a dangling key_point reference in refdocs must abort
+    validate_data with a HARD failure (not a warning)."""
+    refdocs_path = mini_data_dir / "refdocs" / "reference_docs_250_FINAL_v1.json"
+    data = json.loads(refdocs_path.read_text(encoding="utf-8"))
+    data["documents"][0]["key_points"].append("ZZ001-C99")
+    refdocs_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+
+    exit_code = validate_data_main(["--data-dir", str(mini_data_dir)])
+    assert exit_code == 1
 
 
 def test_validate_data_hard_fails_on_missing_refdocs(tmp_path: Path) -> None:

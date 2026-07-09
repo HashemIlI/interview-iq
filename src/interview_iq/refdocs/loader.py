@@ -100,7 +100,9 @@ def load_reference_docs(path: Path | str) -> ReferenceDocs:
         If `path` does not exist.
     RefDocsSchemaError
         On any structural/schema violation (missing keys, wrong types,
-        unresolved key_points, malformed JSON).
+        malformed JSON) or key_points integrity violation (V3): empty list,
+        duplicate chunk_id within a document's key_points, or a dangling
+        chunk_id reference (a key point that can never be covered).
     ChunkUniquenessError
         If any chunk_id appears more than once across the whole file.
     """
@@ -162,10 +164,21 @@ def load_reference_docs(path: Path | str) -> ReferenceDocs:
         key_points = doc["key_points"]
         if not isinstance(key_points, list):
             raise RefDocsSchemaError(f"{path}: {question_id}.key_points must be a list")
+        if not key_points:
+            raise RefDocsSchemaError(
+                f"{path}: {question_id}.key_points is empty — every document must have at "
+                f"least one mandatory-coverage chunk_id (V3)"
+            )
+        duplicate_kp = sorted({kp for kp in key_points if key_points.count(kp) > 1})
+        if duplicate_kp:
+            raise RefDocsSchemaError(
+                f"{path}: {question_id}.key_points contains duplicate chunk_id(s): {duplicate_kp} (V3)"
+            )
         unresolved = [kp for kp in key_points if kp not in local_chunk_ids]
         if unresolved:
             raise RefDocsSchemaError(
-                f"{path}: {question_id}.key_points reference unknown chunk_id(s): {unresolved}"
+                f"{path}: {question_id}.key_points reference unknown chunk_id(s): {unresolved} "
+                f"(V3 — dangling key_point reference; this permanently caps Coverage for {question_id})"
             )
 
         documents.append(

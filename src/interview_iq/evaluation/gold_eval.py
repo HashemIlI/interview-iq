@@ -17,6 +17,11 @@ It does not pick or tune any threshold, and it does not render a verdict —
 it reports the numbers; judging whether Subject Blindness is fixed is a
 human call made by comparing the two reports side by side.
 
+V2 (decisions.md D41/D42): each prediction also carries the raw softmax
+distribution over {entailment, neutral, contradiction}. This is reporting
+only — argmax classification is unchanged; no threshold is introduced here
+or anywhere else in this module.
+
 ⚠️ RISK ACCEPTED (D33): Gate G1 (Stage-4 per-pair human review of the 150
 pilot pairs) is closed by Ahmed's explicit accepted-risk decision, not by
 completed review. Every result from this module is tagged RISK ACCEPTED.
@@ -57,6 +62,11 @@ class PredictionRecord:
     gold_label: str
     predicted_label: str
     correct: bool
+    # Raw softmax distribution {"entailment": .., "neutral": .., "contradiction": ..},
+    # rounded to 6 decimals (V2, decisions.md D41/D42). None for reports built
+    # directly from label lists (e.g. the pure-metric unit tests) with no
+    # model inference behind them — argmax classification never depends on this.
+    probs: dict[str, float] | None = None
 
 
 @dataclass
@@ -92,6 +102,7 @@ class GoldEvalReport:
                     "gold_label": p.gold_label,
                     "predicted_label": p.predicted_label,
                     "correct": p.correct,
+                    "probs": p.probs,
                 }
                 for p in self.predictions
             ],
@@ -130,6 +141,7 @@ def build_gold_report(
     predicted_labels: Sequence[str],
     mode: str,
     label_order: Sequence[str] = LABEL_ORDER,
+    probs: Sequence[dict[str, float] | None] | None = None,
 ) -> GoldEvalReport:
     cm = compute_confusion_matrix(gold_labels, predicted_labels, label_order)
     per_class = compute_per_class_metrics(cm, label_order)
@@ -140,9 +152,10 @@ def build_gold_report(
     e_support = per_class["entailment"]["support"]
     c_support = per_class["contradiction"]["support"]
 
+    probs_list: Sequence[dict[str, float] | None] = probs if probs is not None else [None] * len(gold_labels)
     predictions = [
-        PredictionRecord(pair_id=pid, question_id=qid, gold_label=g, predicted_label=p, correct=(g == p))
-        for pid, qid, g, p in zip(pair_ids, question_ids, gold_labels, predicted_labels)
+        PredictionRecord(pair_id=pid, question_id=qid, gold_label=g, predicted_label=p, correct=(g == p), probs=pr)
+        for pid, qid, g, p, pr in zip(pair_ids, question_ids, gold_labels, predicted_labels, probs_list)
     ]
 
     return GoldEvalReport(
@@ -230,10 +243,17 @@ def predict_labels(
     hypotheses: Sequence[str],
     max_length: int = 256,
     batch_size: int = 8,
-) -> list[str]:
+) -> tuple[list[str], list[dict[str, float]]]:
+    """Returns (predicted_labels, probs) — one dict per pair, keys ordered by
+    model.config.id2label's index order, values rounded to 6 decimals (V2,
+    decisions.md D41/D42). The argmax line below is byte-identical to the
+    pre-V2 version: softmax is monotonic, so argmax(softmax(logits)) ==
+    argmax(logits) always — computing probs cannot change which label wins."""
     model.eval()
     id2label = {int(k): v for k, v in model.config.id2label.items()}
+    ordered_indices = sorted(id2label.keys())
     predictions: list[str] = []
+    all_probs: list[dict[str, float]] = []
     for start in range(0, len(premises), batch_size):
         batch_premises = list(premises[start : start + batch_size])
         batch_hyps = list(hypotheses[start : start + batch_size])
@@ -241,9 +261,47 @@ def predict_labels(
             batch_premises, batch_hyps, truncation=True, padding=True, max_length=max_length, return_tensors="pt"
         )
         logits = model(**inputs).logits
-        pred_ids = logits.argmax(dim=-1).tolist()
+        pred_ids = logits.argmax(dim=-1).tolist()  # UNCHANGED from pre-V2: argmax on raw logits
         predictions.extend(_normalize_label(id2label[i]) for i in pred_ids)
-    return predictions
+
+        batch_probs = torch.softmax(logits, dim=-1).tolist()
+        for row in batch_probs:
+            all_probs.append({_normalize_label(id2label[i]): round(float(row[i]), 6) for i in ordered_indices})
+    return predictions, all_probs
+
+
+# ── determinism ───────────────────────────────────────────────────────────────
+
+DETERMINISTIC_SEED = 42
+
+
+def _configure_deterministic_inference(seed: int = DETERMINISTIC_SEED) -> None:
+    """Reproducibility gate support (V2/D42): pin every source of
+    nondeterminism reachable from here before running inference.
+
+    What this guarantees: a fixed RNG seed (torch.manual_seed) and
+    torch.use_deterministic_algorithms(True) for every op that HAS a
+    deterministic implementation. model.eval() and torch.no_grad() are
+    already enforced separately, inside predict_labels.
+
+    What this does NOT guarantee: warn_only=True means ops without a
+    deterministic CPU/GPU kernel (some exist in relative-attention /
+    gather-scatter paths used by DeBERTa-v2) fall back to their normal
+    (possibly nondeterministic) implementation with a warning instead of
+    raising -- strict mode (warn_only=False) was rejected because it can
+    hard-crash inference on ops PyTorch simply never made deterministic.
+    The --assert-matches reproducibility gate is what actually proves
+    determinism held for this specific model + these specific 48 pairs;
+    this function only maximizes the odds and documents the ceiling.
+    """
+    torch.manual_seed(seed)
+    try:
+        torch.use_deterministic_algorithms(True, warn_only=True)
+    except Exception as exc:  # pragma: no cover - defensive, torch-version dependent
+        print(f"[gold_eval] torch.use_deterministic_algorithms unavailable in this torch build: {exc}")
+    if torch.cuda.is_available():  # inert on this CPU-only machine; forward-looking for Kaggle T4
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
 
 # ── orchestration ─────────────────────────────────────────────────────────────
@@ -267,6 +325,7 @@ def run_gold_eval(
     downloaded (production path). Tests inject a tiny synthetic model/tokenizer
     instead so inference can be smoke-tested offline in seconds.
     """
+    _configure_deterministic_inference()
     gold_pairs = load_gold_set(gold_set_path)
 
     if model is None or tokenizer is None:
@@ -281,7 +340,9 @@ def run_gold_eval(
     hypotheses = [p.hypothesis for p in gold_pairs]
     gold_labels = [p.label for p in gold_pairs]
 
-    predicted_labels = predict_labels(model, tokenizer, premises, hypotheses, max_length=max_length, batch_size=batch_size)
+    predicted_labels, probs = predict_labels(
+        model, tokenizer, premises, hypotheses, max_length=max_length, batch_size=batch_size
+    )
 
     return build_gold_report(
         pair_ids=[p.pair_id for p in gold_pairs],
@@ -289,4 +350,5 @@ def run_gold_eval(
         gold_labels=gold_labels,
         predicted_labels=predicted_labels,
         mode=mode,
+        probs=probs,
     )

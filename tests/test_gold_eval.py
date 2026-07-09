@@ -29,6 +29,7 @@ from interview_iq.evaluation.gold_eval import (
     build_gold_report,
     compute_confusion_matrix,
     compute_per_class_metrics,
+    predict_labels,
     run_gold_eval,
 )
 
@@ -224,3 +225,67 @@ def test_omitting_adapter_path_is_also_zero_shot(cfg: Config) -> None:
         zero_shot=False,
     )
     assert report.mode == "zero-shot"
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# V2 — raw probabilities (decisions.md D41/D42)
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def test_predict_labels_returns_probs_alongside_labels() -> None:
+    model, tokenizer = _build_tiny_model_and_tokenizer()
+    gold_data = json.loads(GOLD_MINI.read_text(encoding="utf-8"))
+    premises = [p["premise"] for p in gold_data["pairs"]]
+    hypotheses = [p["hypothesis"] for p in gold_data["pairs"]]
+
+    labels, probs = predict_labels(model, tokenizer, premises, hypotheses)
+
+    assert len(labels) == len(probs) == len(premises)
+    for label, prob_dict in zip(labels, probs):
+        assert set(prob_dict.keys()) == set(LABEL_ORDER)
+        # argmax of the reported probs must agree with the reported label --
+        # proves the probs are not just decorative, they describe the same event.
+        assert max(prob_dict, key=prob_dict.get) == label
+        assert abs(sum(prob_dict.values()) - 1.0) < 1e-4  # softmax sums to 1
+        for v in prob_dict.values():
+            assert 0.0 <= v <= 1.0
+            assert v == round(v, 6)  # rounded to 6 decimals, not more
+
+
+def test_run_gold_eval_predictions_carry_probs(cfg: Config) -> None:
+    model, tokenizer = _build_tiny_model_and_tokenizer()
+    report = run_gold_eval(cfg=cfg, gold_set_path=GOLD_MINI, model=model, tokenizer=tokenizer, zero_shot=True)
+
+    assert len(report.predictions) == 2
+    for p in report.predictions:
+        assert p.probs is not None
+        assert set(p.probs.keys()) == set(LABEL_ORDER)
+        assert max(p.probs, key=p.probs.get) == p.predicted_label
+
+    payload = json.dumps(report.to_dict(), ensure_ascii=False)
+    reloaded = json.loads(payload)
+    assert "probs" in reloaded["predictions"][0]
+    assert set(reloaded["predictions"][0]["probs"].keys()) == set(LABEL_ORDER)
+
+
+def test_build_gold_report_probs_default_to_none_when_omitted() -> None:
+    """Backward compatibility: callers that only have label lists (e.g. hand-built
+    confusion-matrix tests) must not be forced to supply probs."""
+    report = build_gold_report(
+        pair_ids=["P1"], question_ids=["ZZ-999"], gold_labels=["entailment"], predicted_labels=["entailment"], mode="unit-test"
+    )
+    assert report.predictions[0].probs is None
+    assert report.to_dict()["predictions"][0]["probs"] is None
+
+
+def test_build_gold_report_accepts_explicit_probs() -> None:
+    probs = [{"entailment": 0.7, "neutral": 0.2, "contradiction": 0.1}]
+    report = build_gold_report(
+        pair_ids=["P1"],
+        question_ids=["ZZ-999"],
+        gold_labels=["entailment"],
+        predicted_labels=["entailment"],
+        mode="unit-test",
+        probs=probs,
+    )
+    assert report.predictions[0].probs == probs[0]

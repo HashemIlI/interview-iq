@@ -17,6 +17,10 @@ Hard failures (non-zero exit):
     5. D26 twin integrity — HARD_POS twins (expect 30 claim groups).
     6. Pilot label distribution E=50 / C=60 / N=40 over 150 pairs.
     7. Splitting logic is Question-ID-level ready.
+    V3. key_points integrity per document (D42): non-empty, no duplicate
+        chunk_id within a document's key_points, every chunk_id resolves
+        (enforced inside refdocs.loader.load_reference_docs itself — a
+        dangling key_point permanently caps that document's Coverage).
 
 Documented exceptions / diagnostics (reported, never fail the gate):
     8. D35 — 5-consecutive-word overlap count + violators' label distribution.
@@ -27,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import statistics
 import sys
 from pathlib import Path
 
@@ -154,6 +159,21 @@ def main(argv: list[str] | None = None) -> int:
             f"found {len(refdocs.chunk_ids())}"
         )
         hard_failures.append("refdocs_chunk_count")
+
+    # key_points integrity is enforced as a HARD FAILURE inside
+    # load_reference_docs() itself (V3, D42) -- reaching this line means
+    # every document's key_points is non-empty, duplicate-free, and fully
+    # resolvable. This is a descriptive summary, not an additional check.
+    kp_counts = [len(doc.key_points) for doc in refdocs.documents]
+    print(
+        f"{_ICONS['INFO']} [INFO] key_points_integrity (V3): all {len(refdocs.documents)} documents passed "
+        f"(non-empty, no duplicates, no dangling references)."
+    )
+    print(
+        f"{_ICONS['INFO']} [INFO] key_points_summary: per-document key_points count -- "
+        f"min={min(kp_counts)}, max={max(kp_counts)}, mean={statistics.mean(kp_counts):.3f}, "
+        f"median={statistics.median(kp_counts)}"
+    )
 
     # ---- [2] Question bank ------------------------------------------------------
     print("\n[2] Question bank")

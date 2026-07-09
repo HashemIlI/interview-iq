@@ -95,6 +95,49 @@ def _guard_against_silent_adapter_failure(report: GoldEvalReport, compare_with: 
     print(f"\n[guard] OK -- predictions differ from {compare_with} on at least one pair.")
 
 
+def _assert_matches_reference(report: GoldEvalReport, reference_path: Path) -> None:
+    """Reproducibility gate (mandatory rerun check): this run's 48 per-pair
+    predicted_label values must be IDENTICAL to a frozen reference (e.g.
+    results/phase5/gold_eval_*.json, the D41 artifacts). Adding V2
+    probabilities must not change argmax -- if even one label differs, the
+    inference path is nondeterministic, which is a more serious problem than
+    anything Q8 raises: it would mean no number in decisions.md D41 is
+    reproducible. Exits non-zero and prints every mismatch; never silently
+    overwrites the frozen reference."""
+    if not reference_path.exists():
+        print(f"\n[reproducibility gate] FAILED -- reference path does not exist: {reference_path}")
+        sys.exit(1)
+
+    with reference_path.open("r", encoding="utf-8") as fh:
+        reference = json.load(fh)
+    ref_preds = {p["pair_id"]: p["predicted_label"] for p in reference.get("predictions", [])}
+    this_preds = {p.pair_id: p.predicted_label for p in report.predictions}
+
+    if set(ref_preds) != set(this_preds):
+        print(f"\n[reproducibility gate] FAILED -- pair_id sets differ from {reference_path}.")
+        print(f"  Only in reference: {sorted(set(ref_preds) - set(this_preds))}")
+        print(f"  Only in this run:  {sorted(set(this_preds) - set(ref_preds))}")
+        sys.exit(1)
+
+    mismatches = [(pid, ref_preds[pid], this_preds[pid]) for pid in sorted(this_preds) if ref_preds[pid] != this_preds[pid]]
+    if mismatches:
+        print("\n" + "!" * 78)
+        print("REPRODUCIBILITY GATE FAILED -- inference is nondeterministic")
+        print(f"{len(mismatches)}/{len(this_preds)} pair(s) differ from the frozen reference {reference_path}:")
+        for pid, ref_label, this_label in mismatches:
+            print(f"  {pid}: reference={ref_label!r}  this_run={this_label!r}")
+        print(
+            "Adding V2 probabilities must not change argmax classification. A mismatch\n"
+            "here means the inference path itself is nondeterministic -- more serious\n"
+            "than anything Q8 raises, since it means no number in decisions.md D41 is\n"
+            "reproducible. FAILING LOUDLY rather than quietly overwriting D41."
+        )
+        print("!" * 78)
+        sys.exit(1)
+
+    print(f"\n[reproducibility gate] PASSED -- all {len(this_preds)} predictions match {reference_path} exactly.")
+
+
 def _repo_root() -> Path:
     # src/interview_iq/cli/run_nli_eval.py -> cli -> interview_iq -> src -> repo root
     return Path(__file__).resolve().parents[3]
@@ -159,6 +202,16 @@ def main(argv: list[str] | None = None) -> int:
             "SILENT ADAPTER FAILURE SUSPECTED. Written report is saved to --output-json first."
         ),
     )
+    parser.add_argument(
+        "--assert-matches",
+        type=Path,
+        default=None,
+        help=(
+            "Reproducibility gate: path to a frozen reference JSON report (e.g. "
+            "results/phase5/gold_eval_zero_shot.json). Exits non-zero and prints every "
+            "mismatch if even one of the 48 predicted_label values differs from it."
+        ),
+    )
     parser.add_argument("--data-dir", type=Path, default=None, help="Override the data/ directory.")
     parser.add_argument("--configs-dir", type=Path, default=None, help="Override the configs/ directory.")
     parser.add_argument("--batch-size", type=int, default=8)
@@ -199,6 +252,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.compare_with is not None:
         _guard_against_silent_adapter_failure(report, args.compare_with)  # exits non-zero on match
+
+    if args.assert_matches is not None:
+        _assert_matches_reference(report, args.assert_matches)  # exits non-zero on any mismatch
 
     print(NO_VERDICT_NOTICE)
     return 0
