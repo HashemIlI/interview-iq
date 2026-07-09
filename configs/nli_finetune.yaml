@@ -45,7 +45,11 @@ data:
     - "DS-014"
   # Splits ALWAYS at Question-ID level — never at example level (D26)
   split_level: "question_id"
-  val_fraction: 0.2
+  # Phase 4 locked split strategy: single document-level holdout for validation.
+  # GN-008 (15 pairs) held out; the remaining 9 documents (135 pairs) train.
+  # Supersedes the earlier fractional (val_fraction) placeholder.
+  val_question_ids:
+    - "GN-008"
   # HARD_POS twins (paired_neutral) must NEVER be split across train/val (D26)
   respect_hard_pos_twins: true
 
