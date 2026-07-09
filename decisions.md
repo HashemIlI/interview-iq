@@ -114,7 +114,8 @@
 - LoRA (r=16, α=32, target = q/v projections) على 135 زوج تدريب / 15 val (GN-008 holdout، D36). Kaggle T4 ×2.
 - 5 epochs، 45 خطوة، ~6 دقائق. eval_loss: 0.789 → 0.482 → 0.344 → 0.309 → 0.303 (تناقص مطّرد ⇒ تقارب).
 - best macro-F1 على val = 0.927 (epoch 3). **لا يُستشهد به كأداء الموديل:** val = 15 زوجًا، والفرق بين 0.861 و0.927 ≈ عيّنة واحدة (تباين عالٍ — D36).
-- checkpoint (LoRA adapter، ~58 MB) منشور كـ Kaggle Dataset `iq-checkpoints-nli-v1`.
+- checkpoint (LoRA adapter + tokenizer) منشور كـ Kaggle Dataset `iq-checkpoints-nli-v1`.
+- *تحقق (9 يوليو 2026):* `load_best_model_at_end` مفعّل — الـ adapter في جذر الـ checkpoint مطابق بايت-ببايت لـ `checkpoint-27` (epoch 3، أفضل macro-F1)، ومختلف عن `checkpoint-45` (الأخير). النسخة المنشورة نُظّفت: حالات الـ optimizer والـ checkpoints الوسيطة محذوفة (غير لازمة للـ inference).
 - **لم يُختبر Subject Blindness بعد.** الحكم الوحيد المعتبر: Gold Set (48 زوجًا، DS-014) في Phase 5 — per-class F1 + confusion matrix كاملة، مقارنةً بـ zero-shot baseline (Demo #1).
 - الوسم المنهجي: **RISK ACCEPTED (D33)**.
 
