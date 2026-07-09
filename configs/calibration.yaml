@@ -1,0 +1,31 @@
+# configs/calibration.yaml — Human Calibration Tooling (Phase 10 / Gate G4)
+# Interview IQ / NLP Module
+#
+# These are the PRE-CALIBRATION DEFAULT values under test.
+# After Gate G4, the winning values are written back into scoring.yaml
+# and retrieval.yaml, and this file is updated to reflect the final choice.
+# Claude Code does NOT pick final values — outputs artifacts for Ahmed's judgment.
+
+current_defaults:
+  # PRE-CALIBRATION DEFAULT — NOT VALIDATED
+  tau: 0.5      # contradiction gate
+  tau_e: 0.9    # entailment-priority threshold
+  alpha: 0.0    # neutral weight
+  k: 10         # BGE-M3 Top-k cap
+
+grid_search:
+  tau_values:   [0.3, 0.4, 0.5, 0.6, 0.7]
+  tau_e_values: [0.70, 0.80, 0.90, 0.95]
+  alpha_values: [0.0, 0.1, 0.2, 0.3]
+  k_values:     [5, 10, 15, 20]
+
+evaluation:
+  # Labeled sample used for calibration — must NOT overlap with training data
+  sample_source: "data/nli/gold_set_48.json"    # DS-014 held-out Gold Set
+  metric: "harmonic_f_score"
+  report_per_class_f1: true
+
+output:
+  table_format: "markdown"      # side-by-side comparison tables for human judgment
+  export_dir: "calibration_results/"
+  timestamp_runs: true

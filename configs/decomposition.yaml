@@ -1,0 +1,35 @@
+# configs/decomposition.yaml — Claim Decomposition (Knowledge Distillation)
+# Interview IQ / NLP Module
+#
+# ⛔ Phase 8 — behind Gate G2.
+#    Do NOT populate `model.selected` until G2 is closed
+#    (manual decomposition exercises + annotation guide locked by Ahmed).
+#    AraT5 vs mT5-base choice is OPEN (Q6 in PROJECT_EXECUTION_PLAN.md).
+
+model:
+  candidate_a: "UBC-NLP/AraT5-base"     # option A
+  candidate_b: "google/mt5-base"         # option B
+  selected: null                         # ⛔ awaiting Gate G2
+
+generation:
+  max_new_tokens: 128
+  num_beams: 4
+  early_stopping: true
+  device: "cpu"     # CPU-First; GPU used on Kaggle T4 only
+
+# The four locked annotation / composition rules (✅ pipeline spec §[2]).
+# These are enforced programmatically in the dataset builder and checked
+# in the human annotation guide.
+annotation_rules:
+  # (a) Preserve hedging words such as "غالبًا" — faithfulness
+  preserve_hedging: true
+  # (b) Generalise personal framing; evaluate the transferred knowledge claim
+  generalise_personal_framing: true
+  # (c) No third causal claim unless the causality itself is independently verifiable
+  no_unverifiable_causal_bridge: true
+  # (d) Every emitted claim must pass the self-containment test
+  enforce_self_containment: true
+
+output:
+  claim_separator: "\n"
+  include_decontextualisation_log: true

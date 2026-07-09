@@ -353,7 +353,7 @@ When done: summary + problems, then STOP.
 | Q6 | **اختيار AraT5 vs mT5-base** | لم يُحسم. مؤجل طبيعيًا لبوابة G2 لكنه يظل مفتوحًا. |
 | Q7 | **O11 — تطبيق التسجيل** | Tech Stack + Session Spec v1.0 + اعتماد الفريق كله معلّق؛ فرق الوجه والصوت يعتمدون على نفس التطبيق والـ timestamps. خارج هذا الـ plan لكنه blocking للـ pilot videos (وبالتالي لبوابة G3). |
 | Q8 | **Coverage Asymmetry** | مؤجلة صراحةً لما بعد الـ fine-tuning — تُفتح كبند مستقل بعد Phase 5. |
-| Q9 | **مستودع GitHub** |✅ RESOLVED — https://github.com/HashemIlI/interview-iq. |
+| Q9 | **مستودع GitHub** | ✅ **RESOLVED (9 يوليو 2026)** — الريبو الرسمي: https://github.com/HashemIlI/interview-iq (private). نوتبوكات الـ Runners تسحب منه عبر `git clone` + PAT من Kaggle Secrets. (التفاصيل الكاملة موثقة تحت D19 في `decisions.md`.) |
 | Q10 | **الديمو الأساسي D24** | Demo #1 zero-shot نُفذ فعليًا (5 أسئلة). هل عرضه للمشرف تم أم لا يزال deliverable معلقًا؟ |
 
 ---
