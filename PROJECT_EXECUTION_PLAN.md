@@ -134,13 +134,14 @@ interview-iq/                          ← Repo محلي (Git)
 │   │   ├── aggregation.py             ← v2 entailment-priority
 │   │   └── metrics.py                 ← Precision / Coverage / Harmonic F
 │   ├── evaluation/gold_eval.py        ← per-class F1 + confusion matrix على الـ Gold Set
-│   └── fusion/                        ← ⛔ خارج نطاق الـ NLP deliverable — placeholder لتكامل الفريق
-├── cli/                               ← python -m interview_iq.cli.run_*
-│   ├── run_asr.py
-│   ├── run_nli_finetune.py
-│   ├── run_nli_eval.py
-│   ├── run_scoring.py
-│   └── run_calibration.py
+│   ├── fusion/                        ← ⛔ خارج نطاق الـ NLP deliverable — placeholder لتكامل الفريق
+│   └── cli/                           ← python -m interview_iq.cli.run_* (نُقل من الجذر، انحراف Phase 1 مصحَّح في Phase 3)
+│       ├── run_asr.py
+│       ├── run_nli_finetune.py
+│       ├── run_nli_eval.py
+│       ├── run_scoring.py
+│       ├── run_calibration.py
+│       └── validate_data.py
 ├── tests/
 │   ├── fixtures/                      ← عينات صغيرة CPU-friendly
 │   └── test_*.py                      ← Smoke tests لكل مرحلة

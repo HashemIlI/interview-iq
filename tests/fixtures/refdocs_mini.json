@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "project": "Interview IQ - TEST FIXTURE",
+    "status": "SYNTHETIC — not real interview data, CPU-friendly sample only",
+    "total_target": 2,
+    "completed": 2
+  },
+  "documents": [
+    {
+      "question_id": "ZZ-001",
+      "track": "ZZ",
+      "question": "Fixture question one — what is the difference between Recursion and Iteration?",
+      "chunks": [
+        {
+          "chunk_id": "ZZ001-C01",
+          "text": "Recursion هي أسلوب برمجي يستدعي فيه الدالة Function نفسها لحل مسألة أصغر من نفس النوع."
+        },
+        {
+          "chunk_id": "ZZ001-C02",
+          "text": "Iteration هي أسلوب برمجي يعتمد على تكرار مجموعة تعليمات باستخدام حلقة Loop بدلًا من استدعاء ذاتي."
+        },
+        {
+          "chunk_id": "ZZ001-C03",
+          "text": "تحتاج كل دالة Recursion إلى حالة أساسية Base Case لإيقاف الاستدعاءات المتكررة."
+        }
+      ],
+      "key_points": ["ZZ001-C01", "ZZ001-C02"]
+    },
+    {
+      "question_id": "ZZ-002",
+      "track": "ZZ",
+      "question": "Fixture question two — what is the difference between a Stack and a Heap?",
+      "chunks": [
+        {
+          "chunk_id": "ZZ002-C01",
+          "text": "الـ Stack هي منطقة ذاكرة تُدار تلقائيًا بترتيب LIFO لتخزين المتغيرات المحلية."
+        },
+        {
+          "chunk_id": "ZZ002-C02",
+          "text": "الـ Heap هي منطقة ذاكرة تُدار يدويًا أو بواسطة Garbage Collector لتخزين الكائنات ديناميكيًا."
+        }
+      ],
+      "key_points": ["ZZ002-C01"]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "status": "SYNTHETIC TEST FIXTURE — simulates a held-out, evaluation-only question",
+    "question_id": "ZZ-999",
+    "track": "ZZ",
+    "n_pairs": 2
+  },
+  "pairs": [
+    {
+      "pair_id": "GP01",
+      "chunk_id": "ZZ999-C01",
+      "premise": "الـ Overfitting الوهمي هو حالة اختبارية لا تظهر إلا في هذا الملف.",
+      "hypothesis": "هذه حالة اختبارية وهمية لا تُستخدم إلا في الفحوص الآلية.",
+      "label": "entailment",
+      "contradiction_method": null,
+      "stage2": {"verdict": "confirmed", "corrected_label": null, "note": null}
+    },
+    {
+      "pair_id": "GP02",
+      "chunk_id": "ZZ999-C02",
+      "premise": "الـ Overfitting الوهمي هو حالة اختبارية لا تظهر إلا في هذا الملف.",
+      "hypothesis": "هذه الحالة تظهر في كل الملفات الحقيقية دائمًا.",
+      "label": "contradiction",
+      "contradiction_method": "subject_swap",
+      "stage2": {"verdict": "confirmed", "corrected_label": null, "note": null}
+    }
+  ]
+}

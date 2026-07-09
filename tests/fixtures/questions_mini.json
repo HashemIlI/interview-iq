@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "project": "Interview IQ - TEST FIXTURE",
+    "total_questions": 2,
+    "status": "SYNTHETIC — not real interview data, CPU-friendly sample only"
+  },
+  "questions": [
+    {"question_id": "ZZ-001", "track": "ZZ", "text": "Fixture question one — what is the difference between Recursion and Iteration?"},
+    {"question_id": "ZZ-002", "track": "ZZ", "text": "Fixture question two — what is the difference between a Stack and a Heap?"}
+  ]
+}

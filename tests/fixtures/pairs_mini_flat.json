@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "question_id": "ZZ-001",
+    "track": "ZZ",
+    "status": "SYNTHETIC TEST FIXTURE",
+    "n_pairs": 6
+  },
+  "pairs": [
+    {
+      "pair_id": "ZZ001-P01",
+      "category": "EASY_POS",
+      "label": "entailment",
+      "chunk_id": "ZZ001-C01",
+      "hypothesis": "تستدعي دالة الـ Recursion نفسها للتعامل مع نسخة أصغر من نفس المسألة.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": null
+    },
+    {
+      "pair_id": "ZZ001-P02a",
+      "category": "HARD_POS",
+      "claim_group": "HP1",
+      "label": "entailment",
+      "chunk_id": "ZZ001-C02",
+      "hypothesis": "تعتمد الـ Iteration على تكرار تعليمات عبر حلقة بدلًا من استدعاء الدالة لنفسها.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": null
+    },
+    {
+      "pair_id": "ZZ001-P02b",
+      "category": "HARD_POS",
+      "claim_group": "HP1",
+      "label": "paired_neutral",
+      "chunk_id": "ZZ001-C03",
+      "distractor_of": "ZZ001-C02",
+      "hypothesis": "تعتمد الـ Iteration على تكرار تعليمات عبر حلقة بدلًا من استدعاء الدالة لنفسها.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": "premise عن Base Case فقط، لا يثبت ولا ينفي الادعاء عن Iteration"
+    },
+    {
+      "pair_id": "ZZ001-P03",
+      "category": "EASY_NEG",
+      "label": "contradiction",
+      "chunk_id": "ZZ001-C01",
+      "hypothesis": "لا تستدعي دالة الـ Recursion نفسها أبدًا تحت أي ظرف.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": null
+    },
+    {
+      "pair_id": "ZZ001-P04",
+      "category": "SUBJECT_SWAP",
+      "label": "contradiction",
+      "chunk_id": "ZZ001-C02",
+      "swapped_from": "ZZ001-C02",
+      "hypothesis": "تحتاج الـ Recursion إلى حلقة Loop بدلًا من الاستدعاء الذاتي.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": null
+    },
+    {
+      "pair_id": "ZZ001-P05",
+      "category": "STANDARD_NEUTRAL",
+      "label": "standard_neutral",
+      "chunk_id": "ZZ001-C03",
+      "hypothesis": "تستهلك دوال الـ Recursion العميقة ذاكرة أكبر بسبب تراكم إطارات الاستدعاء.",
+      "stage2_verdict": "confirmed",
+      "stage2_note": null
+    }
+  ]
+}

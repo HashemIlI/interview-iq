@@ -34,8 +34,12 @@ training:
   seed: 42
 
 data:
+  refdocs_file: "data/refdocs/reference_docs_250_FINAL_v1.json"
+  questions_file: "data/questions/questions_250.json"
   pilot_file_da001: "data/nli/pairs_pilot_150_v2/pairs_DA001_pilot_v1.json"
   pilot_file_remaining: "data/nli/pairs_pilot_150_v2/pairs_pilot_remaining9_v2.json"
+  # DS-014 Gold Set — evaluation only, NEVER a training premise pool source (D28)
+  gold_set_file: "data/nli/gold_set_48.json"
   # D28 — DS-014 permanently excluded from any training premise pool (Gold Set leakage)
   excluded_question_ids:
     - "DS-014"

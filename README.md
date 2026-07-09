@@ -29,12 +29,12 @@ See `PROJECT_EXECUTION_PLAN.md` for the full locked architecture and decision lo
 ## Repo Layout
 
 ```
-configs/          YAML configs for every pipeline stage
-data/             Small local data only (large files → Kaggle Datasets)
-src/interview_iq/ Main package
-cli/              Entry-point scripts (python -m ...)
-tests/            pytest suite + CPU-friendly fixtures
-kaggle/runners/   Thin Runner notebooks (clone + pip + one CLI line, zero logic)
+configs/                YAML configs for every pipeline stage
+data/                   Small local data only (large files → Kaggle Datasets)
+src/interview_iq/       Main package
+src/interview_iq/cli/   Entry-point scripts (python -m interview_iq.cli.run_*)
+tests/                  pytest suite + CPU-friendly fixtures
+kaggle/runners/         Thin Runner notebooks (clone + pip + one CLI line, zero logic)
 ```
 
 ## Usage
@@ -42,7 +42,7 @@ kaggle/runners/   Thin Runner notebooks (clone + pip + one CLI line, zero logic)
 ```bash
 pip install -r requirements.txt
 # Phase 3+: place data files per FILE_PLACEMENT.md, then:
-python cli/validate_data.py
+python -m interview_iq.cli.validate_data
 ```
 
 ## Phases

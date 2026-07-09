@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "status": "SYNTHETIC TEST FIXTURE",
+    "n_documents": 1,
+    "n_pairs": 3
+  },
+  "documents": [
+    {
+      "question_id": "ZZ-002",
+      "pairs": [
+        {
+          "pair_id": "ZZ002-P01",
+          "category": "EASY_POS",
+          "label": "entailment",
+          "chunk_id": "ZZ002-C01",
+          "hypothesis": "تُدار الـ Stack تلقائيًا بترتيب LIFO لتخزين المتغيرات المحلية.",
+          "stage2_verdict": "confirmed"
+        },
+        {
+          "pair_id": "ZZ002-P02",
+          "category": "HN_OTHER",
+          "label": "contradiction",
+          "chunk_id": "ZZ002-C02",
+          "hypothesis": "تُدار الـ Heap تلقائيًا بترتيب LIFO دون أي تدخل من Garbage Collector.",
+          "stage2_verdict": "confirmed"
+        },
+        {
+          "pair_id": "ZZ002-P03",
+          "category": "STANDARD_NEUTRAL",
+          "label": "standard_neutral",
+          "chunk_id": "ZZ002-C01",
+          "hypothesis": "تكون عمليات التخصيص على الـ Stack أسرع عادة من عمليات التخصيص على الـ Heap.",
+          "stage2_verdict": "confirmed"
+        }
+      ]
+    }
+  ]
+}
