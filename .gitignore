@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+env/
+venv/
+.venv/
+ENV/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data — large files never committed; Ahmed places them manually
+data/questions/*.json
+data/refdocs/*.json
+data/nli/*.json
+data/nli/pairs_pilot_150_v2/*.json
+
+# Model checkpoints
+checkpoints/
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+
+# Kaggle credentials
+kaggle.json
+.kaggle/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

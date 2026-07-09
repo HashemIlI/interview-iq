@@ -1,0 +1,3 @@
+# Interview IQ — NLP Module
+# Populated in Phase 2 with pinned versions.
+# CPU-First: all packages must support CPU-only execution for local dev.
