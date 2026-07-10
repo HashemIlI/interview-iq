@@ -1,6 +1,6 @@
 # PROJECT_EXECUTION_PLAN.md
 **Interview IQ — NLP Module (Answer Correctness Evaluation)**
-**الإصدار:** v1.3 — 10 يوليو 2026
+**الإصدار:** v1.4 — 10 يوليو 2026
 **الغرض:** ذاكرة التنفيذ الرسمية للمشروع. أي محادثة جديدة داخل المشروع تبدأ من هذا الملف. لا يُعاد فتح أي قرار موسوم ✅ إلا بقرار صريح من أحمد.
 
 **مفتاح الحالة:** ✅ مقفول ونهائي · ⛔ مفتوح/معلّق · 🔶 Placeholder غير مُتحقق منه · 🗑️ ملغي
@@ -68,7 +68,7 @@ Video/Audio (per-question segments via click timestamps)
 
 **Symmetric Granularity ✅:** مدخلات الـ NLI دائمًا أزواج فصحى/فصحى بمصطلحات لاتينية. العامية والـ Code-Switching موجودان في طبقتي ASR والـ Decomposition فقط.
 
-**⛔ Q8 — هشاشة قناة الـ Coverage (أُعيدت صياغتها في D42؛ كانت تُسمى "Coverage Asymmetry"):** الرقم "0.002" المذكور سابقًا **مسحوب — بلا مصدر** (ظهور واحد فقط في الريبو، بلا سكريبت أو JSON أو وصف للمُدخَل). ادعاء "chunks طويلة رسمية" **مكذوب بالقياس**: طول الـ chunk (whitespace tokens) mean=15.5 · median=15 · p90=20 — جمل قصيرة بحكم convention التأليف، لا عدم تماثل في الطول. **الـ Coverage لم تُقَس ولا مرة** — `scoring/metrics.py`، `scoring/aggregation.py`، `nli/engine.py` كلها 0 bytes (stubs فارغة). ثلاثة مصادر مفترضة (غير مقيسة بعد) للهشاشة: (أ) الاتجاه المعكوس OOD تمامًا عن بيانات التدريب (D34)؛ (ب) انزياح `neutral` مُتعلَّم متوقَّع (D26/D41 رصدا neutral precision 0.917→0.647)؛ (ج) خطأ تركيب محتمل في `max_entailment_per_keypoint` (الـ premise claim منفرد، وkey point قد يتطلب أكثر من claim مجتمعين). الترتيب الملزم: V2 → V3 → Phase 6 (بناء `engine.py`/`metrics.py`) → قياس فعلي بقاعدة قرار مسجَّلة مسبقًا → عندها فقط يُناقَش العلاج. **ممنوع اقتراح أو تنفيذ أي علاج قبل وجود رقم مقيس.** انظر `decisions.md` D42.
+**⛔ Q8 — هشاشة قناة الـ Coverage (أُعيدت صياغتها في D42؛ كانت تُسمى "Coverage Asymmetry"):** الرقم "0.002" المذكور سابقًا **مسحوب — بلا مصدر** (ظهور واحد فقط في الريبو، بلا سكريبت أو JSON أو وصف للمُدخَل). ادعاء "chunks طويلة رسمية" **مكذوب بالقياس**: طول الـ chunk (whitespace tokens) mean=15.5 · median=15 · p90=20 — جمل قصيرة بحكم convention التأليف، لا عدم تماثل في الطول. **الـ Coverage لم تُقَس ولا مرة** — `scoring/metrics.py`، `scoring/aggregation.py`، `nli/engine.py` كلها 0 bytes (stubs فارغة). ثلاثة مصادر مفترضة (غير مقيسة بعد) للهشاشة: (أ) الاتجاه المعكوس OOD تمامًا عن بيانات التدريب (D34)؛ (ب) انزياح `neutral` مُتعلَّم متوقَّع (D26/D41 رصدا neutral precision 0.917→0.647)؛ (ج) خطأ تركيب محتمل في `max_entailment_per_keypoint` (الـ premise claim منفرد، وkey point قد يتطلب أكثر من claim مجتمعين). **مقاس الآن:** توزيع الـ key_points عبر الـ 250 مستندًا — 63 (25.2%) لها key pointان فقط، فالقناة شبه ثنائية الحالة لربع الأسئلة (تفويت واحد ⇒ F=0.67 عند P=1.0). **V3 (سلامة `key_points`) أُغلق (250/250 مستندًا يمر) — فرضية السقف البنيوي الناتج عن بيانات فاسدة سقطت.** الترتيب الملزم الآن: **V2 وحده** → Phase 6 (بناء `engine.py`/`metrics.py`) → قياس فعلي بقاعدة قرار مسجَّلة مسبقًا → عندها فقط يُناقَش العلاج. **ممنوع اقتراح أو تنفيذ أي علاج قبل وجود رقم مقيس.** انظر `decisions.md` D42.
 
 ---
 
@@ -224,9 +224,8 @@ interview-iq/                          ← Repo محلي (Git)
 - **الهدف:** بناء BGE-M3 Top-k cap + محرك الـ Dual-Channel Scoring كاملًا.
 - **ملفات تُنشأ:** `retrieval/chunk_cap.py`، `nli/engine.py` (full matrix)، `scoring/aggregation.py` (v2 entailment-priority)، `scoring/metrics.py`، `cli/run_scoring.py`، اختبارات وحدات للتجميع (حالات: VERIFIED، contradiction penalty، neutral، الترتيب صح > سكوت > غلط).
 - **شرط البدء:** Phase 5 (لأن سلوك التجميع يُختبر بموديل ما بعد الـ fine-tuning).
-- **⛔ حاجزا بدء صلبان — V2 وV3 (انظر §8 وdecisions.md D41/D42):**
-  > "V2 (⛔): gold_eval_*.json store argmax labels only, no softmax/logits. Raw probabilities MUST be added to evaluation outputs before any threshold (τ_E) work. The scoring engine consumes probabilities, not argmax — see decisions.md D41."
-  > "V3 (⛔): key_points is a document-level list of chunk_id strings, not a field in the chunk schema — validate_data does not check it. A dangling chunk_id in key_points makes that key point permanently uncoverable, a structural ceiling on Coverage. Add hard failures for: dangling reference, duplicate entries, empty list — see decisions.md D42."
+- **⛔ حاجز بدء صلب وحيد — V2 (V3 أُغلق، انظر §8 وdecisions.md D42):**
+  > "V2 (⛔ تحجب Phase 6): `gold_eval_*.json` لا تحفظ softmax/logits. مطلوب إضافتها **قبل** أي معايرة لـ `τ_E` أو أي قياس للـ Coverage. **وشرط ملزم:** إعادة التشغيل يجب أن تنتج **48/48 تنبؤًا مطابقًا** لـ `results/phase5/*.json` (`--assert-matches`). أي اختلاف = **لا-حتمية في مسار الـ inference**، وهي مشكلة تسبق Q8 في الأولوية لأنها تُبطل قابلية تكرار كل رقم في الرسالة."
 - **Deliverables:** سكور 0–100 لكل إجابة على fixtures + لوج قرارات per-claim قابل للتفسير. **أول تجربة Coverage** يجب أن تقارن zero-shot مقابل adapter في الاتجاه المعكوس (key point كـ hypothesis)، تحت **قاعدة قرار مسجَّلة ومُلتزَم بها قبل التشغيل** — نفس انضباط D39 — لا نتيجة أولًا ثم تفسير.
 
 ### Phase 7 — ASR Module
@@ -352,23 +351,24 @@ When done: summary + problems, then STOP.
 
 | # | البند | التفصيل |
 |---|---|---|
-| Q1 | **تعارض ترقيم القرارات D##** | ✅ **CLOSED** — انظر `decisions.md` (السجل الموحّد D1–D42، v2.4). |
-| Q2 | **حالة ملف المراجع** | القفزة من 47 مستندًا مراجَعًا إلى `reference_docs_250_FINAL_v1.json` (250/250) غير موثقة كمرحلة انتقال؛ والاسم FINAL يناقض metadata الداخلية (DRAFT / "AI-generated, pending expert review"). مطلوب: توثيق الانتقال + توحيد الاسم/الميتاداتا قبل التسليم الأكاديمي. أحمد يتحمل مسؤولية الدفاع عن حالة المراجعة. |
+| Q1 | **تعارض ترقيم القرارات D##** | ✅ **CLOSED** — انظر `decisions.md` (السجل الموحّد D1–D42، v2.6). |
+| Q2 | **حالة ملف المراجع** | القفزة من 47 مستندًا مراجَعًا إلى `reference_docs_250_FINAL_v1.json` (250/250) غير موثقة كمرحلة انتقال؛ والاسم FINAL يناقض metadata الداخلية (DRAFT / "AI-generated, pending expert review"). مطلوب: توثيق الانتقال + توحيد الاسم/الميتاداتا قبل التسليم الأكاديمي. **يشمل الآن** تدقيق **SE-006** (المستند الوحيد حيث `len(key_points) == len(chunks)` — 6=6، يُرجَّح خطأ توليد) والمستندات الثلاثة ذات 5 key_points، لنفس النمط (انظر `decisions.md` D42). **لا تُعدَّل بيانات المرجع** — التدقيق توثيقي فقط. أحمد يتحمل مسؤولية الدفاع عن حالة المراجعة. |
 | Q3 | **بوابة G1 (Stage-4)** | ✅ **CLOSED** — انظر `decisions.md` D33 (مغلقة بقرار قبول المخاطرة، لا بإتمام المراجعة). |
 | Q4 | **stage2_verdict ناقص في 135/150 زوجًا** | ✅ **CLOSED** — انظر `decisions.md` (فجوة توثيق في v1 القديم، لا فجوة منهجية؛ `validate_data` أكد وجوده على 15/15). |
 | Q5 | **مخالفة قاعدة الـ 5-word overlap** | ✅ **CLOSED** — انظر `decisions.md` D35 وD40 (الرقم المعتمد 65/150، وارتباط تام وضار بمحور N/¬N موثّق منفصلًا). |
 | Q6 | **اختيار AraT5 vs mT5-base** | لم يُحسم. مؤجل طبيعيًا لبوابة G2 لكنه يظل مفتوحًا. |
 | Q7 | **O11 — تطبيق التسجيل** | Tech Stack + Session Spec v1.0 + اعتماد الفريق كله معلّق؛ فرق الوجه والصوت يعتمدون على نفس التطبيق والـ timestamps. خارج هذا الـ plan لكنه blocking للـ pilot videos (وبالتالي لبوابة G3). |
-| Q8 | **هشاشة قناة الـ Coverage** (كانت "Coverage Asymmetry") | ⛔ **أُعيدت صياغتها في D42.** الرقم 0.002 مسحوب (بلا مصدر). الـ Coverage لم تُقَس ولا مرة (`scoring/`، `nli/engine.py` = stubs فارغة). **محجوبة بـ V2 وV3 — لا نقاش علاج قبل وجود رقم مقيس بقاعدة قرار مسجَّلة مسبقًا.** |
+| Q8 | **هشاشة قناة الـ Coverage** (كانت "Coverage Asymmetry") | ⛔ **أُعيدت صياغتها في D42.** الرقم 0.002 مسحوب (بلا مصدر). الـ Coverage لم تُقَس ولا مرة (`scoring/`، `nli/engine.py` = stubs فارغة). **مقاس:** 63 من 250 مستندًا (25.2%) لها key pointان فقط بالضبط، فالقناة شبه ثنائية الحالة لربع الأسئلة (تفويت واحد ⇒ F=0.67 عند P=1.0 — الدمج harmonic). **محجوبة بـ V2 وحده الآن (V3 أُغلق) — لا نقاش علاج قبل وجود رقم مقيس بقاعدة قرار مسجَّلة مسبقًا.** |
 | Q9 | **مستودع GitHub** | ✅ **CLOSED** — انظر `decisions.md` D19 (الريبو: https://github.com/HashemIlI/interview-iq، private). |
 | Q10 | **الديمو الأساسي D24** | Demo #1 zero-shot نُفذ فعليًا (5 أسئلة). هل عرضه للمشرف تم أم لا يزال deliverable معلقًا؟ |
 | V1 | **تحقق الـ checkpoint** | ✅ **CLOSED** — مفاتيح `classifier.*` مؤكَّدة داخل `adapter_model.safetensors` (50 tensor)، نُفِّذ كأول خلية في `kaggle/runners/run-nli-eval.ipynb` قبل Phase 5. انظر `decisions.md` D38/D40/D41. |
 | V2 | **الاحتمالات الخام في مخرجات التقييم** | ⛔ **يحجب Phase 6.** `gold_eval_*.json` لا تحفظان softmax/logits — argmax فقط. محرك الـ scoring يستهلك احتمالات خام، لا labels. انظر `decisions.md` D41. |
-| V3 | **سلامة `key_points`** | ⛔ **يحجب Phase 6.** `key_points` قائمة `chunk_id` على مستوى المستند، وليست حقلًا في schema الـ chunk ⇒ `validate_data` لا يفحصها. أي `chunk_id` معلّق يجعل key point غير قابل للتغطية أبدًا — سقف بنيوي على الـ Coverage. مطلوب hard failure عند: مرجع معلّق، تكرار، قائمة فارغة. انظر `decisions.md` D42. |
+| V3 | **سلامة `key_points`** | ✅ **CLOSED (10 يوليو 2026).** **تصحيح:** فحص المرجع المعلّق (`dangling reference`) كان **قائمًا فعلًا منذ Phase 3** (`test_unresolved_key_points`) — الادعاء السابق بأن `validate_data` "لا يفحصها" كان استنتاجًا من غياب حقل per-chunk في الـ schema، لا تحققًا فعليًا. **المُضاف فعليًا في V3:** hard failures على `key_points` الفارغة والمكرَّرة + تقرير إحصائي. **نتيجة التشغيل على البيانات الحقيقية: 250/250 مستندًا يمر** ⇒ فرضية "سقف بنيوي على الـ Coverage ناتج عن بيانات فاسدة" **سقطت**. انظر `decisions.md` D42 / V3. |
 
 ---
 
 ## سجل التغييرات
+- **v1.4 (10 يوليو 2026):** **إغلاق V3** (تصحيح decisions.md v2.6 — فحص الـ dangling reference كان قائمًا منذ Phase 3، الادعاء بغيابه كان استنتاجًا لا تحققًا؛ 250/250 مستندًا يمر ⇒ فرضية السقف البنيوي على الـ Coverage سقطت). §6 Phase 6: **V2 وحده** الآن حاجز البدء (V3 أُزيل)، مع اقتباس حرفي لشرط إعادة الإنتاج (`--assert-matches` على 48/48) الذي يسبق Q8 في الأولوية. §8: صف V3 → CLOSED؛ Q8 مقيّدة بـ V2 وحده + إضافة الحقيقة المقيسة (63/250 مستندًا لها key pointان فقط = 25.2%، القناة شبه ثنائية الحالة)؛ Q2 مُوسَّعة لتشمل تدقيق SE-006 (الوثيقة الوحيدة حيث `len(key_points) == len(chunks)`) والمستندات الثلاثة ذات 5 key points. §2 Q8 مُحدَّثة بنفس الحقائق. تصحيح مرجع Q1 إلى `decisions.md` v2.6. لا تعديل على `decisions.md` نفسه ولا على أي بيانات.
 - **v1.3 (10 يوليو 2026):** §2 — حذف فقرة "Coverage Asymmetry" ورقمها 0.002 (بلا مصدر في الريبو)؛ استبدالها بإعادة صياغة D42: "هشاشة قناة الـ Coverage"، ثلاثة مصادر مفترضة غير مقيسة (OOD بحكم D34، انزياح neutral بحكم D26/D41، خطأ تركيب محتمل في max_entailment_per_keypoint)، وتأكيد أن طول الـ chunk (mean 15.5/median 15/p90 20) ينقض ادعاء "chunks طويلة". §8 — Q8 أُعيدت صياغتها ومحجوبة بـ V2+V3؛ إضافة صف V3 (سلامة key_points) كحاجز على Phase 6؛ تصحيح مرجع Q1 إلى D1–D42/v2.4. §6 — Phase 6 يحمل الآن حاجزين صلبين (V2+V3)، وDeliverables يضيف شرط تجربة Coverage الأولى: قاعدة قرار مسجَّلة قبل التشغيل، بانضباط D39. لا تغيير على أي قرار ✅ مقفول.
 - **v1.2 (9 يوليو 2026):** Phase 5 وُسمت ✅ COMPLETE بنتيجة PASSED مقابل D39 (C→E 3→0، E→C 1→0، Contradiction recall 16/19 بلا تغيّر) — التفاصيل في `decisions.md` D41، المخرجات الخام في `results/phase5/`. إضافة حاجز بدء صلب V2 على Phase 6 (الاحتمالات الخام مطلوبة قبل أي عمل على τ_E) في §6 وتحديث Phase 6 prompt في §7 ليطلب مخرجات احتمالية لا argmax. في §8: V1 أُغلقت (✅)، V2 أُضيفت كحاجز مفتوح على Phase 6، Q8 (Coverage Asymmetry) أصبحت ACTIVE بانتهاء تأجيل D34.
 - **v1.1 (9 يوليو 2026):** تصحيح CS = Cybersecurity (كانت مكتوبة خطأً Computer Science — راجع Task 2f)؛ تحديث أسماء نوتبوكات Kaggle إلى الصيغة بالشرطة (`run-nli-finetune.ipynb` / `run-nli-eval.ipynb`) في §4 و§7؛ تصحيح baseline الـ Phase 5 إلى الذراع zero-shot على نفس الـ 48 زوج (D39) بدلًا من Demo #1؛ إغلاق Q1/Q4/Q5/Q9 بإحالة إلى `decisions.md`؛ إضافة بند V1 (تحقق الـ checkpoint) كحاجز على تشغيل Phase 5؛ إضافة القاعدة 13 (تجريبي ≠ مُستنتَج من config) إلى §5.
@@ -376,4 +376,4 @@ When done: summary + problems, then STOP.
 
 ---
 
-*نهاية الوثيقة v1.3 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*
+*نهاية الوثيقة v1.4 — أي قرار سابق لم يظهر هنا أو تناقض داخلي: يُبلَّغ فورًا لإصدار جديد.*
