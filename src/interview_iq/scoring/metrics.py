@@ -51,15 +51,15 @@ Harmonic F:
     parameter (configs/scoring.yaml's combination.score_scale, default 100)
     is applied only when producing the final display/report number.
 
-TODO — PENDING D45 — not ratified in decisions.md:
-    Two design decisions were made in this module during Phase 6 that are
-    NOT literal quotes from decisions.md and have not been ratified as a
-    numbered decision. Both need a D45 (or later) entry, or an explicit
-    reviewed-and-rejected note, before this module's output is cited
-    anywhere academic:
-      (a) Precision = mean of per-claim scores, may be negative.
+RATIFIED — D45 (10 July 2026), citing D21:
+    Two design decisions made in this module during Phase 6 are now
+    ratified in decisions.md D45:
+      (a) Precision = mean of per-claim scores, may be negative (D45-a /
+          D21: penalty for contradiction is deliberately unbounded below).
       (b) when Precision < 0, harmonic_f returns Precision and ignores
-          Coverage entirely.
+          Coverage entirely — preserves D21's strict ranking
+          "said-wrong < silent < said-right"; clipping at zero would make
+          those two cases equal, which D21 explicitly forbids (D45-b).
 """
 
 from __future__ import annotations
