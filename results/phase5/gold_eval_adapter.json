@@ -54,336 +54,576 @@
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.988748,
+        "neutral": 0.005678,
+        "contradiction": 0.005575
+      }
     },
     {
       "pair_id": "P02",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.980427,
+        "neutral": 0.008818,
+        "contradiction": 0.010755
+      }
     },
     {
       "pair_id": "P03",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001433,
+        "neutral": 0.995086,
+        "contradiction": 0.003481
+      }
     },
     {
       "pair_id": "P04",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.004822,
+        "neutral": 0.005857,
+        "contradiction": 0.989321
+      }
     },
     {
       "pair_id": "P05",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.96164,
+        "neutral": 0.014362,
+        "contradiction": 0.023998
+      }
     },
     {
       "pair_id": "P06",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001087,
+        "neutral": 0.99787,
+        "contradiction": 0.001042
+      }
     },
     {
       "pair_id": "P07",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.006124,
+        "neutral": 0.007271,
+        "contradiction": 0.986606
+      }
     },
     {
       "pair_id": "P08",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.010786,
+        "neutral": 0.025129,
+        "contradiction": 0.964085
+      }
     },
     {
       "pair_id": "P09",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.965378,
+        "neutral": 0.030336,
+        "contradiction": 0.004286
+      }
     },
     {
       "pair_id": "P10",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.369471,
+        "neutral": 0.505716,
+        "contradiction": 0.124813
+      }
     },
     {
       "pair_id": "P11",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001266,
+        "neutral": 0.997294,
+        "contradiction": 0.001439
+      }
     },
     {
       "pair_id": "P12",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.203164,
+        "neutral": 0.024046,
+        "contradiction": 0.77279
+      }
     },
     {
       "pair_id": "P13",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.994237,
+        "neutral": 0.003911,
+        "contradiction": 0.001853
+      }
     },
     {
       "pair_id": "P14",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.00067,
+        "neutral": 0.998663,
+        "contradiction": 0.000667
+      }
     },
     {
       "pair_id": "P15",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001017,
+        "neutral": 0.0262,
+        "contradiction": 0.972783
+      }
     },
     {
       "pair_id": "P16",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000294,
+        "neutral": 0.003013,
+        "contradiction": 0.996693
+      }
     },
     {
       "pair_id": "P17",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.957947,
+        "neutral": 0.03355,
+        "contradiction": 0.008502
+      }
     },
     {
       "pair_id": "P18",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.982778,
+        "neutral": 0.008468,
+        "contradiction": 0.008753
+      }
     },
     {
       "pair_id": "P19",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.003547,
+        "neutral": 0.968752,
+        "contradiction": 0.027701
+      }
     },
     {
       "pair_id": "P20",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001283,
+        "neutral": 0.002152,
+        "contradiction": 0.996565
+      }
     },
     {
       "pair_id": "P21",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.982999,
+        "neutral": 0.014437,
+        "contradiction": 0.002564
+      }
     },
     {
       "pair_id": "P22",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001484,
+        "neutral": 0.997876,
+        "contradiction": 0.00064
+      }
     },
     {
       "pair_id": "P23",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000449,
+        "neutral": 0.010637,
+        "contradiction": 0.988914
+      }
     },
     {
       "pair_id": "P24",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000255,
+        "neutral": 0.003151,
+        "contradiction": 0.996594
+      }
     },
     {
       "pair_id": "P25",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.992483,
+        "neutral": 0.005073,
+        "contradiction": 0.002444
+      }
     },
     {
       "pair_id": "P26",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "contradiction",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.00606,
+        "neutral": 0.247409,
+        "contradiction": 0.746531
+      }
     },
     {
       "pair_id": "P27",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.003855,
+        "neutral": 0.757268,
+        "contradiction": 0.238877
+      }
     },
     {
       "pair_id": "P28",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.9815,
+        "neutral": 0.010204,
+        "contradiction": 0.008296
+      }
     },
     {
       "pair_id": "P29",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000816,
+        "neutral": 0.998239,
+        "contradiction": 0.000945
+      }
     },
     {
       "pair_id": "P30",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.006337,
+        "neutral": 0.011691,
+        "contradiction": 0.981972
+      }
     },
     {
       "pair_id": "P31",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.001559,
+        "neutral": 0.849143,
+        "contradiction": 0.149298
+      }
     },
     {
       "pair_id": "P32",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.992236,
+        "neutral": 0.00549,
+        "contradiction": 0.002274
+      }
     },
     {
       "pair_id": "P33",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001141,
+        "neutral": 0.997808,
+        "contradiction": 0.001051
+      }
     },
     {
       "pair_id": "P34",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.038844,
+        "neutral": 0.044582,
+        "contradiction": 0.916574
+      }
     },
     {
       "pair_id": "P35",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000564,
+        "neutral": 0.001507,
+        "contradiction": 0.997929
+      }
     },
     {
       "pair_id": "P36",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.977926,
+        "neutral": 0.008123,
+        "contradiction": 0.01395
+      }
     },
     {
       "pair_id": "P37",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.035205,
+        "neutral": 0.656544,
+        "contradiction": 0.308251
+      }
     },
     {
       "pair_id": "P38",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001306,
+        "neutral": 0.997524,
+        "contradiction": 0.00117
+      }
     },
     {
       "pair_id": "P39",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.002185,
+        "neutral": 0.00363,
+        "contradiction": 0.994185
+      }
     },
     {
       "pair_id": "P40",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.985466,
+        "neutral": 0.010605,
+        "contradiction": 0.003929
+      }
     },
     {
       "pair_id": "P41",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.006123,
+        "neutral": 0.676698,
+        "contradiction": 0.317179
+      }
     },
     {
       "pair_id": "P42",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.000444,
+        "neutral": 0.001744,
+        "contradiction": 0.997813
+      }
     },
     {
       "pair_id": "P43",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.18791,
+        "neutral": 0.749026,
+        "contradiction": 0.063065
+      }
     },
     {
       "pair_id": "P44",
       "question_id": "DS-014",
       "gold_label": "neutral",
       "predicted_label": "neutral",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001032,
+        "neutral": 0.99734,
+        "contradiction": 0.001628
+      }
     },
     {
       "pair_id": "P45",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001329,
+        "neutral": 0.004236,
+        "contradiction": 0.994435
+      }
     },
     {
       "pair_id": "P46",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "contradiction",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.001218,
+        "neutral": 0.012009,
+        "contradiction": 0.986773
+      }
     },
     {
       "pair_id": "P47",
       "question_id": "DS-014",
       "gold_label": "entailment",
       "predicted_label": "entailment",
-      "correct": true
+      "correct": true,
+      "probs": {
+        "entailment": 0.986746,
+        "neutral": 0.011602,
+        "contradiction": 0.001652
+      }
     },
     {
       "pair_id": "P48",
       "question_id": "DS-014",
       "gold_label": "contradiction",
       "predicted_label": "neutral",
-      "correct": false
+      "correct": false,
+      "probs": {
+        "entailment": 0.05149,
+        "neutral": 0.882724,
+        "contradiction": 0.065786
+      }
     }
   ]
 }
