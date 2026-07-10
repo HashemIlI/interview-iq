@@ -45,6 +45,7 @@ from transformers import (
 from peft import PeftModel
 
 from interview_iq.config import Config
+from interview_iq.nli.common import assert_id2label
 from interview_iq.nli.dataset import load_gold_set
 
 logger = logging.getLogger(__name__)
@@ -176,27 +177,13 @@ def build_gold_report(
 # ── model construction / inference ───────────────────────────────────────────
 
 
-EXPECTED_ID2LABEL: dict[int, str] = {0: "entailment", 1: "neutral", 2: "contradiction"}
-
-
-def _assert_id2label(model: PreTrainedModel) -> None:
-    """Verification pass hardening: print the model's actual id2label and
-    raise immediately if it doesn't match the canonical mapping this whole
-    pipeline assumes (configs/nli_finetune.yaml's labels: section) — a
-    mismatch here would silently corrupt every downstream prediction."""
-    print(f"[gold_eval] model.config.id2label = {model.config.id2label}")
-    actual = {int(k): str(v).strip().lower() for k, v in model.config.id2label.items()}
-    if actual != EXPECTED_ID2LABEL:
-        raise ValueError(f"model.config.id2label mismatch: expected {EXPECTED_ID2LABEL}, got {model.config.id2label}")
-
-
 def build_pretrained_model_and_tokenizer(model_name: str) -> tuple[PreTrainedModel, PreTrainedTokenizerBase]:
     """Production path: downloads the real base model + tokenizer from the
     Hugging Face Hub. Never called by tests (which inject a tiny synthetic
     model instead) — network access is a Kaggle-runner concern."""
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name)
-    _assert_id2label(model)
+    assert_id2label(model, caller="gold_eval")
     return model, tokenizer
 
 

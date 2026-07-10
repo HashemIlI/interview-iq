@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "status": "SYNTHETIC TEST FIXTURE — interim Phase 6 claims format, not real decomposition output",
+    "question_id": "ZZ-001"
+  },
+  "question_id": "ZZ-001",
+  "claims": [
+    {
+      "claim_id": "CL01",
+      "text": "تستدعي دالة الـ Recursion نفسها لحل مسألة أصغر من نفس النوع."
+    },
+    {
+      "claim_id": "CL02",
+      "text": "تعتمد الـ Iteration على تكرار تعليمات باستخدام حلقة Loop."
+    }
+  ]
+}
