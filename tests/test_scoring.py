@@ -18,6 +18,7 @@ from interview_iq.refdocs.loader import Chunk, ReferenceDocument
 from interview_iq.scoring.aggregation import Verdict, score_claim
 from interview_iq.scoring.metrics import (
     DanglingKeyPointError,
+    compute_scoring_result,
     coverage_channel,
     harmonic_f,
     precision_channel,
@@ -155,3 +156,42 @@ def test_resolve_key_point_chunks_succeeds_when_all_references_resolve() -> None
     )
     resolved = resolve_key_point_chunks(document)
     assert [c.chunk_id for c in resolved] == ["ZZ101-C02"]
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# D47 regression guards — seven values empirically measured on 43dae43.
+# Assert EXACTLY the measured outputs; no derivation, no re-implementation.
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def test_harmonic_f_zero_precision_zero_coverage_returns_zero() -> None:
+    # Regression guard: this case was NOT covered by the 98-test suite as of 43dae43.
+    assert harmonic_f(0.0, 0.0) == pytest.approx(0.0)
+
+
+def test_harmonic_f_zero_precision_nonzero_coverage_returns_zero() -> None:
+    assert harmonic_f(0.0, 1.0) == pytest.approx(0.0)
+
+
+def test_harmonic_f_negative_precision_with_nonzero_coverage_returns_precision() -> None:
+    assert harmonic_f(-1.0, 1.0) == pytest.approx(-1.0)
+
+
+def test_harmonic_f_negative_precision_zero_coverage_returns_precision() -> None:
+    assert harmonic_f(-1.0, 0.0) == pytest.approx(-1.0)
+
+
+def test_precision_channel_empty_claims_returns_zero_and_empty_verdicts() -> None:
+    result, verdicts = precision_channel([], [], tau=0.5, tau_e=0.9, alpha=0.0)
+    assert result == pytest.approx(0.0)
+    assert verdicts == []
+
+
+def test_compute_scoring_result_silent_answer_score_is_zero() -> None:
+    result = compute_scoring_result([], [], [], [], [0.0], 0.5, 0.9, 0.0)
+    assert result.score == pytest.approx(0.0)
+
+
+def test_compute_scoring_result_single_contradicted_claim_score_is_negative_100() -> None:
+    result = compute_scoring_result(["x"], [0.0], [1.0], [None], [0.95], 0.5, 0.9, 0.0)
+    assert result.score == pytest.approx(-100.0)

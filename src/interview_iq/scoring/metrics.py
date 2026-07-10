@@ -60,6 +60,17 @@ RATIFIED — D45 (10 July 2026), citing D21:
           Coverage entirely — preserves D21's strict ranking
           "said-wrong < silent < said-right"; clipping at zero would make
           those two cases equal, which D21 explicitly forbids (D45-b).
+
+MEASURED SCORE RANGE — D47 (10 July 2026), supersedes D21's "0-100":
+    Final score range is [-100.0, +100.0] at alpha=0.0.
+    Measured on 43dae43: a single claim with max_c=1.0 yields score=-100.0.
+    The lower bound is a function of alpha (PRE-CALIBRATION DEFAULT 0.0),
+    not a constant; it must be re-measured after calibration (G4).
+    D21's ordering is numerically confirmed: -100 < 0 <= 100
+    (said-wrong < silent < said-right).
+    NOTE: harmonic_f(0.0, 0.0) returns 0.0 (measured). The mechanism by
+    which the zero denominator is avoided has NOT been verified; do not
+    assert the existence of a guard.
 """
 
 from __future__ import annotations
