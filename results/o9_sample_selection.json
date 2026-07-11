@@ -1,0 +1,86 @@
+{
+  "metadata": {
+    "decision_ref": "D50",
+    "seed": 20260711,
+    "rng_library": "random (Python standard library)",
+    "execution_date": "2026-07-11",
+    "already_completed": [
+      "DA-001",
+      "DA-002",
+      "DS-010",
+      "DS-011"
+    ],
+    "draw_counts": {
+      "DA": 3,
+      "DS": 3,
+      "CS": 5,
+      "SE": 5,
+      "GN": 5
+    },
+    "total_sample_size": 25
+  },
+  "sample_by_track": {
+    "DA": [
+      "DA-001",
+      "DA-002",
+      "DA-029",
+      "DA-036",
+      "DA-046"
+    ],
+    "DS": [
+      "DS-010",
+      "DS-011",
+      "DS-008",
+      "DS-030",
+      "DS-033"
+    ],
+    "CS": [
+      "CS-013",
+      "CS-024",
+      "CS-039",
+      "CS-047",
+      "CS-048"
+    ],
+    "SE": [
+      "SE-007",
+      "SE-013",
+      "SE-027",
+      "SE-037",
+      "SE-041"
+    ],
+    "GN": [
+      "GN-004",
+      "GN-012",
+      "GN-042",
+      "GN-045",
+      "GN-047"
+    ]
+  },
+  "sample_all": [
+    "DA-001",
+    "DA-002",
+    "DA-029",
+    "DA-036",
+    "DA-046",
+    "DS-010",
+    "DS-011",
+    "DS-008",
+    "DS-030",
+    "DS-033",
+    "CS-013",
+    "CS-024",
+    "CS-039",
+    "CS-047",
+    "CS-048",
+    "SE-007",
+    "SE-013",
+    "SE-027",
+    "SE-037",
+    "SE-041",
+    "GN-004",
+    "GN-012",
+    "GN-042",
+    "GN-045",
+    "GN-047"
+  ]
+}
