@@ -1,0 +1,1186 @@
+{
+  "probe_doc_id": "DS-014",
+  "distant_doc_id": "SE-001",
+  "test_A": {
+    "label": "self_entailment",
+    "n_pairs": 12,
+    "median_p_e": 0.920706,
+    "pairs": [
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.960207,
+        "probs": {
+          "entailment": 0.960207,
+          "neutral": 0.025623,
+          "contradiction": 0.01417
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.766722,
+        "probs": {
+          "entailment": 0.766722,
+          "neutral": 0.099387,
+          "contradiction": 0.133891
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "DS014-C03",
+        "p_e": 0.918203,
+        "probs": {
+          "entailment": 0.918203,
+          "neutral": 0.041415,
+          "contradiction": 0.040382
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "DS014-C04",
+        "p_e": 0.923209,
+        "probs": {
+          "entailment": 0.923209,
+          "neutral": 0.046231,
+          "contradiction": 0.030561
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.893333,
+        "probs": {
+          "entailment": 0.893333,
+          "neutral": 0.061259,
+          "contradiction": 0.045408
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "DS014-C06",
+        "p_e": 0.89566,
+        "probs": {
+          "entailment": 0.89566,
+          "neutral": 0.071898,
+          "contradiction": 0.032442
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "DS014-C07",
+        "p_e": 0.951917,
+        "probs": {
+          "entailment": 0.951917,
+          "neutral": 0.031792,
+          "contradiction": 0.016291
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "DS014-C08",
+        "p_e": 0.936197,
+        "probs": {
+          "entailment": 0.936197,
+          "neutral": 0.038915,
+          "contradiction": 0.024888
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.903571,
+        "probs": {
+          "entailment": 0.903571,
+          "neutral": 0.055134,
+          "contradiction": 0.041295
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "DS014-C10",
+        "p_e": 0.950392,
+        "probs": {
+          "entailment": 0.950392,
+          "neutral": 0.034135,
+          "contradiction": 0.015472
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "DS014-C11",
+        "p_e": 0.893728,
+        "probs": {
+          "entailment": 0.893728,
+          "neutral": 0.063237,
+          "contradiction": 0.043035
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "DS014-C12",
+        "p_e": 0.94685,
+        "probs": {
+          "entailment": 0.94685,
+          "neutral": 0.031216,
+          "contradiction": 0.021933
+        }
+      }
+    ]
+  },
+  "test_B": {
+    "label": "no_relation_ceiling",
+    "n_pairs": 60,
+    "median_p_e": 0.0061265,
+    "pairs": [
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.111917,
+        "probs": {
+          "entailment": 0.111917,
+          "neutral": 0.574175,
+          "contradiction": 0.313908
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.006173,
+        "probs": {
+          "entailment": 0.006173,
+          "neutral": 0.954836,
+          "contradiction": 0.038991
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.002952,
+        "probs": {
+          "entailment": 0.002952,
+          "neutral": 0.742868,
+          "contradiction": 0.254181
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.017746,
+        "probs": {
+          "entailment": 0.017746,
+          "neutral": 0.833576,
+          "contradiction": 0.148679
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.002982,
+        "probs": {
+          "entailment": 0.002982,
+          "neutral": 0.968791,
+          "contradiction": 0.028227
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.095083,
+        "probs": {
+          "entailment": 0.095083,
+          "neutral": 0.616562,
+          "contradiction": 0.288354
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.004544,
+        "probs": {
+          "entailment": 0.004544,
+          "neutral": 0.924523,
+          "contradiction": 0.070933
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.001785,
+        "probs": {
+          "entailment": 0.001785,
+          "neutral": 0.993465,
+          "contradiction": 0.00475
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.015764,
+        "probs": {
+          "entailment": 0.015764,
+          "neutral": 0.927681,
+          "contradiction": 0.056556
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.003337,
+        "probs": {
+          "entailment": 0.003337,
+          "neutral": 0.972385,
+          "contradiction": 0.024278
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.021187,
+        "probs": {
+          "entailment": 0.021187,
+          "neutral": 0.949355,
+          "contradiction": 0.029458
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.001914,
+        "probs": {
+          "entailment": 0.001914,
+          "neutral": 0.992922,
+          "contradiction": 0.005164
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.001604,
+        "probs": {
+          "entailment": 0.001604,
+          "neutral": 0.996213,
+          "contradiction": 0.002183
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.007481,
+        "probs": {
+          "entailment": 0.007481,
+          "neutral": 0.975654,
+          "contradiction": 0.016865
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.00207,
+        "probs": {
+          "entailment": 0.00207,
+          "neutral": 0.859793,
+          "contradiction": 0.138137
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.151993,
+        "probs": {
+          "entailment": 0.151993,
+          "neutral": 0.753439,
+          "contradiction": 0.094568
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.003203,
+        "probs": {
+          "entailment": 0.003203,
+          "neutral": 0.981215,
+          "contradiction": 0.015582
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.003035,
+        "probs": {
+          "entailment": 0.003035,
+          "neutral": 0.995031,
+          "contradiction": 0.001935
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.019651,
+        "probs": {
+          "entailment": 0.019651,
+          "neutral": 0.955459,
+          "contradiction": 0.02489
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.003903,
+        "probs": {
+          "entailment": 0.003903,
+          "neutral": 0.900782,
+          "contradiction": 0.095315
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.03777,
+        "probs": {
+          "entailment": 0.03777,
+          "neutral": 0.947592,
+          "contradiction": 0.014639
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.002095,
+        "probs": {
+          "entailment": 0.002095,
+          "neutral": 0.991533,
+          "contradiction": 0.006372
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.00175,
+        "probs": {
+          "entailment": 0.00175,
+          "neutral": 0.996437,
+          "contradiction": 0.001814
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.006476,
+        "probs": {
+          "entailment": 0.006476,
+          "neutral": 0.981999,
+          "contradiction": 0.011525
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.008266,
+        "probs": {
+          "entailment": 0.008266,
+          "neutral": 0.848027,
+          "contradiction": 0.143707
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.058745,
+        "probs": {
+          "entailment": 0.058745,
+          "neutral": 0.907731,
+          "contradiction": 0.033524
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.008468,
+        "probs": {
+          "entailment": 0.008468,
+          "neutral": 0.89967,
+          "contradiction": 0.091861
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.00608,
+        "probs": {
+          "entailment": 0.00608,
+          "neutral": 0.989761,
+          "contradiction": 0.004159
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.014847,
+        "probs": {
+          "entailment": 0.014847,
+          "neutral": 0.915296,
+          "contradiction": 0.069857
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.006719,
+        "probs": {
+          "entailment": 0.006719,
+          "neutral": 0.860985,
+          "contradiction": 0.132296
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.092671,
+        "probs": {
+          "entailment": 0.092671,
+          "neutral": 0.783442,
+          "contradiction": 0.123888
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.003633,
+        "probs": {
+          "entailment": 0.003633,
+          "neutral": 0.976606,
+          "contradiction": 0.019761
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.00506,
+        "probs": {
+          "entailment": 0.00506,
+          "neutral": 0.991724,
+          "contradiction": 0.003216
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.019527,
+        "probs": {
+          "entailment": 0.019527,
+          "neutral": 0.931354,
+          "contradiction": 0.049119
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.008956,
+        "probs": {
+          "entailment": 0.008956,
+          "neutral": 0.942819,
+          "contradiction": 0.048225
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.151282,
+        "probs": {
+          "entailment": 0.151282,
+          "neutral": 0.560773,
+          "contradiction": 0.287945
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.002919,
+        "probs": {
+          "entailment": 0.002919,
+          "neutral": 0.969785,
+          "contradiction": 0.027296
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.003101,
+        "probs": {
+          "entailment": 0.003101,
+          "neutral": 0.991497,
+          "contradiction": 0.005402
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.027301,
+        "probs": {
+          "entailment": 0.027301,
+          "neutral": 0.896142,
+          "contradiction": 0.076557
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.003363,
+        "probs": {
+          "entailment": 0.003363,
+          "neutral": 0.964577,
+          "contradiction": 0.03206
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.077033,
+        "probs": {
+          "entailment": 0.077033,
+          "neutral": 0.890826,
+          "contradiction": 0.032141
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.007475,
+        "probs": {
+          "entailment": 0.007475,
+          "neutral": 0.754554,
+          "contradiction": 0.237971
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.001729,
+        "probs": {
+          "entailment": 0.001729,
+          "neutral": 0.996409,
+          "contradiction": 0.001862
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.007625,
+        "probs": {
+          "entailment": 0.007625,
+          "neutral": 0.972048,
+          "contradiction": 0.020327
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.002556,
+        "probs": {
+          "entailment": 0.002556,
+          "neutral": 0.949886,
+          "contradiction": 0.047557
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.058803,
+        "probs": {
+          "entailment": 0.058803,
+          "neutral": 0.868937,
+          "contradiction": 0.07226
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.00219,
+        "probs": {
+          "entailment": 0.00219,
+          "neutral": 0.994132,
+          "contradiction": 0.003677
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.00193,
+        "probs": {
+          "entailment": 0.00193,
+          "neutral": 0.996796,
+          "contradiction": 0.001273
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.007964,
+        "probs": {
+          "entailment": 0.007964,
+          "neutral": 0.983086,
+          "contradiction": 0.00895
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.002268,
+        "probs": {
+          "entailment": 0.002268,
+          "neutral": 0.994267,
+          "contradiction": 0.003465
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.0554,
+        "probs": {
+          "entailment": 0.0554,
+          "neutral": 0.901952,
+          "contradiction": 0.042648
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.003266,
+        "probs": {
+          "entailment": 0.003266,
+          "neutral": 0.981193,
+          "contradiction": 0.015541
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.00224,
+        "probs": {
+          "entailment": 0.00224,
+          "neutral": 0.99634,
+          "contradiction": 0.00142
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.007245,
+        "probs": {
+          "entailment": 0.007245,
+          "neutral": 0.984444,
+          "contradiction": 0.008311
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.002146,
+        "probs": {
+          "entailment": 0.002146,
+          "neutral": 0.989952,
+          "contradiction": 0.007903
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "SE001-C01",
+        "p_e": 0.218704,
+        "probs": {
+          "entailment": 0.218704,
+          "neutral": 0.667429,
+          "contradiction": 0.113866
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "SE001-C03",
+        "p_e": 0.002853,
+        "probs": {
+          "entailment": 0.002853,
+          "neutral": 0.991431,
+          "contradiction": 0.005716
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "SE001-C04",
+        "p_e": 0.002196,
+        "probs": {
+          "entailment": 0.002196,
+          "neutral": 0.995274,
+          "contradiction": 0.00253
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "SE001-C05",
+        "p_e": 0.021199,
+        "probs": {
+          "entailment": 0.021199,
+          "neutral": 0.957908,
+          "contradiction": 0.020892
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "SE001-C06",
+        "p_e": 0.005255,
+        "probs": {
+          "entailment": 0.005255,
+          "neutral": 0.97758,
+          "contradiction": 0.017165
+        }
+      }
+    ]
+  },
+  "test_C": {
+    "label": "cross_entity_within_doc",
+    "n_pairs": 44,
+    "median_p_e": 0.0037010000000000003,
+    "pairs": [
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001677,
+        "probs": {
+          "entailment": 0.001677,
+          "neutral": 0.13949,
+          "contradiction": 0.858833
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.00463,
+        "probs": {
+          "entailment": 0.00463,
+          "neutral": 0.962411,
+          "contradiction": 0.032958
+        }
+      },
+      {
+        "premise_id": "DS014-C01",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.007331,
+        "probs": {
+          "entailment": 0.007331,
+          "neutral": 0.981937,
+          "contradiction": 0.010732
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.003466,
+        "probs": {
+          "entailment": 0.003466,
+          "neutral": 0.955871,
+          "contradiction": 0.040663
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.004815,
+        "probs": {
+          "entailment": 0.004815,
+          "neutral": 0.987774,
+          "contradiction": 0.007411
+        }
+      },
+      {
+        "premise_id": "DS014-C02",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.019812,
+        "probs": {
+          "entailment": 0.019812,
+          "neutral": 0.926578,
+          "contradiction": 0.053611
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001615,
+        "probs": {
+          "entailment": 0.001615,
+          "neutral": 0.98353,
+          "contradiction": 0.014855
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001236,
+        "probs": {
+          "entailment": 0.001236,
+          "neutral": 0.033074,
+          "contradiction": 0.96569
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.006754,
+        "probs": {
+          "entailment": 0.006754,
+          "neutral": 0.945292,
+          "contradiction": 0.047954
+        }
+      },
+      {
+        "premise_id": "DS014-C03",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.006776,
+        "probs": {
+          "entailment": 0.006776,
+          "neutral": 0.98457,
+          "contradiction": 0.008654
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.00087,
+        "probs": {
+          "entailment": 0.00087,
+          "neutral": 0.065316,
+          "contradiction": 0.933814
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001265,
+        "probs": {
+          "entailment": 0.001265,
+          "neutral": 0.973479,
+          "contradiction": 0.025255
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.004363,
+        "probs": {
+          "entailment": 0.004363,
+          "neutral": 0.059331,
+          "contradiction": 0.936306
+        }
+      },
+      {
+        "premise_id": "DS014-C04",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.058837,
+        "probs": {
+          "entailment": 0.058837,
+          "neutral": 0.712226,
+          "contradiction": 0.228937
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.00166,
+        "probs": {
+          "entailment": 0.00166,
+          "neutral": 0.988683,
+          "contradiction": 0.009657
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001549,
+        "probs": {
+          "entailment": 0.001549,
+          "neutral": 0.934705,
+          "contradiction": 0.063746
+        }
+      },
+      {
+        "premise_id": "DS014-C05",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.003094,
+        "probs": {
+          "entailment": 0.003094,
+          "neutral": 0.059431,
+          "contradiction": 0.937475
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001419,
+        "probs": {
+          "entailment": 0.001419,
+          "neutral": 0.17286,
+          "contradiction": 0.82572
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.002766,
+        "probs": {
+          "entailment": 0.002766,
+          "neutral": 0.709421,
+          "contradiction": 0.287813
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.019166,
+        "probs": {
+          "entailment": 0.019166,
+          "neutral": 0.969856,
+          "contradiction": 0.010978
+        }
+      },
+      {
+        "premise_id": "DS014-C06",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.017896,
+        "probs": {
+          "entailment": 0.017896,
+          "neutral": 0.962429,
+          "contradiction": 0.019675
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.003936,
+        "probs": {
+          "entailment": 0.003936,
+          "neutral": 0.811207,
+          "contradiction": 0.184857
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.004409,
+        "probs": {
+          "entailment": 0.004409,
+          "neutral": 0.717155,
+          "contradiction": 0.278437
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.01919,
+        "probs": {
+          "entailment": 0.01919,
+          "neutral": 0.969204,
+          "contradiction": 0.011606
+        }
+      },
+      {
+        "premise_id": "DS014-C07",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.030937,
+        "probs": {
+          "entailment": 0.030937,
+          "neutral": 0.940203,
+          "contradiction": 0.02886
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001609,
+        "probs": {
+          "entailment": 0.001609,
+          "neutral": 0.996095,
+          "contradiction": 0.002296
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.00138,
+        "probs": {
+          "entailment": 0.00138,
+          "neutral": 0.938114,
+          "contradiction": 0.060506
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.00144,
+        "probs": {
+          "entailment": 0.00144,
+          "neutral": 0.01173,
+          "contradiction": 0.986831
+        }
+      },
+      {
+        "premise_id": "DS014-C08",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.00951,
+        "probs": {
+          "entailment": 0.00951,
+          "neutral": 0.062013,
+          "contradiction": 0.928477
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001538,
+        "probs": {
+          "entailment": 0.001538,
+          "neutral": 0.995549,
+          "contradiction": 0.002913
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001805,
+        "probs": {
+          "entailment": 0.001805,
+          "neutral": 0.866877,
+          "contradiction": 0.131318
+        }
+      },
+      {
+        "premise_id": "DS014-C09",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.004117,
+        "probs": {
+          "entailment": 0.004117,
+          "neutral": 0.068373,
+          "contradiction": 0.927509
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.003387,
+        "probs": {
+          "entailment": 0.003387,
+          "neutral": 0.989282,
+          "contradiction": 0.007332
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.00138,
+        "probs": {
+          "entailment": 0.00138,
+          "neutral": 0.023927,
+          "contradiction": 0.974693
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.009922,
+        "probs": {
+          "entailment": 0.009922,
+          "neutral": 0.976441,
+          "contradiction": 0.013636
+        }
+      },
+      {
+        "premise_id": "DS014-C10",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.007115,
+        "probs": {
+          "entailment": 0.007115,
+          "neutral": 0.981605,
+          "contradiction": 0.011281
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001507,
+        "probs": {
+          "entailment": 0.001507,
+          "neutral": 0.980621,
+          "contradiction": 0.017871
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.002019,
+        "probs": {
+          "entailment": 0.002019,
+          "neutral": 0.880112,
+          "contradiction": 0.117869
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.009707,
+        "probs": {
+          "entailment": 0.009707,
+          "neutral": 0.90568,
+          "contradiction": 0.084614
+        }
+      },
+      {
+        "premise_id": "DS014-C11",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.005767,
+        "probs": {
+          "entailment": 0.005767,
+          "neutral": 0.978604,
+          "contradiction": 0.015629
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "DS014-C01",
+        "p_e": 0.001786,
+        "probs": {
+          "entailment": 0.001786,
+          "neutral": 0.963837,
+          "contradiction": 0.034376
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "DS014-C02",
+        "p_e": 0.001463,
+        "probs": {
+          "entailment": 0.001463,
+          "neutral": 0.017353,
+          "contradiction": 0.981184
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "DS014-C05",
+        "p_e": 0.006169,
+        "probs": {
+          "entailment": 0.006169,
+          "neutral": 0.972937,
+          "contradiction": 0.020894
+        }
+      },
+      {
+        "premise_id": "DS014-C12",
+        "hypothesis_id": "DS014-C09",
+        "p_e": 0.004911,
+        "probs": {
+          "entailment": 0.004911,
+          "neutral": 0.983725,
+          "contradiction": 0.011364
+        }
+      }
+    ]
+  },
+  "arm": "adapter"
+}
