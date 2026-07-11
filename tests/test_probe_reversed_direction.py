@@ -30,6 +30,12 @@ from tokenizers.processors import TemplateProcessing
 from transformers import DebertaV2Config, DebertaV2ForSequenceClassification, PreTrainedTokenizerFast
 
 from interview_iq.nli.probe import run_probe
+from interview_iq.nli.probe_verdict import (
+    TEST_A_THRESHOLD,
+    TEST_B_THRESHOLD,
+    TEST_C_SIGNAL_THRESHOLD,
+    evaluate_verdict,
+)
 from interview_iq.refdocs.loader import load_reference_docs
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
@@ -132,3 +138,90 @@ def test_probe_smoke_shape_and_valid_probs() -> None:
             assert abs(sum(probs.values()) - 1.0) < 1e-4
             # p_e must agree with the probs dict
             assert abs(pair["p_e"] - probs["entailment"]) < 1e-9
+
+
+# ── D46 verdict logic: threshold comparisons on synthetic medians ──────────
+# No model, no inference — these test evaluate_verdict() against hand-built
+# result dicts carrying only the median_p_e values D46's criteria compare.
+
+
+def _arm_result(median_a: float, median_b: float, median_c: float) -> dict:
+    return {
+        "test_A": {"median_p_e": median_a},
+        "test_B": {"median_p_e": median_b},
+        "test_C": {"median_p_e": median_c},
+    }
+
+
+def test_verdict_test_a_pass_at_exact_threshold() -> None:
+    zero_shot = _arm_result(median_a=TEST_A_THRESHOLD, median_b=0.0, median_c=0.5)
+    adapter = _arm_result(median_a=TEST_A_THRESHOLD, median_b=0.0, median_c=0.5)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    assert verdict["zero_shot"]["test_A"]["pass"] is True
+    assert verdict["adapter"]["test_A"]["pass"] is True
+
+
+def test_verdict_test_a_fails_just_below_threshold() -> None:
+    zero_shot = _arm_result(median_a=TEST_A_THRESHOLD - 0.001, median_b=0.0, median_c=0.5)
+    adapter = _arm_result(median_a=0.95, median_b=0.0, median_c=0.5)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    assert verdict["zero_shot"]["test_A"]["pass"] is False
+    assert verdict["adapter"]["test_A"]["pass"] is True
+
+
+def test_verdict_test_b_pass_at_exact_threshold() -> None:
+    zero_shot = _arm_result(median_a=0.95, median_b=TEST_B_THRESHOLD, median_c=0.5)
+    adapter = _arm_result(median_a=0.95, median_b=TEST_B_THRESHOLD, median_c=0.5)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    assert verdict["zero_shot"]["test_B"]["pass"] is True
+    assert verdict["adapter"]["test_B"]["pass"] is True
+
+
+def test_verdict_test_b_fails_just_above_threshold() -> None:
+    zero_shot = _arm_result(median_a=0.95, median_b=TEST_B_THRESHOLD + 0.001, median_c=0.5)
+    adapter = _arm_result(median_a=0.95, median_b=0.05, median_c=0.5)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    assert verdict["zero_shot"]["test_B"]["pass"] is False
+    assert verdict["adapter"]["test_B"]["pass"] is True
+
+
+def test_verdict_signal_detected_when_diff_clears_threshold_and_direction_correct() -> None:
+    # adapter median comfortably more than TEST_C_SIGNAL_THRESHOLD below zero-shot.
+    zero_shot = _arm_result(median_a=0.95, median_b=0.05, median_c=0.60)
+    adapter = _arm_result(median_a=0.95, median_b=0.05, median_c=0.40)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    signal = verdict["test_C_signal"]
+    assert signal["direction_matches_prediction"] is True
+    assert signal["diff"] > TEST_C_SIGNAL_THRESHOLD
+    assert signal["signal_detected"] is True
+
+
+def test_verdict_no_signal_when_diff_below_threshold_despite_correct_direction() -> None:
+    zero_shot = _arm_result(median_a=0.95, median_b=0.05, median_c=0.60)
+    adapter = _arm_result(median_a=0.95, median_b=0.05, median_c=0.55)  # diff = 0.05 < 0.10
+    verdict = evaluate_verdict(zero_shot, adapter)
+    signal = verdict["test_C_signal"]
+    assert signal["direction_matches_prediction"] is True
+    assert signal["signal_detected"] is False
+
+
+def test_verdict_no_signal_when_direction_contradicts_prediction() -> None:
+    # adapter median HIGHER than zero-shot by >= 0.10 in magnitude: D46 predicted
+    # the opposite direction, so this must not count as a detected signal even
+    # though the raw magnitude clears the threshold.
+    zero_shot = _arm_result(median_a=0.95, median_b=0.05, median_c=0.50)
+    adapter = _arm_result(median_a=0.95, median_b=0.05, median_c=0.65)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    signal = verdict["test_C_signal"]
+    assert signal["direction_matches_prediction"] is False
+    assert signal["signal_detected"] is False
+
+
+def test_verdict_reports_correct_medians_and_diff() -> None:
+    zero_shot = _arm_result(median_a=0.92, median_b=0.03, median_c=0.42)
+    adapter = _arm_result(median_a=0.91, median_b=0.04, median_c=0.20)
+    verdict = evaluate_verdict(zero_shot, adapter)
+    signal = verdict["test_C_signal"]
+    assert signal["zero_shot_median_p_e"] == 0.42
+    assert signal["adapter_median_p_e"] == 0.20
+    assert abs(signal["diff"] - 0.22) < 1e-9
