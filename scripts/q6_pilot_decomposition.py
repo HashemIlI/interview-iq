@@ -188,7 +188,13 @@ def main() -> None:  # pragma: no cover - Kaggle-only, downloads real model weig
 
         def generate_fn(prompt: str, _tokenizer=tokenizer, _model=model) -> str:
             inputs = _tokenizer(prompt, return_tensors="pt", truncation=True)
-            output_ids = _model.generate(**inputs, max_new_tokens=256)
+            output_ids = _model.generate(
+                **inputs,
+                max_new_tokens=256,
+                min_new_tokens=5,
+                repetition_penalty=1.3,
+                no_repeat_ngram_size=3,
+            )
             return _tokenizer.decode(output_ids[0], skip_special_tokens=True)
 
         results = run_pilot(model_name=model_name, generate_fn=generate_fn)
