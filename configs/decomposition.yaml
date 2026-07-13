@@ -1,14 +1,15 @@
 # configs/decomposition.yaml — Claim Decomposition (Knowledge Distillation)
 # Interview IQ / NLP Module
 #
-# ⛔ Phase 8 — Gate G2 is CLOSED (decisions.md D51/D52), but Q6 is still OPEN.
-#    Do NOT populate `model.selected` with a real checkpoint until Q6
-#    (AraT5 vs mT5-base, decisions.md / PROJECT_EXECUTION_PLAN.md) is resolved.
+# ✅ Q6 resolved (decisions.md D54): AraT5-base selected on
+#    linguistic-specialization grounds (pilot D53 was inconclusive
+#    between candidates — see D54 for full reasoning).
+#    candidate_a/candidate_b kept below for audit trail; do not remove.
 
 model:
   candidate_a: "UBC-NLP/AraT5-base"     # option A
   candidate_b: "google/mt5-base"         # option B
-  selected: "TBD_pending_Q6"             # ⛔ explicit placeholder — Q6 still OPEN (decisions.md)
+  selected: "UBC-NLP/AraT5-base"         # ✅ Q6 resolved — decisions.md D54
 
 generation:
   max_new_tokens: 128
