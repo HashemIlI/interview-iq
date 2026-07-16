@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.19 — 16 يوليو 2026
+**الإصدار:** v2.20 — 16 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -542,6 +542,29 @@ src/interview_iq/decomposition/، لا تستبدل الأصل.
 configs/decomposition.yaml.
 
 الحالة: ✅ مكتمل.
+
+## D57 — قيم Hyperparameters الابتدائية لتدريب trainer.py (Phase 8)
+
+السياق: probe تجريبي (§5.13) شغّله أحمد فعليًا عبر
+scripts/probe_token_lengths.py على الـ corpus الحقيقي (222 سؤال تدريب +
+25 سؤال Gold/Validation، AraT5-base tokenizer)، بتاريخ 16 يوليو 2026.
+النتائج الخام: input p95=257 tokens (max=283)، target p95=227 tokens
+(max=279)، صفر truncation عند max_length=320 لكليهما.
+
+القرار:
+- Train/val split: 85/15 على مستوى question-ID (~189 تدريب / ~33 تحقق)
+- max_source_length = 320، max_target_length = 320 (مقاسة تجريبيًا، صفر truncation)
+- Learning rate = 3e-4 (AdamW)، linear warmup بنسبة 0.1
+- Batch size: per-device=4، grad_accum=4 (effective=16)
+- Weight decay = 0.01
+- الحد الأقصى للـ epochs = 30، مع early stopping على eval_loss (patience=5 تقييمات)
+- التقييم كل epoch، دقة fp16، اختيار أفضل checkpoint حسب eval_loss
+
+القيد: كل القيم دي موسومة PRE-CALIBRATION DEFAULT — خاضعة لمعايرة G4
+لاحقًا، مش نتيجة بحث مكثف.
+
+الحالة: ✅ مكتمل.
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -569,6 +592,7 @@ configs/decomposition.yaml.
 ---
 
 ## سجل التغييرات 
+- **v2.20 (16 يوليو 2026):** إضافة **D57** — قيم PRE-CALIBRATION DEFAULT لـ hyperparameters تدريب trainer.py (Phase 8)، مبنية على probe تجريبي حقيقي لتوزيع أطوال الـ tokens (scripts/probe_token_lengths.py) بدل استنتاج من ملاحظات Q6 pilot. Train/val split 85/15، max_length=320.
 - **v2.19 (14 يوليو 2026):** إضافة **D56** — صيغة الـ prompt النهائية لـ fine-tuning (اعتماد PROMPT_TEMPLATE من D53 حرفيًا + تعليمة تنسيق إخراج صريحة).
 - **v2.18 (14 يوليو 2026):** إغلاق **D55** (✅ مكتمل): توثيق اكتمال بناء corpus التدريب لـ 223 سؤالًا عبر 5 دفعات مع مراجعة بشرية كاملة. تسجيل النتائج التراكمية لحالات R1 وتوثيق الحد البنيوي للتوليد الاصطناعي.
 - **v2.17 (14 يوليو 2026):** إضافة **تحديث لاحق داخل D55** — آلية "التوليد من الذاكرة": بعد صفر حالات R1 عضوية عبر batch1+batch2+batch3 (110 سؤال)، تُكتب ~20% من أسئلة كل دفعة قادمة (موزَّعة تناسبيًا عبر الـ tracks) بالاعتماد على المعرفة المتذكَّرة دون الرجوع المباشر لنص الـ chunk أثناء الصياغة، مع بقاء القيد الملزم بعدم استهداف خطأ تقني بعينه ساريًا بلا استثناء. كل سؤال يُوسَم بطريقة توليده (chunk-referenced / memory-based) لتحليل لاحق. لا تُطبَّق بأثر رجعي على الدفعات الثلاث السابقة.
