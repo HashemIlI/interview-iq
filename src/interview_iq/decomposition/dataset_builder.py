@@ -2,7 +2,9 @@
 decomposition/dataset_builder.py — KD dataset builder.
 
 Q6 resolved (decisions.md D54): AraT5-base. D55: training corpus built
-via LLM-assisted offline generation (batch1-5, 223/225 questions) with
+via LLM-assisted offline generation (batch1-5, 222/225 questions -- 1
+excluded via EXCLUSION_MARKER, verified empirically via
+scripts/probe_token_lengths.py run, D57) with
 mandatory human review, sourced from Markdown files under `results/`.
 O9 (results/o9_decomposition_exercises.md) is the Gold/Validation set
 (D55) and must never appear in the training corpus -- see
