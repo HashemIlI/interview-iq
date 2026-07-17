@@ -219,6 +219,7 @@ def run_training(
         num_train_epochs=float(train_cfg["num_train_epochs"]),
         evaluation_strategy=train_cfg["evaluation_strategy"],
         save_strategy=train_cfg["save_strategy"],
+        save_total_limit=int(train_cfg["save_total_limit"]),
         load_best_model_at_end=bool(train_cfg["load_best_model_at_end"]),
         metric_for_best_model=train_cfg["metric_for_best_model"],
         greater_is_better=bool(train_cfg["greater_is_better"]),
