@@ -58,6 +58,8 @@ training:
   num_train_epochs: 30            # سقف أقصى؛ early stopping متوقَّع يوقف قبله
   evaluation_strategy: "epoch"
   save_strategy: "epoch"
+  save_total_limit: 2      # تصحيح D57 (16 يوليو) -- ناقصة من الأصل، سببت
+                             # كرش القرص عند epoch 8 على Kaggle
   load_best_model_at_end: true
   metric_for_best_model: "eval_loss"
   greater_is_better: false
