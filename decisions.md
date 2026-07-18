@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.27 — 18 يوليو 2026
+**الإصدار:** v2.28 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -1081,7 +1081,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 
 ## D63 — Clean Five-Example Trainer-Path Overfit Diagnostic
 
-**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+**الحالة:** ✅ مكتمل — حققت الأمثلة الخمسة exact token-ID match كاملًا عند step 400.
 
 الهدف:
 
@@ -1213,6 +1213,222 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 - لا يبدأ full retraining قبل مراجعة نتيجة D63 وتسجيلها.
 - لا يبدأ تعديل أو تنفيذ `inference.py`.
 - لا تُعتمد hyperparameters إنتاجية جديدة من هذه التجربة وحدها.
+
+
+النتيجة الفعلية:
+
+- نُفّذت التجربة من Git HEAD:
+  `402360d58683109e4215fbecf44d724acf3c1de6`
+  (`402360d — docs: record D62 pass and preregister D63 diagnostic`).
+- كان Git status نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
+  tracked changes بعده في:
+  - `dataset_builder.py`
+  - `prompts.py`
+  - `trainer.py`
+  - `configs/decomposition.yaml`
+- البيئة الفعلية:
+  - Python `3.12.13`
+  - PyTorch `2.10.0+cu128`
+  - Transformers `4.40.2`
+  - Datasets `2.18.0`
+  - Accelerate `0.27.2`
+  - GPU واحد: `Tesla T4`
+  - model dtype: `torch.float32`
+- بُني corpus الكامل: 222 مثالًا، ثم أُعيد split D57 نفسه:
+  - train = 189
+  - validation = 33
+  - val ratio = `0.15`
+  - seed = `42`
+- الأمثلة الخمسة المختارة deterministic من train split:
+  - `DA-007`
+  - `DS-001`
+  - `CS-008`
+  - `SE-001`
+  - `GN-003`
+- أطوال targets المختلفة كانت:
+  `136, 148, 149, 151, 157` token، لذلك اختُبر padding فعليًا.
+- فحص الـ DataCollator:
+  - batch shapes:
+    - `input_ids = [5, 210]`
+    - `attention_mask = [5, 210]`
+    - `labels = [5, 157]`
+    - `decoder_input_ids = [5, 157]`
+  - expected padding positions = `44`
+  - actual `-100` positions = `44`
+  - `pad_token_id` داخل مواضع loss = صفر
+  - النتيجة: `Padding audit PASS`
+- تم تدريب جميع parameters:
+  - total = `282,770,688`
+  - trainable = `282,770,688`
+- إعدادات التدريب الفعلية:
+  - `Seq2SeqTrainer`
+  - batch size = `2`
+  - gradient accumulation = `1`
+  - AdamW، learning rate = `3e-4`
+  - constant scheduler
+  - weight decay = `0.0`
+  - gradient clipping = `1.0`
+  - float32، بلا mixed precision
+- تقدم exact match:
+  - step 0: `0/5`
+  - step 100: `0/5`
+  - step 200: `0/5`
+  - step 300: `3/5`
+  - step 400: `5/5`
+- توقف التدريب مبكرًا عند أول checkpoint مسجّل حقق `5/5`.
+- لم يظهر NaN أو Inf.
+- النتيجة النهائية: `D63 PASS`.
+
+الاستنتاج المحدود:
+
+- ثبت أن مكونات المسار الفعلي:
+  `examples_to_dataset` و`DataCollatorForSeq2Seq` و`Seq2SeqTrainer`
+  تعمل مع batching وpadding وlabel masking وأكثر من target.
+- ثبت أن base AraT5-base يستطيع حفظ mini-corpus من tracks الخمسة.
+- لا توجد إشارة حالية إلى خلل بنيوي في data construction أو tokenization
+  أو collator أو Trainer path.
+- لا تثبت D63:
+  - generalization على validation أو O9.
+  - أن إعدادات D57 القديمة كافية.
+  - أن checkpoint ناتجًا عن full-corpus training صالح للإنتاج.
+- يسمح نجاح D63 بتسجيل وتنفيذ D64، لكنه لا يسمح بتنفيذ
+  `inference.py` قبل تقييم checkpoint الكامل.
+
+---
+
+## D64 — Sanitized Full-Corpus Retraining
+
+**الحالة:** PRE-REGISTERED — لم يبدأ التدريب بعد.
+
+الهدف:
+
+إعادة تدريب AraT5-base من base pretrained model جديد على corpus D61
+النظيف كاملًا، بعد نجاح D62 وD63، لإنتاج checkpoint جديد قابل للتقييم.
+هذه التجربة تنتج checkpoint فقط؛ قبول جودة الموديل أو generalization
+يحتاج تجربة تقييم مستقلة مسجّلة بعد ظهور نتائج D64.
+
+الفرضية المحدودة:
+
+فشل D57 قد يكون مرتبطًا بقلة optimizer exposure وبالتشغيل الفعلي
+على GPUين وبـ effective global batch يساوي 32، بعد استبعاد فساد
+data/tokenization/labels والمسار الأساسي عبر D59–D63. هذه فرضية
+تشغيلية وليست سببًا مثبتًا بعد.
+
+الإعداد المسجّل مسبقًا:
+
+1. code/data baseline:
+   - Git baseline للتنفيذ:
+     `402360d — docs: record D62 pass and preregister D63 diagnostic`
+     أو commit أحدث بتغييرات توثيقية فقط.
+   - كود sanitization المعتمد:
+     `50a636c — fix: sanitize decomposition corpus for AraT5`.
+   - لا يُسمح بأي tracked code changes غير مسجّلة في:
+     - `dataset_builder.py`
+     - `prompts.py`
+     - `trainer.py`
+   - يُسمح بتعديل `configs/decomposition.yaml` فقط لتطبيق قيم D64
+     المسجّلة أدناه، بعد commit توثيق D64.
+   - corpus:
+     - 222 مثالًا و1,836 claim.
+     - O9: 25 سؤالًا و177 claim، held-out بالكامل ولا يدخل التدريب.
+     - split ثابت على question-ID:
+       189 train / 33 validation، `seed=42`.
+
+2. البيئة:
+   - Transformers `4.40.2`.
+   - Datasets `2.18.0`.
+   - Accelerate `0.27.2`.
+   - model = `UBC-NLP/AraT5-base`.
+   - يبدأ من base pretrained model جديد.
+   - لا يستخدم checkpoint من D57 أو D62 أو D63.
+   - جهاز CUDA واحد ظاهر فقط.
+   - full-model training.
+   - dtype = `float32`.
+   - لا fp16 ولا bf16 ولا AMP ولا DDP ولا DataParallel.
+
+3. tokenization:
+   - max source length = `320`.
+   - max target length = `320`.
+   - `add_special_tokens=True`.
+   - padding labels عبر `DataCollatorForSeq2Seq` إلى `-100`.
+   - يجب أن يمر preflight قبل التدريب:
+     - صفر `<unk>`.
+     - صفر source/target truncation.
+     - train/O9 overlap = صفر.
+     - metadata leakage المتبقية = صفر.
+
+4. training:
+   - `per_device_train_batch_size=2`.
+   - `per_device_eval_batch_size=2`.
+   - `gradient_accumulation_steps=8`.
+   - effective global batch = `16`.
+   - optimizer = `adamw_torch`.
+   - learning rate = `3e-4`.
+   - betas = `(0.9, 0.999)`.
+   - epsilon = `1e-8`.
+   - weight decay = `0.01`.
+   - scheduler = linear.
+   - warmup ratio = `0.1`.
+   - max gradient norm = `1.0`.
+   - الحد الأقصى = `60 epochs`.
+   - evaluation وsave في نهاية كل epoch.
+   - اختيار best checkpoint حسب أقل `eval_loss`.
+   - `load_best_model_at_end=True`.
+   - early stopping patience = `8` evaluations.
+   - `save_total_limit=2`.
+   - seed = `42`.
+   - data seed = `42`.
+
+5. generation smoke checks بعد تحميل best checkpoint:
+   - greedy decoding فقط:
+     - `do_sample=False`
+     - `num_beams=1`
+     - `max_new_tokens=320`
+     - `clean_up_tokenization_spaces=False`
+   - تُحفظ المخرجات الخام لثلاث حالات deterministic:
+     - training probe: `CS-025`.
+     - أصغر `question_id` ترتيبيًا داخل validation split.
+     - أصغر `question_id` ترتيبيًا داخل O9.
+   - هذه smoke checks لا تُستخدم كحكم نهائي على generalization ولا
+     تُعد بديلًا عن تقييم مستقل.
+
+بوابة التنفيذ:
+
+- `D64 EXECUTION PASS` يتطلب:
+  - نجاح كل preflight checks.
+  - اكتمال التدريب أو توقفه بواسطة early stopping دون crash.
+  - عدم ظهور NaN أو Inf.
+  - حفظ best checkpoint وإعادة تحميله بنجاح.
+  - حفظ tokenizer وmodel config وgeneration config.
+  - نجاح tied-weight pointer check بعد إعادة التحميل.
+  - إنتاج smoke outputs الثلاثة وحفظها خامًا.
+- لا يعني `D64 EXECUTION PASS` أن الموديل مقبول وظيفيًا أو إنتاجيًا.
+- أي حكم على validation/O9 أو اختيار checkpoint نهائي يحتاج قرارًا
+  تجريبيًا مستقلًا بعد مراجعة مخرجات D64.
+
+المخرجات المطلوبة:
+
+- Notebook كاملة بالمخرجات.
+- JSON خام يتضمن:
+  - environment وGit evidence وGit status.
+  - SHA256 لملفات الكود/config/runner.
+  - corpus/split/preflight evidence.
+  - TrainingArguments الفعلية.
+  - train/eval loss history.
+  - optimizer steps الفعلية وسبب التوقف.
+  - best checkpoint وbest eval loss.
+  - hashes لكل ملفات checkpoint المنشور.
+  - tied-weight checks.
+  - smoke generations الثلاثة مع token IDs والنصوص.
+  - `PASS` أو `FAIL` لبوابة التنفيذ.
+- checkpoint Dataset منفصل على Kaggle، ولا يُستبدل checkpoint D57.
+
+القيود:
+
+- لا يبدأ `inference.py`.
+- لا يُدمج checkpoint في backend.
+- لا يُعتمد checkpoint للإنتاج قبل تقييم مستقل مسجّل ومراجعة نتائجه.
+- لا تُغيّر قيم D64 بعد بدء التشغيل؛ أي تعديل يحتاج قرارًا جديدًا.
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -1231,7 +1447,8 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 | **Q8 — هشاشة قناة الـ Coverage** | أُعيدت صياغتها في D42. الرقم 0.002 مسحوب. **القياس على claims حقيقية مؤجَّل لما بعد Phase 8 (D44).** الفحص التشخيصي مسموح (D46). **لا نقاش علاج قبل رقم مقيس.** | ⛔ (نشطة) |
 | **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
 | **Q6 — AraT5 vs mT5-base** | اختيار موديل الـ decomposition. | ✅ محسومة — انظر D54 (AraT5-base، سبب معماري لا تجريبي) |
-| **D63 — Five-Example Trainer-Path Diagnostic** | اختبار mini-corpus بـ batching وpadding وSeq2SeqTrainer قبل full retraining. | ⛔ (PRE-REGISTERED) |
+| **D63 — Five-Example Trainer-Path Diagnostic** | نجح mini-corpus في `5/5` exact token match عند step 400؛ padding audit PASS. | ✅ (مُغلقة) |
+| **D64 — Sanitized Full-Corpus Retraining** | إعادة تدريب corpus D61 كاملًا من base model جديد وإنتاج checkpoint للتقييم. | ⛔ (PRE-REGISTERED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -1241,6 +1458,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 ---
 
 ## سجل التغييرات 
+- **v2.28 (18 يوليو 2026):** إغلاق **D63** بنتيجة PASS: خمسة أمثلة deterministic من tracks الخمسة وصلت إلى `5/5` exact token-ID match عند step 400 عبر `Seq2SeqTrainer`، مع نجاح padding audit (`44/44` موضعًا إلى `-100`). إضافة **D64** كتسجيل مسبق لإعادة تدريب corpus D61 كاملًا على GPU واحد وfloat32 وبـ effective batch 16، لإنتاج checkpoint جديد للتقييم دون السماح بـ inference أو اعتماد إنتاجي قبل تقييم مستقل.
 - **v2.27 (18 يوليو 2026):** إغلاق **D62** بنتيجة PASS: مثال `CS-025` وصل إلى exact token-ID match عند step 175 من base AraT5-base جديد، مع صفر UNK/truncation. إضافة **D63** كتجربة mini-corpus من خمسة أمثلة لاختبار batching وpadding ومكونات `Seq2SeqTrainer` قبل أي full retraining.
 - **v2.21 (16 يوليو 2026):** تصحيح على **D57** — إضافة save_total_limit=2 الناقصة، بعد كرش تدريب فعلي على Kaggle T4 (القرص امتلأ عند epoch 8 من تراكم checkpoints).
 - **v2.20 (16 يوليو 2026):** إضافة **D57** — قيم PRE-CALIBRATION DEFAULT لـ hyperparameters تدريب trainer.py (Phase 8)، مبنية على probe تجريبي حقيقي لتوزيع أطوال الـ tokens (scripts/probe_token_lengths.py) بدل استنتاج من ملاحظات Q6 pilot. Train/val split 85/15، max_length=320.
