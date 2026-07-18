@@ -48,6 +48,9 @@ _QUESTION_HEADER_RE = re.compile(r"^###\s+([A-Z]{2}-\d{3})(?:\s*\[[^\]]*\])?[:\s
 _CLAIMS_SECTION_RE = re.compile(r"\*\*(?:الـ )?Claims:?\*\*", re.IGNORECASE)
 _ANSWER_SECTION_RE = re.compile(r"\*\*(?:الـ )?(?:إجابة|الإجابة)(?:\s*\([^)]*\))?:?\*\*")
 _CLAIM_LINE_RE = re.compile(r"^\s*(\d+)\.\s*(⚠️\s*)?(.+?)\s*$", re.MULTILINE)
+_GENERATION_METADATA_LINE_RE = re.compile(
+    r"^\s*\*\*\[طريقة التوليد:[^\]\r\n]*\]\*\*\s*$"
+)
 
 
 @dataclass(frozen=True)
@@ -78,7 +81,14 @@ def _extract_answer(block: str) -> str:
     claims_match = _CLAIMS_SECTION_RE.search(block)
     if not ans_match or not claims_match or ans_match.start() >= claims_match.start():
         raise ValueError("could not locate answer section between إجابة/Claims markers")
-    return block[ans_match.end():claims_match.start()].strip()
+
+    raw_answer = block[ans_match.end():claims_match.start()]
+    cleaned_lines = [
+        line
+        for line in raw_answer.splitlines()
+        if not _GENERATION_METADATA_LINE_RE.fullmatch(line)
+    ]
+    return "\n".join(cleaned_lines).strip()
 
 
 def _clean_claim_text(raw_claim: str) -> str:
