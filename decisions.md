@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D66)
-**الإصدار:** v2.30 — 18 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D67)
+**الإصدار:** v2.31 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -2110,6 +2110,367 @@ Checkpoint-generation audit:
 - لا تغيير `model.selected`.
 - لا اعتماد checkpoint قبل قرار لاحق مستقل.
 
+### إغلاق D66 — نتيجة التنفيذ
+
+**الحالة النهائية:** `EXECUTION PASS / NO REPAIR CANDIDATE`
+
+دليل التنفيذ:
+
+- Git HEAD:
+  `7d6f11596aa7b0cdf026e71cf609889b7fdf2591`.
+- اكتمل تنفيذ D66 بنجاح.
+- استُخدم O9 فقط للتحقق من الأعداد والـ overlap.
+- لم يُنفَّذ O9 generation.
+- لم تُحسب O9 metrics.
+- لم تُفحص O9 outputs يدويًا.
+- لم يُستخدم O9 في التدريب أو اختيار checkpoint أو اختيار الفائز.
+- تم التحقق من frozen D64 control بواسطة SHA-256 manifest المسجل له.
+- corpus التدريب/التحقق:
+  - 222 مثالًا.
+  - 1,836 claim.
+  - 189 train question IDs.
+  - 33 validation question IDs.
+  - seed = `42`.
+  - صفر train/validation/O9 overlap.
+- نجح tokenizer preflight للموديلين عند أقصى طول source/target يساوي 512:
+  - صفر UNK tokens.
+  - صفر source truncation.
+  - صفر target truncation.
+
+Frozen D64 control على حالات validation الـ33 عند `max_new_tokens=512`:
+
+- median token edit similarity: `0.5189`.
+- median token LCS F1: `0.6097`.
+- exact claim-count rate: `0.3030`.
+- valid-numbering rate: `0.7879`.
+- severe-repetition rate: `0.4242`.
+- max-cap rate: `0.0000`.
+- median target Latin-token recall: `0.5000`.
+- mean novel Latin occurrences per case: `4.2121`.
+
+AraT5-base + LoRA:
+
+- fresh `UBC-NLP/AraT5-base`.
+- LoRA trainable parameters: `1,769,472`.
+- اكتملت 720 optimizer step.
+- best eval loss: `8.653881072998047`.
+- جميع checkpoints العشرة المحفوظة كانت غير مؤهلة.
+- كان max-cap rate لكل checkpoint يساوي `1.0000`.
+- لم يُختَر أي AraT5 checkpoint.
+- فشلت repair gate لعدم وجود checkpoint مؤهل.
+
+mT5-base + LoRA:
+
+- fresh `google/mt5-base`.
+- LoRA trainable parameters: `1,769,472`.
+- اكتملت 720 optimizer step.
+- best eval loss: `1.1523293256759644`.
+- كان checkpoint عند step 72 الوحيد المؤهل للاختيار، لأن checkpoints
+  اللاحقة تجاوزت preregistered max-cap exclusion threshold.
+- metrics للـstep 72 المختار:
+  - median token edit similarity: `0.0222`.
+  - median token LCS F1: `0.0424`.
+  - exact claim-count rate: `0.0000`.
+  - valid-numbering rate: `0.0000`.
+  - severe-repetition rate: `0.0000`.
+  - max-cap rate: `0.0000`.
+  - median target Latin-token recall: `0.0000`.
+- representative output:
+  `<extra_id_0>، كما يلي:`
+- repair gate failures:
+  - `median_token_edit_similarity`.
+  - `median_token_lcs_f1`.
+  - `exact_claim_count_rate`.
+  - `valid_numbering_rate`.
+  - `median_target_latin_token_recall`.
+  - `per_track_degradation`.
+
+اختيار الفائز:
+
+- winner: `null`.
+- status: `NO REPAIR CANDIDATE`.
+- eligible arms: none.
+- لا يُعتمد أي من diagnostic adapters للإنتاج.
+- لا يُصرح بأي O9 evaluation.
+- لا يُصرح بأي backend أو inference integration.
+
+قيد منهجي:
+
+- token-ID edit وLCS metrics خاصة بكل tokenizer؛ لذلك لا تكون المقارنة
+  بين AraT5 وmT5 بها قابلة للمقارنة الصارمة.
+- يُعامل ترتيبها عبر الموديلين على أنه تشخيصي فقط.
+- لا يغير هذا القيد نتيجة D66، لأن كلا الذراعين فشل بصورة مستقلة في
+  absolute structural and quality gates المسجلة مسبقًا، وكانت decoded
+  outputs لكليهما غير قابلة للاستخدام.
+
+دليل مخرجات D66 الأساسي:
+
+- `d66_peft_repair_audit.json`
+  - size: `29,425,640` bytes.
+  - SHA-256:
+    `930d0d32feec09ea27b2869d7be54ed6846bc13cddbb2d7d0fd3de878fa66a0d`.
+- `d66_peft_repair_cases.csv`
+  - size: `8,200,933` bytes.
+  - SHA-256:
+    `2d51be73164c387efa214de4fd762384937d1123c77663522bb440b0a13355c4`.
+- `d66_peft_repair_summary.md`
+  - size: `10,379` bytes.
+  - SHA-256:
+    `33253eb294110224c4d6293d954c80a28aa2691ddedf761a78212b0b59797be9`.
+
+خلاصة Q6:
+
+- يبقى Q6 مفتوحًا.
+- لا يبرر D66 استخدام AraT5-base أو mT5-base كموديل Claim Decomposition
+  إنتاجي.
+- يُحظر أي تدريب إضافي للموديل حتى إصلاح gold corpus وعقد
+  training-serving وإصدارهما بنسخ محددة.
+
+
+## D67 — Gold Corpus v2 Repair and ASR-to-Decomposition Input Contract Freeze
+
+**الحالة:** `PREREGISTERED / NOT EXECUTED`
+
+الهدف:
+
+إصلاح أهداف Gold Claim Decomposition دون تغيير توزيع source answers،
+وتجميد عقد الإدخال/الإخراج، وإنتاج candidate corpus منفصل ذي إصدار محدد
+قبل أي تدريب إضافي.
+
+Target population and production speech contract:
+
+- Interview IQ targets Egyptian Arabic-speaking interview candidates.
+- Expected production speech contains Egyptian Arabic, informal phrasing,
+  and Arabic-English technical code-switching.
+- Egyptian dialect is a first-class production input, not noise to be
+  rejected.
+
+دليل الدافع من تدقيق corpus/ASR المكتمل للقراءة فقط:
+
+- 222 training example و1,836 target claim.
+- 222/222 sources تحتوي Latin characters.
+- 222/222 sources تحتوي مزيجًا من النص العربي واللاتيني.
+- 217/222 sources إجابات مكتوبة synthetic Egyptian/informal.
+- صفر genuine stored ASR transcripts.
+- صفر verified genuine ASR-corruption examples.
+- صفر verified Arabic-script English technical-term to canonical Latin mappings.
+- 30 confirmed non-atomic claims.
+- 273 conservative self-containment flags تحتاج adjudication.
+- ثلاث verified unsupported target additions:
+  - DS-009 يضيف WCSS.
+  - DS-007 يضيف Bootstrap.
+  - SE-050 يضيف KISS.
+- حافظت جميع strong epistemic-uncertainty sources الـ55 على عدم اليقين
+  في v1.
+- لم تجد المراجعة اليدوية أي semantic negation removal متحقق منه.
+- ملفات تنفيذ ASR الحالية فارغة أو documentation-only.
+- training-serving mismatch risk هو `HIGH`.
+
+### A. تجميد Gold v1
+
+- تحديد وتسجيل ملفات Markdown الخمسة الدقيقة التي يستهلكها
+  `build_kd_dataset`.
+- معاملتها على أنها Gold v1 غير قابلة للتغيير.
+- لا تُعدّل أو تُنقل أو يُعاد تسميتها أو تُستبدل.
+- تسجيل SHA-256 لكل Gold v1 source file.
+- يبقى Gold v1 هو reproducible baseline لـD61–D66.
+
+### B. إنشاء Gold v2 candidate منفصل ذي إصدار محدد
+
+- إنشاء Gold v2 في موقع versioned جديد ومتسق مع data layout الحالي
+  للمستودع.
+- لا يُعاد توجيه production أو training configuration إلى Gold v2 في D67.
+- الحفاظ على question IDs الـ222 نفسها بالضبط.
+- الحفاظ على original Egyptian/informal source answers الـ222 في Gold v1
+  byte-for-byte دون أي تغيير.
+- D67 يغير target claims فقط.
+- real Egyptian ASR source variants تنتمي إلى dataset لاحقة منفصلة، ولا
+  يجوز أن تستبدل أو تكتب فوق Gold v1 أو Gold v2.
+- الحفاظ على question-level split الحالي:
+  - 189 train IDs.
+  - 33 validation IDs.
+  - seed = `42`.
+- يبقى O9 untouched بالكامل ومستبعدًا.
+
+### C. إصلاحات target الإلزامية
+
+#### 1. Unsupported additions
+
+- DS-009:
+  - إزالة WCSS من target.
+  - الحفاظ على أن المرشح لا يتذكر الاختصار.
+- DS-007:
+  - إزالة Bootstrap من target.
+  - الحفاظ على الوصف المبهم وغير اليقيني للمرشح عن resampling.
+- SE-050:
+  - إزالة KISS من target.
+  - الحفاظ على أن المرشح لا يتذكر الاسم المختصر.
+
+#### 2. Atomicity
+
+- إصلاح جميع claims الـ30 المؤكد أنها non-atomic.
+- تقسيم الحقائق القابلة للحكم المستقل إلى claims منفصلة ومرقمة.
+- عدم حذف أي حقيقة يدعمها source.
+- عدم إضافة معرفة تفسيرية أو تصحيحية.
+
+#### 3. Self-containment
+
+- adjudicate جميع conservative self-containment flags الـ273.
+- عدم إعادة كتابة جميع regex hits آليًا.
+- تصنيف كل flag بأحد الوسمين:
+  - `CONFIRMED_FIXED`.
+  - `FALSE_POSITIVE_UNCHANGED`.
+- يجب أن تسمي confirmed rewrite الكيان أو الفاعل اللازم لفهم claim
+  بصورة مستقلة.
+- يجب ألا تستورد سياقًا غير مدعوم.
+
+#### 4. Faithfulness
+
+- الحفاظ على uncertainty وhedging وapproximation وnegation وأخطاء المرشح.
+- عدم تصحيح عبارة خاطئة للمرشح ضمنيًا.
+- عدم ملء acronym أو method name أو formula أو cause أو technical label
+  لم يذكره source.
+- عدم إضافة أي unverifiable causal bridge.
+
+### D. عقد ASR-to-Decomposition المجمد
+
+في D67 وتجارب NLP اللاحقة، يكون العقد كما يلي.
+
+Input الذي يستهلكه Claim Decomposition:
+
+- `question_id`.
+- `raw_transcript`.
+
+`raw_transcript` هو authoritative text input:
+
+- قد يحتوي Egyptian Arabic.
+- قد يحتوي informal spoken constructions.
+- قد يحتوي hesitation وapproximation وuncertainty وnegation.
+- قد يحتوي Arabic-English code-switching.
+- قد يحتوي canonical Latin technical terms.
+- قد يحتوي English technical terms منسوخة phonetically بالأحرف العربية.
+- قد يحتوي ASR substitutions وdeletions وfalse boundaries وpunctuation
+  loss وspacing errors.
+- لا يجوز أن يشترط النظام أن يكون ASR transcript بالعربية الفصحى الحديثة.
+- يجب الحفاظ على الصياغة المصرية ومعناها الدلالي.
+- لا يجوز لأي preprocessing layer إزالة uncertainty أو negation أو
+  approximation أو أخطاء المرشح.
+- لا يكون `normalized_transcript` authoritative NLP input حتى يوجد
+  producer منفذ ومتحقق منه تجريبيًا.
+- لا تُضمّن ASR timestamps أو confidence values أو VAD fields أو أي
+  metadata أخرى في text prompt.
+
+Claim Decomposition output:
+
+- claims ذرية مرقمة تسلسليًا.
+- clear normalized Arabic claims suitable for internal semantic retrieval
+  and NLI comparison.
+- يجوز أن تستخدم claim الداخلية صياغة نحوية شبيهة بالفصحى لزيادة الوضوح.
+- يجب ألا تمحو normalization المعنى المعبّر عنه بالمصرية أو تغيره.
+- هذه internal representation ليست نصًا موجهًا للمستخدم.
+- لا يُسمح بـdialect normalization إلا عندما يكون meaning-preserving.
+- تستخدم المصطلحات التقنية الصحيحة canonical Latin spelling عند التعرف
+  عليها.
+- لا يجوز تخمين أو إكمال technical terms المجهولة أو الملتبسة.
+- claims self-contained.
+- الحفاظ على uncertainty وhedging وnegation والمحتوى الخاطئ للمرشح.
+- لا factual correction.
+- لا unsupported completion.
+- لا scoring أو correctness judgment.
+
+User-facing language boundary:
+
+- لا يحدد D67 لغة واجهة المستخدم النهائية.
+- يجب أن تعرض قرارات backend/frontend اللاحقة الشروح والfeedback بعربية
+  مصرية طبيعية ومناسبة للمستخدمين المصريين.
+- لا يجوز أبدًا عرض internal normalized claims كما لو كانت الاستجابة
+  النهائية الموجهة للمستخدم.
+
+### E. مخرجات D67
+
+يجب أن ينتج تنفيذ D67:
+
+- Gold v1 SHA-256 manifest.
+- Gold v2 candidate files في versioned directory منفصل.
+- machine-readable change log يحتوي:
+  - `question_id`.
+  - original claim index.
+  - original claim text.
+  - replacement claim texts.
+  - change reason.
+  - adjudication status.
+- self-containment adjudication report لجميع flags الـ273.
+- deterministic corpus audit JSON.
+- human-readable corpus audit Markdown.
+- before/after examples لكل modified question ID.
+- output manifest يحتوي file sizes وSHA-256 hashes.
+
+### F. بوابات قبول D67
+
+ينجح تنفيذ D67 فقط إذا تحققت جميع الشروط التالية:
+
+- تبقى بالضبط 222 question IDs.
+- تكون جميع source answers الـ222 مطابقة byte-for-byte لـGold v1.
+- تبقى مجموعتا train/validation question IDs مجمدتين تمامًا.
+- صفر train/validation/O9 overlap.
+- صفر metadata leakage.
+- صفر incorrect numbering.
+- صفر exact duplicate claims.
+- تغيب labels الثلاثة WCSS وBootstrap وKISS عن targets التي أُصلحت.
+- إصلاح جميع claims الـ30 المؤكد أنها non-atomic.
+- وجود adjudication صريح لكل واحد من self-containment flags الـ273.
+- نجاح كل عنصر `CONFIRMED_FIXED` في self-containment audit.
+- احتواء كل عنصر `FALSE_POSITIVE_UNCHANGED` على reason.
+- محافظة جميع uncertainty-bearing examples المحددة سابقًا على uncertainty.
+- محافظة جميع negation-bearing examples المحددة سابقًا على semantic negation.
+- عدم إغفال أي verified source fact.
+- عدم إدخال أي unsupported fact جديد.
+- بناء corpus deterministically.
+- نجاح tokenizer preflight لكل من AraT5-base وmT5-base عند أقصى طول
+  source/target يساوي 512:
+  - صفر UNK.
+  - صفر source truncation.
+  - صفر target truncation.
+- احتواء git diff فقط على D67 data وaudit tooling وdocumentation
+  وevidence files المسجلة مسبقًا.
+- عدم حدوث training أو generation أو O9 evaluation أو model selection
+  أو inference integration أو backend integration.
+
+### G. Non-goals صريحة
+
+يجب ألا يقوم D67 بما يلي:
+
+- تدريب أي model.
+- اختيار model.
+- تشغيل generation.
+- تقييم O9.
+- إنشاء synthetic ASR source variants.
+- تغيير source answers الـ222.
+- تنفيذ ASR model الخاص بفريق audio.
+- تغيير `model.selected`.
+- تغيير `inference.py`.
+- تغيير backend code.
+- إعلان production readiness.
+
+التسلسل اللاحق:
+
+- يجوز لـD68 تسجيل empirical ASR pilot وASR-realistic augmentation
+  dataset منفصلة مسبقًا. يجب أن يعطي هذا pilot الأولوية إلى:
+  - native Egyptian Arabic speakers.
+  - spontaneous technical interview answers.
+  - realistic Arabic-English code-switching.
+  - technical terms pronounced in Arabic phonetics.
+  - multiple Egyptian speaking styles and speech rates.
+  - real ASR errors، وليس synthetic text corruption فقط.
+- يجب أن يقيس D68 بصورة منفصلة:
+  - Arabic word error rate.
+  - technical-term error rate.
+  - preservation of canonical Latin technical terms.
+  - frequency of Arabic-script phonetic English outputs.
+  - raw transcript مقابل أي normalized transcript.
+- يجوز لـD69 تسجيل تجربة model-training جديدة مسبقًا فقط بعد نجاح
+  التدقيقين المستقلين لـGold v2 وASR-realistic dataset.
+
 
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
@@ -2128,11 +2489,12 @@ Checkpoint-generation audit:
 | **D46 — نتيجة الفحص التشخيصي** | القاعدة مسجَّلة ومُلتزَمة. **التشغيل تم والنتيجة صدرت — انظر D49.** | ✅ (مُقفَلة) |
 | **Q8 — هشاشة قناة الـ Coverage** | أُعيدت صياغتها في D42. الرقم 0.002 مسحوب. **القياس على claims حقيقية مؤجَّل لما بعد Phase 8 (D44).** الفحص التشخيصي مسموح (D46). **لا نقاش علاج قبل رقم مقيس.** | ⛔ (نشطة) |
 | **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
-| **Q6 — AraT5 vs mT5-base** | أُعيد فتح الاختيار بعد QUALITY FAIL في D65؛ D66 يقارن AraT5 وmT5 بتجربة LoRA مضبوطة على validation فقط. | ⛔ (RE-OPENED — D66 PRE-REGISTERED) |
+| **Q6 — AraT5 vs mT5-base** | فشل ذراعا D66 في بوابات الإصلاح؛ لا يوجد repair candidate، ويبقى الاختيار مفتوحًا حتى إصلاح corpus وعقد training-serving وإصدارهما. | ⛔ (OPEN — D66 NO REPAIR CANDIDATE) |
 | **D63 — Five-Example Trainer-Path Diagnostic** | نجح mini-corpus في `5/5` exact token match عند step 400؛ padding audit PASS. | ✅ (مُغلقة) |
 | **D64 — Sanitized Full-Corpus Retraining** | اكتمل التدريب، best checkpoint عند step 617 وeval loss 1.750646؛ التنفيذ PASS والجودة غير معتمدة. | ✅ (EXECUTION PASS) |
 | **D65 — Validation/O9 Generation Audit** | اكتمل تقييم 58 حالة؛ التنفيذ PASS والجودة FAIL مع إطلاق CONTENT/FORMAT/LENGTH/REPETITION. | ✅ (EXECUTION PASS / QUALITY FAIL) |
-| **D66 — Controlled PEFT Repair Pilot** | مقارنة AraT5-base وmT5-base عبر LoRA على نفس train/validation، مع إبقاء O9 held-out بالكامل. | ⛔ (PRE-REGISTERED) |
+| **D66 — Controlled PEFT Repair Pilot** | اكتمل الذراعان؛ AraT5 لم ينتج checkpoint مؤهلًا وmT5 step 72 فشل quality gates، ولم يُستخدم O9 في generation أو الاختيار. | ✅ (EXECUTION PASS / NO REPAIR CANDIDATE) |
+| **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | إصلاح targets في Gold v2 منفصل مع تثبيت sources/split وعقد raw_transcript، دون تدريب أو generation أو integration. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -2142,6 +2504,7 @@ Checkpoint-generation audit:
 ---
 
 ## سجل التغييرات 
+- **v2.31 (18 يوليو 2026):** إغلاق **D66** بنتيجة `EXECUTION PASS / NO REPAIR CANDIDATE`: اكتمل تدريب AraT5-base وmT5-base LoRA على split المجمد مع نجاح tokenizer preflights وبقاء O9 خارج generation والmetrics والاختيار. لم ينتج AraT5 checkpoint مؤهلًا، وفشل mT5 step 72 بوابات الجودة والبنية، لذلك لا winner ولا اعتماد إنتاجي ويبقى Q6 مفتوحًا. إضافة **D67** كتسجيل مسبق لإصلاح targets في Gold v2 منفصل مع إبقاء 222 source answers وtrain/validation split دون تغيير، adjudication للـ273 self-containment flags وإصلاح 30 non-atomic claims والإضافات الثلاث غير المدعومة، وتجميد عقد `question_id` + `raw_transcript` قبل أي تدريب لاحق.
 - **v2.30 (18 يوليو 2026):** إغلاق **D65** بنتيجة `EXECUTION PASS / QUALITY FAIL`: تم تقييم 33 validation و25 O9 deterministically مع hash verification وdeterminism PASS، لكن exact match كان صفرًا في splitين، وmedian edit similarity كان `0.519` للـvalidation و`0.160` لـO9، مع severe repetition `42.4%/52%` وإطلاق CONTENT/FORMAT/LENGTH/REPETITION كلها. حظر checkpoint D64 وظيفيًا، وإعادة فتح Q6. إضافة **D66** كتجربة PEFT/LoRA مضبوطة single-seed تقارن AraT5-base وmT5-base على train/validation فقط، مع frozen D64 control وبوابات إصلاح صريحة، ومنع استخدام O9 أو تعديل production code/config.
 - **v2.29 (18 يوليو 2026):** إغلاق **D64** بنتيجة `EXECUTION PASS`: تدريب full-corpus من AraT5-base جديد على GPU واحد وfloat32 حتى step 660، early stopping عند epoch 55.58، وأفضل checkpoint عند step 617 بـ `eval_loss=1.750646`. إعادة التحميل وفحص tied weights والحفظ نجحت، لكن smoke outputs على validation/O9 أظهرت تشوهًا وتكرارًا؛ لذلك لا يوجد QUALITY PASS. توثيق حفظ checkpoint كـ Kaggle Dataset خاص Version 1، وإضافة **D65** كتقييم deterministic كامل للـ58 حالة مع metrics للطول والترقيم والتكرار والتشابه قبل أي قرار إصلاح D66.
 - **v2.28 (18 يوليو 2026):** إغلاق **D63** بنتيجة PASS: خمسة أمثلة deterministic من tracks الخمسة وصلت إلى `5/5` exact token-ID match عند step 400 عبر `Seq2SeqTrainer`، مع نجاح padding audit (`44/44` موضعًا إلى `-100`). إضافة **D64** كتسجيل مسبق لإعادة تدريب corpus D61 كاملًا على GPU واحد وfloat32 وبـ effective batch 16، لإنتاج checkpoint جديد للتقييم دون السماح بـ inference أو اعتماد إنتاجي قبل تقييم مستقل.
