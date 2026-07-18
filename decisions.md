@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.26 — 18 يوليو 2026
+**الإصدار:** v2.27 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -895,7 +895,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 
 ## D62 — Clean Single-Example Overfit Diagnostic
 
-**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+**الحالة:** ✅ مكتمل — نجح المثال `CS-025` في exact token-ID match عند step 175.
 
 الهدف:
 
@@ -1017,6 +1017,202 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 - لا يبدأ full retraining.
 - لا يبدأ تعديل أو تنفيذ `inference.py`.
 - لا يُعتمد أي تغيير في hyperparameters الإنتاجية قبل مراجعة نتيجة D62.
+
+
+النتيجة الفعلية:
+
+- نُفّذت التجربة على Git HEAD:
+  `f290ba010f96bb980e5eb8d5fe821203bb00a4df`
+  (`f290ba0 — docs: close D61 and preregister D62 diagnostic`).
+- كان Git status نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
+  tracked changes بعده في:
+  - `dataset_builder.py`
+  - `prompts.py`
+  - `trainer.py`
+  - `configs/decomposition.yaml`
+- البيئة الفعلية:
+  - Python `3.12.13`
+  - PyTorch `2.10.0+cu128`
+  - Transformers `4.40.2`
+  - GPU واحد: `Tesla T4`
+  - model dtype: `torch.float32`
+  - tokenizer: `T5TokenizerFast`
+- بدأ التدريب من `UBC-NLP/AraT5-base` جديد، ولم يستخدم أي checkpoint
+  من D57.
+- corpus المبني: 222 training example و1,836 claim.
+- المثال `CS-025` بعد D61:
+  - source length = 189 token.
+  - target length = 119 token.
+  - source `<unk>` = صفر.
+  - target `<unk>` = صفر.
+  - source/target truncation = صفر.
+  - target ضمن `max_new_tokens=160`.
+- أثبت tokenizer round-trip أن فواصل الأسطر في target تُطبّع إلى مسافات؛
+  لذلك كان اعتماد exact token-ID match بدل raw-text formatting صحيحًا.
+- teacher-forced loss عند نقاط الفحص:
+  - step 0: `96.0456085`
+  - step 25: `10.7808914`
+  - step 50: `3.9210279`
+  - step 75: `0.4986662`
+  - step 100: `0.1935264`
+  - step 125: `0.0985054`
+  - step 150: `0.0603457`
+  - step 175: `0.0147992`
+- عند step 175:
+  - generated token IDs طابقت target token IDs كاملًا، بما فيها EOS.
+  - لا توجد tokens أو claims إضافية.
+  - `first_exact_match_step = 175`.
+  - النتيجة النهائية: `D62 PASS`.
+
+الاستنتاج المحدود:
+
+- ثبت أن AraT5-base الجديد يستطيع حفظ مثال decomposition نظيف واحد
+  باستخدام source/target الحاليين والـ greedy generation.
+- ثبت أن مسار D61 sanitization والـ prompt/target صالح وظيفيًا لهذا
+  المثال، وأن فشل D57 لا يثبت عدم صلاحية AraT5 للمهمة.
+- لا تثبت D62:
+  - سلامة التدريب على عدة أمثلة مع batching وpadding.
+  - سلامة `Seq2SeqTrainer` orchestration كاملًا.
+  - قدرة الموديل على generalization.
+  - كفاية hyperparameters D57 لإعادة التدريب الكاملة.
+- يظل full retraining و`inference.py` محجوبين حتى نتيجة D63.
+
+---
+
+## D63 — Clean Five-Example Trainer-Path Overfit Diagnostic
+
+**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+
+الهدف:
+
+اختبار قدرة AraT5-base على حفظ mini-corpus متعدد الأمثلة مع استخدام
+مكونات مسار التدريب الفعلية الخاصة بالمشروع:
+`examples_to_dataset` و`DataCollatorForSeq2Seq` و`Seq2SeqTrainer`.
+تهدف التجربة إلى كشف أي خلل يظهر فقط مع batching أو padding أو
+التدريب على أكثر من target قبل السماح بـ full retraining.
+
+حد النطاق:
+
+- لا يُعد هذا اختبارًا كاملًا لدالة `run_training()`؛ لأنها تبني
+  تلقائيًا corpus الكامل وتقسيم D57.
+- الاختبار يغطي مكونات tokenization/collation/trainer الفعلية على
+  mini-corpus ثابت بطريقة تشخيصية خارج tracked production code.
+
+الإعداد المسجّل مسبقًا:
+
+1. code baseline:
+   - كود D61 المعتمد يبدأ من commit `50a636c`.
+   - يجوز التنفيذ من commit أحدث إذا كانت التغييرات اللاحقة توثيقية
+     أو diagnostic artifacts فقط.
+   - لا يُسمح بأي tracked changes غير مسجّلة في:
+     - `dataset_builder.py`
+     - `prompts.py`
+     - `trainer.py`
+     - `configs/decomposition.yaml`
+   - يسجّل JSON قيمة Git HEAD وGit status وSHA256 للملفات والسكريبت
+     التشخيصي المستخدم.
+
+2. البيئة:
+   - Transformers `4.40.2`.
+   - model = `UBC-NLP/AraT5-base` جديد من المصدر الأساسي.
+   - seed = `42`.
+   - data seed = `42`.
+   - جهاز CUDA واحد فقط.
+   - full-model training باستخدام `float32`.
+   - لا fp16 ولا bf16 ولا AMP ولا DDP ولا DataParallel.
+   - لا يستخدم أي checkpoint من D57 أو D62.
+
+3. اختيار mini-corpus بطريقة deterministic:
+   - يُعاد بناء corpus المكوّن من 222 مثالًا.
+   - يُعاد split D57 نفسه عبر `split_by_question_ids()` وإعدادات
+     `configs/decomposition.yaml`.
+   - من train split فقط، يُختار مثال واحد لكل track
+     (`DA` و`DS` و`CS` و`SE` و`GN`).
+   - داخل كل track يُختار أصغر `question_id` ترتيبيًا يحقق:
+     - target token count ≤ 160.
+     - صفر `<unk>`.
+     - صفر source/target truncation عند 320.
+   - تُسجّل IDs الخمسة قبل بدء أي optimizer step.
+   - إذا لم يتوفر مثال صالح لأي track، تتوقف التجربة كـ preflight FAIL.
+   - يجب أن تحتوي الأمثلة المختارة على طولَي target مختلفين على الأقل
+     حتى يُختبر padding فعليًا.
+
+4. مسار البيانات:
+   - بناء النصوص حصريًا عبر `build_training_pair()`.
+   - tokenization حصريًا عبر `examples_to_dataset()`.
+   - batching حصريًا عبر `DataCollatorForSeq2Seq(tokenizer, model)`.
+   - فحص batch حقيقي قبل التدريب وتسجيل:
+     - shapes لـ `input_ids` و`attention_mask` و`labels`.
+     - عدد مواضع `-100`.
+     - صفر `pad_token_id` داخل label positions المستخدمة في loss.
+     - مطابقة padding positions مع `-100`.
+
+5. إعداد `Seq2SeqTrainer` التشخيصي:
+   - `per_device_train_batch_size=2`.
+   - `gradient_accumulation_steps=1`.
+   - `optim="adamw_torch"`.
+   - learning rate = `3e-4`.
+   - `lr_scheduler_type="constant"`.
+   - warmup = صفر.
+   - weight decay = `0.0`.
+   - max gradient norm = `1.0`.
+   - `max_steps=1000`.
+   - `save_strategy="no"`.
+   - `evaluation_strategy="no"`.
+   - `load_best_model_at_end=False`.
+   - لا validation split ولا early stopping.
+   - `report_to=[]`.
+   - لا تعديل tracked على `trainer.py` لتنفيذ التجربة.
+
+6. فحص الحفظ:
+   - greedy decoding لكل مثال:
+     - `do_sample=False`
+     - `num_beams=1`
+     - `max_new_tokens=160`
+   - تُفحص الأمثلة الخمسة عند step 0 ثم كل 100 optimizer step، وعند
+     step 1000.
+   - يجوز إيقاف التدريب مبكرًا عند أول checkpoint مسجّل يحقق exact
+     token-ID match للأمثلة الخمسة جميعًا.
+   - المقارنة تحتفظ بـ EOS وتحذف فقط decoder-start token وأي padding
+     خارج التسلسل الدلالي.
+
+معيار النجاح:
+
+- `5/5` أمثلة تحقق exact token-ID match في checkpoint مسجّل قبل أو
+  عند step 1000.
+- لا تُقبل similarity أو مطابقة جزئية أو نجاح متوسط بدل المطابقة الكاملة.
+- لا يظهر NaN أو Inf في loss أو gradients.
+- ينجح فحص padding/label masking قبل التدريب.
+
+معيار الفشل:
+
+- أقل من `5/5` exact matches عند step 1000.
+- فشل padding/label masking.
+- ظهور `<unk>` أو truncation في أي مثال مختار.
+- ظهور NaN أو Inf.
+- استخدام checkpoint سابق أو أكثر من GPU أو mixed precision.
+- اختلاف tracked code عن baseline خلاف ما تسمح به هذه الوثيقة.
+
+المخرجات المطلوبة:
+
+- JSON خام يتضمن:
+  - environment وGit evidence وSHA256.
+  - IDs الخمسة وقاعدة اختيارها.
+  - source/target texts وtoken IDs وtoken counts.
+  - batch shapes ونتيجة masking audit.
+  - TrainingArguments الفعلية.
+  - loss history.
+  - generated/target token IDs لكل checkpoint ولكل مثال.
+  - exact-match count عند كل checkpoint.
+  - أول step حقق `5/5`، إن تحقق.
+  - النتيجة النهائية PASS أو FAIL.
+- Notebook كاملة بالمخرجات.
+
+القيود:
+
+- لا يبدأ full retraining قبل مراجعة نتيجة D63 وتسجيلها.
+- لا يبدأ تعديل أو تنفيذ `inference.py`.
+- لا تُعتمد hyperparameters إنتاجية جديدة من هذه التجربة وحدها.
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -1035,6 +1231,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 | **Q8 — هشاشة قناة الـ Coverage** | أُعيدت صياغتها في D42. الرقم 0.002 مسحوب. **القياس على claims حقيقية مؤجَّل لما بعد Phase 8 (D44).** الفحص التشخيصي مسموح (D46). **لا نقاش علاج قبل رقم مقيس.** | ⛔ (نشطة) |
 | **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
 | **Q6 — AraT5 vs mT5-base** | اختيار موديل الـ decomposition. | ✅ محسومة — انظر D54 (AraT5-base، سبب معماري لا تجريبي) |
+| **D63 — Five-Example Trainer-Path Diagnostic** | اختبار mini-corpus بـ batching وpadding وSeq2SeqTrainer قبل full retraining. | ⛔ (PRE-REGISTERED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -1044,6 +1241,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 ---
 
 ## سجل التغييرات 
+- **v2.27 (18 يوليو 2026):** إغلاق **D62** بنتيجة PASS: مثال `CS-025` وصل إلى exact token-ID match عند step 175 من base AraT5-base جديد، مع صفر UNK/truncation. إضافة **D63** كتجربة mini-corpus من خمسة أمثلة لاختبار batching وpadding ومكونات `Seq2SeqTrainer` قبل أي full retraining.
 - **v2.21 (16 يوليو 2026):** تصحيح على **D57** — إضافة save_total_limit=2 الناقصة، بعد كرش تدريب فعلي على Kaggle T4 (القرص امتلأ عند epoch 8 من تراكم checkpoints).
 - **v2.20 (16 يوليو 2026):** إضافة **D57** — قيم PRE-CALIBRATION DEFAULT لـ hyperparameters تدريب trainer.py (Phase 8)، مبنية على probe تجريبي حقيقي لتوزيع أطوال الـ tokens (scripts/probe_token_lengths.py) بدل استنتاج من ملاحظات Q6 pilot. Train/val split 85/15، max_length=320.
 - **v2.19 (14 يوليو 2026):** إضافة **D56** — صيغة الـ prompt النهائية لـ fine-tuning (اعتماد PROMPT_TEMPLATE من D53 حرفيًا + تعليمة تنسيق إخراج صريحة).
