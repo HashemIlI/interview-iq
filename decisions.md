@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.25 — 18 يوليو 2026
+**الإصدار:** v2.26 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -816,7 +816,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 
 ## D61 — Deterministic Corpus Sanitization for AraT5
 
-**الحالة:** PRE-REGISTERED — لم يُنفّذ بعد.
+**الحالة:** ✅ مكتمل — اجتازت عملية التنظيف جميع معايير القبول المسجّلة مسبقًا.
 
 الهدف:
 إزالة العيوب المؤكدة في مدخلات AraT5 دون تغيير محتوى claims أو
@@ -852,6 +852,171 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 - صفر source/target truncation عند max length 320.
 - لا يبدأ fine-tuning أو `inference.py` قبل تحقق هذه المعايير فعليًا.
 
+النتيجة الفعلية:
+
+- نُفّذ التعديل في:
+  - `src/interview_iq/decomposition/dataset_builder.py`
+  - `src/interview_iq/decomposition/prompts.py`
+- commit التنفيذ:
+  `50a636c — fix: sanitize decomposition corpus for AraT5`
+- بيئة التحقق:
+  - Python `3.11.9`
+  - Transformers `4.40.2`
+  - Tokenizer: `T5TokenizerFast`
+  - Model tokenizer: `UBC-NLP/AraT5-base`
+- corpus بعد التنظيف:
+  - Training: 222 سؤالًا و1,836 claim.
+  - O9 Gold/Validation: 25 سؤالًا و177 claim.
+  - Train/O9 overlap: صفر.
+- وُجد في ملفات Markdown الأصلية 23 سؤالًا يحمل سطر generation
+  metadata:
+  - 22 سؤالًا داخل training corpus.
+  - `GN-050` مستبعد أصلًا من training corpus.
+- بعد بناء training corpus:
+  - remaining metadata lines: صفر.
+  - تم الحفاظ دون تغيير على:
+    `CS-010` و`DS-037` و`SE-047`.
+- نتيجة tokenizer audit على training:
+  - source `<unk>`: صفر.
+  - target `<unk>`: صفر.
+  - أقصى source length: 277 token.
+  - أقصى target length: 250 token.
+  - source/target truncation عند حد 320: صفر.
+- الملاحظة الإضافية على O9:
+  - source `<unk>`: صفر.
+  - target `<unk>`: صفر.
+  - أقصى source/target: 243/181 token.
+- النتيجة النهائية: `D61 ACCEPTANCE: PASS`.
+- لا تثبت D61 وحدها أن مشاكل corpus كانت السبب الوحيد لفشل التدريب
+  السابق؛ الانتقال التالي هو one-example overfit diagnostic قبل أي
+  full retraining.
+
+---
+
+## D62 — Clean Single-Example Overfit Diagnostic
+
+**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+
+الهدف:
+
+اختبار ما إذا كان AraT5-base يستطيع حفظ training example واحد بعد
+تطبيق D61 sanitization، قبل السماح بأي full retraining. تهدف التجربة
+إلى عزل سلامة data/training path عن مشكلات حجم corpus أو generalization.
+
+الإعداد المسجّل مسبقًا:
+
+1. code baseline:
+   - كود sanitization المعتمد هو:
+     `50a636c — fix: sanitize decomposition corpus for AraT5`.
+   - يجوز تنفيذ التجربة من commit أحدث إذا كانت التغييرات اللاحقة
+     توثيقية فقط داخل `decisions.md`.
+   - لا يُسمح بأي tracked code changes بعد `50a636c` في:
+     - `dataset_builder.py`
+     - `prompts.py`
+     - `trainer.py`
+     - `configs/decomposition.yaml`
+   - يسجّل JSON قيمة Git HEAD وGit status وSHA256 لكل ملفات الكود
+     والـ config والـ diagnostic script المستخدمة.
+
+2. البيئة:
+   - Transformers `4.40.2`.
+   - seed = `42`.
+   - model = `UBC-NLP/AraT5-base`.
+   - يبدأ التدريب من base pretrained model جديد.
+   - لا يستخدم أي checkpoint من تجربة D57.
+
+3. المثال الثابت:
+   - `CS-025`.
+   - يُستخرج عبر `build_kd_dataset()` ثم `build_training_pair()`.
+   - يجب تسجيل source text وtarget text وtoken counts بعد D61
+     sanitization.
+
+4. tokenization وpreflight:
+   - max source length = `320`.
+   - max target length = `320`.
+   - `add_special_tokens=True`.
+   - يجب التحقق من:
+     - صفر `<unk>`.
+     - صفر truncation.
+     - target token count لا يتجاوز `160`.
+   - يسجّل التقرير:
+     - raw target text.
+     - target token IDs.
+     - النص الناتج من tokenizer round-trip:
+       `decode(encode(target))`.
+     - هل حافظ الـ round-trip على فواصل الأسطر أم طبّعها كمسافات.
+
+5. التدريب التشخيصي:
+   - جهاز CUDA واحد فقط؛ لا DDP ولا DataParallel.
+   - full-model training باستخدام `float32`.
+   - لا AMP ولا fp16 ولا bf16.
+   - batch size = `1`.
+   - gradient accumulation = `1`.
+   - optimizer = `torch.optim.AdamW`.
+   - learning rate = `3e-4`.
+   - betas = `(0.9, 0.999)`.
+   - epsilon = `1e-8`.
+   - weight decay = `0.0`.
+   - constant learning rate؛ لا scheduler ولا warmup.
+   - gradient clipping بقيمة `1.0`.
+   - بحد أقصى `500` optimizer step.
+   - لا validation split ولا early stopping.
+   - تُسجّل teacher-forced loss وgreedy generation عند step 0 ثم كل
+     25 step، وكذلك عند آخر step منفّذ.
+   - يتوقف التدريب عند أول checkpoint مسجّل يحقق exact token match.
+
+6. generation التشخيصي:
+   - greedy decoding:
+     - `do_sample=False`
+     - `num_beams=1`
+     - `max_new_tokens=160`
+   - `skip_special_tokens=True`.
+   - `clean_up_tokenization_spaces=False`.
+   - `max_new_tokens=160` خاص بالتجربة التشخيصية فقط، ولا يعد تغييرًا
+     في production generation config.
+
+معيار النجاح:
+
+- نجاح D62 يتطلب exact token-ID match بين:
+  - generated token IDs بعد حذف decoder-start token وأي padding.
+  - target token IDs المستخدمة فعليًا كـ labels، مع الاحتفاظ بـ EOS.
+- يجب أن تتحقق المطابقة قبل أو عند step 500.
+- لا تُقبل similarity score أو partial token match بدل exact match.
+- يسجّل decoded output للمراجعة البشرية، لكن اختلاف تنسيق whitespace
+  الناتج فقط عن tokenizer round-trip لا يحوّل exact token match إلى فشل.
+- exact token match يضمن عدم وجود claims أو tokens إضافية خارج target.
+
+معيار الفشل:
+
+- عدم الوصول إلى exact token-ID match عند step 500.
+- ظهور NaN أو Inf في loss أو gradients.
+- وجود `<unk>` أو truncation قبل التدريب.
+- تجاوز target length لقيمة `max_new_tokens=160`.
+- استخدام checkpoint سابق بدل base pretrained model.
+- تشغيل أكثر من GPU أو استخدام mixed precision خلاف الإعداد المسجّل.
+- وجود tracked code changes غير توثيقية بعد baseline commit `50a636c`.
+
+المخرجات المطلوبة:
+
+- JSON يتضمن:
+  - environment والإصدارات.
+  - Git HEAD وGit status.
+  - SHA256 للملفات المستخدمة.
+  - source وtarget texts وtoken counts.
+  - target token IDs وgenerated token IDs عند كل checkpoint مسجّل.
+  - tokenizer round-trip text ونتيجة فحص الحفاظ على newlines.
+  - CUDA device count واسم الـ GPU والـ dtype الفعلي.
+  - optimizer parameters وغياب scheduler.
+  - loss history.
+  - generations المسجلة.
+  - أول step حقق exact token match، إن تحقق.
+  - النتيجة النهائية PASS أو FAIL.
+
+القيود:
+
+- لا يبدأ full retraining.
+- لا يبدأ تعديل أو تنفيذ `inference.py`.
+- لا يُعتمد أي تغيير في hyperparameters الإنتاجية قبل مراجعة نتيجة D62.
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
