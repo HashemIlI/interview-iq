@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.22 — 18 يوليو 2026
+**الإصدار:** v2.23 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -575,29 +575,149 @@ save_total_limit: 2 — دي فجوة نسيت من المسودة الأولى�
 
 ## D58 — تشخيص فشل Generation بعد تدريب AraT5 Decomposition
 
-**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة التشخيصية بعد.
+**الحالة:** ✅ مكتمل — فشل وظيفي مؤكّد للـ checkpoints المختبرة.
 
-بعد نجاح تحميل نموذج AraT5-base المدرّب وثبوت أن:
-`shared.weight` و`encoder.embed_tokens.weight` و
-`decoder.embed_tokens.weight` و`lm_head.weight`
-تشترك فعليًا في نفس memory pointer، أنتج اختبار الـ generation نصًا
-غير متماسك، وفقد المصطلحين `SOC` و`SIEM`، مع تكرارات وhallucinations.
+تم تنفيذ المقارنة المضبوطة باستخدام:
+- `transformers==4.40.2`، وهي نفس النسخة المستخدمة وقت التدريب.
+- GPU من نوع Tesla T4.
+- نفس test input.
+- نفس generation parameters:
+  - `max_source_length=320`
+  - `max_new_tokens=128`
+  - `num_beams=4`
 
-لذلك لا يُعتبر الـ checkpoint صالحًا وظيفيًا بعد، ولا يبدأ تنفيذ
-`inference.py` قبل إغلاق التشخيص التالي:
+تم اختبار:
+- الـ final top-level model.
+- `checkpoint-174`.
+- `checkpoint-180`.
 
-1. تثبيت نفس نسخة `transformers` المستخدمة أثناء التدريب.
-2. تشغيل نفس الـ input ونفس generation parameters على:
-   - الـ final top-level model.
-   - `checkpoint-174`.
-   - `checkpoint-180`.
-3. حفظ الـ outputs الخام بدون تعديل يدوي.
-4. لا يُقبل أي checkpoint إلا إذا أنتج نصًا عربيًا ذا معنى، وحافظ على
-   المعلومات الأصلية، ولم يُظهر corruption أو hallucination جوهريًا.
+النتائج الفعلية:
+- جميع مسارات الموديل تم تحميلها بنجاح.
+- الـ tokenizer تم تحميله من الـ final model root لجميع الاختبارات.
+- جميع tied embedding weights المختبرة شاركت نفس memory pointer.
+- جميع المخرجات فقدت المصطلحين `SOC` و`SIEM`.
+- جميع المخرجات أظهرت نصًا غير متماسك، مع تكرار وhallucinations.
+- تغيير نسخة `transformers` من 5.0.0 إلى نسخة التدريب 4.40.2 لم يعالج
+  الفشل.
 
-النتيجة السابقة باستخدام `transformers==5.0.0` تُحفظ كـ raw failure
-evidence، ولا يُنسب سبب الفشل لاختلاف نسخة المكتبة قبل تنفيذ المقارنة
-المضبوطة.
+الاستنتاج المحدود:
+- تحذير tied weights ليس سبب الفشل الوظيفي.
+- اختلاف نسخة `transformers` ليس سبب الفشل.
+- اختيار final model بدل checkpoint منفرد ليس سبب الفشل.
+- مصدر الخلل ما زال غير محسوم بين training data construction،
+  tokenization/labels، وإعدادات optimization/model state.
+- يظل تنفيذ `inference.py` محجوبًا.
+
+---
+
+## D59 — تشخيص Training Example وTokenization وLabels قبل إعادة التدريب
+
+**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+
+السياق:
+أثبت D58 أن الـ final model و`checkpoint-174` و`checkpoint-180`
+تُحمّل بنجاح، لكنها جميعًا تفشل وظيفيًا في الـ generation. لا يجوز
+إعادة التدريب أو تغيير hyperparameters قبل فحص مدخلات التدريب
+والـ labels الفعلية.
+
+ملاحظة تنفيذية مكتشفة قبل تشغيل D59:
+
+أظهر output التدريب الفعلي أن التشغيل تم على وحدتي GPU، وليس وحدة
+واحدة. مع:
+- 189 training examples
+- `per_device_train_batch_size=4`
+- `gradient_accumulation_steps=4`
+- 6 optimizer steps لكل epoch
+- 180 optimizer step عبر 30 epoch
+
+فإن الـ effective global batch المنفّذ فعليًا كان:
+
+`4 × 4 × 2 = 32`
+
+وليس 16 كما سُجّل كإعداد مقصود في D57. هذا تصحيح واقعة تنفيذية، ولا
+يثبت وحده أن حجم الـ batch هو سبب فشل generation. إذا أثبت D59 سلامة
+البيانات والـ tokenization والـ labels، يدخل هذا الاختلاف ضمن متغيرات
+optimization المطلوب اختبارها في تجربة لاحقة مسجّلة مسبقًا.
+
+النطاق:
+تجربة read-only تشخيصية فقط. لا تعدّل corpus أو Gold labels أو
+`trainer.py` أو hyperparameters، ولا تنفّذ أي optimizer step.
+
+الإجراء المسجّل مسبقًا:
+
+1. استخدام نفس Git repository state ونفس:
+   - `transformers==4.40.2`
+   - tokenizer الخاص بـ `UBC-NLP/AraT5-base`
+   - `max_source_length=320`
+   - `max_target_length=320`
+
+2. إعادة بناء نفس training corpus ونفس train/validation split من
+   كود المشروع الحالي، بدون كتابة implementation بديل داخل الـ
+   Notebook.
+
+3. اختيار training examples بطريقة deterministic مستقلة عن النتيجة:
+   - مثال الـ generation: أصغر `question_id` ترتيبيًا داخل train split،
+     بشرط أن يكون `target_token_count <= max_new_tokens`.
+   - مثال الـ padding القصير: المثال صاحب أقل `target_token_count`
+     داخل train split، ومع التعادل يُختار أصغر `question_id`.
+   - مثال الـ padding الطويل: المثال صاحب أعلى `target_token_count`
+     داخل train split، ومع التعادل يُختار أصغر `question_id`.
+
+4. طباعة وحفظ:
+   - `question_id`
+   - raw answer
+   - constructed source text
+   - raw target text
+   - source token count
+   - target token count
+   - source token IDs
+   - target token IDs
+   - decoded source
+   - decoded target
+
+5. تمرير المثالين من نفس الـ data collator المستخدم في التدريب،
+   ثم فحص:
+   - shape الخاصة بـ `input_ids`
+   - shape الخاصة بـ `labels`
+   - عدد مواضع `-100`
+   - عدد `pad_token_id` داخل labels
+   - مطابقة مواضع padding مع `-100`
+
+6. تشغيل teacher-forced forward pass على مثال التدريب وحفظ قيمة
+   الـ loss، بدون backward أو optimizer step.
+
+7. تشغيل checkpoint على نفس training example بإعدادين:
+   - greedy decoding: `num_beams=1`
+   - beam decoding: `num_beams=4`
+
+8. مقارنة الناتجين بالـ raw target وحفظ المخرجات بدون تعديل يدوي.
+
+قواعد تفسير النتيجة:
+
+- إذا كان raw source أو raw target خطأ قبل tokenization:
+  يكون الخلل في dataset construction أو prompt/target construction.
+
+- إذا كان الـ raw text صحيحًا لكن decoded text فاسدًا أو truncated:
+  يكون الخلل في tokenization أو length handling.
+
+- إذا كانت padding positions داخل labels غير محوّلة إلى `-100`
+  وفق الـ collator المستخدم:
+  تُسجّل مشكلة label masking قبل أي إعادة تدريب.
+
+- إذا كانت البيانات والـ labels سليمة لكن الموديل يفشل حتى على مثال
+  من training split:
+  ينتقل التشخيص إلى optimization/model-state، ولا يُعاد التدريب
+  قبل تسجيل تجربة مستقلة لتعديل hyperparameters.
+
+- إذا نجح الموديل على مثال التدريب وفشل على المثال الخارجي:
+  يُصنّف الخلل مبدئيًا كضعف generalization أو mismatch في توزيع
+  الإجابات، وليس فسادًا مباشرًا في training labels.
+  
+  المخرجات الإلزامية:
+- Notebook كاملة بمخرجاتها.
+- ملف JSON خام يحتوي كل الفحوص والمخرجات.
+- لا يبدأ `inference.py` ولا إعادة fine-tuning قبل مراجعة نتيجة D59
+  وتسجيل الاستنتاج رسميًا في `decisions.md`.
 
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
