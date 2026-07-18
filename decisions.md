@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.28 — 18 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D65)
+**الإصدار:** v2.29 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -1298,7 +1298,7 @@ corpus قبل أي تنظيف أو إعادة تدريب.
 
 ## D64 — Sanitized Full-Corpus Retraining
 
-**الحالة:** PRE-REGISTERED — لم يبدأ التدريب بعد.
+**الحالة:** ✅ EXECUTION PASS — اكتمل التدريب وحُفظ best checkpoint؛ جودة التعميم غير مقبولة أو معتمدة بعد.
 
 الهدف:
 
@@ -1429,6 +1429,302 @@ data/tokenization/labels والمسار الأساسي عبر D59–D63. هذه 
 - لا يُدمج checkpoint في backend.
 - لا يُعتمد checkpoint للإنتاج قبل تقييم مستقل مسجّل ومراجعة نتائجه.
 - لا تُغيّر قيم D64 بعد بدء التشغيل؛ أي تعديل يحتاج قرارًا جديدًا.
+
+النتيجة الفعلية:
+
+- Git HEAD:
+  `a3c448384b262422359a8d4f3090af26d913101d`
+  (`a3c4483 — config: apply D64 decomposition retraining settings`).
+- Git status كان نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
+  tracked changes بعده في ملفات الإنتاج المحمية:
+  - `dataset_builder.py`
+  - `prompts.py`
+  - `trainer.py`
+- config hash:
+  `aa7131066f0146bebed522ae2fe8be6f1fa887f8600c83e7a53f0d9720894dee`.
+- runner hash:
+  `3313e6ffb0e082ad5eac1f1d606960850525bf6f0033671428b81955bb8e6fdf`.
+- البيئة:
+  - Python `3.12.13`
+  - PyTorch `2.10.0+cu128`
+  - Transformers `4.40.2`
+  - Datasets `2.18.0`
+  - Accelerate `0.27.2`
+  - GPU واحد: `Tesla T4`
+  - full-model float32
+  - لا mixed precision ولا DDP ولا DataParallel
+- preflight:
+  - corpus = 222 سؤالًا / 1,836 claim.
+  - O9 = 25 سؤالًا / 177 claim.
+  - split = 189 train / 33 validation، seed = `42`.
+  - train/validation overlap = صفر.
+  - train/O9 overlap = صفر.
+  - metadata leakage = صفر.
+  - source/target UNK = صفر.
+  - source/target truncation = صفر.
+- بدأ التدريب من `UBC-NLP/AraT5-base` جديد:
+  - total parameters = `282,770,688`
+  - trainable parameters = `282,770,688`
+  - لم يُستخدم أي checkpoint سابق.
+- التدريب:
+  - optimizer steps = `660`.
+  - completed epoch = `55.5789473684`.
+  - stop reason = `early_stopping`.
+  - runtime = `2,137.5491` ثانية.
+  - train loss الإجمالي المسجّل = `4.5657872218`.
+  - best checkpoint الداخلي = `checkpoint-617`.
+  - best eval loss = `1.7506462336`.
+  - root model المنشور طابق best checkpoint byte-for-byte قبل إزالة
+    optimizer checkpoint directories.
+- إعادة التحميل:
+  - model/tokenizer أعيد تحميلهما بنجاح من المجلد المنشور.
+  - dtype بعد إعادة التحميل = float32.
+  - tied-weight pointer check = PASS.
+  - `config.json` و`generation_config.json` حُفظا.
+- smoke generations:
+  - `CS-025` (train): exact token match = false، مع اختلاف لغوي طفيف
+    رغم قرب الناتج الشديد من الهدف.
+  - `CS-003` (validation): exact token match = false، مع مصطلحات مشوهة
+    وتغيّر في عدد/محتوى claims.
+  - `CS-013` (O9): exact token match = false، مع تكرار وهلوسة وطول زائد.
+- النتيجة القانونية:
+  - `D64 EXECUTION PASS`.
+  - لا يوجد `QUALITY PASS`.
+  - checkpoint غير معتمد للإنتاج أو inference قبل D65 وما يليها.
+- حفظ checkpoint:
+  - نُشر كـ Kaggle Dataset خاص باسم:
+    `Interview IQ D64 AraT5 Full-Corpus Checkpoint`.
+  - Version 1.
+  - الحجم الظاهر = `1.14 GB`.
+  - عدد الملفات الظاهر = `147`.
+  - لا يُسمى final model ولا يحل محل checkpoint D57 داخل السجل.
+
+الاستنتاج المحدود:
+
+- مسار full-corpus training والحفظ وإعادة التحميل يعمل كما سُجّل.
+- D59–D64 تستبعد حاليًا فساد corpus sanitization وtokenization وpadding
+  وTrainer path والحفظ بوصفها تفسيرًا كافيًا لفشل التوليد.
+- توجد مؤشرات قوية على ضعف generalization وتدهور format/content في
+  validation وO9، لكن ثلاث smoke cases لا تكفي لقياس الحجم أو التوزيع
+  حسب split/track.
+- لا يُتخذ قرار hyperparameter أو architecture جديد قبل D65.
+
+---
+
+## D65 — Deterministic Validation and O9 Generation Audit
+
+**الحالة:** PRE-REGISTERED — لم يبدأ التقييم بعد.
+
+الهدف:
+
+تقييم checkpoint D64 المنشور تقييمًا deterministic كاملًا على جميع
+أمثلة validation وعددها 33 وجميع أمثلة O9 وعددها 25، مع حفظ كل
+المخرجات الخام وقياس أخطاء الطول والترقيم والتكرار والتشابه وتوزيعها
+حسب split وtrack. D65 تجربة تشخيص جودة فقط؛ لا تتضمن تدريبًا ولا
+تعديل checkpoint ولا تشغيل `inference.py`.
+
+الأصل المقفول:
+
+1. Git/code:
+   - baseline:
+     `a3c4483 — config: apply D64 decomposition retraining settings`
+     أو commit أحدث بتغييرات توثيقية/diagnostic-only فقط.
+   - لا tracked changes في:
+     - `dataset_builder.py`
+     - `prompts.py`
+     - `trainer.py`
+     - `configs/decomposition.yaml`
+   - يجب تسجيل Git HEAD وstatus وSHA256 للملفات السابقة ولـ D65 runner.
+
+2. checkpoint:
+   - المصدر الوحيد:
+     Kaggle Dataset الخاص
+     `Interview IQ D64 AraT5 Full-Corpus Checkpoint`، Version 1.
+   - يكتشف runner مجلد الموديل من Kaggle input عبر وجود:
+     - `config.json`
+     - `model.safetensors` أو `pytorch_model.bin`
+     - tokenizer files
+     - `d64_checkpoint_manifest.json`
+     - `d64_full_corpus_retraining_results.json`
+   - يُحظر تحميل `UBC-NLP/AraT5-base` كبديل عند غياب checkpoint.
+   - يجب مقارنة SHA256 لملفات checkpoint بالـ manifest/JSON المنشور.
+   - أي hash mismatch أو غياب ملف أساسي = FAIL قبل generation.
+
+3. البيئة:
+   - Transformers `4.40.2`.
+   - Datasets `2.18.0`.
+   - Accelerate `0.27.2`.
+   - جهاز CUDA واحد ظاهر.
+   - dtype = `float32`.
+   - `model.eval()`.
+   - لا training، لا optimizer، لا gradients، لا mixed precision،
+     لا DDP ولا DataParallel.
+
+مجموعة التقييم:
+
+- يُعاد بناء corpus عبر الكود المقفول.
+- يُعاد split D57/D64 نفسه على question-ID:
+  - seed = `42`
+  - validation = 33
+- O9 = جميع الأمثلة الـ25 من `build_gold_validation_set()`.
+- train وvalidation وO9 IDs تُحفظ كاملة.
+- يجب أن يكون:
+  - validation/O9 overlap = صفر.
+  - train/O9 overlap = صفر.
+  - عدد الحالات النهائي = `58`.
+- ترتيب التنفيذ deterministic:
+  - split بالترتيب `validation` ثم `o9`.
+  - داخل كل split تصاعديًا حسب `question_id`.
+
+generation المقفول:
+
+- inference حالة واحدة في كل مرة؛ لا batch generation.
+- `torch.inference_mode()`.
+- `do_sample=False`.
+- `num_beams=1`.
+- `max_new_tokens=320`.
+- `clean_up_tokenization_spaces=False`.
+- نفس `build_training_pair()` المستخدم في التدريب.
+- لا post-processing يغير النص أو token IDs.
+- تُحفظ:
+  - source/target text.
+  - source/target token IDs.
+  - raw generated token IDs.
+  - normalized generated token IDs بعد إزالة decoder-start/padding فقط
+    والاحتفاظ بـ EOS عند وجوده.
+  - decoded output الخام.
+  - هل ظهر EOS.
+  - هل وصل generation إلى cap.
+  - runtime لكل مثال.
+- فحص determinism:
+  - أصغر validation qid وأصغر O9 qid يُولّدان مرتين.
+  - يجب تطابق generated token IDs في الإعادتين.
+
+المقاييس لكل مثال:
+
+1. `exact_token_match`:
+   مقارنة generated IDs بالهدف مع الاحتفاظ بـ EOS.
+
+2. `token_edit_similarity`:
+   `1 - levenshtein_distance / max(pred_len, target_len)` على token IDs
+   بعد استبعاد EOS/pad/decoder-start؛ والقيمة 1.0 عند تطابق سلسلتين
+   فارغتين.
+
+3. `token_lcs_f1`:
+   precision/recall/F1 لطول أطول common subsequence على token IDs بعد
+   استبعاد special tokens.
+
+4. length:
+   - generated token count.
+   - target token count.
+   - ratio = generated/target.
+   - `under_length_flag` إذا ratio < `0.75`.
+   - `over_length_flag` إذا ratio > `1.25`.
+
+5. claim structure:
+   - استخراج markers بالتعبير:
+     `(?<!\w)(\d+)\.\s+`
+   - parsed predicted claim count.
+   - parsed target claim count.
+   - exact claim-count match.
+   - numbering valid إذا الأرقام هي `1..N` دون gaps أو duplicates.
+   - empty output flag.
+
+6. repetition:
+   - claims تُطبّع بإزالة المسافات الزائدة وعلامات الترقيم الطرفية فقط.
+   - duplicate-claim flag عند تكرار claim مطبّعة كاملة.
+   - word 4-gram repetition fraction:
+     `1 - unique_4grams / total_4grams`.
+   - `severe_repetition_flag` إذا:
+     - duplicate claim موجود، أو
+     - 4-gram repetition fraction >= `0.20`.
+
+7. generation corruption proxies:
+   - عدد Latin/alphanumeric tokens في output غير الموجودة
+     case-insensitively في source أو target.
+   - max-token-cap flag.
+   - invalid-numbering flag.
+   - هذه proxies تشخيصية ولا تُعامل منفردة كحكم semantic.
+
+التجميع:
+
+- aggregate منفصل لـ validation وO9، ثم لكل track:
+  `DA/DS/CS/SE/GN`.
+- يُحسب:
+  - count.
+  - exact-match rate.
+  - mean/median token-edit similarity.
+  - mean/median token-LCS F1.
+  - exact claim-count rate.
+  - valid-numbering rate.
+  - under/over-length rates.
+  - duplicate-claim rate.
+  - severe-repetition rate.
+  - max-cap rate.
+  - median وp90 length ratio.
+  - novel-Latin-token totals.
+- تُحفظ قوائم:
+  - أسوأ 5 وأفضل 5 أمثلة في كل split حسب token-edit similarity،
+    ties حسب `question_id`.
+  - جميع حالات severe repetition.
+  - جميع حالات max cap.
+  - جميع حالات invalid numbering.
+- تُنتج ملفات review:
+  - CSV كامل للـ58 حالة.
+  - JSON كامل.
+  - Markdown summary يحتوي aggregates وworst cases والنصوص الخام.
+
+علامات التشخيص المسجّلة:
+
+هذه flags لا تعني production acceptance thresholds، لكنها تحدد اتجاه
+الإصلاح التالي:
+
+- `FORMAT_FLAG` إذا exact claim-count rate < `0.80` أو
+  valid-numbering rate < `0.95` في أي split.
+- `REPETITION_FLAG` إذا severe-repetition rate > `0.05` أو
+  max-cap rate > `0.00` في أي split.
+- `CONTENT_FLAG` إذا median token-edit similarity < `0.70` في validation
+  أو < `0.60` في O9.
+- `LENGTH_FLAG` إذا under+over-length rate > `0.20` في أي split.
+- يمكن ظهور أكثر من flag في الوقت نفسه.
+- غياب flags لا يساوي اعتمادًا إنتاجيًا؛ يحتاج review بشري مستقل لاحقًا.
+
+بوابة التنفيذ:
+
+- `D65 EXECUTION PASS` يتطلب:
+  - hash verification للـ checkpoint = PASS.
+  - تحميل model/tokenizer من Kaggle Dataset لا من base model.
+  - corpus/split counts والـ overlaps صحيحة.
+  - توليد جميع الحالات الـ58 دون crash.
+  - determinism rerun = PASS للحالتين.
+  - عدم وجود NaN/Inf.
+  - حفظ جميع الملفات المطلوبة.
+- `D65 EXECUTION FAIL` عند:
+  - checkpoint mismatch أو fallback إلى base model.
+  - نقص أي حالة.
+  - اختلاف rerun token IDs.
+  - generation exception غير مسجّل.
+  - تغيير أي generation setting مقفول.
+
+المخرجات المطلوبة:
+
+- Notebook كاملة بالمخرجات.
+- `d65_generation_audit.json`.
+- `d65_generation_cases.csv`.
+- `d65_generation_summary.md`.
+- environment/Git/checkpoint hash evidence.
+- aggregates لكل split وtrack.
+- diagnostic flags.
+- raw outputs/token IDs لكل الحالات الـ58.
+
+القيود:
+
+- لا training ولا resume ولا تعديل checkpoint.
+- لا تعديل production code/config.
+- لا يبدأ `inference.py` ولا backend integration.
+- لا يُختار علاج أو hyperparameter أو architecture قبل مراجعة D65
+  وتسجيل القرار التالي D66.
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -1448,7 +1744,8 @@ data/tokenization/labels والمسار الأساسي عبر D59–D63. هذه 
 | **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
 | **Q6 — AraT5 vs mT5-base** | اختيار موديل الـ decomposition. | ✅ محسومة — انظر D54 (AraT5-base، سبب معماري لا تجريبي) |
 | **D63 — Five-Example Trainer-Path Diagnostic** | نجح mini-corpus في `5/5` exact token match عند step 400؛ padding audit PASS. | ✅ (مُغلقة) |
-| **D64 — Sanitized Full-Corpus Retraining** | إعادة تدريب corpus D61 كاملًا من base model جديد وإنتاج checkpoint للتقييم. | ⛔ (PRE-REGISTERED) |
+| **D64 — Sanitized Full-Corpus Retraining** | اكتمل التدريب، best checkpoint عند step 617 وeval loss 1.750646؛ التنفيذ PASS والجودة غير معتمدة. | ✅ (EXECUTION PASS) |
+| **D65 — Validation/O9 Generation Audit** | تقييم deterministic كامل للـ33 validation والـ25 O9 من checkpoint D64 المنشور. | ⛔ (PRE-REGISTERED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -1458,6 +1755,7 @@ data/tokenization/labels والمسار الأساسي عبر D59–D63. هذه 
 ---
 
 ## سجل التغييرات 
+- **v2.29 (18 يوليو 2026):** إغلاق **D64** بنتيجة `EXECUTION PASS`: تدريب full-corpus من AraT5-base جديد على GPU واحد وfloat32 حتى step 660، early stopping عند epoch 55.58، وأفضل checkpoint عند step 617 بـ `eval_loss=1.750646`. إعادة التحميل وفحص tied weights والحفظ نجحت، لكن smoke outputs على validation/O9 أظهرت تشوهًا وتكرارًا؛ لذلك لا يوجد QUALITY PASS. توثيق حفظ checkpoint كـ Kaggle Dataset خاص Version 1، وإضافة **D65** كتقييم deterministic كامل للـ58 حالة مع metrics للطول والترقيم والتكرار والتشابه قبل أي قرار إصلاح D66.
 - **v2.28 (18 يوليو 2026):** إغلاق **D63** بنتيجة PASS: خمسة أمثلة deterministic من tracks الخمسة وصلت إلى `5/5` exact token-ID match عند step 400 عبر `Seq2SeqTrainer`، مع نجاح padding audit (`44/44` موضعًا إلى `-100`). إضافة **D64** كتسجيل مسبق لإعادة تدريب corpus D61 كاملًا على GPU واحد وfloat32 وبـ effective batch 16، لإنتاج checkpoint جديد للتقييم دون السماح بـ inference أو اعتماد إنتاجي قبل تقييم مستقل.
 - **v2.27 (18 يوليو 2026):** إغلاق **D62** بنتيجة PASS: مثال `CS-025` وصل إلى exact token-ID match عند step 175 من base AraT5-base جديد، مع صفر UNK/truncation. إضافة **D63** كتجربة mini-corpus من خمسة أمثلة لاختبار batching وpadding ومكونات `Seq2SeqTrainer` قبل أي full retraining.
 - **v2.21 (16 يوليو 2026):** تصحيح على **D57** — إضافة save_total_limit=2 الناقصة، بعد كرش تدريب فعلي على Kaggle T4 (القرص امتلأ عند epoch 8 من تراكم checkpoints).
