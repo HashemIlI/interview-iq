@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.21 — 16 يوليو 2026
+**الإصدار:** v2.22 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -572,6 +572,32 @@ save_total_limit: 2 — دي فجوة نسيت من المسودة الأولى�
 غلط اتبدلت بقيمة جديدة.
 
 الحالة: ✅ مكتمل.
+
+## D58 — تشخيص فشل Generation بعد تدريب AraT5 Decomposition
+
+**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة التشخيصية بعد.
+
+بعد نجاح تحميل نموذج AraT5-base المدرّب وثبوت أن:
+`shared.weight` و`encoder.embed_tokens.weight` و
+`decoder.embed_tokens.weight` و`lm_head.weight`
+تشترك فعليًا في نفس memory pointer، أنتج اختبار الـ generation نصًا
+غير متماسك، وفقد المصطلحين `SOC` و`SIEM`، مع تكرارات وhallucinations.
+
+لذلك لا يُعتبر الـ checkpoint صالحًا وظيفيًا بعد، ولا يبدأ تنفيذ
+`inference.py` قبل إغلاق التشخيص التالي:
+
+1. تثبيت نفس نسخة `transformers` المستخدمة أثناء التدريب.
+2. تشغيل نفس الـ input ونفس generation parameters على:
+   - الـ final top-level model.
+   - `checkpoint-174`.
+   - `checkpoint-180`.
+3. حفظ الـ outputs الخام بدون تعديل يدوي.
+4. لا يُقبل أي checkpoint إلا إذا أنتج نصًا عربيًا ذا معنى، وحافظ على
+   المعلومات الأصلية، ولم يُظهر corruption أو hallucination جوهريًا.
+
+النتيجة السابقة باستخدام `transformers==5.0.0` تُحفظ كـ raw failure
+evidence، ولا يُنسب سبب الفشل لاختلاف نسخة المكتبة قبل تنفيذ المقارنة
+المضبوطة.
 
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
