@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D47)
-**الإصدار:** v2.23 — 18 يوليو 2026
+**الإصدار:** v2.24 — 18 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -612,7 +612,7 @@ save_total_limit: 2 — دي فجوة نسيت من المسودة الأولى�
 
 ## D59 — تشخيص Training Example وTokenization وLabels قبل إعادة التدريب
 
-**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+**الحالة:** ✅ مكتمل — البيانات الأساسية سليمة، مع اكتشاف metadata leakage وحاجة إلى corpus-wide UNK audit.
 
 السياق:
 أثبت D58 أن الـ final model و`checkpoint-174` و`checkpoint-180`
@@ -713,11 +713,82 @@ optimization المطلوب اختبارها في تجربة لاحقة مسجّ
   يُصنّف الخلل مبدئيًا كضعف generalization أو mismatch في توزيع
   الإجابات، وليس فسادًا مباشرًا في training labels.
   
+النتيجة الفعلية:
+
+- أُعيد بناء corpus من كود المشروع الحالي: 222 مثالًا.
+- أُعيد نفس split: 189 تدريب / 33 تحقق، بصفر overlap.
+- لم يظهر أي source أو target truncation.
+- فحص الـ Data Collator أثبت أن 172 موضع padding تحولت إلى `-100`
+  بصورة صحيحة، مع صفر `pad_token_id` داخل labels.
+- فشل final checkpoint على مثال التدريب `CS-025`:
+  - teacher-forced loss = 4.6159997
+  - greedy similarity = 0.0286
+  - beam similarity = 0.0598
+- اكتُشف metadata leakage فعلي في إجابة `SE-017`:
+  `**[طريقة التوليد: من الذاكرة، دون رجوع مباشر للمرجع]**`
+- ظهرت `<unk>` tokens في بعض الكلمات العربية ذات التنوين أو العلامات
+  الإملائية، مثل `غالبًا` و`فعليًا` و`أيضًا`.
+
+الاستنتاج المحدود:
+
+- split وlength handling وlabel masking ليست سبب الفشل.
+- لا يجوز حصر السبب في optimization فقط قبل قياس مدى تلوث corpus
+  وانتشار `<unk>` على جميع الأمثلة.
+- يظل `inference.py` وإعادة fine-tuning محجوبين.
+
   المخرجات الإلزامية:
 - Notebook كاملة بمخرجاتها.
 - ملف JSON خام يحتوي كل الفحوص والمخرجات.
 - لا يبدأ `inference.py` ولا إعادة fine-tuning قبل مراجعة نتيجة D59
   وتسجيل الاستنتاج رسميًا في `decisions.md`.
+
+---
+
+## D60 — Corpus Contamination وUNK Audit
+
+**الحالة:** PRE-REGISTERED — لم تُنفّذ التجربة بعد.
+
+الهدف:
+إجراء audit read-only على جميع أمثلة Claim Decomposition training
+corpus قبل أي تنظيف أو إعادة تدريب.
+
+الإجراء:
+
+1. إعادة بناء نفس corpus المكوّن من 222 مثالًا باستخدام كود المشروع
+   الحالي ونسخة الـ repository المحفوظة مع Dataset التدريب.
+
+2. استخدام نفس tokenizer المحفوظ مع checkpoint، ونفس:
+   `transformers==4.40.2`.
+
+3. فحص كل raw answer بحثًا عن:
+   - `طريقة التوليد`
+   - `من الذاكرة`
+   - `دون رجوع مباشر للمرجع`
+   - Markdown metadata من نوع `**[...]**`
+   - الأسطر التي تبدأ بـ `**` أو `[`
+   - أي تعليقات أو metadata إدارية مشابهة.
+
+4. حساب لكل مثال:
+   - source token count
+   - target token count
+   - source `<unk>` count/rate
+   - target `<unk>` count/rate
+
+5. حفظ:
+   - كل question IDs المشتبه في تلوثها.
+   - النصوص والأسطر المطابقة.
+   - أعلى الأمثلة في source/target UNK rate.
+   - إجمالي ونسبة الأمثلة الملوثة.
+
+المخرجات الإلزامية:
+
+- JSON خام يحتوي جميع السجلات.
+- CSV summary لكل الأمثلة.
+- Markdown report.
+- Notebook كاملة بالمخرجات.
+
+لا يُعدّل corpus أو `dataset_builder.py`، ولا تبدأ إعادة fine-tuning
+قبل مراجعة نتيجة D60 وتسجيل قرار التنظيف رسميًا.
 
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
