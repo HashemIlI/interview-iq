@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D67)
-**الإصدار:** v2.31 — 18 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D68)
+**الإصدار:** v2.32 — 19 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -2471,6 +2471,276 @@ User-facing language boundary:
 - يجوز لـD69 تسجيل تجربة model-training جديدة مسبقًا فقط بعد نجاح
   التدقيقين المستقلين لـGold v2 وASR-realistic dataset.
 
+### إغلاق محاولة تنفيذ D67
+
+**حالة محاولة التنفيذ:** `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`
+
+Starting Git HEAD:
+
+`06e9d6f358acbba711eeeb253c827671a0e45bb0`
+
+دليل Phase 0 المتحقق منه:
+
+- أعادت repository parsing إنتاج:
+  - 222 example بالضبط.
+  - 1,836 target claim بالضبط.
+  - 189 frozen train question ID.
+  - 33 frozen validation question ID.
+  - split seed = `42`.
+- حُددت ملفات Gold v1 Markdown الخمسة الدقيقة:
+  - `results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md`.
+  - `results/pilot_llm_assisted_batch2_DRAFT_UNREVIEWED.md`.
+  - `results/pilot_llm_assisted_batch3_DRAFT_UNREVIEWED.md`.
+  - `results/pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md`.
+  - `results/pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md`.
+- المساهمات بعد existing exclusion:
+  - batch1: 10 questions / 90 claims.
+  - batch2: 50 questions / 461 claims.
+  - batch3: 50 questions / 434 claims.
+  - batch4: 49 questions / 389 claims.
+  - batch5: 63 questions / 462 claims.
+  - total: 222 questions / 1,836 claims.
+- أعاد disclosed self-containment detector إنتاج:
+  - 273 flag بالضبط.
+  - عبر 109 question IDs.
+- أعاد structural atomicity detector إنتاج 34 candidate بالضبط.
+- ذكر التدقيق السابق أن manual review أكد 30 non-atomic claim.
+- لم يسجل التدقيق السابق أي أربعة من candidates الـ34 استُبعدت بوصفها
+  integrated definitions أو procedures.
+- لذلك تعذر استرداد exact preregistered 30-item set deterministically
+  دون تخمين.
+- ألزمت قاعدة D67 Phase 0 الحاكمة بإيقاف التنفيذ قبل التحرير عند تعذر
+  استرداد exact set.
+
+مفاتيح candidates الـ34 المستردة:
+
+- `SE-049:6`
+- `DS-003:3`
+- `CS-003:1`
+- `SE-003:5`
+- `SE-033:1`
+- `GN-006:5`
+- `GN-028:2`
+- `GN-046:1`
+- `DA-038:4`
+- `DA-038:5`
+- `DA-049:5`
+- `CS-010:1`
+- `CS-049:4`
+- `SE-035:1`
+- `GN-002:1`
+- `GN-002:3`
+- `GN-038:3`
+- `DA-017:6`
+- `DS-038:1`
+- `CS-001:4`
+- `CS-032:2`
+- `SE-030:5`
+- `SE-047:3`
+- `GN-009:4`
+- `DA-037:5`
+- `DA-041:7`
+- `SE-022:4`
+- `SE-029:5`
+- `SE-032:2`
+- `SE-032:3`
+- `SE-032:8`
+- `GN-015:3`
+- `GN-037:2`
+- `GN-048:4`
+
+نتيجة المستودع:
+
+- كان initial وfinal `git status --short` متطابقين.
+- لم ينتج `git diff --check` أي output.
+- لم يُنشأ أو يُعدّل أو يُحذف أو يُنقل أو يُعاد تسمية أو يُنسق أو
+  يُstage أو يُcommit أو يُpush أي repository file.
+- لم يتغير أي Gold v1 file.
+- لم يُنشأ Gold v2.
+- لم يُنشأ review ZIP.
+- لم تُشغّل tokenizer preflights أو المراحل اللاحقة.
+- لم يحدث training أو generation أو inference أو O9 inspection أو
+  production integration.
+- بقيت pre-existing untracked files دون لمس.
+
+خلاصة D67:
+
+- لم يفشل D67 أي corpus acceptance gate.
+- حُجب D67 قبل corpus construction لأن semantic adjudication set
+  مطلوبة كانت مفقودة.
+- لا يجوز الادعاء باسترداد exact 30-item set.
+- يبقى تنفيذ corpus في D67 غير مصرح به حتى يؤسس قرار لاحق canonical
+  auditable atomicity adjudication set.
+
+
+## D68 — Canonical Atomicity Adjudication Recovery for Gold Corpus v2
+
+**الحالة:** `PREREGISTERED / NOT EXECUTED`
+
+الهدف:
+
+إنشاء canonical classification كامل وقابل للتدقيق لجميع structural
+atomicity candidates الـ34 المستردة، دون تعديل أي corpus target، حتى
+يستطيع قرار لاحق تنفيذ إصلاح Gold v2 دون تخمين.
+
+D68 قرار evidence-recovery وsemantic-adjudication فقط.
+
+يجب ألا يصلح أو ينشئ Gold v2.
+
+### Authoritative candidate universe
+
+- candidate universe مجمد على مفاتيح question-ID وclaim-index الـ34
+  الدقيقة المدرجة في D67 blocker evidence.
+- لا يجوز إضافة أو إزالة أي candidate أثناء D68.
+
+### الدليل المطلوب لكل candidate
+
+- `question_id`.
+- original claim index.
+- exact source answer.
+- exact current claim text.
+- relevant adjacent claim text عندما يلزم للتفسير.
+- proposed proposition segmentation.
+- first-pass classification.
+- first-pass rationale.
+- verification-pass classification.
+- verification-pass rationale.
+- final classification.
+- final rationale.
+
+### التصنيفات النهائية المسموحة
+
+#### 1. `NON_ATOMIC_REPAIR_REQUIRED`
+
+يُستخدم فقط عندما تحتوي claim على propositionين على الأقل، يدعمهما
+source ويمكن الحكم على كل منهما بصورة مستقلة؛ أي يمكن أن تكون إحداهما
+صحيحة أو خاطئة باستقلال عن الأخرى.
+
+قد يشمل الدليل النموذجي:
+
+- خاصيتين يمكن الحكم عليهما باستقلال.
+- سلوكين أو أثرين منفصلين.
+- technical facts متعددة مجمعة في claim واحدة.
+- مقارنة تقرر حقائق مستقلة الحكم عن كلا الطرفين.
+- procedure step مجمعة مع نتيجة أو guarantee منفصلة.
+
+#### 2. `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`
+
+يُستخدم فقط عندما تشكل الجمل الظاهرة المتعددة وحدة دلالية واحدة لا يمكن
+فصلها، مثل:
+
+- term وتعريفه الضروري.
+- procedure واحدة لا يمكن فصل أفعالها المرتبة دون تغيير المعنى المقرر.
+- condition والسلوك المحدد مباشرة في نطاقها.
+- restriction أو qualifier لازمة لتفسير proposition نفسها.
+- mechanism وتعريفها الجوهري عندما يشوه independent scoring معنى source.
+
+### قواعد adjudication
+
+- لا يُصنف بناءً على conjunction count وحده.
+- لا يحدث mechanical split عند كل Arabic conjunction أو comma.
+- لا تُصنف claim على أنها non-atomic لمجرد احتوائها example أو qualifier
+  أو parenthetical term أو necessary restriction.
+- تكون claim non-atomic فقط عندما يمكن تقييم propositions الناتجة
+  باستقلال.
+- يجب أن تبقى جميع proposition segments مدعومة مباشرة من source answer.
+- لا يُسمح بأي factual correction.
+- لا يجوز inference أو completion لأي technical term.
+- يجب الحفاظ على uncertainty وnegation وapproximation وأخطاء المرشح.
+- لا يُفرض أن تكون نتائج `NON_ATOMIC_REPAIR_REQUIRED` عددها 30 بالضبط.
+- يكون canonical count نتيجة تطبيق preregistered rubric على candidates
+  الـ34 جميعًا.
+- يجب توثيق أي divergence عن former informal count البالغ 30 صراحةً
+  بدل إخفائه.
+
+### Two-pass verification
+
+- تنفيذ first semantic classification لجميع candidates الـ34.
+- تنفيذ verification pass منفصل لجميع candidates الـ34 باستخدام rubric
+  نفسها.
+- يجب أن يختبر verification pass صراحةً ما إذا كانت propositions
+  independently judgeable.
+- إذا اختلفت المرحلتان على أي candidate:
+  - يسجل disagreement.
+  - لا تُختَر نتيجة واحدة بصمت.
+  - يُوسم D68 `BLOCKED` ما لم يُحل الخلاف بـexplicit evidence-based
+    rationale.
+- يجب أن يحتفظ final artifact بنتائج المرحلتين.
+
+### مخرجات D68 المطلوبة
+
+- deterministic candidate-extraction script يعيد إنتاج frozen 34 keys
+  بالضبط.
+- machine-readable JSON adjudication file.
+- CSV adjudication table تحتوي 34 row بالضبط.
+- human-readable Markdown report يعرض source وclaim وsegmentation
+  وclassification وrationale لكل candidate.
+- summary يحتوي:
+  - `NON_ATOMIC_REPAIR_REQUIRED` count.
+  - `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` count.
+  - disagreement count.
+  - جميع candidate keys مجمعة حسب final classification.
+- output manifest يحتوي relative paths وsizes وSHA-256 hashes.
+- review ZIP خارج المستودع يحتوي D68 evidence وpatch.
+
+### بوابات قبول D68
+
+ينجح D68 فقط إذا تحققت جميع الشروط التالية:
+
+- وجود 34 unique frozen candidate key بالضبط.
+- عدم غياب أي candidate.
+- عدم إضافة أي candidate.
+- احتواء كل candidate على exact current source وclaim evidence.
+- حصول كل candidate على first-pass وverification-pass classification.
+- حصول كل candidate على final classification واحدة.
+- وجود specific evidence-based rationale لكل final classification.
+- احتواء كل عنصر `NON_ATOMIC_REPAIR_REQUIRED` على propositionين على
+  الأقل مفصولين صراحةً ويمكن الحكم عليهما باستقلال.
+- شرح كل عنصر `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` لماذا يشوه
+  splitting أو يجزئ semantic unit واحدة.
+- بقاء جميع proposed proposition segments مدعومة من source.
+- صفر unsupported technical information جديدة.
+- الحفاظ في التحليل على uncertainty وnegation وapproximation وأخطاء
+  المرشح.
+- تسجيل أي pass disagreement صراحةً وحله، وإلا يكون التنفيذ `BLOCKED`.
+- معاملة former count البالغ 30 كسياق historical audit لا required
+  outcome.
+- deterministic candidate extraction عبر clean run مرتين.
+- بقاء Gold v1 دون تغيير.
+- عدم إنشاء أو تعديل Gold v2.
+- عدم تعديل `decisions.md` أثناء تنفيذ D68.
+- عدم تغيير config أو production code أو backend أو frontend أو
+  `model.selected` أو `inference.py`.
+- عدم حدوث training أو generation أو tokenizer preflight أو O9
+  evaluation أو production integration.
+
+### تغييرات المستودع المسموحة أثناء تنفيذ D68 اللاحق
+
+- D68 candidate-extraction وaudit tooling.
+- D68 JSON وCSV وMarkdown وmanifest evidence.
+- minimal documentation تصف كيفية إعادة إنتاج adjudication evidence.
+
+### Non-goals صريحة
+
+يجب ألا يقوم D68 بما يلي:
+
+- تعديل أي من source answers الـ222.
+- تعديل أي target claim.
+- إنشاء Gold v2.
+- تحديد ASR model quality.
+- إنشاء ASR augmentation.
+- تدريب أو اختيار model.
+- تقييم O9.
+- تعديل production integration.
+
+التسلسل اللاحق:
+
+- يجوز لـD69 تسجيل وتنفيذ Gold Corpus v2 repair باستخدام canonical D68
+  classifications.
+- يجوز لـD70 تسجيل empirical Egyptian ASR pilot مسبقًا.
+- يجوز لـD71 تسجيل model training مسبقًا فقط بعد نجاح التدقيقين
+  المستقلين للـrepaired Gold corpus وASR-realistic dataset اللاحقة.
+
 
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
@@ -2494,7 +2764,8 @@ User-facing language boundary:
 | **D64 — Sanitized Full-Corpus Retraining** | اكتمل التدريب، best checkpoint عند step 617 وeval loss 1.750646؛ التنفيذ PASS والجودة غير معتمدة. | ✅ (EXECUTION PASS) |
 | **D65 — Validation/O9 Generation Audit** | اكتمل تقييم 58 حالة؛ التنفيذ PASS والجودة FAIL مع إطلاق CONTENT/FORMAT/LENGTH/REPETITION. | ✅ (EXECUTION PASS / QUALITY FAIL) |
 | **D66 — Controlled PEFT Repair Pilot** | اكتمل الذراعان؛ AraT5 لم ينتج checkpoint مؤهلًا وmT5 step 72 فشل quality gates، ولم يُستخدم O9 في generation أو الاختيار. | ✅ (EXECUTION PASS / NO REPAIR CANDIDATE) |
-| **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | إصلاح targets في Gold v2 منفصل مع تثبيت sources/split وعقد raw_transcript، دون تدريب أو generation أو integration. | ⛔ (PREREGISTERED / NOT EXECUTED) |
+| **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | توقفت محاولة التنفيذ في Phase 0 قبل أي corpus modification لأن exact four exclusions من atomicity candidate set لم تكن مسجلة. | ⛔ (BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION) |
+| **D68 — Canonical Atomicity Adjudication Recovery** | تصنيف canonical ثنائي المرور للـ34 structural candidate دون تعديل source أو target أو إنشاء Gold v2، والعدد النهائي غير مفروض أن يكون 30. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -2504,6 +2775,7 @@ User-facing language boundary:
 ---
 
 ## سجل التغييرات 
+- **v2.32 (19 يوليو 2026):** تسجيل محاولة تنفيذ **D67** بنتيجة `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`: تحقق Phase 0 من 222 example و1,836 claim وsplit 189/33 والـ273 self-containment flags، واستعاد 34 structural atomicity candidate، لكنه لم يجد evidence تحدد أي أربعة استُبعدت من former informal count البالغ 30؛ لذلك توقف قبل أي corpus change. إضافة **D68** كتسجيل مسبق لاسترداد canonical atomicity adjudication عبر تصنيف ثنائي المرور لجميع الـ34، مع منع فرض نتيجة 30 ومنع تعديل corpus أو إنشاء Gold v2.
 - **v2.31 (18 يوليو 2026):** إغلاق **D66** بنتيجة `EXECUTION PASS / NO REPAIR CANDIDATE`: اكتمل تدريب AraT5-base وmT5-base LoRA على split المجمد مع نجاح tokenizer preflights وبقاء O9 خارج generation والmetrics والاختيار. لم ينتج AraT5 checkpoint مؤهلًا، وفشل mT5 step 72 بوابات الجودة والبنية، لذلك لا winner ولا اعتماد إنتاجي ويبقى Q6 مفتوحًا. إضافة **D67** كتسجيل مسبق لإصلاح targets في Gold v2 منفصل مع إبقاء 222 source answers وtrain/validation split دون تغيير، adjudication للـ273 self-containment flags وإصلاح 30 non-atomic claims والإضافات الثلاث غير المدعومة، وتجميد عقد `question_id` + `raw_transcript` قبل أي تدريب لاحق.
 - **v2.30 (18 يوليو 2026):** إغلاق **D65** بنتيجة `EXECUTION PASS / QUALITY FAIL`: تم تقييم 33 validation و25 O9 deterministically مع hash verification وdeterminism PASS، لكن exact match كان صفرًا في splitين، وmedian edit similarity كان `0.519` للـvalidation و`0.160` لـO9، مع severe repetition `42.4%/52%` وإطلاق CONTENT/FORMAT/LENGTH/REPETITION كلها. حظر checkpoint D64 وظيفيًا، وإعادة فتح Q6. إضافة **D66** كتجربة PEFT/LoRA مضبوطة single-seed تقارن AraT5-base وmT5-base على train/validation فقط، مع frozen D64 control وبوابات إصلاح صريحة، ومنع استخدام O9 أو تعديل production code/config.
 - **v2.29 (18 يوليو 2026):** إغلاق **D64** بنتيجة `EXECUTION PASS`: تدريب full-corpus من AraT5-base جديد على GPU واحد وfloat32 حتى step 660، early stopping عند epoch 55.58، وأفضل checkpoint عند step 617 بـ `eval_loss=1.750646`. إعادة التحميل وفحص tied weights والحفظ نجحت، لكن smoke outputs على validation/O9 أظهرت تشوهًا وتكرارًا؛ لذلك لا يوجد QUALITY PASS. توثيق حفظ checkpoint كـ Kaggle Dataset خاص Version 1، وإضافة **D65** كتقييم deterministic كامل للـ58 حالة مع metrics للطول والترقيم والتكرار والتشابه قبل أي قرار إصلاح D66.
