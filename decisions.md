@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D68)
-**الإصدار:** v2.32 — 19 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D69)
+**الإصدار:** v2.33 — 19 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -2742,6 +2742,554 @@ source ويمكن الحكم على كل منهما بصورة مستقلة؛ أ
   المستقلين للـrepaired Gold corpus وASR-realistic dataset اللاحقة.
 
 
+### إغلاق D68 — نتيجة التنفيذ المصححة
+
+**الحالة النهائية:** `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`
+
+**Starting Git HEAD:**
+`2e29c065222b72633250c2402604f7aed545ec7d`
+
+**Evidence commit:**
+`1f326baa901ec9bf5021eb6394da4008efcc64a6`
+
+#### Execution evidence
+
+- أعاد parser إنتاج **222 example** و**1,836 Gold v1 claim** بالضبط.
+- حُلَّت جميع frozen candidate keys الـ34 بالضبط.
+- missing candidates = `0`.
+- extra candidates = `0`.
+- بقي Gold v1 دون تغيير.
+- لم يُنشأ Gold v2.
+- لم يحدث access أو inspection لـO9.
+- لم يحدث training أو inference أو generation أو tokenizer preflight أو
+  production integration.
+
+#### Corrected two-pass methodology
+
+- خُزِّنت first semantic pass وverification pass في moduleين منفصلين.
+- First-pass specification:
+  `scripts/d68_atomicity_first_pass.py`.
+- First-pass SHA-256:
+  `78d230a10d2dc60da21437dc21b7cab965937884f6edb45eacdf946226525977`.
+- Verification specification:
+  `scripts/d68_atomicity_verification_pass.py`.
+- Verification SHA-256:
+  `5858cb14c3d2633e844582eeef144284d1d754153b4f6a208280ffd005ad942b`.
+- عالج verification candidates بترتيب frozen order المعكوس.
+- لم يستورد verification first-pass module أو نتائجه.
+- أُلفت independent-judgeability answers صراحةً ولم تُشتق من
+  classification.
+- احتوت كل proposed proposition على exact literal source excerpt.
+- first-pass propositions = `64`.
+- first-pass propositions ذات literal source support = `64`.
+- first-pass unsupported propositions = `0`.
+- verification propositions = `64`.
+- verification propositions ذات literal source support = `64`.
+- verification unsupported propositions = `0`.
+
+#### Pass comparison
+
+- agreements = `30`.
+- disagreements = `4`.
+- resolved disagreements = `4`.
+- unresolved disagreements = `0`.
+- resolved disagreement keys:
+  - `CS-003:1`.
+  - `SE-035:1`.
+  - `GN-015:3`.
+  - `GN-037:2`.
+
+#### Canonical final result
+
+- `NON_ATOMIC_REPAIR_REQUIRED` = **24**.
+- `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` = **10**.
+- total = **34**.
+- تغيّرت النتيجة المصححة من provisional `20/14` إلى canonical `24/10`.
+- لم يُستخدم former informal count البالغ 30 كهدف.
+- لم تُستخدم provisional result البالغة 20/14 كهدف.
+- نتج canonical result من تطبيق preregistered independent-judgeability
+  rubric.
+
+Canonical `NON_ATOMIC_REPAIR_REQUIRED` keys:
+
+- `SE-049:6`.
+- `CS-003:1`.
+- `SE-003:5`.
+- `SE-033:1`.
+- `GN-006:5`.
+- `DA-038:4`.
+- `DA-038:5`.
+- `DA-049:5`.
+- `CS-010:1`.
+- `CS-049:4`.
+- `SE-035:1`.
+- `GN-002:1`.
+- `DS-038:1`.
+- `CS-032:2`.
+- `SE-030:5`.
+- `GN-009:4`.
+- `DA-037:5`.
+- `DA-041:7`.
+- `SE-029:5`.
+- `SE-032:2`.
+- `SE-032:3`.
+- `SE-032:8`.
+- `GN-037:2`.
+- `GN-048:4`.
+
+Canonical `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` keys:
+
+- `DS-003:3`.
+- `GN-028:2`.
+- `GN-046:1`.
+- `GN-002:3`.
+- `GN-038:3`.
+- `DA-017:6`.
+- `CS-001:4`.
+- `SE-047:3`.
+- `SE-022:4`.
+- `GN-015:3`.
+
+#### Determinism and approved review evidence
+
+- أنتج تشغيلان كاملان من clean temporary directories file lists وcontent
+  وsizes وSHA-256 hashes متطابقة.
+- طابق repository output ناتج clean run.
+- تحققت جميع output-manifest entries.
+- approved external review ZIP size = **254,902 bytes**.
+- approved external review ZIP SHA-256:
+  `d2c51898e6a7bfe4e7264fdaff6132054fa900eb8f74a115507d096773fac127`.
+
+#### Methodological limitation
+
+- فُصلت المرحلتان إجرائيًا وخُزنتا بصورة مستقلة.
+- أُلفت المرحلتان عبر Codex execution environment نفسه.
+- لا تعادلان annotations من human annotators مستقلين.
+- يثبت D68 auditable engineering adjudication set، ولا يمثل human
+  inter-annotator agreement study.
+- يجب أن يبقى هذا القيد ظاهرًا، ويحظر وصف فصل المرحلتين بأنه human
+  annotation independence.
+
+#### D68 conclusion
+
+- حُلَّ canonical atomicity blocker الذي أوقف D67.
+- يجوز لإصلاح Gold v2 لاحق أن يقسم claims الـ24 canonical
+  repair-required بالضبط.
+- يحظر تقسيم false-positive claims العشرة لمجرد تشغيل D68 structural
+  detector.
+- لا يجيز D68 نفسه training أو O9 evaluation أو inference integration أو
+  production use.
+
+
+## D69 — Gold Corpus v2 Target Repair, Self-Containment Adjudication, and Deterministic Build
+
+**الحالة:** `PREREGISTERED / NOT EXECUTED`
+
+### Purpose
+
+إنشاء Gold v2 candidate corpus منفصل ذي إصدار محدد، مع إبقاء source
+answers المصرية/غير الرسمية الـ222 byte-for-byte كما هي، وإصلاح target-label
+defects المتحقق منها فقط.
+
+يجب أن يحل D69:
+
+1. verified unsupported target additions الثلاثة.
+2. canonical non-atomic claims الـ24 من D68.
+3. conservative self-containment flags الـ273.
+4. أي self-containment issue تُدخلها replacement claim في D69.
+
+لا ينشئ D69 ASR-realistic source variants ولا يدرب model.
+
+### Authoritative inputs
+
+يتكون Gold v1 بالضبط من:
+
+- `results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md`.
+- `results/pilot_llm_assisted_batch2_DRAFT_UNREVIEWED.md`.
+- `results/pilot_llm_assisted_batch3_DRAFT_UNREVIEWED.md`.
+- `results/pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md`.
+- `results/pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md`.
+
+Frozen Gold v1 SHA-256 values:
+
+- batch1:
+  `2ae700cbeacd6ec9b04efa686a4caae02a240363fe845a6f9760e45850ef172c`.
+- batch2:
+  `b0da2c26ec1456ba656045813e3373041b793d9561b9b7862ffc49c5af24f274`.
+- batch3:
+  `5e201144828e1d70b28e2780d10e93dc05d42792160458ea5fd9358f973591cc`.
+- batch4:
+  `5a2226e9ffdacb969027d5635cc3f31b6eeb4a233e5ab66aead4b3bb75695761`.
+- batch5:
+  `fea0be20aabfae9004b249cbc968aa7f11aeecc1b4423f1aabc0458cf6523163`.
+
+Frozen corpus properties:
+
+- 222 question IDs.
+- 1,836 Gold v1 claims.
+- 189 train question IDs.
+- 33 validation question IDs.
+- split seed = `42`.
+- O9 excluded.
+
+Canonical atomicity evidence:
+
+- `results/d68_atomicity/d68_atomicity_adjudication.json`.
+- `results/d68_atomicity/d68_atomicity_adjudication.csv`.
+- D68 evidence commit:
+  `1f326baa901ec9bf5021eb6394da4008efcc64a6`.
+
+### Gold v2 location
+
+ينشأ Gold v2 فقط تحت:
+
+`results/gold_v2/`
+
+- تُنشأ خمسة versioned Markdown corpus files تقابل batches Gold v1 الخمسة
+  one-to-one.
+- تبقى ملفات Gold v1 immutable.
+- لا يُعاد توجيه training أو production configuration إلى Gold v2 أثناء
+  D69.
+
+### Stable repair plan
+
+- تُربط جميع إصلاحات D69 بـGold v1 الأصلي باستخدام:
+  `question_id + original one-based claim index`.
+- يحظر تطبيق الإصلاحات عبر sequential line edits أو indexes تتغير بعد split
+  سابق.
+- يجب إنشاء consolidated repair plan واحد قبل توليد Gold v2.
+- لا يكون لكل original claim أكثر من consolidated final repair record واحد.
+- يدعم repair record أسبابًا متعددة عبر `repair_origin` بالقيم:
+  - `UNSUPPORTED_ADDITION_REMOVAL`.
+  - `ATOMICITY_SPLIT`.
+  - `SELF_CONTAINMENT_REWRITE`.
+  - `COMBINED`.
+- يُعاد بناء final corpus من Gold v1 وconsolidated repair plan في
+  deterministic pass واحدة.
+
+### Mandatory unsupported-addition repairs
+
+#### `DS-009`
+
+- إزالة `WCSS` من target.
+- الحفاظ على أن المرشح لا يتذكر الاختصار.
+- يحظر inference أو إضافة abbreviation أو method label بديلة.
+
+#### `DS-007`
+
+- إزالة `Bootstrap` من target.
+- الحفاظ على الوصف الغامض وغير المؤكد لـresampling في source.
+- يحظر inference أو إضافة technique name مفقود.
+
+#### `SE-050`
+
+- إزالة `KISS` من target.
+- الحفاظ على أن المرشح لا يتذكر الاسم المختصر.
+- يحظر inference أو إضافة principle name بديل.
+
+يجب أن تتضمن كل replacement exact supporting excerpts من source answer.
+
+### Atomicity repairs
+
+- atomicity repair universe مجمد على canonical
+  `NON_ATOMIC_REPAIR_REQUIRED` keys الـ24 من D68 بالضبط.
+- يجب استبدال كل عنصر من الـ24 بما لا يقل عن claimين independently
+  judgeable ومدعومين من source.
+- يُستخدم D68 كـclassification evidence، وليس إذنًا لنسخ provisional
+  segmentation دون adjudication.
+- تُؤلف final replacement segmentation واحدة لـGold v2.
+- يجب أن تكون كل resulting claim atomic.
+- يجب أن تكون كل resulting claim self-contained.
+- يجب أن تتضمن كل resulting claim exact source-support excerpt في repair
+  evidence.
+- تُحفظ جميع source-supported propositions.
+- تُحفظ uncertainty وnegation وapproximation وhedging وأخطاء المرشح.
+- يحظر إضافة technical explanations أو labels أو causes أو formulas أو
+  examples أو corrections غير موجودة في source.
+- يعاد ترقيم complete affected target sequentially.
+
+Canonical false positives العشرة:
+
+- لا تُقسم لمجرد atomicity.
+- لا يجوز تغييرها إلا عند تطبيق confirmed self-containment repair أو
+  unsupported-addition repair مستقل.
+- يجب أن يسجل أي تغيير من هذا النوع صراحةً أن atomicity بقيت false
+  positive.
+
+### Self-containment universe
+
+قبل أي editing، يجب إعادة إنتاج frozen conservative detector result بالضبط:
+
+- 273 original Gold v1 flags.
+- 109 question IDs.
+
+- يُربط كل flag بـoriginal Gold v1 question ID وoriginal one-based claim
+  index.
+- إذا تعذر إعادة إنتاج exact 273-item universe، يتوقف التنفيذ بنتيجة
+  `BLOCKED` قبل corpus construction.
+
+Allowed final self-containment classifications:
+
+#### 1. `CONFIRMED_FIXED`
+
+يستخدم عندما يتعذر فهم original claim وتقييمها بصورة مستقلة دون antecedent
+أو entity مفقودة.
+
+يجب أن تقوم final replacement بما يلي:
+
+- تسمية required subject أو entity صراحةً.
+- البقاء مدعومة مباشرة من source.
+- الحفاظ على المعنى الأصلي للمرشح.
+- تجنب استيراد unsupported context.
+
+#### 2. `FALSE_POSITIVE_UNCHANGED`
+
+يستخدم عندما تكون claim قابلة للتفسير بصورة مستقلة بالفعل، ويكون detector
+قد أطلق بسبب superficial wording.
+
+- يجب أن يشرح record لماذا claim self-contained رغم detector hit.
+- flag التي تُصلح عبر atomicity أو unsupported-addition repair تحصل أيضًا
+  على `CONFIRMED_FIXED` إضافة إلى `repair_origin` المقابل.
+
+### Separate self-containment passes
+
+تتطلب flags الـ273 semantic passين مخزنين بصورة منفصلة.
+
+First-pass specification:
+
+- تُخزن في dedicated module أو artifact.
+- تعالج frozen 273 flags بترتيبها المجمد.
+
+Verification-pass specification:
+
+- تُخزن في module أو artifact منفصل.
+- تعالج flags الـ273 نفسها بالترتيب المعكوس.
+- لا تستورد first-pass classifications أو rationales أو replacements.
+- يجوز أن تستورد فقط frozen identifiers وconstants وdeterministic
+  extraction helpers.
+
+لكل pass وflag، يسجل record:
+
+- original flag key.
+- exact source answer.
+- exact original claim.
+- adjacent claims اللازمة للسياق.
+- classification.
+- rationale.
+- exact source excerpts.
+- هل يقترح rewrite.
+- proposed replacement text عند انطباقه.
+- uncertainty preservation.
+- negation preservation.
+- approximation preservation.
+- unsupported information added.
+
+- يجب أن يكون verification rationale مؤلفًا بصورة مستقلة.
+- يحظر توليد rationales المرحلتين من shared semantic field واحد.
+
+Disagreements:
+
+- تُحفظ نتائج passين كاملتين.
+- يُنشأ resolution record منفصل.
+- يتضمن exact source evidence.
+- يشرح صراحةً هل يلزم external antecedent.
+- تجعل unresolved disagreements نتيجة D69 هي `BLOCKED`.
+
+هذه procedural engineering reviews منفصلة عبر Codex environment نفسه،
+وليست independent human annotations. يجب تسجيل هذا القيد في D69 evidence.
+
+### Final repair consolidation
+
+بعد atomicity وunsupported-addition وself-containment adjudication:
+
+- تُدمج overlapping repairs مقابل original Gold v1 claim key.
+- يحظر تطبيق repair على text عدلته repair أخرى مسبقًا.
+- تنتج final replacement list واحدة لكل changed original claim.
+- يجب أن يكون لكل replacement claim exact source support.
+- يجب أن تكون كل replacement claim atomic وself-contained.
+- يجب أن يكون لكل modified question complete before/after report.
+- تبقى كل original source-supported fact ممثلة.
+- يحظر أن تصحح replacement خطأ المرشح صمتًا.
+
+### Egyptian target-user contract
+
+- تبقى Gold v1 source answers الـ222 byte-for-byte دون تغيير.
+- تمثل Egyptian/informal written answers مع Arabic-English code-switching.
+
+يحظر على D69:
+
+- تحويل sources إلى MSA.
+- إعادة كتابة Egyptian wording.
+- normalization للـsource answers.
+- إضافة synthetic ASR errors.
+- استبدال Latin terms في source.
+- عرض internal normalized target claims كلغة UI موجهة للمستخدم.
+
+يجوز إصلاح target claims فقط.
+
+يجوز أن تستخدم target claims clear normalized Arabic مناسبة لـinternal
+retrieval وNLI، بشرط الحفاظ الدقيق على معنى Egyptian source.
+
+### D69 required artifacts
+
+يجب أن ينتج تنفيذ D69:
+
+1. Gold v1 immutable manifest.
+2. خمسة Gold v2 candidate Markdown files.
+3. consolidated machine-readable repair plan.
+4. mandatory unsupported-addition repair report.
+5. atomicity repair report للـ24 canonical keys بالضبط.
+6. atomicity false-positive preservation report للـ10 canonical false
+   positives.
+7. self-containment first-pass evidence.
+8. self-containment verification-pass evidence.
+9. self-containment disagreement-resolution evidence.
+10. self-containment adjudication table تحتوي 273 original flag بالضبط.
+11. full before/after report لكل modified question ID.
+12. source-support mapping لكل replacement claim.
+13. deterministic corpus audit JSON.
+14. human-readable audit Markdown.
+15. frozen split manifest.
+16. tokenizer preflight report.
+17. changed-path list.
+18. output manifest يتضمن relative path وsize وSHA-256 وpurpose.
+19. deterministic build-and-audit script.
+20. external review ZIP خارج repository.
+
+يجب تجنب variable timestamps في deterministic artifacts.
+
+### D69 acceptance gates
+
+ينجح D69 فقط إذا تحققت جميع الشروط التالية بالتنفيذ الفعلي.
+
+#### Corpus identity
+
+- وجود 222 Gold v2 question ID بالضبط.
+- تطابق question-ID set مع Gold v1.
+- تطابق source answers الـ222 byte-for-byte مع Gold v1.
+- وجود 189 frozen train ID بالضبط.
+- وجود 33 frozen validation ID بالضبط.
+- split seed = `42`.
+- zero train/validation overlap.
+- zero train/O9 overlap.
+- zero validation/O9 overlap.
+
+#### Gold v1 protection
+
+- بقاء SHA-256 hashes لملفات Gold v1 الخمسة دون تغيير.
+- عدم تعديل أو نقل أو rename أو حذف أي Gold v1 file.
+
+#### Mandatory unsupported additions
+
+- غياب `WCSS` من repaired `DS-009` target.
+- غياب `Bootstrap` من repaired `DS-007` target.
+- غياب `KISS` من repaired `SE-050` target.
+- بقاء source uncertainty أو inability to remember ممثلة.
+
+#### Atomicity
+
+- حصول canonical repair-required keys الـ24 بالضبط على atomicity repairs.
+- إنتاج كل repaired key claimين independently judgeable على الأقل.
+- عدم تقسيم أي من canonical false positives العشرة لمجرد atomicity.
+- zero unresolved atomicity item.
+- zero invalid numbering.
+- zero exact duplicate claims.
+
+#### Self-containment
+
+- تمثيل 273 original flag بالضبط.
+- no missing or extra original flag.
+- حصول كل flag على classifications من passين.
+- حصول كل flag على resolved final classification واحدة.
+- حصول كل `CONFIRMED_FIXED` item على final replacement.
+- حصول كل `FALSE_POSITIVE_UNCHANGED` item على specific rationale.
+- unresolved self-containment disagreements = `0`.
+- قابلية كل confirmed replacement للفهم مستقلًا.
+- اقتصار أي final detector hit على documented false positive.
+- zero new unadjudicated self-containment flags.
+
+#### Faithfulness
+
+- امتلاك كل replacement claim exact literal source-support evidence.
+- unsupported replacement claims = `0`.
+- verified source facts omitted = `0`.
+- candidate mistakes silently corrected = `0`.
+- technical terms inferred أو completed دون source support = `0`.
+- الحفاظ على previously identified strong uncertainty.
+- الحفاظ على semantic negation في كل modified negation-bearing case.
+- الحفاظ على approximation وhedging.
+
+#### Data hygiene
+
+- zero metadata leakage.
+- sequential numbering لكل target.
+- zero exact duplicate claims.
+- deterministic parser وbuilder output.
+
+#### Determinism
+
+- تشغيل complete builder وaudit مرتين من clean temporary directories.
+- تطابق generated corpus files وevidence files وsizes وSHA-256 values.
+- تطابق repository output مع verified clean-run output.
+
+#### Tokenizer-only preflight
+
+- `UBC-NLP/AraT5-base`.
+- `google/mt5-base`.
+- max source length = `512`.
+- max target length = `512`.
+- zero source UNK.
+- zero target UNK.
+- zero source truncation.
+- zero target truncation.
+- يحظر تحميل model weights.
+- يحظر training أو generation.
+
+#### Scope
+
+- بقاء `decisions.md` دون تغيير أثناء D69 execution.
+- no config changes.
+- no production code changes.
+- no backend or frontend changes.
+- no `model.selected` change.
+- no `inference.py` change.
+- no O9 access أو generation أو metrics أو manual inspection.
+- no training.
+- no production integration.
+- no staging أو commit أو push أثناء execution.
+
+إذا تعذر تحقق أي mandatory gate:
+
+- تُسجل نتيجة D69 `BLOCKED` أو `FAIL` بحسب طبيعة الحالة.
+- يحظر ادعاء `PASS`.
+- يُحتفظ بدليل exact blocker.
+- يحظر الانتقال إلى model training.
+
+### Explicit non-goals
+
+يجب ألا يقوم D69 بما يلي:
+
+- train أو select model.
+- run model generation.
+- evaluate O9.
+- create ASR-realistic source variants.
+- implement ASR.
+- modify أي من source answers الـ222.
+- repoint training configuration إلى Gold v2.
+- modify production inference أو backend integration.
+- declare corpus أو model production-ready.
+
+Later sequence:
+
+- يجوز لـD70 تسجيل empirical Egyptian ASR pilot وASR-realistic
+  source-augmentation dataset منفصلة مسبقًا.
+- يجوز لـD71 تسجيل model training جديد مسبقًا فقط بعد أن ينجح Gold v2
+  والـASR-realistic dataset اللاحقة في independent gates الخاصة بكل منهما.
+
+**D69 status at the end of this documentation task:**
+`PREREGISTERED / NOT EXECUTED`.
+
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -2765,7 +3313,8 @@ source ويمكن الحكم على كل منهما بصورة مستقلة؛ أ
 | **D65 — Validation/O9 Generation Audit** | اكتمل تقييم 58 حالة؛ التنفيذ PASS والجودة FAIL مع إطلاق CONTENT/FORMAT/LENGTH/REPETITION. | ✅ (EXECUTION PASS / QUALITY FAIL) |
 | **D66 — Controlled PEFT Repair Pilot** | اكتمل الذراعان؛ AraT5 لم ينتج checkpoint مؤهلًا وmT5 step 72 فشل quality gates، ولم يُستخدم O9 في generation أو الاختيار. | ✅ (EXECUTION PASS / NO REPAIR CANDIDATE) |
 | **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | توقفت محاولة التنفيذ في Phase 0 قبل أي corpus modification لأن exact four exclusions من atomicity candidate set لم تكن مسجلة. | ⛔ (BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION) |
-| **D68 — Canonical Atomicity Adjudication Recovery** | تصنيف canonical ثنائي المرور للـ34 structural candidate دون تعديل source أو target أو إنشاء Gold v2، والعدد النهائي غير مفروض أن يكون 30. | ⛔ (PREREGISTERED / NOT EXECUTED) |
+| **D68 — Canonical Atomicity Adjudication Recovery** | استُعيد canonical atomicity set للـ34 candidate بمنهجية passين منفصلين إجرائيًا؛ النتيجة 24 repair-required و10 false positives، مع 4/4 disagreements محلولة و0 unsupported proposition. | ✅ (EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED) |
+| **D69 — Gold Corpus v2 Target Repair** | إنشاء Gold v2 منفصل بإصلاح targets فقط: unsupported additions الثلاثة، atomicity keys الـ24، وself-containment flags الـ273 عبر passين منفصلين، مع إبقاء source answers المصرية الـ222 byte-for-byte دون تغيير. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -2775,6 +3324,7 @@ source ويمكن الحكم على كل منهما بصورة مستقلة؛ أ
 ---
 
 ## سجل التغييرات 
+- **v2.33 (19 يوليو 2026):** إغلاق **D68** بنتيجة `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`: عالج passان منفصلان إجرائيًا الـ34 candidate، مع 64/64 proposition ذات literal source support في كل pass، و30 agreement و4 disagreements محلولة و0 unresolved؛ النتيجة canonical هي 24 `NON_ATOMIC_REPAIR_REQUIRED` و10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`، وليست provisional 20/14 أو former target 30. تسجيل قيد أن passين من Codex environment نفسه وليسا human inter-annotator study. إضافة **D69** كتسجيل مسبق لبناء Gold v2 تحت `results/gold_v2/` بإبقاء source answers المصرية الـ222 byte-for-byte، وإصلاح unsupported additions الثلاثة وatomicity keys الـ24 وself-containment flags الـ273 عبر consolidated original-index repair plan، دون training أو O9 أو ASR augmentation أو production integration.
 - **v2.32 (19 يوليو 2026):** تسجيل محاولة تنفيذ **D67** بنتيجة `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`: تحقق Phase 0 من 222 example و1,836 claim وsplit 189/33 والـ273 self-containment flags، واستعاد 34 structural atomicity candidate، لكنه لم يجد evidence تحدد أي أربعة استُبعدت من former informal count البالغ 30؛ لذلك توقف قبل أي corpus change. إضافة **D68** كتسجيل مسبق لاسترداد canonical atomicity adjudication عبر تصنيف ثنائي المرور لجميع الـ34، مع منع فرض نتيجة 30 ومنع تعديل corpus أو إنشاء Gold v2.
 - **v2.31 (18 يوليو 2026):** إغلاق **D66** بنتيجة `EXECUTION PASS / NO REPAIR CANDIDATE`: اكتمل تدريب AraT5-base وmT5-base LoRA على split المجمد مع نجاح tokenizer preflights وبقاء O9 خارج generation والmetrics والاختيار. لم ينتج AraT5 checkpoint مؤهلًا، وفشل mT5 step 72 بوابات الجودة والبنية، لذلك لا winner ولا اعتماد إنتاجي ويبقى Q6 مفتوحًا. إضافة **D67** كتسجيل مسبق لإصلاح targets في Gold v2 منفصل مع إبقاء 222 source answers وtrain/validation split دون تغيير، adjudication للـ273 self-containment flags وإصلاح 30 non-atomic claims والإضافات الثلاث غير المدعومة، وتجميد عقد `question_id` + `raw_transcript` قبل أي تدريب لاحق.
 - **v2.30 (18 يوليو 2026):** إغلاق **D65** بنتيجة `EXECUTION PASS / QUALITY FAIL`: تم تقييم 33 validation و25 O9 deterministically مع hash verification وdeterminism PASS، لكن exact match كان صفرًا في splitين، وmedian edit similarity كان `0.519` للـvalidation و`0.160` لـO9، مع severe repetition `42.4%/52%` وإطلاق CONTENT/FORMAT/LENGTH/REPETITION كلها. حظر checkpoint D64 وظيفيًا، وإعادة فتح Q6. إضافة **D66** كتجربة PEFT/LoRA مضبوطة single-seed تقارن AraT5-base وmT5-base على train/validation فقط، مع frozen D64 control وبوابات إصلاح صريحة، ومنع استخدام O9 أو تعديل production code/config.
