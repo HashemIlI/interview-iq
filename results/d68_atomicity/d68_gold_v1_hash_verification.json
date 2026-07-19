@@ -1,0 +1,55 @@
+{
+  "git_head": "2e29c065222b72633250c2402604f7aed545ec7d",
+  "parser": "interview_iq.decomposition.dataset_builder._parse_file",
+  "examples": 222,
+  "claims": 1836,
+  "files": [
+    {
+      "relative_path": "results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md",
+      "size_bytes": 29281,
+      "sha256": "2ae700cbeacd6ec9b04efa686a4caae02a240363fe845a6f9760e45850ef172c",
+      "parsed_questions": 10,
+      "included_questions": 10,
+      "included_claims": 90,
+      "unchanged": true
+    },
+    {
+      "relative_path": "results/pilot_llm_assisted_batch2_DRAFT_UNREVIEWED.md",
+      "size_bytes": 128275,
+      "sha256": "b0da2c26ec1456ba656045813e3373041b793d9561b9b7862ffc49c5af24f274",
+      "parsed_questions": 50,
+      "included_questions": 50,
+      "included_claims": 461,
+      "unchanged": true
+    },
+    {
+      "relative_path": "results/pilot_llm_assisted_batch3_DRAFT_UNREVIEWED.md",
+      "size_bytes": 123981,
+      "sha256": "5e201144828e1d70b28e2780d10e93dc05d42792160458ea5fd9358f973591cc",
+      "parsed_questions": 50,
+      "included_questions": 50,
+      "included_claims": 434,
+      "unchanged": true
+    },
+    {
+      "relative_path": "results/pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md",
+      "size_bytes": 126141,
+      "sha256": "5a2226e9ffdacb969027d5635cc3f31b6eeb4a233e5ab66aead4b3bb75695761",
+      "parsed_questions": 50,
+      "included_questions": 49,
+      "included_claims": 389,
+      "unchanged": true
+    },
+    {
+      "relative_path": "results/pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md",
+      "size_bytes": 143276,
+      "sha256": "fea0be20aabfae9004b249cbc968aa7f11aeecc1b4423f1aabc0458cf6523163",
+      "parsed_questions": 63,
+      "included_questions": 63,
+      "included_claims": 462,
+      "unchanged": true
+    }
+  ],
+  "all_unchanged": true,
+  "o9_accessed": false
+}

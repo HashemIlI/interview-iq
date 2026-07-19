@@ -1,0 +1,79 @@
+{
+  "git_head": "2e29c065222b72633250c2402604f7aed545ec7d",
+  "artifacts": [
+    {
+      "relative_path": "scripts/d68_atomicity_adjudication.py",
+      "size_bytes": 6732,
+      "sha256": "b119bc5faf522d11ba29901674981e3fefc15e28c9b5ae7130bb7085ea340711",
+      "artifact_purpose": "Pure deterministic extraction of exact evidence from the five Gold v1 files."
+    },
+    {
+      "relative_path": "scripts/d68_atomicity_first_pass.py",
+      "size_bytes": 34839,
+      "sha256": "78d230a10d2dc60da21437dc21b7cab965937884f6edb45eacdf946226525977",
+      "artifact_purpose": "Authored first-pass evidence in frozen candidate order."
+    },
+    {
+      "relative_path": "scripts/d68_atomicity_verification_pass.py",
+      "size_bytes": 34880,
+      "sha256": "5858cb14c3d2633e844582eeef144284d1d754153b4f6a208280ffd005ad942b",
+      "artifact_purpose": "Separately authored verification evidence in reverse frozen order."
+    },
+    {
+      "relative_path": "scripts/d68_atomicity_resolutions.py",
+      "size_bytes": 5875,
+      "sha256": "1d4b7fe9d6682cc6a53282297bc5ada65e7e4ac0583fe981e1006928cac030aa",
+      "artifact_purpose": "Authored evidence-based resolution records for pass disagreements."
+    },
+    {
+      "relative_path": "scripts/d68_atomicity_run.py",
+      "size_bytes": 33616,
+      "sha256": "473ad1c3acd7c8abb28d49653492fb0889065a3122674d92094a462f44a8be25",
+      "artifact_purpose": "Separate-pass validator, comparator, acceptance audit, and deterministic renderer."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_atomicity_adjudication.json",
+      "size_bytes": 362509,
+      "sha256": "2ce2a465b5c34899d883e02e06fb275e24f1103fe3ace68956d8560e1d70c9ae",
+      "artifact_purpose": "Machine-readable separate passes, comparisons, resolutions, finals, and gates."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_atomicity_adjudication.csv",
+      "size_bytes": 141776,
+      "sha256": "3a52fe09691d806a58e2e52024717d0b25ffd524ed2405187252ebe279054601",
+      "artifact_purpose": "Exactly-34-row table retaining both complete pass outcomes and final results."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_atomicity_candidates.md",
+      "size_bytes": 172717,
+      "sha256": "29613156ad142a019a6b0bfe39bfabc5412d3affb8af84ac0b00925676e4e575",
+      "artifact_purpose": "Full source, claim, per-pass evidence, tests, resolution, and final report."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_atomicity_summary.md",
+      "size_bytes": 1067,
+      "sha256": "c598a6fc38cf0962cf1f7b30eea13ff1404dcc1105dc2cef3996fc284e220a1d",
+      "artifact_purpose": "Counts, grouped keys, disagreement totals, and outcome-neutrality statement."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_gold_v1_hash_verification.json",
+      "size_bytes": 1837,
+      "sha256": "dcef769c26db13bafcf3efcaa34e77232a0e08864b8cd290ac5e6e4d5782fdfd",
+      "artifact_purpose": "Gold v1 sizes, hashes, counts, and unchanged verification."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_acceptance_gates.md",
+      "size_bytes": 1663,
+      "sha256": "3ad23f638d275956efc243e3054350e01e6c5bb493b6d47da4240c81eb3db030",
+      "artifact_purpose": "Corrected internal D68 acceptance-gate report."
+    },
+    {
+      "relative_path": "results/d68_atomicity/d68_changed_paths.txt",
+      "size_bytes": 581,
+      "sha256": "a710256065ddbe9d2cae18141881002b803b04d9242faae78d6c6d75e6a57a18",
+      "artifact_purpose": "Complete permitted D68 repository path list."
+    }
+  ],
+  "manifest_scope_note": "Every permitted D68 repository artifact except this self-referential manifest is included.",
+  "deterministic": true
+}
