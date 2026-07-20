@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D70)
-**الإصدار:** v2.34 — 20 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D71)
+**الإصدار:** v2.35 — 20 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -3325,6 +3325,45 @@ Later sequence:
 الموديل بعد التدريب.
 
 
+## D71 — Paired-Corpus AraT5 Full Fine-Tuning Pre-Registration
+
+**الحالة:** ⛔ مسجّل مسبقًا — `PREREGISTERED / NOT EXECUTED`.
+
+الهدف:
+
+تنفيذ full fine-tuning لـ`UBC-NLP/AraT5-base` من base pretrained model
+جديد على paired corpus المعتمد في D70.
+
+العقد المجمد قبل التنفيذ:
+
+- Git baseline: commit `5c5b1e6`.
+- corpus: 444 example من 222 `question_id` فريدًا.
+- split: 378 training examples و66 validation examples، مع `seed=42`.
+- تبقى كل `original` وASR-aligned pair داخل الـsplit نفسه؛ يتم التقسيم
+  على `question_id`.
+- يبقى O9 منفصلًا ولا يدخل التدريب.
+- `GN-050` مستبعد من النسختين.
+- التدريب Full fine-tuning فقط، بدون LoRA.
+- يستخدم التنفيذ GPU واحدًا فقط.
+- يبدأ التدريب من base pretrained model جديد، ويحظر استخدام أي
+  checkpoint قديم.
+
+تفسير النتيجة:
+
+- نجاح التدريب يعني `EXECUTION/CHECKPOINT PASS` فقط.
+- لا يعني نجاح التنفيذ أو حفظ checkpoint تحقق `QUALITY PASS`.
+
+المخرجات المطلوبة:
+
+1. checkpoint ناتج عن التشغيل.
+2. ملف JSON يتضمن:
+   - environment.
+   - Git `HEAD`.
+   - أعداد corpus وtrain/validation.
+   - training history وevaluation history.
+   - best checkpoint.
+
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -3351,6 +3390,7 @@ Later sequence:
 | **D68 — Canonical Atomicity Adjudication Recovery** | استُعيد canonical atomicity set للـ34 candidate بمنهجية passين منفصلين إجرائيًا؛ النتيجة 24 repair-required و10 false positives، مع 4/4 disagreements محلولة و0 unsupported proposition. | ✅ (EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED) |
 | **D69 — Gold Corpus v2 Target Repair** | إنشاء Gold v2 منفصل بإصلاح targets فقط: unsupported additions الثلاثة، atomicity keys الـ24، وself-containment flags الـ273 عبر passين منفصلين، مع إبقاء source answers المصرية الـ222 byte-for-byte دون تغيير. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **D70 — Paired Original/ASR-Aligned Corpus Variants** | تجهيز 444 example من 222 question ID كنسختين paired، مع split على `question_id` وclaims-match guard ونجاح tokenizer smoke test. | ✅ (DATASET PIPELINE PASS) |
+| **D71 — Paired-Corpus AraT5 Full Fine-Tuning** | Full fine-tuning من `UBC-NLP/AraT5-base` جديد على paired corpus الخاص بـD70، من Git baseline `5c5b1e6` وعلى GPU واحد، مع فصل O9 ومنع checkpoints القديمة. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -3360,6 +3400,7 @@ Later sequence:
 ---
 
 ## سجل التغييرات 
+- **v2.35 (20 يوليو 2026):** إضافة **D71** كتسجيل مسبق لـfull fine-tuning من base `UBC-NLP/AraT5-base` جديد على paired corpus الخاص بـD70 عند Git baseline `5c5b1e6`: 444 example و222 `question_id`، split مجمّع 378/66 بـ`seed=42`، مع فصل O9 واستبعاد `GN-050` من النسختين، وبدون LoRA أو checkpoint قديم وعلى GPU واحد فقط. تثبيت أن نجاح التشغيل وحفظ checkpoint يعنيان `EXECUTION/CHECKPOINT PASS` لا `QUALITY PASS`، مع اشتراط checkpoint وJSON يسجل environment وGit HEAD والأعداد وtraining/eval history وbest checkpoint.
 - **v2.34 (20 يوليو 2026):** إضافة **D70** لتوثيق إدخال نسختي `original` و`asr_aligned` معًا كـpaired input variants: 444 example من 222 `question_id`، و`example_id` بلاحقتي `__original`/`__asr`، وتقسيم مجمّع على `question_id` نتج عنه 378 train و66 validation وصفر overlap. تثبيت تطابق الـClaims حرفيًا مع guard يرفع `ValueError` عند الاختلاف، واستبعاد `GN-050` من النسختين، ونجاح tokenizer الحقيقي لـ`UBC-NLP/AraT5-base` في إنتاج `input_ids` و`attention_mask` و`labels` للنسختين. نجحت اختبارات المشروع كاملة (149 passed). القرار خاص بتجهيز corpus ولا يثبت جودة الموديل بعد التدريب.
 - **v2.33 (19 يوليو 2026):** إغلاق **D68** بنتيجة `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`: عالج passان منفصلان إجرائيًا الـ34 candidate، مع 64/64 proposition ذات literal source support في كل pass، و30 agreement و4 disagreements محلولة و0 unresolved؛ النتيجة canonical هي 24 `NON_ATOMIC_REPAIR_REQUIRED` و10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`، وليست provisional 20/14 أو former target 30. تسجيل قيد أن passين من Codex environment نفسه وليسا human inter-annotator study. إضافة **D69** كتسجيل مسبق لبناء Gold v2 تحت `results/gold_v2/` بإبقاء source answers المصرية الـ222 byte-for-byte، وإصلاح unsupported additions الثلاثة وatomicity keys الـ24 وself-containment flags الـ273 عبر consolidated original-index repair plan، دون training أو O9 أو ASR augmentation أو production integration.
 - **v2.32 (19 يوليو 2026):** تسجيل محاولة تنفيذ **D67** بنتيجة `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`: تحقق Phase 0 من 222 example و1,836 claim وsplit 189/33 والـ273 self-containment flags، واستعاد 34 structural atomicity candidate، لكنه لم يجد evidence تحدد أي أربعة استُبعدت من former informal count البالغ 30؛ لذلك توقف قبل أي corpus change. إضافة **D68** كتسجيل مسبق لاسترداد canonical atomicity adjudication عبر تصنيف ثنائي المرور لجميع الـ34، مع منع فرض نتيجة 30 ومنع تعديل corpus أو إنشاء Gold v2.
