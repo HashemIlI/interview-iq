@@ -14,7 +14,7 @@ as interview_iq.nli.finetune). Actual values registered in decisions.md
 D57, measured empirically via scripts/probe_token_lengths.py.
 
 O9 (Gold/Validation set, D55) is never touched by this module -- only
-build_kd_dataset's 222-question corpus is split for train/val here. O9
+build_kd_dataset's paired variant corpus is split for train/val here. O9
 is reserved exclusively for the final gold evaluation in inference.py.
 
 Intended to run on Kaggle T4 (fp16 requires GPU); not a local-CPU-viable
@@ -55,9 +55,9 @@ def split_by_question_ids(
 ) -> tuple[list[KDExample], list[KDExample]]:
     """Question-ID-level split (same principle as
     interview_iq.nli.finetune.split_train_val, D26). Each KDExample here
-    already corresponds to exactly one question_id (build_kd_dataset does
-    not emit duplicate/pair rows per question), so a seeded shuffle + ratio
-    cut is sufficient -- no question_id can straddle both sides.
+    may contain multiple variants per question_id, so the seeded shuffle and
+    ratio cut operate on unique question IDs. All variants of a question are
+    then selected together, preventing cross-split leakage.
 
     Must only be called on build_kd_dataset's output. Never pass O9
     (Gold/Validation set, D55) in here -- it is not part of this split.
@@ -65,13 +65,11 @@ def split_by_question_ids(
     if not 0.0 < val_ratio < 1.0:
         raise ValueError(f"val_ratio must be in (0, 1), got {val_ratio!r}")
 
+    example_ids = [e.example_id for e in examples]
+    if len(example_ids) != len(set(example_ids)):
+        raise ValueError("split_by_question_ids requires unique example_id values")
+
     qids = sorted({e.question_id for e in examples})
-    if len(qids) != len(examples):
-        raise ValueError(
-            "split_by_question_ids expects exactly one example per "
-            f"question_id; got {len(examples)} examples but "
-            f"{len(qids)} unique question_ids"
-        )
 
     rng = random.Random(seed)
     shuffled = qids[:]
@@ -107,6 +105,9 @@ def examples_to_dataset(
     ds = Dataset.from_dict(
         {
             "question_id": [e.question_id for e in examples],
+            "example_id": [e.example_id for e in examples],
+            "variant": [e.variant for e in examples],
+            "source_file": [e.source_file for e in examples],
             "input_text": inputs,
             "target_text": targets,
         }
@@ -123,7 +124,7 @@ def examples_to_dataset(
         return model_inputs
 
     ds = ds.map(_tokenize, batched=True)
-    ds = ds.remove_columns(["question_id", "input_text", "target_text"])
+    ds = ds.remove_columns(["input_text", "target_text"])
     return ds
 
 

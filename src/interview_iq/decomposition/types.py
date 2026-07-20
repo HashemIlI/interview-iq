@@ -12,6 +12,7 @@ Phase 8 implementation, not this scaffold.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Literal
 
 
 @dataclass(frozen=True)
@@ -30,6 +31,9 @@ class KDExample:
     """One source-text → decomposed-claims training pair for the KD corpus."""
 
     question_id: str
+    example_id: str
+    variant: Literal["original", "asr_aligned"]
+    source_file: str
     source_text: str
     claims: list[str]
 

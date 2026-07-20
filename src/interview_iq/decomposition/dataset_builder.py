@@ -1,11 +1,10 @@
 """
 decomposition/dataset_builder.py — KD dataset builder.
 
-Q6 resolved (decisions.md D54): AraT5-base. D55: training corpus built
-via LLM-assisted offline generation (batch1-5, 222/225 questions -- 1
-excluded via EXCLUSION_MARKER, verified empirically via
-scripts/probe_token_lengths.py run, D57) with
-mandatory human review, sourced from Markdown files under `results/`.
+Q6 resolved (decisions.md D54): AraT5-base. The training corpus contains
+paired variants for each question: the original batch1-5 answer and its
+ASR-aligned counterpart under `results/asr_aligned_v1/`. GN-050 is
+excluded from both variants.
 O9 (results/o9_decomposition_exercises.md) is the Gold/Validation set
 (D55) and must never appear in the training corpus -- see
 `check_o9_not_in_training` below, modeled on the DS-014 guard in
@@ -38,6 +37,14 @@ TRAIN_FILENAMES = [
     "pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md",
     "pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md",
 ]
+
+ASR_ALIGNED_DIRNAME = "asr_aligned_v1"
+ASR_TRAIN_FILENAMES = [
+    filename.replace(".md", "_ASR_ALIGNED.md")
+    for filename in TRAIN_FILENAMES
+]
+
+EXCLUDED_QUESTION_IDS = {"GN-050"}
 
 # Marker within a question block that flags it as excluded from
 # training (e.g. GN-050 in batch4 -- behavioural question, no real
@@ -153,18 +160,41 @@ def build_gold_validation_set(corpus_path: Path) -> list[KDExample]:
     training -- see check_o9_not_in_training."""
     parsed = _parse_file(corpus_path / GOLD_FILENAME)
     return [
-        KDExample(question_id=p.question_id, source_text=p.source_text, claims=p.claims)
+        KDExample(
+            question_id=p.question_id,
+            example_id=f"{p.question_id}__original",
+            variant="original",
+            source_file=p.source_file,
+            source_text=p.source_text,
+            claims=p.claims,
+        )
         for p in parsed
     ]
+
+
+def _check_variant_claims_match(examples: list[KDExample]) -> None:
+    """Require parsed claims to be byte-for-byte equal across each variant pair."""
+    records_by_question: dict[str, dict[str, KDExample]] = {}
+    for example in examples:
+        records_by_question.setdefault(example.question_id, {})[example.variant] = example
+
+    for question_id, variants in records_by_question.items():
+        if {"original", "asr_aligned"} <= variants.keys():
+            if variants["original"].claims != variants["asr_aligned"].claims:
+                raise ValueError(
+                    f"Claims mismatch between original and ASR-aligned variants "
+                    f"for question_id {question_id}"
+                )
 
 
 def build_kd_dataset(
     corpus_path: Path,
     annotation_rules: AnnotationRules,
 ) -> list[KDExample]:
-    """Build the Knowledge-Distillation training corpus from the five
-    LLM-assisted, human-reviewed batch files (D55), excluding any
-    question explicitly flagged as excluded (e.g. GN-050).
+    """Build paired original/ASR-aligned Knowledge-Distillation records.
+
+    The original question_id is preserved for grouped train/validation
+    splitting. example_id identifies a unique variant record.
 
     `annotation_rules` enforcement here is a LIGHTWEIGHT SANITY CHECK,
     not a re-derivation of R1-R6 -- the actual rules were applied during
@@ -175,10 +205,18 @@ def build_kd_dataset(
     examples: list[KDExample] = []
     excluded_log: list[str] = []
 
-    for filename in TRAIN_FILENAMES:
-        for p in _parse_file(corpus_path / filename):
-            if p.excluded:
-                excluded_log.append(f"{p.question_id} ({filename})")
+    sources = [
+        (corpus_path / filename, "original", "original")
+        for filename in TRAIN_FILENAMES
+    ] + [
+        (corpus_path / ASR_ALIGNED_DIRNAME / filename, "asr_aligned", "asr")
+        for filename in ASR_TRAIN_FILENAMES
+    ]
+
+    for path, variant, example_suffix in sources:
+        for p in _parse_file(path):
+            if p.excluded or p.question_id in EXCLUDED_QUESTION_IDS:
+                excluded_log.append(f"{p.question_id} ({path.name})")
                 continue
             if annotation_rules.enforce_self_containment:
                 for c in p.claims:
@@ -188,9 +226,37 @@ def build_kd_dataset(
                             f"heuristic: {c!r}"
                         )
             examples.append(
-                KDExample(question_id=p.question_id, source_text=p.source_text, claims=p.claims)
+                KDExample(
+                    question_id=p.question_id,
+                    example_id=f"{p.question_id}__{example_suffix}",
+                    variant=variant,
+                    source_file=p.source_file,
+                    source_text=p.source_text,
+                    claims=p.claims,
+                )
             )
 
+    example_ids = [example.example_id for example in examples]
+    if len(example_ids) != len(set(example_ids)):
+        duplicates = sorted(
+            example_id
+            for example_id in set(example_ids)
+            if example_ids.count(example_id) > 1
+        )
+        raise ValueError(f"Duplicate example_id values in training corpus: {duplicates}")
+
+    variants_by_question: dict[str, set[str]] = {}
+    for example in examples:
+        variants_by_question.setdefault(example.question_id, set()).add(example.variant)
+    unpaired = sorted(
+        question_id
+        for question_id, variants in variants_by_question.items()
+        if variants != {"original", "asr_aligned"}
+    )
+    if unpaired:
+        raise ValueError(f"Questions missing an original/ASR variant pair: {unpaired}")
+
+    _check_variant_claims_match(examples)
     check_o9_not_in_training(corpus_path, examples)
 
     if excluded_log:
@@ -226,7 +292,7 @@ if __name__ == "__main__":
     train = build_kd_dataset(corpus_path, rules)
 
     print(f"Gold/Validation set (O9): {len(gold)} questions, {sum(len(e.claims) for e in gold)} claims")
-    print(f"Training corpus: {len(train)} questions, {sum(len(e.claims) for e in train)} claims")
+    print(f"Training corpus: {len(train)} examples, {sum(len(e.claims) for e in train)} claims")
     print()
     print("Sample training example:")
     sample = train[0]
