@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D69)
-**الإصدار:** v2.33 — 19 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D70)
+**الإصدار:** v2.34 — 20 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -3290,6 +3290,41 @@ Later sequence:
 `PREREGISTERED / NOT EXECUTED`.
 
 
+## D70 — Paired Original/ASR-Aligned Corpus Input Variants
+
+**الحالة:** ✅ مكتمل — Dataset pipeline وtokenizer smoke test ناجحان.
+
+يستخدم corpus تجهيز الـdecomposition نسختين paired لكل سؤال:
+
+- `original` من ملفات batch1–batch5 الأصلية.
+- `asr_aligned` من ملفات `*_ASR_ALIGNED.md` المقابلة.
+
+العقد المنفّذ:
+
+- إجمالي corpus هو 444 example من 222 `question_id` فريدًا.
+- تحتفظ النسختان بـ`question_id` الأصلي نفسه.
+- `example_id` يساوي `question_id + "__original"` للنسخة الأصلية، أو
+  `question_id + "__asr"` لنسخة ASR-aligned.
+- يتم train/validation splitting على `question_id` فقط، لضمان بقاء
+  النسختين في الـsplit نفسه.
+- يجب أن تكون الـClaims بعد parsing متطابقة حرفيًا بين النسختين؛ يوقف
+  guard بناء الـdataset ويرفع `ValueError` يتضمن `question_id` عند أي
+  اختلاف.
+- `GN-050` مستبعد من النسختين.
+
+النتائج المتحققة:
+
+- 378 training examples و66 validation examples.
+- صفر train/validation `question_id` overlap.
+- نجح الـtokenizer الحقيقي لـ`UBC-NLP/AraT5-base`، ووصلت نسختا
+  `original` و`asr_aligned` إلى Dataset تحتوي `input_ids` و
+  `attention_mask` و`labels`.
+- نجحت مجموعة اختبارات المشروع كاملة: 149 test passed.
+
+هذا القرار يثبت عقد تجهيز corpus ومسار tokenization فقط، ولا يثبت جودة
+الموديل بعد التدريب.
+
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -3315,6 +3350,7 @@ Later sequence:
 | **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | توقفت محاولة التنفيذ في Phase 0 قبل أي corpus modification لأن exact four exclusions من atomicity candidate set لم تكن مسجلة. | ⛔ (BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION) |
 | **D68 — Canonical Atomicity Adjudication Recovery** | استُعيد canonical atomicity set للـ34 candidate بمنهجية passين منفصلين إجرائيًا؛ النتيجة 24 repair-required و10 false positives، مع 4/4 disagreements محلولة و0 unsupported proposition. | ✅ (EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED) |
 | **D69 — Gold Corpus v2 Target Repair** | إنشاء Gold v2 منفصل بإصلاح targets فقط: unsupported additions الثلاثة، atomicity keys الـ24، وself-containment flags الـ273 عبر passين منفصلين، مع إبقاء source answers المصرية الـ222 byte-for-byte دون تغيير. | ⛔ (PREREGISTERED / NOT EXECUTED) |
+| **D70 — Paired Original/ASR-Aligned Corpus Variants** | تجهيز 444 example من 222 question ID كنسختين paired، مع split على `question_id` وclaims-match guard ونجاح tokenizer smoke test. | ✅ (DATASET PIPELINE PASS) |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -3324,6 +3360,7 @@ Later sequence:
 ---
 
 ## سجل التغييرات 
+- **v2.34 (20 يوليو 2026):** إضافة **D70** لتوثيق إدخال نسختي `original` و`asr_aligned` معًا كـpaired input variants: 444 example من 222 `question_id`، و`example_id` بلاحقتي `__original`/`__asr`، وتقسيم مجمّع على `question_id` نتج عنه 378 train و66 validation وصفر overlap. تثبيت تطابق الـClaims حرفيًا مع guard يرفع `ValueError` عند الاختلاف، واستبعاد `GN-050` من النسختين، ونجاح tokenizer الحقيقي لـ`UBC-NLP/AraT5-base` في إنتاج `input_ids` و`attention_mask` و`labels` للنسختين. نجحت اختبارات المشروع كاملة (149 passed). القرار خاص بتجهيز corpus ولا يثبت جودة الموديل بعد التدريب.
 - **v2.33 (19 يوليو 2026):** إغلاق **D68** بنتيجة `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`: عالج passان منفصلان إجرائيًا الـ34 candidate، مع 64/64 proposition ذات literal source support في كل pass، و30 agreement و4 disagreements محلولة و0 unresolved؛ النتيجة canonical هي 24 `NON_ATOMIC_REPAIR_REQUIRED` و10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`، وليست provisional 20/14 أو former target 30. تسجيل قيد أن passين من Codex environment نفسه وليسا human inter-annotator study. إضافة **D69** كتسجيل مسبق لبناء Gold v2 تحت `results/gold_v2/` بإبقاء source answers المصرية الـ222 byte-for-byte، وإصلاح unsupported additions الثلاثة وatomicity keys الـ24 وself-containment flags الـ273 عبر consolidated original-index repair plan، دون training أو O9 أو ASR augmentation أو production integration.
 - **v2.32 (19 يوليو 2026):** تسجيل محاولة تنفيذ **D67** بنتيجة `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`: تحقق Phase 0 من 222 example و1,836 claim وsplit 189/33 والـ273 self-containment flags، واستعاد 34 structural atomicity candidate، لكنه لم يجد evidence تحدد أي أربعة استُبعدت من former informal count البالغ 30؛ لذلك توقف قبل أي corpus change. إضافة **D68** كتسجيل مسبق لاسترداد canonical atomicity adjudication عبر تصنيف ثنائي المرور لجميع الـ34، مع منع فرض نتيجة 30 ومنع تعديل corpus أو إنشاء Gold v2.
 - **v2.31 (18 يوليو 2026):** إغلاق **D66** بنتيجة `EXECUTION PASS / NO REPAIR CANDIDATE`: اكتمل تدريب AraT5-base وmT5-base LoRA على split المجمد مع نجاح tokenizer preflights وبقاء O9 خارج generation والmetrics والاختيار. لم ينتج AraT5 checkpoint مؤهلًا، وفشل mT5 step 72 بوابات الجودة والبنية، لذلك لا winner ولا اعتماد إنتاجي ويبقى Q6 مفتوحًا. إضافة **D67** كتسجيل مسبق لإصلاح targets في Gold v2 منفصل مع إبقاء 222 source answers وtrain/validation split دون تغيير، adjudication للـ273 self-containment flags وإصلاح 30 non-atomic claims والإضافات الثلاث غير المدعومة، وتجميد عقد `question_id` + `raw_transcript` قبل أي تدريب لاحق.
