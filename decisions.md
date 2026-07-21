@@ -1,81 +1,92 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D77)
-**الإصدار:** v2.41 — 21 يوليو 2026
-**الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
-**القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
+# decisions.md — Interview IQ / Unified Decision Log (D1–D81)
+**Version:** v3.0 — 21 July 2026 (English migration + reorganization, see D81)
+**Status:** The sole legal project record. This file supersedes and merges the former Arabic `decisions.md` and `DECISIONS_RECONCILIATION_v1.1`. The pre-D81 Arabic original is archived (see D81), not deleted.
 
-**مفتاح الحالة:** ✅ مقفول ونهائي · ⛔ مفتوح/معلّق · 🔶 empirical/غير مُتحقق منه · 🗑️ ملغي
+**Governing numbering rule:** D1–D25 are fixed as in the master document `InterviewIQ_Pipeline_Docs_v2.0.md`. The pipeline-session decisions were renumbered D26–D34. Every new decision takes the next free number.
 
----
-
-## القسم الأول — D1–D25 (السجل القانوني في الوثيقة الرئيسية)
-
-النصوص الكاملة لهذه القرارات موجودة في `InterviewIQ_Pipeline_Docs_v2.0.md` ولا تُنسخ هنا. تُذكر أدناه فقط البنود المُشار إليها في هذا الملف أو المعدَّلة بالتوحيد:
-
-- **D19 ✅** — التطوير محلي (Claude Code + Git)، GitHub = المصدر الوحيد للحقيقة، Kaggle محرك GPU عبر Thin Runners.
-  - *انحراف موثق (8 يوليو) — مُغلق:* نوتبوك `kaggle_runner_lora.ipynb` المرحلي كان يسحب السكريبتات من Kaggle Dataset بدل git clone لأن الريبو لم يكن موجودًا. انتهى بنشر الريبو.
-  - *Q9 مُغلقة (9 يوليو 2026):* الريبو الرسمي = https://github.com/HashemIlI/interview-iq (private). نوتبوكات الـ Runners تسحب منه حصريًا عبر `git clone` + PAT من Kaggle Secrets (`GH_TOKEN`).
-  - *ملاحظة بيئة (9 يوليو 2026):* صورة Kaggle الافتراضية تحوي `peft` أحدث + `torchao==0.10.0` غير متوافقة ⇒ فشل `get_peft_model` بـ `ImportError`. الـ runner يفرض نسخ `requirements.txt` صراحةً ويزيل `torchao`.
-- **D20 ✅ / 🗑️** — Linguistic Confidence Module خارج النطاق نهائيًا؛ كل ما يخصه ملغي.
-- **D21 ✅** — Option B Dual-Channel Scoring (Precision + Coverage → Harmonic F). *(ملاحظة توحيد: "D21 تحديث" في السجل القديم كان قرارًا مختلفًا — أصبح D26 أدناه.)*
-  - *أثر بنيوي مسجَّل (D44):* الدمج harmonic ⇒ `Coverage = 0` يُصفِّر الـ F مهما بلغت الـ Precision. ⇒ **قناة الـ Coverage غير المقيسة تُبقي نصف نظام التقييم بلا تحقق.**
-  - *تفصيل تنفيذي (D45):* سلوك الدمج عند `Precision < 0` وعند الإجابة الصامتة مُصدَّق في D45.
-- **D22 ✅ (مُعدَّل بالتوحيد)** — يُضاف إليه رسميًا: **τ_E = 0.9** بوسم `PRE-CALIBRATION DEFAULT — NOT VALIDATED`.
-  - *مُدخَل معايرة (D43):* على الـ Gold Set، `τ_E = 0.9` غير صارمة — 14/17 من أزواج الـ entailment تتجاوزها في الموديل المدرَّب.
-- **D24 ✅** — Baseline Demo للمشرف. *(تصادم الترقيم مع "P09 Edge Case" حُسم: الأخير أصبح D29.)*
-- **D25 ✅ (مُقيَّد بالتوحيد)** — طبقات البيانات الثلاث (Easy Pos/Neg/Hard Neg) صُممت قبل تشخيص الـ Subject Blindness؛ **بنية بيانات الـ NLI المنفَّذة فعليًا هي تصنيفات D32 الستة وتحل محلها**. تبقى سارية من D25: عتبات الـ zero-shot المسجّلة مسبقًا (Contradiction F1 < 0.75 **أو** E↔C confusion > 5% ⇒ fine-tuning إلزامي).
-  - **تدقيق لاحق (D41):** على الـ Gold Set، الـ zero-shot سجّل `Contradiction F1 = 0.865` ⇒ **الشرط الأول لم يتحقق**. المُفعِّل الفعلي هو الثاني وحده: `E↔C = 8.3% > 5%`. أي وصف بأن الـ zero-shot "فشل فشلًا ذريعًا" **غير مدعوم** على مستوى الـ argmax.
-  - **لكن (D43):** عند قراءة الاحتمالات الخام مقابل عتبة الـ scoring الفعلية، الـ zero-shot يرتكب **تأكيدين كاذبين** (P12، P34). **هذا هو الدليل الكمّي الأقوى على ضرورة الـ fine-tuning.**
+**Status legend:** ✅ locked / final · ⛔ open / pending · 🔶 empirical / unverified · 🗑️ cancelled
 
 ---
 
-## القسم الثاني — D26–D46
+## Snapshot — Current State (21 July 2026)
 
-## D26 — Hard Positive Pairing Rule (✅ مقفول) *(سابقًا: "D21 تحديث")*
-- كل HARD_POS instance يُصدر **زوجين إجباريين مرتبطين بنفس claim نصيًا**:
-  - Pair A: premise = chunk الأصلي (كيان X)، label = entailment
-  - Pair B: premise = chunk عن كيان آخر Y في نفس الوثيقة (distractor)، نفس الـ hypothesis، label = **neutral**
-- تسمية: الـ N الناتج = `paired_neutral`، مميز عن `standard_neutral`.
-- **قاعدة تشغيلية:** الـ twins لا يُفصلان أبدًا عبر حدود train/val.
-- *تحقق آلي:* `validate_data` أكد **30 مجموعة twin سليمة** في الـ 150 زوجًا.
-- **أثر تجريبي مرصود (D41):** الـ twins = 60/150 = **40% من إشارة التدريب**، تُعلّم صراحةً "premise عن كيان مختلف ⇒ neutral". هذا هو **التفسير الميكانيكي** لانزياح الموديل المدرَّب نحو `neutral`.
-- **أثر متوقَّع على قناة الـ Coverage (D42-ب):** في الاتجاه المعكوس، الوضع الطبيعي هو premise (claim) عن جانب وhypothesis (key point) عن جانب آخر — **الحالة التي دُرِّب الموديل صراحةً على تسميتها `neutral`**. **تنبؤ قابل للاختبار — يُختبر في D46-C.**
+- **NLI module (mDeBERTa-v3 + LoRA):** complete, validated, locked. Phase 5 Gold Set (DS-014, n=48) PASSED under the pre-registered rule; inference is deterministic (48/48). Open risk: the Coverage channel has still never been measured on real decomposition output (Q8).
+- **Claim Decomposition:** pivoted (D74) from AraT5 full fine-tuning to a runtime external LLM API (OpenRouter), supervisor-approved, after AraT5 showed severe generalization failure. Phase 8 (AraT5) is CLOSED — SUPERSEDED.
+- **Decomposition model now in use:** `cohere/north-mini-code:free`, adopted after passing the mandatory D77/D74 sanity gate 8/8 (D80). Three earlier candidates were rejected: nemotron (CoT leakage), gemma (rate-limited), llama-3.3-70b (free slug deprecated).
+- **Runtime constraint:** "Zero-LLM-at-runtime" now applies to the whole pipeline **except** Claim Decomposition (D74). The correctness judgment itself stays LLM-free (local NLI).
+- **Next up:** wire decomposition into the production pipeline; measure the Coverage channel on real claims (Q8, unblocks now that decomposition produces output); threshold calibration (G4); ASR pilot/model selection (Q7/G3); Demo #1 (Q10).
 
-## D27 — Pilot Scope Reduction (🔶 empirical, capacity-driven) *(سابقًا: D22)*
-- سبب القرار: مراجعة 47 وثيقة قبل التوليد غير واقعية ضمن ميزانية المراجعة المتاحة.
-- القرار: Phase 1 pilot = **10 وثائق فقط (2 لكل track)**، مختارة لأنها **contrastive**.
-- الوثائق المعتمدة (✅ روجعت يدويًا): DA-001, DA-003, DS-001, DS-003, CS-002, CS-004, SE-001, SE-005, GN-001, GN-008.
-- توسيع الـ pool مؤجل لما يثبت الـ pipeline نجاحه end-to-end، وبعد ميزانية وقت منفصلة لمراجعة الوثائق.
+---
 
-## D28 — Gold Set Leakage Resolution (✅ confirmed) *(سابقًا: D23)*
-- الـ 48-pair Gold Set بالكامل مصدرها **سؤال واحد: DS-014 (Overfitting)**.
-- القاعدة: **DS-014 مستبعد نهائيًا من premise pool أي بيانات تدريب**، بلا استثناء. محجوز حصريًا كـ held-out evaluation set.
-- التطبيق الآلي: فحص في `validate_data` + `D28ContaminationError` في `finetune.py` + بوابة نظام ملفات في runner الـ Kaggle (D37).
-- *تحقق:* صفر تلوث في الـ 150 زوجًا.
-- **استخدام إضافي (D46):** كونه المستند الوحيد الذي **لم يرَ الموديل أيًّا من chunks الخاصة به كـ premise**، فهو المصدر الوحيد النظيف للفحص التشخيصي للاتجاه المعكوس.
+## Section 1 — D1–D25 (legal text lives in the master pipeline document)
 
-## D29 — P09 Edge Case Resolution (✅ محسوم) *(سابقًا: D24 في السجل القديم)*
-- الحالة: DA001-P09 (subject-swap) — "شبه المهيكلة ليس لها أي شكل تنظيمي" مقابل premise C03 "تحتوي على وسوم/مفاتيح تنظيمية".
-- القرار: **contradiction مؤكد**. النفي المطلق يصطدم بإثبات جزئي — تناقض منطقي مباشر، وليس بديلين غير حصريين كحالة weak contradiction المرجعية (**P48: طريقتا كشف غير متعارضتين**).
-- **ملاحظة لاحقة (D41):** توصيف P48 أعلاه — المكتوب **قبل** Phase 5 — يتسق مع تصنيف الموديل المدرَّب له كـ `neutral`. **الليبل لم يُعدَّل.**
+Full text of these decisions is in `InterviewIQ_Pipeline_Docs_v2.0.md` and is not copied here. Only the items referenced or amended by consolidation are listed.
 
-## D30 — Pilot Generation Complete (✅ 150/150 pairs، Stages 1–3)
-- التوزيع الكلي: E=50 (33.3%) | C=60 (40%) | N=40 (26.7%).
-- Subject-swap = 40/60 من فئة C = **66.7%** (دون الـ 73% المستهدف؛ يُعوَّض عند التوسع).
-- *تحقق آلي:* `validate_data` أكد التوزيع بالضبط.
+- **D19 ✅** — Development is local (Claude Code + Git); GitHub is the single source of truth; Kaggle is the GPU engine via thin runners.
+  - *Documented, closed deviation (8 Jul):* the staging notebook pulled scripts from a Kaggle Dataset instead of `git clone` because the repo did not yet exist. Resolved once the repo was published.
+  - *Q9 closed (9 Jul 2026):* official repo = https://github.com/HashemIlI/interview-iq (private). Runner notebooks pull exclusively via `git clone` + a PAT from Kaggle Secrets (`GH_TOKEN`).
+  - *Environment note:* the default Kaggle image ships a newer `peft` + incompatible `torchao==0.10.0` ⇒ `get_peft_model` fails with `ImportError`. The runner explicitly reinstalls `requirements.txt` and removes `torchao`.
+- **D20 ✅ / 🗑️** — Linguistic Confidence Module permanently out of scope; everything related to it is cancelled.
+- **D21 ✅** — Option B Dual-Channel Scoring (Precision + Coverage → Harmonic F). *(Consolidation note: the old "D21 update" was a different decision — now D26.)*
+  - *Structural consequence (D44):* the harmonic merge means `Coverage = 0` zeroes F regardless of Precision ⇒ **an unmeasured Coverage channel leaves half the scoring system unverified.**
+  - *Implementation detail (D45):* merge behavior at `Precision < 0` and for the silent answer is ratified in D45.
+- **D22 ✅ (amended)** — adds officially: **τ_E = 0.9**, tagged `PRE-CALIBRATION DEFAULT — NOT VALIDATED`.
+  - *Calibration input (D43):* on the Gold Set, `τ_E = 0.9` is not strict — 14/17 entailment pairs clear it in the fine-tuned model.
+- **D24 ✅** — Baseline Demo for the supervisor. *(Numbering clash with "P09 Edge Case" resolved: the latter became D29.)*
+- **D25 ✅ (constrained)** — the three data layers (Easy Pos/Neg/Hard Neg) were designed before the Subject Blindness diagnosis; **the actually-implemented NLI data structure is the six D32 categories, which replace them.** Still in force from D25: the pre-registered zero-shot thresholds (Contradiction F1 < 0.75 **or** E↔C confusion > 5% ⇒ fine-tuning mandatory).
+  - **Later audit (D41):** on the Gold Set, zero-shot scored `Contradiction F1 = 0.865` ⇒ **first condition not met**. The actual trigger was the second alone: `E↔C = 8.3% > 5%`. Any claim that zero-shot "failed catastrophically" is **unsupported** at argmax level.
+  - **But (D43):** reading raw probabilities against the actual scoring threshold, zero-shot commits **two false verifications** (P12, P34). **This is the strongest quantitative evidence that fine-tuning was necessary.**
 
-## D31 — Genuine Stage 2 Pass on 9-Doc Set (✅ completed, findings logged)
-- تصحيح صريح: التأكيد السابق على "Stage 3 برمجي ✅" كان افتراضًا لا تنفيذًا.
-- **نتيجة:** 132/135 confirmed، **2 near-duplicates حقيقية** استُبدلتا (DS003-P06, CS004-P06)، و**1 حالة ثقة أقل** (DA003-P10).
-- الملف المعتمد: `pairs_pilot_remaining9_v2.json` — **يُلغي** v1.
-- **درس مسجل (قاعدة عامة — §5.13):** يُفرَّق دائمًا بين "نُفِّذ فعليًا بأداة" و"افتُرِض/استُنتج". الخلط أدى إلى:
-  1. تفويت duplicate حقيقي (هذا البند)؛
-  2. ادعاءين خاطئين عن نطاق الـ fine-tuning (D38)؛
-  3. رقم 0.002 غير المصدَّق (D42)؛
-  4. **ادعاء أن `validate_data` لا يفحص الـ dangling key_points — والفحص كان قائمًا منذ Phase 3.** خطأ صادر عن **المشرف**: استُنتج غياب الفحص من غياب حقل per-chunk.
-  5. **(10 يوليو 2026) ادعاء أن `git log` يُثبت أن تعديل `results/phase5/*.json` صادر عن commit `da0a825`.** الادعاء **مستحيل بنيويًا**: ظهور ملف في `git status` كـ `modified` يعني تغييرًا **غير مُلتزَم** في الـ working tree، ولا يمكن لـ `git log` أن ينسبه إلى أي commit. النتيجة (أن التغيير ليس من مهمة Phase 6) صحيحة، لكن **الدليل مُختلق**. الحقيقة: الملفان استُبدلا يدويًا بعد إعادة تشغيل Kaggle (D43) ولم يُلتزما بعد.
-- **القاعدة تسري على الجميع بلا استثناء، وتُرفع إلى §5 من `PROJECT_EXECUTION_PLAN.md` (Rule 13). نتيجة صحيحة بدليل مُختلق = مخالفة كاملة.**
+---
 
-## D32 — Per-Document Quota (✅ مقفول)
+## Section 2 — NLI Module & Scoring Engine (D26–D49)
+
+### D26 — Hard Positive Pairing Rule (✅ locked) *(formerly "D21 update")*
+- Each HARD_POS instance emits **two forced pairs bound to the same claim text**:
+  - Pair A: premise = original chunk (entity X), label = entailment.
+  - Pair B: premise = chunk about a different entity Y in the same document (distractor), same hypothesis, label = **neutral**.
+- The resulting N is named `paired_neutral`, distinct from `standard_neutral`.
+- **Operational rule:** twins are never split across the train/val boundary.
+- *Automated check:* `validate_data` confirmed **30 intact twin groups** across the 150 pairs.
+- **Observed empirical effect (D41):** twins = 60/150 = **40% of the training signal**, explicitly teaching "premise about a different entity ⇒ neutral." This is the **mechanistic explanation** for the fine-tuned model's shift toward `neutral`.
+- **Predicted effect on the Coverage channel (D42-b):** in the reversed direction the normal case is premise (claim) about one aspect, hypothesis (key point) about another — **exactly the case the model was explicitly trained to label `neutral`.** Testable prediction — tested in D46-C.
+
+### D27 — Pilot Scope Reduction (🔶 empirical, capacity-driven) *(formerly D22)*
+- Reviewing 47 documents before generation was unrealistic within the available review budget.
+- Decision: Phase 1 pilot = **10 documents only (2 per track)**, chosen as **contrastive**.
+- Approved docs (✅ manually reviewed): DA-001, DA-003, DS-001, DS-003, CS-002, CS-004, SE-001, SE-005, GN-001, GN-008.
+- Pool expansion deferred until the pipeline proves out end-to-end and a separate document-review time budget is allocated.
+
+### D28 — Gold Set Leakage Resolution (✅ confirmed) *(formerly D23)*
+- The entire 48-pair Gold Set comes from **one question: DS-014 (Overfitting)**.
+- Rule: **DS-014 is permanently excluded from the premise pool of any training data**, no exceptions. Reserved exclusively as a held-out evaluation set.
+- Enforcement: check in `validate_data` + `D28ContaminationError` in `finetune.py` + a filesystem gate in the Kaggle runner (D37).
+- *Verified:* zero contamination in the 150 pairs.
+- **Additional use (D46):** as the only document whose chunks the model never saw as a premise, it is the only clean source for the reversed-direction diagnostic.
+
+### D29 — P09 Edge Case Resolution (✅ resolved) *(formerly D24 in the old log)*
+- Case: DA001-P09 (subject-swap) — "semi-structured has no organizational form" vs premise C03 "contains organizational tags/keys".
+- Decision: **confirmed contradiction.** An absolute negation collides with a partial assertion — a direct logical contradiction, not two non-exclusive alternatives like the reference weak-contradiction case (**P48: two non-conflicting detection methods**).
+- **Later note (D41):** the P48 description above — written **before** Phase 5 — is consistent with the fine-tuned model labeling it `neutral`. **The label was not changed.**
+
+### D30 — Pilot Generation Complete (✅ 150/150 pairs, Stages 1–3)
+- Overall distribution: E=50 (33.3%) | C=60 (40%) | N=40 (26.7%).
+- Subject-swap = 40/60 of C = **66.7%** (below the 73% target; to be corrected at scale).
+- *Automated check:* `validate_data` confirmed the distribution exactly.
+
+### D31 — Genuine Stage 2 Pass on 9-Doc Set (✅ completed, findings logged)
+- Explicit correction: the prior "Stage 3 done programmatically ✅" claim was an assumption, not an execution.
+- **Result:** 132/135 confirmed, **2 genuine near-duplicates** replaced (DS003-P06, CS004-P06), **1 lower-confidence case** (DA003-P10).
+- Approved file: `pairs_pilot_remaining9_v2.json` — **supersedes** v1.
+- **Logged lesson (general rule — §5.13):** always distinguish "actually executed with a tool" from "assumed/inferred." Conflating them caused:
+  1. Missing a real duplicate (this item);
+  2. Two false claims about the fine-tuning scope (D38);
+  3. The unratified 0.002 figure (D42);
+  4. Claiming `validate_data` does not check dangling key_points — the check had existed since Phase 3. A **supervisor** error: absence of the check inferred from absence of a per-chunk field.
+  5. **(10 Jul 2026) Claiming `git log` proves a `results/phase5/*.json` change came from commit `da0a825`.** Structurally impossible: a file showing as `modified` in `git status` is an **uncommitted** working-tree change that `git log` cannot attribute to any commit. The conclusion (the change was not from the Phase 6 task) was correct, but the **evidence was fabricated.** Truth: the two files were replaced manually after a Kaggle rerun (D43) and not yet committed.
+- **The rule applies to everyone without exception, and is elevated to §5 of `PROJECT_EXECUTION_PLAN.md` (Rule 13). A correct result with fabricated evidence = a full violation.**
+
+### D32 — Per-Document Quota (✅ locked)
 
 | Category | n instances | E | C | N |
 |---|---|---|---|---|
@@ -85,135 +96,110 @@
 | SUBJECT_SWAP | 4 | | 4 | |
 | HN_OTHER | 1 | | 1 | |
 | STANDARD_NEUTRAL | 1 | | | 1 |
-| **إجمالي/وثيقة** | **12 instances → 15 pairs** | **5** | **6** | **4** |
+| **per doc** | **12 instances → 15 pairs** | **5** | **6** | **4** |
 
-- **يحل محل طبقات D25 الثلاث.** Subject-swap share من C = 66.7%. الـ Pilot: 10 × 15 = **150 pair**.
+- **Replaces the three D25 layers.** Subject-swap share of C = 66.7%. Pilot: 10 × 15 = **150 pairs**.
 
-## D33 — ⚠️ RISK ACCEPTED: Stage 4 غير منفَّذة — G1 مغلقة بقبول المخاطرة (✅ مقفول بقرار)
-- **مراجعة الـ 150 pair الفردية (Stage 4) غير منفَّذة** ما عدا P09 (D29). انحراف موثق عن المنهجية المقفولة، بقرار أحمد الصريح.
-- **القرار النهائي:** تُستكمل Phases 5+ **دون** الـ 20% retroactive spot-check. **G1 مغلقة بقبول المخاطرة، لا بإتمام المراجعة.**
-- **الالتزام المقابل (غير قابل للتنازل):** يُذكر في الرسالة وفي المناقشة صراحةً:
-  > "لم تخضع الـ 150 زوجًا لمراجعة بشرية per-pair (Stage 4). خضعت للمراجعة الآلية والنوعية (Stages 1–3) ولمراجعة الوثائق المرجعية العشرة يدويًا. هذا حدٌّ معروف في صحة الـ labels، ونتائج الـ fine-tuning تُقرأ في ضوئه."
-- **تخفيفات:** (أ) الـ Gold Set مستقل تمامًا عن التدريب؛ (ب) D31 وثّق اكتشاف duplicates حقيقية؛ (ج) أثر أي labels فاسدة يظهر في confusion matrix الـ Gold Set.
-- كل نتيجة fine-tuning تُنتَج تحت هذا القرار توسم `RISK ACCEPTED`.
+### D33 — ⚠️ RISK ACCEPTED: Stage 4 not executed — G1 closed by risk acceptance (✅ closed by decision)
+- **Per-pair review of the 150 pairs (Stage 4) was not executed** except P09 (D29). A documented deviation from the locked methodology, by Ahmed's explicit decision.
+- **Final decision:** Phases 5+ proceed **without** the 20% retroactive spot-check. **G1 is closed by accepting the risk, not by completing the review.**
+- **Non-negotiable counter-obligation:** stated explicitly in the write-up and defense:
+  > "The 150 pairs did not undergo per-pair human review (Stage 4). They underwent automated and qualitative review (Stages 1–3) and manual review of the 10 reference documents. This is a known limit on label validity, and the fine-tuning results are read in that light."
+- **Mitigations:** (a) the Gold Set is fully independent of training; (b) D31 documented discovery of real duplicates; (c) the effect of any corrupt labels shows up in the Gold Set confusion matrix.
+- Every fine-tuning result produced under this decision is tagged `RISK ACCEPTED`.
 
-## D34 — تأجيل أزواج اتجاه الـ Coverage (✅)
-- أزواج اتجاه الـ Coverage **مستبعدة من دفعة الـ fine-tuning الأولى** لتفادي تلويث نتائج الـ ablation.
-- **أثر جانبي مسجَّل (D42):** الموديل المدرَّب **لم يرَ اتجاه الـ Coverage إطلاقًا** ⇒ استخدامه فيه **خارج التوزيع (OOD)**.
-- **بانتهاء Phase 5 رُفع التأجيل عن النقاش. أما القياس على claims حقيقية فمؤجَّل إلى ما بعد Phase 8 (D44). الفحص التشخيصي بلا claims مسموح ومسجَّل في D46.**
+### D34 — Deferral of Coverage-direction pairs (✅)
+- Coverage-direction pairs are **excluded from the first fine-tuning batch** to avoid contaminating ablation results.
+- **Logged side-effect (D42):** the fine-tuned model **never saw the Coverage direction** ⇒ using it there is **out-of-distribution (OOD).**
+- **With Phase 5 done the deferral is lifted for discussion. Measurement on real claims remains deferred to post–Phase 8 (D44). The claim-free diagnostic is allowed and registered in D46.**
 
-## D35 — قبول مخالفة قاعدة الـ 5-word overlap (✅ مُصدَّق، مُصحَّح مرتين)
-- **الأرقام المعتمدة:** 65/150 (43.3%). التوزيع: **C = 37 · E = 28 · N = 0**.
-- **المصدر:** `scripts/recount_overlap.py` — خوارزميتان مستقلتان تعطيان نفس الناتج.
-- **تعريف القياس:** NFC → حذف علامات فئة `Mn` → lowercase → `re.findall(r'\w+')`، ثم ≥5 tokens متتالية مشتركة. **لا يشمل** توحيد الألف/الهمزة/التاء المربوطة ⇒ **65 حد أدنى (lower bound)**.
-- **تصحيح توثيقي:** نسخة سابقة سجّلت "43/150 بتوزيع C=25/E=18". الرقم مُلغى. **سبب الاختلاف لم يُحقَّق فيه.**
-- **القرار: قبول مع التوثيق.** المبرر:
-  - *على محور E↔C:* التوزيع لا يُنشئ heuristic "overlap عالٍ ⇒ Entailment"، بل يعاكسه (McCoy et al., 2019 — HANS).
-  - *على محور N/¬N:* ارتباط تام في البيانات (75/75). **فرضية الاختصار المُتعلَّم رُفضت تجريبيًا — D40.**
-- **حدّ على أداة القياس (D41):** P43 (إعادة صياغة شبه حرفية) سُجِّل `overlap=False` ⇒ المقياس **مؤشر ضعيف** على الاشتراك الدلالي في العربية. الرقم يقيس **تطابقًا سطحيًا**.
-- في `validate_data`: **documented exception يُطبع في التقرير**، لا hard failure.
+### D35 — Accepting the 5-word overlap rule violation (✅ ratified, corrected twice)
+- **Approved figures:** 65/150 (43.3%). Distribution: **C = 37 · E = 28 · N = 0**.
+- **Source:** `scripts/recount_overlap.py` — two independent algorithms give the same output.
+- **Measurement definition:** NFC → strip `Mn`-category marks → lowercase → `re.findall(r'\w+')`, then ≥5 consecutive shared tokens. Does **not** include alif/hamza/ta-marbuta unification ⇒ **65 is a lower bound.**
+- **Documentation correction:** a prior version recorded "43/150 with C=25/E=18." That figure is cancelled. **The cause of the discrepancy was not investigated.**
+- **Decision: accept with documentation.** Rationale:
+  - *On the E↔C axis:* the distribution does not create a "high overlap ⇒ Entailment" heuristic; it runs opposite to it (McCoy et al., 2019 — HANS).
+  - *On the N/¬N axis:* perfect correlation in the data (75/75). **The learned-shortcut hypothesis was empirically rejected — D40.**
+- **Limit on the measurement tool (D41):** P43 (near-verbatim paraphrase) recorded `overlap=False` ⇒ the metric is a **weak proxy** for semantic overlap in Arabic. It measures **surface match.**
+- In `validate_data`: a **documented exception printed in the report**, not a hard failure.
 
-## D36 — استراتيجية الـ Validation Split (✅ مُصدَّق)
-- `val_fraction: 0.2` **مرفوض** (قد يفصل الـ twins، ويخالف Question-ID-level splitting).
-- المعتمد: **document-level holdout على GN-008** (15 زوجًا)، في `configs/nli_finetune.yaml`.
-- **حد معروف:** val = 15 زوجًا ⇒ تباين عالٍ. دورها اختيار الـ checkpoint فقط. **الحكم النهائي على الـ Gold Set.**
+### D36 — Validation Split Strategy (✅ ratified)
+- `val_fraction: 0.2` **rejected** (may split twins; violates Question-ID-level splitting).
+- Adopted: **document-level holdout on GN-008** (15 pairs), in `configs/nli_finetune.yaml`.
+- **Known limit:** val = 15 pairs ⇒ high variance. Its role is checkpoint selection only. **Final judgment is on the Gold Set.**
 
-## D37 — Data Staging على Kaggle (✅)
-- ملفات الداتا مستبعدة من Git، فالـ `git clone` لا يجلبها. خلية staging تكتشف الـ Kaggle Dataset **بالمحتوى لا بالاسم**.
-- **استثناء موصوف لقاعدة "صفر منطق في النوتبوك":** هذا **منطق بيئة** لا منطق مشروع.
-- الـ Gold Set في Kaggle Dataset **منفصل** (`iq-gold-set`) ولا يُركَّب أبدًا في جلسة تدريب — `assert` صريح بغيابه.
-- *امتداد Phase 5:* runner التقييم يركّب الـ Gold Set ويؤكّد غياب أزواج الـ pilot، ويكتشف الـ adapter بالمحتوى مع `RuntimeError` عند الفشل. ويتضمن حارس `SILENT ADAPTER FAILURE SUSPECTED` وحارس `--assert-matches` (D43).
+### D37 — Data Staging on Kaggle (✅)
+- Data files are excluded from Git, so `git clone` doesn't fetch them. A staging cell detects the Kaggle Dataset **by content, not by name.**
+- **Documented exception to "zero logic in the notebook":** this is **environment logic**, not project logic.
+- The Gold Set is a **separate** Kaggle Dataset (`iq-gold-set`) and is never mounted in a training session — an explicit `assert` verifies its absence.
+- *Phase 5 extension:* the eval runner mounts the Gold Set, asserts the absence of pilot pairs, detects the adapter by content with a `RuntimeError` on failure, and includes a `SILENT ADAPTER FAILURE SUSPECTED` guard and an `--assert-matches` guard (D43).
 
-## D38 — نتيجة تشغيل Fine-tuning الأول (✅ مسجّلة، RISK ACCEPTED)
-- 135 زوج تدريب / 15 val (GN-008 holdout). Kaggle T4 ×2. 5 epochs، 45 خطوة.
-- eval_loss: 0.789 → 0.482 → 0.344 → 0.309 → 0.303 (تقارب). best macro-F1 على val = 0.927 (epoch 3) — **لا يُستشهد به كأداء الموديل**.
-- checkpoint منشور كـ `iq-checkpoints-nli-v1`. `load_best_model_at_end` مفعّل؛ الـ adapter مطابق بايت-ببايت لـ `checkpoint-27`.
-- **نطاق الـ fine-tuning (مُصحَّح — تحقق تجريبي):** LoRA (r=16، α=32) على `query_proj`/`value_proj`، **بالإضافة إلى الـ classification head**: `peft.get_peft_model(task_type=SEQ_CLS)` يحقن تلقائيًا `modules_to_save = {'classifier','score'}` حتى مع `LoraConfig.modules_to_save = None`. **الرأس مدرَّب ومحفوظ داخل الـ adapter.** أي وصف بخلاف ذلك مُلغى.
-- **V1 (✅ مُغلق):** `adapter_model.safetensors` = **50 مفتاحًا** (48 LoRA + `classifier.weight` + `.bias`). فحص مُدمج كأول خلية في `run-nli-eval.ipynb`.
-- **نتيجة Subject Blindness:** **D41** (argmax) و**D43** (الاحتمالات عند العتبات).
+### D38 — First Fine-tuning Run Result (✅ logged, RISK ACCEPTED)
+- 135 training pairs / 15 val (GN-008 holdout). Kaggle T4 ×2. 5 epochs, 45 steps.
+- eval_loss: 0.789 → 0.482 → 0.344 → 0.309 → 0.303 (converged). Best val macro-F1 = 0.927 (epoch 3) — **not cited as model performance.**
+- Checkpoint published as `iq-checkpoints-nli-v1`. `load_best_model_at_end` enabled; the adapter matches `checkpoint-27` byte-for-byte.
+- **Fine-tuning scope (corrected — empirically verified):** LoRA (r=16, α=32) on `query_proj`/`value_proj`, **plus the classification head**: `peft.get_peft_model(task_type=SEQ_CLS)` auto-injects `modules_to_save = {'classifier','score'}` even with `LoraConfig.modules_to_save = None`. **The head is trained and saved inside the adapter.** Any description otherwise is cancelled.
+- **V1 (✅ closed):** `adapter_model.safetensors` = **50 keys** (48 LoRA + `classifier.weight` + `.bias`). Checked as the first cell in `run-nli-eval.ipynb`.
+- **Subject Blindness result:** see **D41** (argmax) and **D43** (probabilities at thresholds).
 
-## D39 — قاعدة قرار مُسجَّلة مسبقًا لـ Phase 5 (✅ — قبل التشغيل، commit `f4fbf27`)
-- الـ Gold Set: DS-014، n=48 — E=17 · N=12 · C=19.
-- **توقيع الـ Subject Blindness = خلية C→E.**
+### D39 — Pre-registered decision rule for Phase 5 (✅ — before run, commit `f4fbf27`)
+- Gold Set: DS-014, n=48 — E=17 · N=12 · C=19.
+- **Subject Blindness signature = the C→E cell.**
+- **Success criteria (all three):** `C→E ≤ 2/19` · `Contradiction recall ≥ 16/19` · `E→C ≤ 2/17`.
+- **Interpretation constraints (pre-registered):** the pair = 5.3% of C ⇒ thresholds by count not percent; a gap < 3 pairs is within noise · judgment is **directional, not statistical** · baseline = zero-shot on the same 48 via the same code path · single document ⇒ **existence** evidence, not **generalization** · macro-F1 is descriptive, not an acceptance criterion.
+- **Acknowledged limit (D41):** it constrained the shift toward `contradiction` but **not the shift toward `neutral`** — which is what happened. **An incomplete acceptance rule.**
+- **Second limit (D43):** written at `argmax` level, while the scoring engine works on probabilities at thresholds. **Correct, but not measuring what the system measures.** Any future scoring-stage rule is written at threshold level.
 
-**معايير النجاح (الثلاثة مجتمعة):** `C→E ≤ 2/19` · `Contradiction recall ≥ 16/19` · `E→C ≤ 2/17`.
+### D40 — Overlap is a data property, not a learned shortcut (✅ materially revised)
+- **Descriptive stats:** pilot: 65 pairs (C=37 · E=28 · **N=0**) · gold: 10 pairs (C=5 · E=5 · **N=0**) ⇒ 75/75.
+- **Structural cause:** neutral pairs draw the premise from a different chunk than the hypothesis source.
+- **Empirical test (Phase 5) — rejects the learned-shortcut hypothesis:**
 
-**قيود التفسير (مسجّلة مسبقًا):** الزوج = 5.3% من C ⇒ العتبات بالعدد لا بالنسبة؛ فرق < 3 أزواج داخل الضوضاء · الحكم **اتجاهي لا إحصائي** · الـ baseline = zero-shot على نفس الـ 48 بنفس code path · مستند واحد ⇒ دليل **وجود** لا **تعميم** · macro-F1 وصفي لا معيار قبول.
-
-**حدّ مُعترَف به (D41):** قيّدت الانزياح ناحية `contradiction` و**لم تقيّد الانزياح ناحية `neutral`** — وهو ما وقع. **قاعدة قبول ناقصة.**
-**حدّ ثانٍ (D43):** كُتبت على مستوى `argmax`، ومحرك الـ scoring يعمل بالاحتمالات عند عتبات. **صحيحة لكنها لا تقيس ما يقيسه النظام.** أي قاعدة مستقبلية لمرحلة scoring تُكتب على مستوى العتبة.
-
-## D40 — الـ overlap خاصية بيانات، لا اختصار مُتعلَّم (✅ مُعدَّل جوهريًا)
-
-**الوصف الإحصائي:** pilot: 65 زوجًا (C=37 · E=28 · **N=0**) · gold: 10 أزواج (C=5 · E=5 · **N=0**) ⇒ 75/75.
-**السبب البنيوي:** أزواج الـ neutral تستمد الـ premise من chunk مختلف عن مصدر الـ hypothesis.
-
-**اختبار تجريبي (Phase 5) — يرفض فرضية الاختصار المُتعلَّم:**
-
-| الذراع (overlap=True، n=10) | → E | → N | → C |
+| Arm (overlap=True, n=10) | → E | → N | → C |
 |---|---|---|---|
 | zero-shot | 6 | **0** | 4 |
 | adapter | 4 | **3** | 3 |
 
-- الموديل **الأساس** — لم يرَ بيانات التدريب — تنبأ بـ `neutral` في **0/10**. **يستحيل أن يتعلم artifact من ملف لم يره** ⇒ الارتباط **خاصية عامة في نماذج NLI المدرَّبة على MNLI/XNLI**، مبرَّرة دلاليًا (E وC تستلزمان اشتراكًا موضوعيًا؛ N لا).
-- الموديل **المدرَّب**: 3/10 ⇒ **ابتعد** عن الارتباط.
-- الأخطاء الستة نحو `neutral` موزَّعة **3 overlap / 3 no-overlap** ⇒ **لا إشارة**.
+- The **base** model — which never saw training data — predicted `neutral` in **0/10**. It cannot learn an artifact from a file it never saw ⇒ the correlation is a **general property of NLI models trained on MNLI/XNLI**, semantically justified (E and C require topical overlap; N does not).
+- The **fine-tuned** model: 3/10 ⇒ **moved away** from the correlation.
+- The six errors toward `neutral` split **3 overlap / 3 no-overlap** ⇒ **no signal.**
+- **Prior conclusion withdrawn.** *Limits of the negative:* n=10 ⇒ **underpowered** test. Reported as "a test was run and found no signal," not "the shortcut does not exist."
 
-**الاستنتاج السابق مسحوب.** **حدود النفي:** n=10 ⇒ اختبار **ضعيف القوة**. يُذكر كـ "اختبار أُجري ولم يجد إشارة"، لا كـ "الاختصار غير موجود".
+### D41 — Phase 5 Result: Gold Set Evaluation (✅ — RISK ACCEPTED)
+- **Verdict against D39 (registered in `f4fbf27` before the run): PASSED — all three.**
 
-## D41 — نتيجة Phase 5: Gold Set Evaluation (✅ — RISK ACCEPTED)
-
-**الحكم مقابل D39 (المسجَّلة في `f4fbf27` قبل التشغيل): PASSED — الثلاثة مجتمعة.**
-
-| المعيار | zero-shot | adapter | الحكم |
+| Criterion | zero-shot | adapter | verdict |
 |---|---|---|---|
 | C→E ≤ 2/19 | 3 | **0** | ✅ |
 | Contradiction recall ≥ 16/19 | 16/19 | **16/19** | ✅ |
 | E→C ≤ 2/17 | 1 | **0** | ✅ |
 
-**خلايا E↔C أُفرغت. الـ Subject Blindness — بالتعريف المسجَّل مسبقًا — مكسور.**
+- **The E↔C cells were emptied. Subject Blindness — by the pre-registered definition — is broken.**
+- **Limits:** C→E gap = exactly 3 pairs, **at the minimum**. E→C gap = one pair ⇒ **within noise**. Directional judgment (n=19). Single document ⇒ **existence**, not **generalization**.
+- **What did not improve:** `Contradiction recall = 16/19` in both arms — a **wash**: P12, P34 fixed · P27, P31 broke ⇒ **the model did not detect more contradictions, it redistributed its errors.**
+- **Cost at argmax:** macro-F1: 0.880 → 0.850 · neutral precision: 0.917 → 0.647 · errors: 6 → 7.
+- **Gain under the scoring rule:** `entailment precision = 1.000` ⇒ zero false verifications at argmax level. ⚠️ *Post-hoc analysis, not an acceptance criterion.* ✅ Conditional warning lifted: D43 measured `P(E)` for C→N pairs and found it ≪ τ_E.
+- **Mechanistic explanation of the neutral shift** (based on D26, written before the run): 40% of the training signal teaches "premise about a different entity ⇒ neutral." The observed effect is expected from the design.
+- **Named cases:**
+  - **P48** — gold=C · zero-shot=E · adapter=**N**. D29 (pre-run) describes it as a weak contradiction; the model's classification is consistent with that. **The label was not changed** — changing it after seeing the result would void pre-registration. Reported as a **limit on Gold Set validity.**
+  - **P26** — gold=N · predicted=**C in both arms**. Label is correct, both models wrong. **The only remaining false-penalty generator** (D43).
+  - **P43** — gold=E, near-verbatim paraphrase, both arms said `neutral` despite `overlap=False` ⇒ a limit on the overlap metric (D35).
+- **Outputs:** `results/phase5/gold_eval_{zero_shot,adapter}.json` — **replaced (10 Jul)** by V2 copies carrying probabilities; the 48 `predicted_label` values are **byte-identical**, verified by `--assert-matches` (D43).
 
-**قيود:** فرق C→E = 3 أزواج بالضبط، **عند الحد الأدنى**. فرق E→C = زوج واحد ⇒ **داخل الضوضاء**. الحكم اتجاهي (n=19). مستند واحد ⇒ **وجود** لا **تعميم**.
+### D42 — Reframing Q8 and withdrawing the 0.002 figure (✅ corrected and expanded)
+- **(1) The 0.002 figure is withdrawn — no source.** One appearance in the repo described as a "documented example." **No script, no JSON, no input description.** Non-citable, removed from the plan (§5.13).
+- **(2) The "long formal chunks" claim is falsified by measurement.** Chunk length: **mean = 15.5 · median = 15 · p90 = 20** (whitespace tokens). **There is no length asymmetry.** The term is replaced by **"Coverage-channel fragility."**
+- **(3) Coverage was never measured** (at time of writing): `scoring/*` and `nli/engine.py` = 0 bytes. **A worry-hypothesis, not an experiment result.** *(Built in Phase 6; still unmeasured on real claims — D44.)*
+- **Supervisor-issued correction:** the first version claimed `validate_data` does not check `key_points`. **Wrong** — the check has existed since Phase 3. Its absence was inferred from the absence of an `is_key_point` field — **inference, not verification** (§5.13).
+- **The denominator is sound:** `meta.key_points_semantics` defines Coverage over a subset (`key_points`). **V3: 250/250 pass** ⇒ no structural ceiling from corrupt data.
+- **Three hypothesized sources of fragility:**
+  - **(a) Reversed direction is OOD:** the model never saw it (D34). Tested in D46-A/B.
+  - **(b) Learned `neutral` shift:** D26 makes 40% of the training signal teach "different entity ⇒ neutral," which is the normal case in the Coverage direction ⇒ the fine-tuned model is expected to be **worse** than zero-shot. Tested in D46-C.
+  - **(c) Composition error:** `max_entailment_per_keypoint` with a single premise claim ⇒ a key point requiring two claims jointly is entailed by no single claim. A flaw in the aggregation rule — only testable with real claims (D44).
+- **Measured channel-coarseness figures:** chunks/doc: min=6 · max=12 · mean=6.06 · median=6. key_points/doc: min=2 · max=6 · mean=2.9 · median=3.
 
-**ما لم يتحسّن:** `Contradiction recall = 16/19` في الذراعين — **مقاصة**: اتصلّح P12، P34 · اتكسر P27، P31. ⇒ **الموديل لم يكتشف تناقضات أكثر، أعاد توزيع أخطائه.**
-
-**التكلفة تحت الـ argmax:** macro-F1: 0.880 → 0.850 · neutral precision: 0.917 → 0.647 · الأخطاء: 6 → 7.
-
-**المكسب تحت قاعدة الـ scoring:** `entailment precision = 1.000` ⇒ صفر تأكيد كاذب على مستوى الـ argmax.
-- ⚠️ **تحليل بعدي (post-hoc)، لا معيار قبول.** يُكتب تحت *تحليل النتائج*.
-- ✅ **التحذير المشروط رُفِع:** D43 قاس `P(E)` للأزواج C→N ووجدها ≪ τ_E.
-
-**التفسير الميكانيكي لانزياح الـ neutral** (مبني على D26 المكتوبة قبل التشغيل): 40% من إشارة التدريب تُعلّم "premise عن كيان مختلف ⇒ neutral". الأثر المرصود متوقَّع من التصميم.
-
-**حالات مسمّاة:**
-- **P48** — gold=C · zero-shot=E · adapter=**N**. **D29 (قبل التشغيل) تصفه بأنه weak contradiction.** تصنيف الموديل يتسق مع ذلك. **الليبل لم يُعدَّل** — تعديله بعد رؤية النتيجة يُبطل الـ pre-registration. يُبلَّغ كـ **حدٍّ في صحة الـ Gold Set**.
-- **P26** — gold=N · predicted=**C في الذراعين**. الليبل صحيح، والموديلان مخطئان. **الخطأ الوحيد المتبقي المولِّد لعقوبة كاذبة** (D43).
-- **P43** — gold=E، إعادة صياغة شبه حرفية، والذراعان قالا `neutral` رغم `overlap=False` ⇒ حدّ على مقياس الـ overlap (D35).
-
-**مخرجات:** `results/phase5/gold_eval_{zero_shot,adapter}.json` — **استُبدلت (10 يوليو)** بنسخ V2 تحمل الاحتمالات؛ الـ48 `predicted_label` **مطابقة حرفيًا**، مُثبتة بـ `--assert-matches` (D43).
-
-## D42 — إعادة صياغة Q8 وسحب الرقم 0.002 (✅ مُصحَّح ومُوسَّع)
-
-**(1) الرقم 0.002 مسحوب — بلا مصدر.** ظهور واحد في الريبو بوصف "مثال موثق". **لا سكريبت، لا JSON، لا وصف للمُدخَل.** **غير قابل للاستشهاد**، ويُحذف من الخطة (§5.13).
-
-**(2) ادعاء "chunks طويلة رسمية" مكذوب بالقياس.** طول الـ chunk: **mean = 15.5 · median = 15 · p90 = 20** (whitespace tokens). **عدم التماثل في الطول غير موجود.** المصطلح يُستبدل بـ **"هشاشة قناة الـ Coverage"**.
-
-**(3) الـ Coverage لم تُقَس ولا مرة** (وقت الكتابة): `scoring/*` و`nli/engine.py` = 0 bytes. **فرضية قلق، لا نتيجة تجربة.** *(بُنيت في Phase 6؛ لا تزال بلا قياس على claims حقيقية — D44.)*
-
-**تصحيح صادر عن المشرف:** النسخة الأولى ادّعت أن `validate_data` لا يفحص الـ `key_points`. **خاطئ** — الفحص قائم منذ Phase 3. استُنتج غيابه من غياب حقل `is_key_point` — **استنتاج لا تحقق** (§5.13).
-
-**المقام سليم:** `meta.key_points_semantics` يعرّف الـ Coverage على مجموعة فرعية (`key_points`). **تحقق V3: 250/250 يمر** ⇒ **لا سقف بنيوي ناتج عن بيانات فاسدة.**
-
-**ثلاثة مصادر مفترضة للهشاشة:**
-- **(أ) الاتجاه المعكوس خارج التوزيع (OOD):** الموديل لم يرَه إطلاقًا (D34). **يُفحص في D46-A/B.**
-- **(ب) انزياح `neutral` مُتعلَّم:** D26 تجعل 40% من إشارة التدريب تُعلّم "كيان مختلف ⇒ neutral"، وهو الوضع الطبيعي في اتجاه الـ Coverage. ⇒ **يُتوقع أن يكون المدرَّب أسوأ من الـ zero-shot.** **يُفحص في D46-C.**
-- **(ج) خطأ التركيب (composition):** `max_entailment_per_keypoint` والـ premise claim منفرد ⇒ key point يتطلب claimين مجتمعين لا يستلزمه أي claim وحده. **عيب في قاعدة التجميع — لا يُفحص إلا بـ claims حقيقية (D44).**
-
-### خشونة القناة — أرقام مقيسة
-
-chunks/doc: min=6 · max=12 · mean=6.06 · median=6 · key_points/doc: min=2 · max=6 · mean=2.9 · median=3.
-
-| key_points | مستندات | وزن الواحد | تفويت واحد ⇒ F (عند P=1.0) |
+| key_points | docs | weight each | one miss ⇒ F (at P=1.0) |
 |---|---|---|---|
 | **2** | **63 (25.2%)** | **50%** | **0.67** |
 | 3 | 154 (61.6%) | 33% | 0.80 |
@@ -221,3450 +207,337 @@ chunks/doc: min=6 · max=12 · mean=6.06 · median=6 · key_points/doc: min=2 ·
 | 5 | 3 | 20% | 0.89 |
 | 6 | 1 | 17% | 0.91 |
 
-⇒ **ربع الأسئلة لها key pointان فقط** ⇒ القناة **شبه ثنائية الحالة**؛ تفويت الاثنين ⇒ **صفر مهما بلغت الـ Precision**. الحساب على المتوسط (2.9) يخفي هذا.
+⇒ **a quarter of questions have only two key points** ⇒ the channel is **nearly binary**; missing both ⇒ **zero regardless of Precision.** Averaging (2.9) hides this.
+- **Anomaly — SE-006:** the only doc where `len(key_points) == len(chunks)` (6 = 6). **Likely a generation error. Not changed** — inspected under Q2, with the three docs that have 5 key points.
 
-**شذوذ — SE-006:** المستند الوحيد الذي `len(key_points) == len(chunks)` (6 = 6). **يُرجَّح خطأ توليد. لم يُعدَّل** — يُفحص ضمن Q2، مع المستندات الثلاثة ذات 5 key points.
+### D43 — Raw probabilities at scoring thresholds · V2 closed (✅ post-hoc)
+- **V2 closed.** `[reproducibility gate] PASSED` on both arms: **48/48 matching predictions** ⇒ (1) the inference path is **deterministic** — despite `use_deterministic_algorithms(warn_only=True)`. **Empirically proven, not assumed.** (2) D41 is reproducible. (3) Adding probabilities **did not change argmax.**
+- **The question left open in D41 — resolved.** `P(E)` for C→N pairs in the adapter: P27=0.003855, P31=0.001559, P48=0.051490 — all **far below τ_E = 0.9.** The conditional D41 warning is **lifted.**
+- **New result — zero-shot commits two real false verifications under the v2 rule:**
 
-## D43 — الاحتمالات الخام عند عتبات الـ scoring · إغلاق V2 (✅ post-hoc)
-
-**V2 مُغلق.** `[reproducibility gate] PASSED` على الذراعين: **48/48 تنبؤًا مطابقًا**. ⇒
-1. **مسار الـ inference حتمي** — رغم `use_deterministic_algorithms(warn_only=True)`. **مُثبت تجريبيًا، لا مفترض.**
-2. **D41 قابلة لإعادة الإنتاج.** 3. إضافة الاحتمالات **لم تغيّر الـ argmax**.
-
-**السؤال المعلّق في D41 — محسوم.** `P(E)` للأزواج C→N في الـ adapter:
-
-| الزوج | gold | argmax | P(E) | ≥ τ_E = 0.9؟ |
-|---|---|---|---|---|
-| P27 | contradiction | neutral | 0.003855 | لا |
-| P31 | contradiction | neutral | 0.001559 | لا |
-| P48 | contradiction | neutral | 0.051490 | لا |
-
-⇒ **بعيدة جدًا عن العتبة.** تحذير D41 المشروط **مرفوع**.
-
-**نتيجة جديدة — الـ zero-shot يرتكب تأكيدين كاذبين فعليين تحت قاعدة v2:**
-
-| الزوج | gold | P(E) في zero-shot | الحكم عند τ_E = 0.9 |
+| pair | gold | zero-shot P(E) | verdict at τ_E = 0.9 |
 |---|---|---|---|
-| **P12** | contradiction | **0.916049** | ⚠️ **VERIFIED** |
-| **P34** | contradiction | **0.984997** | ⚠️ **VERIFIED** |
-| P48 | contradiction | 0.781239 | تحت العتبة ⇒ يُتجاهَل |
+| **P12** | contradiction | **0.916049** | ⚠️ VERIFIED |
+| **P34** | contradiction | **0.984997** | ⚠️ VERIFIED |
+| P48 | contradiction | 0.781239 | below threshold ⇒ ignored |
 
-في الـ adapter: **صفر.** أعلى `P(E)` على أي claim متناقض = **0.203164** (P12).
+In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164** (P12). **This is the strongest quantitative evidence for fine-tuning** — sharper than argmax, because it measures what the system measures.
 
-**هذا هو الدليل الكمّي الأقوى على ضرورة الـ fine-tuning** — أدق من مقياس الـ argmax، لأنه يقيس ما يقيسه النظام.
-
-| تحت العتبات (τ_E=0.9 · τ=0.5 · α=0) | zero-shot | adapter |
+| Under thresholds (τ_E=0.9 · τ=0.5 · α=0) | zero-shot | adapter |
 |---|---|---|
-| تأكيد كاذب (C ⇒ VERIFIED) | **2** (P12, P34) | **0** |
-| عقوبة كاذبة (E/N ⇒ penalty) | 2 (P26, P37) | 1 (P26) |
-| تأكيد صحيح (E ⇒ VERIFIED) | 15/17 | 14/17 |
-| عقوبة فائتة (C ⇒ يُتجاهَل) | 1 (P48) | 3 (P27, P31, P48) |
+| false verification (C ⇒ VERIFIED) | **2** (P12, P34) | **0** |
+| false penalty (E/N ⇒ penalty) | 2 (P26, P37) | 1 (P26) |
+| true verification (E ⇒ VERIFIED) | 15/17 | 14/17 |
+| missed penalty (C ⇒ ignored) | 1 (P48) | 3 (P27, P31, P48) |
 
-**الصفقة:** خسارة تأكيد صحيح واحد + عقوبتين فائتتين، مقابل **إلغاء تأكيدين كاذبين وعقوبة كاذبة**. تحت ترتيب D21 **مكسب صافٍ**، مقيس عند العتبة.
+- **The trade:** lose one true verification + two missed penalties, in exchange for **eliminating two false verifications and one false penalty.** Under the D21 ordering this is a **net gain**, measured at the threshold.
+- **Generalization constraint:** Gold Set pairs are **single** `(premise, hypothesis)`, so `max_E`/`max_C` are over one chunk. In the real path they aggregate over a Claims × Chunks matrix (SummaC). **Direction correct, absolute values approximate.**
+- **Calibration inputs (for G4 — not decisions):**
+  - `τ_E = 0.9` is not strict: 14/17 entailment clear it in the adapter.
+  - Calibration shift: fine-tuning systematically lowered confidence (correct E: ≈0.998 → ≈0.98). Closest two pairs: **P17 = 0.957947 · P05 = 0.961640** ⇒ **constraint on any further training: more epochs may drop them below `τ_E`.**
+  - `τ = 0.5` is not critical: weakest contradiction detected `P(C) = 0.772790` (P12).
+  - **P26 generates a false penalty in both arms** — `P(C)`: 0.992138 → 0.746531. Harm reduced, not eliminated.
+- **Output change:** `results/phase5/*.json` replaced by copies carrying `probs`. `predicted_label` is byte-identical ⇒ no D41 number is affected.
 
-**قيد على التعميم:** الـ Gold Set أزواج `(premise, hypothesis)` **مفردة**، فـ `max_E`/`max_C` محسوبان على chunk واحد. في المسار الحقيقي يُجمَّعان على مصفوفة Claims × Chunks (SummaC). **الاتجاه صحيح، القيم المطلقة تقريبية.**
+### D44 — Coverage-experiment claim source: deferral (✅) [closes V4]
+- **Decision:** the Coverage-channel measurement experiment is **deferred to post–Phase 8.** Gold Set hypotheses will **not** be used as synthetic claims, and candidate answers will **not** be hand-written as an interim substitute.
+- **Rationale:**
+  - *(a) Gold Set hypotheses as premises:* **rejected.** Authored by the same convention as chunks ⇒ measures **data consistency with itself.** Any resulting number is **structurally optimistic and non-citable.**
+  - *(b) Hand-written candidate answers as interim:* **rejected** — consumes the same human effort as O9 without producing the academic deliverable.
+  - *(c) Defer until claims come from the decomposition module:* **adopted.**
+- **Price — explicitly accepted:**
+  1. The Coverage channel stays unmeasured on real claims even after Phase 8.
+  2. Harmonic merge ⇒ `Coverage = 0` zeroes F (D21). Any structural flaw in it **effectively voids** the Phase 4–5 results from a final-system standpoint.
+  3. ⚠️ **O9 moves to the critical path:** `O9 → G2 → Phase 8 → Coverage experiment → Q8 verdict → verdict on the whole scoring engine.`
+- **Counter-obligation:** O9 is completed **before** any scope expansion (the 37 docs) and before any second training batch.
+- **Two standing mitigations:**
+  - *Code mitigation (Phase 6):* unit tests pinning the fragility explicitly — `Coverage = 0 ⇒ F = 0` despite `Precision = 1.0`; and a 2-key-point doc: one miss ⇒ `F ≤ 0.67`. Prevents silent regression, **does not replace measurement.**
+  - *Diagnostic mitigation (D46):* checks model behavior in the reversed direction **with no claims.** Can prove the channel is **broken**; cannot prove it is **sound.**
 
-**مُدخَلات معايرة (لبوابة G4 — ليست قرارات):**
-- **`τ_E = 0.9` غير صارمة:** 14/17 من الـ entailment تتجاوزها في الـ adapter.
-- **انزياح معايرة:** الـ fine-tuning خفّض الثقة منهجيًا (E الصحيحة: ≈0.998 → ≈0.98). أقرب زوجين: **P17 = 0.957947 · P05 = 0.961640**. ⇒ **قيد على أي تدريب إضافي: epochs أكثر قد تُنزلهما تحت `τ_E`.**
-- **`τ = 0.5` غير حرجة:** أضعف contradiction مكتشفة `P(C) = 0.772790` (P12).
-- **P26 يولّد عقوبة كاذبة في الذراعين** — `P(C)`: 0.992138 → 0.746531. الضرر خُفِّف لا أُلغي.
+### D45 — Merge semantics at negative Precision and the silent answer (✅ ratified — 10 Jul 2026)
+- **Context:** during Phase 6 two decisions were taken in `scoring/metrics.py` that were not registered. Ratified here explicitly rather than left as an implementation side-effect.
+- **(a) `Precision` = arithmetic mean of claim scores, allowed to be negative.** Justified by D21: the contradiction penalty (`score = −max_C`) is meaningless if clipped at zero.
+- **(b) If `Precision < 0` ⇒ final output = `Precision`, and the Coverage channel is ignored entirely.**
+  - *Meaning:* an answer containing a net contradiction **nullifies the coverage weight.** A candidate who covered every key point but said one false sentence, enough to make the mean negative ⇒ coverage carries no weight.
+  - *Justification:* the harmonic mean is **semantically undefined** for a negative number, and the only alternative — clipping `Precision` at zero — makes **"said wrong" and "stayed silent" equal at `F = 0`**, a **direct violation of the locked D21 ordering** (`said correct > silent > said wrong`).
+  - *Effect:* the strict ordering is preserved, pinned in `tests/test_scoring.py` (item d) with a strict inequality.
+- **(c) Two implementation items to document in the same module (⛔ — see V5):** (1) the final score range (D21 says `0–100`; with (b) it may go negative — report what the code actually produces); (2) the silent answer (`claims == []`), an undefined mean over an empty list — report the value the code produces, since "silent" is a base category in the D21 ordering.
+- **Status:** (a) and (b) **ratified.** (c) **open as V5** — report the code's behavior, don't change it.
 
-**تغيير على المخرجات:** `results/phase5/*.json` استُبدلا بنسخ تحمل `probs`. الـ `predicted_label` مطابق حرفيًا ⇒ لا يتأثر أي رقم في D41.
+### D46 — Pre-registered reversed-direction diagnostic (✅ registered before the run — 10 Jul 2026)
+- **This is not a Coverage-channel measurement.** D44 stands. This is a **claim-free check of model behavior in the reversed direction** — uses no decomposition output, produces no Coverage score for any answer.
+- **Source: `DS-014` only** — the one document whose chunks the model never saw as a premise (D28) ⇒ the only clean sample. Compared on both arms (zero-shot vs adapter), same code path.
+- **A — floor (self-entailment):** `premise = chunk_i` · `hypothesis = chunk_i` (byte-identical). Criterion: `median P(E) ≥ 0.90`. Failure ⇒ the channel is structurally broken and the discussion ends there.
+- **B — ceiling (no relation):** `premise = DS-014 chunk` · `hypothesis = SE-001 key point` (distant doc). Criterion: `median P(E) ≤ 0.10`. Failure ⇒ the channel treats any text as covering anything ⇒ non-discriminative.
+- **C — cross-entity (tests D42-b directly):** `premise = chunk about entity X` · `hypothesis = key point about entity Y`, **within the same document** — the case the model was explicitly trained to label `neutral` (D26). **Pre-registered prediction:** the adapter's `median P(E)` is **lower** than zero-shot's. **Signal criterion:** a gap ≥ 0.10 in the median ⇒ fine-tuning harmed the Coverage channel, and D34 gains a measured price. A gap < 0.10 ⇒ no signal; hypothesis (b) is not proven (nor refuted — underpowered).
+- **Pre-registered constraints:** n is very small (6 chunks · 3 key points for DS-014) ⇒ directional not statistical. Cannot speak to Coverage on a real candidate answer, the composition error (D42-c), or the behavior of colloquial decomposed claims. **Asymmetric inference:** failure proves the channel is broken; success **does not** prove it is sound. Run **after** committing this item; raw outputs saved to `results/probe_reversed/`.
 
-## D44 — مصدر الـ claims لتجربة الـ Coverage: التأجيل (✅) [يُغلق V4]
+### D47 — Score-range correction: [-100, +100] instead of "0–100" (✅ ratified — 10 Jul 2026)
+- **Supersedes:** the D21 text saying the range is "0–100."
+- **Evidence:** commit `d7db5e6` · `tests/test_scoring.py` (7 regression tests) · docstring in `src/interview_iq/scoring/metrics.py`.
+- **Resolution (V5):** measured empirically on `43dae43`. Final score range at `alpha=0.0` (PRE-CALIBRATION DEFAULT) is **[-100.0, +100.0]**, not [0, 100]. One fully contradictory claim (`max_c=1.0`) yields `score = -100.0`.
+- **Ordering preserved:** D21's "said correct > silent > said wrong" holds numerically: `-100 < 0 <= 100`. The correction is on the lower bound only (see D45 for why negative Precision bypasses the whole Coverage channel to preserve this ordering).
+- **Warning — re-measure after G4:** the lower bound is a function of alpha, currently a PRE-CALIBRATION DEFAULT (0.0). Not a system constant; must be re-verified after calibration.
+- **§5.13 note:** `harmonic_f(0.0, 0.0)` returns `0.0` (measured and pinned). The divide-by-zero avoidance mechanism is **unverified.** No guard clause is assumed or claimed — the behavior is confirmed as an output only, not as a mechanism.
+- **Regression coverage** (`tests/test_scoring.py`, 7 new tests, zero breakage, 105 pass = 98 + 7): `harmonic_f(0.0,0.0)→0.0`; `harmonic_f(0.0,1.0)→0.0`; `harmonic_f(-1.0,1.0)→-1.0`; `harmonic_f(-1.0,0.0)→-1.0`; `precision_channel([],[])→(0.0,[])`; silent answer `→ score=0.0`; one contradictory claim `→ score=-100.0`.
+- **Procedural note (not a violation — logged for cleanliness):** the `push` of `d7db5e6` to `origin/main` was manual by Ahmed, not Claude Code. Verified 11 Jul 2026. No violation of "Claude Code does not push without confirmation." Whether git status was shown and confirmation awaited before that commit is unconfirmed in either direction, so it is not logged as a documented violation absent evidence.
 
-**القرار:** تجربة قياس قناة الـ Coverage **مؤجَّلة إلى ما بعد Phase 8**. **لن تُستخدم** hypotheses الـ Gold Set كـ claims صناعية، **ولن تُكتب** إجابات مرشح يدويًا كبديل مرحلي.
+### D48 — Local dev environment: Python 3.11 instead of 3.14 (✅ ratified — 11 Jul 2026)
+- **Context (V6):** the local machine had only Python 3.14.2. A PyPI-JSON-API check proved that 6 compiled packages in requirements.txt (torch, torchaudio, PyYAML, numpy, pandas, scipy), at their pinned versions, **have no cp314 wheel on any platform.** The rest are universal py3-none-any and unaffected.
+- **Decision:** install Python 3.11 locally (separate from system 3.14) and build a new `.venv` on it. **No changes to requirements.txt pins** — empirically confirmed all 6 critical packages have full wheels at their exact pins under cp311.
+- **Rejected alternative:** bumping pins to the latest cp314-supported versions (numpy 2.5.1, pandas 3.0.3, etc.) — rejected because it forces major version jumps across an interdependent library chain without cross-compatibility verification, needlessly threatening reproducibility.
+- **Separate exception — FlagEmbedding==1.2.5:** sdist-only (no wheel for any Python). Not resolved by this decision; needs build tools or separate handling.
+- **Status:** ✅ executed and verified. Python 3.11.9 installed alongside 3.14.2 (untouched). New `.venv`, all 15 pins (incl. FlagEmbedding sdist) installed verbatim with no discrepancy. After `pip install -e .`: **130/130 tests pass, zero errors** (two non-critical peft UserWarnings). `git status` clean outside `decisions.md`. **V6 closed.**
 
-**المبرر:**
-- *(أ) hypotheses الـ Gold Set كـ premises:* **مرفوض.** مؤلَّفة بنفس convention الـ chunks ⇒ تقيس **اتساق البيانات مع نفسها**. أي رقم ناتج **متفائل بنيويًا وغير قابل للاستشهاد**.
-- *(ب) إجابات مرشح مكتوبة يدويًا:* **مرفوض كبديل مرحلي** — يستهلك نفس الجهد البشري الذي يستهلكه O9 دون أن يُنتج الـ deliverable الأكاديمي.
-- *(ج) التأجيل حتى تتوفر claims من موديول الـ decomposition:* **المعتمد.**
-
-**الثمن — مقبول صراحةً:**
-1. **قناة الـ Coverage تبقى غير مقيسة على claims حقيقية حتى بعد Phase 8.**
-2. **الدمج harmonic ⇒ `Coverage = 0` يُصفِّر الـ F** (D21). أي عيب بنيوي فيها **يُبطل عمليًا** قيمة نتائج Phases 4–5 من منظور النظام النهائي.
-3. ⚠️ **O9 ينتقل إلى المسار الحرج:**
-   `O9 → G2 → Phase 8 → تجربة Coverage → الحكم على Q8 → الحكم على محرك الـ scoring بأكمله`
-
-**التزام مقابل:** يُنجَز O9 **قبل** أي توسّع في النطاق (الـ 37 وثيقة) وقبل أي دفعة تدريب ثانية.
-
-**تخفيفان قائمان:**
-- **تخفيف في الكود (Phase 6):** اختبارات وحدات تُثبّت الهشاشة صراحةً — `Coverage = 0 ⇒ F = 0` رغم `Precision = 1.0`؛ ومستند بـ key pointين: تفويت واحد ⇒ `F ≤ 0.67`. تمنع الانحدار الصامت، **ولا تُغني عن القياس**.
-- **تخفيف تشخيصي (D46):** فحص سلوك الموديل في الاتجاه المعكوس **بلا claims**. يقدر أن يُثبت أن القناة **مكسورة**؛ لا يقدر أن يُثبت أنها **سليمة**.
-
-## D45 — دلالة الدمج عند Precision سالبة وعند الإجابة الصامتة (✅ مُصدَّق — 10 يوليو 2026)
-
-**السياق:** أثناء Phase 6 اتُّخذ قراران في `scoring/metrics.py` لم يكونا مسجَّلين في أي D##. يُصدَّقان هنا صراحةً بدل أن يبقيا أثرًا جانبيًا للتنفيذ.
-
-**(أ) `Precision` = المتوسط الحسابي لسكورات الـ claims، ويُسمح لها بأن تكون سالبة.**
-مبرَّر بـ D21: عقوبة التناقض (`score = −max_C`) لا معنى لها إن قُصَّت عند الصفر.
-
-**(ب) إذا `Precision < 0` ⇒ الناتج النهائي = `Precision`، وتُتجاهَل قناة الـ Coverage بالكامل.**
-- **المعنى:** إجابة تحتوي تناقضًا صافيًا **تُلغي وزن التغطية**. مرشح غطّى كل الـ key points وقال جملة خاطئة واحدة كافية لجعل المتوسط سالبًا ⇒ تغطيته بلا وزن.
-- **المبرر:** المتوسط التوافقي (harmonic mean) **غير معرَّف دلاليًا** لعدد سالب. والبديل الوحيد — قصّ `Precision` عند الصفر — يجعل **"قال غلط" و"سكت" متساويين عند `F = 0`**، وهو **نقض مباشر للترتيب المقفول في D21** (`قال صح > سكت > قال غلط`).
-- **الأثر:** الترتيب الصارم محفوظ، وهو مُثبَّت في `tests/test_scoring.py` (بند d) بمتباينة صارمة.
-
-**(ج) بندان تنفيذيان يجب توثيقهما في نفس الوحدة (⛔ — انظر V5):**
-1. **نطاق السكور النهائي.** D21 ينص على `0–100`. مع (ب)، الناتج قد يكون سالبًا. **يجب تقرير ما ينتجه الكود فعلًا وتوثيقه**؛ إن أنتج قيمًا سالبة فنص D21 غير دقيق ويُصحَّح.
-2. **الإجابة الصامتة** (`claims == []`). المتوسط على قائمة فارغة غير معرَّف. **يجب تقرير القيمة التي ينتجها الكود**، لأن "سكت" فئة أساسية في ترتيب D21.
-
-**الحالة:** (أ) و(ب) **مُصدَّقان**. (ج) **مفتوح كـ V5** — تقرير سلوك الكود، لا تغييره.
-
-## D46 — قاعدة قرار مُسجَّلة مسبقًا: فحص تشخيصي للاتجاه المعكوس (✅ سُجِّلت قبل التشغيل — 10 يوليو 2026)
-
-**هذا ليس قياسًا لقناة الـ Coverage.** D44 سارية. هذا **فحص لسلوك الموديل في الاتجاه المعكوس، بلا claims** — لا يستخدم أي مخرج decomposition، ولا يُنتج سكور Coverage لأي إجابة.
-
-**المصدر: `DS-014` حصريًا.** هو المستند الوحيد الذي لم يرَ الموديل أيًّا من chunks الخاصة به كـ premise (D28) ⇒ العيّنة النظيفة الوحيدة. المقارنة على الذراعين (zero-shot vs adapter)، بنفس code path.
-
-**A — الأرضية (self-entailment):** `premise = chunk_i` · `hypothesis = chunk_i` (نص متطابق حرفيًا).
-> **المعيار:** `median P(E) ≥ 0.90` على chunks المستند. الفشل ⇒ **القناة مكسورة بنيويًا** والنقاش ينتهي هنا.
-
-**B — السقف (لا صلة):** `premise = chunk من DS-014` · `hypothesis = key point من SE-001` (مستند بعيد).
-> **المعيار:** `median P(E) ≤ 0.10`. الفشل ⇒ القناة تعتبر أي كلام مغطّيًا لأي شيء ⇒ عديمة التمييز.
-
-**C — cross-entity (يختبر فرضية D42-ب مباشرةً):** `premise = chunk عن كيان X` · `hypothesis = key point عن كيان Y`، **داخل نفس المستند**. هذه هي الحالة التي دُرِّب الموديل صراحةً على تسميتها `neutral` (D26).
-> **تنبؤ مسجَّل مسبقًا:** `median P(E)` للـ adapter **أقل** من نظيرتها للـ zero-shot.
-> **معيار الإشارة:** فرق ≥ 0.10 في الوسيط ⇒ **الـ fine-tuning أضرّ بقناة الـ Coverage**، ويصبح لـ D34 ثمنٌ مقيس.
-> فرق < 0.10 ⇒ **لا إشارة**؛ فرضية (ب) لا تُثبَت (ولا تُنفى — القوة الإحصائية ضعيفة).
-
-**قيود مسجَّلة مسبقًا:**
-- `n` صغير جدًا (6 chunks · 3 key points لـ DS-014) ⇒ **الحكم اتجاهي لا إحصائي**. لا يُستشهد بأي رقم منه كأداء للنظام.
-- **ما لا يستطيع هذا الفحص قوله:** لا يقول شيئًا عن الـ Coverage على إجابة مرشح حقيقية، ولا عن **خطأ التركيب** (D42-ج)، ولا عن سلوك الـ claims المفكَّكة من العامية.
-- **منطق الاستدلال غير متماثل:** الفشل يُثبت أن القناة مكسورة. النجاح **لا يُثبت** أنها سليمة.
-- يُشغَّل **بعد** commit هذا البند. المخرجات الخام تُحفظ في `results/probe_reversed/`.
-
-## D47 — تصحيح نطاق السكور: [-100, +100] بدلاً من "0–100" (✅ مُصدَّق — 10 يوليو 2026)
-
-**يُلغي:** نص D21 القائل بأن النطاق "0–100"
-**الدليل:** commit `d7db5e6` · `tests/test_scoring.py` (7 اختبارات regression) · docstring في `src/interview_iq/scoring/metrics.py`
-
-**الحسم (V5):** قِيس تجريبيًا على `43dae43`. نطاق السكور النهائي عند `alpha=0.0` (PRE-CALIBRATION DEFAULT) هو **[-100.0, +100.0]**، وليس [0, 100] كما ورد في D21. claim واحد متناقض تناقضًا تامًا (`max_c=1.0`) ينتج `score = -100.0`.
-
-**الترتيب محفوظ:** ترتيب D21 "قال صح > سكت > قال غلط" يتحقق رقميًا: `-100 < 0 <= 100`. التصحيح على الحد الأدنى فقط، لا على منطق الترتيب (انظر D45 لسبب تجاوز Precision السالبة لقناة الـ Coverage بالكامل حفاظًا على هذا الترتيب).
-
-**تحذير — يُعاد قياسه بعد G4:** الحد الأدنى دالة في alpha، وهي حاليًا PRE-CALIBRATION DEFAULT (0.0). ليست ثابتًا في النظام، ويجب التحقق منها مجددًا بعد المعايرة.
-
-**ملاحظة §5.13:** `harmonic_f(0.0, 0.0)` يُرجع `0.0` (مقاس ومُثبَّت باختبار). آلية تفادي القسمة على صفر **لم تُتحقق منها**. لا يُفترض ولا يُدَّعى وجود guard clause — السلوك مؤكد كمخرج فقط، لا كآلية.
-
-**تغطية الـ regression (`tests/test_scoring.py`، 7 اختبارات جديدة، صفر انكسار، 105 نجح = 98 + 7):**
-
-| المدخل | الناتج |
-|---|---|
-| `harmonic_f(0.0, 0.0)` | `0.0` |
-| `harmonic_f(0.0, 1.0)` | `0.0` |
-| `harmonic_f(-1.0, 1.0)` | `-1.0` |
-| `harmonic_f(-1.0, 0.0)` | `-1.0` |
-| `precision_channel([], [])` | `(0.0, [])` |
-| إجابة صامتة (`compute_scoring_result`) | `score = 0.0` |
-| claim واحد متناقض | `score = -100.0` |
-
-**ملاحظة إجرائية (ليست مخالفة — تُسجَّل لنظافة التوثيق فقط):** الدفع (`push`) لـ `d7db5e6` إلى `origin/main` كان يدويًا من أحمد، وليس من Claude Code. تحقّق مباشر في 11 يوليو 2026. لا مخالفة لقاعدة "Claude Code لا يدفع بدون تأكيد". عرض git status والانتظار للتأكيد قبل الـ commit نفسه غير مؤكد لعدم وجود دليل في أي الاتجاهين، ولا يُسجَّل كمخالفة موثقة في غياب الدليل.
----
-## D48 — بيئة التطوير المحلية: Python 3.11 بدلاً من 3.14 (✅ مُصدَّق — 11 يوليو 2026)
-
-**السياق (V6):** الجهاز المحلي كان يحوي Python 3.14.2 حصريًا (لا 3.10/3.11/3.12).
-فحص تجريبي عبر PyPI JSON API أثبت أن 6 حزم compiled في requirements.txt
-(torch, torchaudio, PyYAML, numpy, pandas, scipy) — عند نسخها المثبَّتة
-بالحرف — **لا تملك wheel لـ cp314 على أي منصة**. البقية (transformers,
-peft, datasets, accelerate, sentence-transformers, faster-whisper, pytest,
-pytest-cov) حزم py3-none-any عالمية غير متأثرة.
-
-**القرار:** تثبيت Python 3.11 محليًا (منفصل عن 3.14 النظامي)، وبناء `.venv`
-جديد عليه. **بلا أي تعديل على pins requirements.txt** — تأكيد تجريبي أن
-كل الـ 6 حزم الحرجة لها wheel كامل بنسخها المثبَّتة بالحرف تحت cp311.
-
-**البديل المرفوض:** تحديث الـ pins لأحدث نسخة مدعومة لـ cp314 (numpy 2.5.1،
-pandas 3.0.3، إلخ) — مرفوض لأنه يفرض قفزات إصدار رئيسية (numpy 1.x→2.x،
-pandas 2.x→3.x) عبر سلسلة مكتبات مترابطة (transformers/peft/accelerate)
-بلا تحقق من توافقها البيني، وهذا يهدد إعادة الإنتاجية دون داعٍ حقيقي.
-
-**استثناء منفصل — FlagEmbedding==1.2.5:** sdist-only (لا wheel لأي نسخة
-بايثون). غير محلول بهذا القرار؛ يتطلب أدوات build أو معالجة منفصلة.
-
-**الحالة:** ✅ مُنفَّذ ومُتحقَّق منه (11 يوليو 2026). Python 3.11.9 مثبَّت
-جنبًا إلى جنب مع 3.14.2 (بلا تعديل عليها). `.venv` جديد، كل الـ 15 pin
-(بما فيهم FlagEmbedding sdist) اتثبتوا بالحرف بلا أي discrepancy. بعد
-`pip install -e .`: **130/130 اختبار ناجح، صفر أخطاء، صفر تحذيرات مُميتة**
-(تحذيرين UserWarning من peft، غير حرجين). `git status` نظيف بلا تلوث خارج
-`decisions.md`. **V6 مغلق.**
+### D49 — Result of D46: reversed-direction diagnostic (✅ closed — 11 Jul 2026)
+- Probe executed on Kaggle T4 (commit `acc802a`).
+- **Test A (self-entailment)** median P(E): zero-shot=`0.997138` (PASS), adapter=`0.920706` (PASS, tight `0.0207` above the `0.90` threshold).
+- **Test B (no-relation ceiling)** median P(E): zero-shot=`0.00288` (PASS), adapter=`0.0061265` (PASS).
+- **Test C (cross-entity signal):** `diff=-0.003014`, `signal_detected=false`, `direction_matches_prediction=false` — the predicted adapter degradation was not detected.
+- Per D46's registered asymmetric inference (failure proves breakage; success does not prove soundness), this is **not** proof the reversed direction is sound, only that this specific diagnostic did not catch a break.
+- **Fragility note (results analysis, not an acceptance criterion):** 4 of 12 individual self-entailment pairs in the adapter fell below `0.90` (lowest `0.767`); only the median is the registered criterion, and it passed.
+- **D46 status: closed.**
 
 ---
 
-## D49 — نتيجة تنفيذ D46: الفحص التشخيصي للاتجاه المعكوس (✅ مُغلق — 11 يوليو 2026)
+## Section 3 — Claim Decomposition Module (D50–D80)
 
-تنفيذ probe D46 على Kaggle T4 تم (commit `acc802a`).
+### 3a — O9 Gold Set + Q6 model choice (D50–D57)
 
-**النتائج:**
-- **Test A (self-entailment)** median P(E) — zero-shot=`0.997138` (**PASS**)، adapter=`0.920706` (**PASS**، هامش ضيق `0.0207` فوق عتبة `0.90`).
-- **Test B (no-relation ceiling)** median P(E) — zero-shot=`0.00288` (**PASS**)، adapter=`0.0061265` (**PASS**).
-- **Test C (cross-entity signal):** `diff=-0.003014`، `signal_detected=false`، `direction_matches_prediction=false` — التدهور المتوقَّع في الـ adapter لم يُكتشَف.
+### D50 — O9 sample pre-registration (✅ before the draw — 11 Jul 2026)
+- **Sample size:** 25 questions (10% of 250), stratified evenly: 5 per track (DA/DS/CS/SE/GN).
+- **Four already done manually before this registration:** DA-001, DA-002, DS-010, DS-011 — counted within the 25, not redone.
+- **Remaining to draw randomly:** DA=3, DS=3, CS=5, SE=5, GN=5 (total 21).
+- **Selection:** fully random within each track (excluding the four completed), fixed `seed=20260711`, documented in advance. No difficulty criterion or manual picking, to prevent annotator bias toward easier questions.
 
-لكن طبقًا لعدم تماثل الاستدلال المسجَّل في D46 نفسه (الفشل يثبت الكسر؛ النجاح لا يثبت السلامة) **لا يُعتبر هذا إثباتًا لسلامة الاتجاه المعكوس**، بل فقط أن هذا التشخيص المحدد لم يلتقط الكسر.
+### D51 — O9 full closure (✅)
+- All 25 questions from D50 decomposed (`results/o9_decomposition_exercises.md`). Distribution DA/DS/CS/SE/GN = 5 each.
+- Included R1 cases (errors preserved without correction) in **7 questions, 9 tagged claims**: DA-029, DS-030 (×2), DS-033, SE-007, SE-013 (×2), SE-037, GN-004 — **all organic, arising during authoring; none pre-planned** (the D50 draw was fully random, `seed=20260711`, and D50 names no question as an R1 test case). Also 5 uncertainty-documentation cases as standalone claims (CS-024, CS-039, SE-041, GN-012, GN-045). Three open, non-decisive review notes are documented in the file itself (DA-001 claim atomicity, DA-046 closing-sentence classification, DS-030 optional hesitation documentation) — non-blocking, left for later review if needed.
+- **Corrected** the stats line in `o9_decomposition_exercises.md` (had said "7 cases, 2 pre-planned and 6 organic" — inconsistent (2+6=8) and a pre-planning claim contradicting D50's random draw).
+- O9 status: closed. Opens the path to G2 then Phase 8 (previously blocked on O9 exclusively, see D44).
 
-**ملاحظة هشاشة (تحليل نتائج لا معيار نجاح):** 4 من 12 زوج self-entailment فردي في الـ adapter وقعوا تحت عتبة `0.90` (أدناها `0.767`)؛ الـ median فقط هو المعيار المسجَّل وقد اجتاز.
+### D52 — G2 full closure, following O9 (✅)
+- The 25 manual exercises in `results/o9_decomposition_exercises.md` were the shared basis of both O9 and G2. With O9 closed in D51 (commit `282fc87`), G2 closes automatically with no separate work.
 
-**حالة D46: مغلقة.**
+### D53 — Q6 decision rule (AraT5 vs mT5-base): 5-question diagnostic pilot (✅ — superseded context)
+- **Sample (named, purposive to cover the hardest cases):** DA-029, DS-030, CS-039, SE-013, GN-004 (raw answer + manual reference claims for reference only, not passed to the models).
+- **Procedure:** UBC-NLP/AraT5-base (candidate_a) and google/mt5-base (candidate_b); zero-shot only, no fine-tuning; identical prompt template for both; input = raw answer only; output = raw text, saved unprocessed.
+- **Criteria (directional, n=5):** R1 adherence (no correction of candidate errors), R3 (preserve hedging), R4 (generalize personal phrasing), simplified-MSA soundness + Latin-script technical terms, absence of hallucination. Manual evaluation by Ahmed only, no automated metric.
+- **Explicit note:** directional (n=5), not statistical; not used as sole final evidence — Q6 could require a wider pilot or a mini fine-tuning experiment if results tie.
+- **Architectural constraint:** `scripts/q6_pilot_decomposition.py` is fully independent of the locked `src/interview_iq/decomposition/` package (D52); as a diagnostic tool it may load an explicit model name (the no-hardcoding constraint applies only to the src package).
+- **Addendum (13 Jul):** the first AraT5-base run produced collapsed generation (infinite single-token repetition) on all five — a technical fault in `generate()` settings (missing repetition_penalty/no_repeat_ngram_size), not evidence of the model's task performance. mT5-base produced grammatically coherent output prefixed with `<extra_id_0>` (a span-corruption token from pretraining), suggesting text-only zero-shot may be insufficient for either model. Added repetition_penalty=1.3, no_repeat_ngram_size=3, min_new_tokens=5; the first run's results are not used as a basis for Q6.
+
+### D54 — Q6 resolved: AraT5-base selected (✅ — later reopened, see D65; closed by pivot D74)
+- **The D53 pilot did not favor either model:** both failed zero-shot on the 5 questions even after fixing generation settings. AraT5-base produced random multilingual text; mT5-base produced short output prefixed with `<extra_id_0>` in both runs. **Neither run is used as evidence of superiority.**
+- **Actual basis for the decision (independent of the zero-shot result):** AraT5-base is pretrained exclusively on Arabic (MSA + dialects), whereas mT5-base is spread across 100+ languages with a relatively limited Arabic share. The target task (decomposing Egyptian-colloquial answers into simplified-MSA claims) is inherently Arabic-specific. Architectural hypothesis: AraT5-base is a closer starting point for later fine-tuning (Phase 8).
+- **Decision:** `configs/decomposition.yaml`'s `model.selected` to be updated (out of this session's scope) from `"TBD_pending_Q6"` to `"UBC-NLP/AraT5-base"`.
+- **Explicit note:** **not** based on measured performance — the pilot was evenly inconclusive. Based on an alternative architectural/linguistic argument. If indicators weakening this hypothesis appear during actual Phase 8 fine-tuning, Q6 reopens. *(It did reopen — D65 — and was ultimately closed by the D74 pivot.)*
+
+### D55 — Decomposition corpus expansion: Gold/Validation Set + LLM-assisted data-prep batches (✅ complete — 223/225, 14 Jul 2026)
+- **Context:** PROJECT_EXECUTION_PLAN.md:21 permits LLM use in offline data preparation only, with mandatory human review before any example is accepted. No LLM at runtime.
+- **Decision (1):** reclassify O9 — `results/o9_decomposition_exercises.md` becomes a Gold/Validation Set (same methodology as DS-014/D28 for NLI), for evaluation only, not direct training.
+- **Decision (2):** build a training corpus covering the remaining 225 questions using an LLM as an offline data-prep aid, with mandatory human review of every example.
+- **Mandatory constraints:** deliberately targeting or pre-planning a specific technical error is **wholly prohibited, no exceptions.** Simulating wider variation in a hypothetical candidate's confidence/competence is allowed — any resulting technical error must be a natural byproduct of style, not a generation target.
+- **Execution:** 5 batches, `seed=20260713`, each track run independently, R1–R6 reviews applied. First pilot batch = commit `957f1cc`.
+- **"Memory-based generation" addendum (14 Jul):** across batch1+2+3 (110 questions), **zero organic R1 cases** despite the confidence-variation instruction. New mechanism (future batches only, not retroactive): for ~20% of each batch's questions (proportional across tracks), the raw answer is written without directly consulting the reference chunk — relying only on remembered/general knowledge, as a real candidate would answer from personal understanding. The binding no-targeted-error constraint is unchanged. Each question is tagged with its generation method (chunk-referenced / memory-based) for later analysis.
+- **Completion (14 Jul):** batches (10, 50, 50, 50 [GN-050 excluded], 63) = 223 questions eligible for the training corpus out of 225 (SE-006 pending Q2; DS-014 permanently excluded by D28). Full human R1/R2 review by Ahmed. Cumulative: **0/273 organic R1 across all synthetic batches even with the memory-based mechanism** — documented as a structural limit of LLM ability to produce an organic error, not an execution flaw. commits: `957f1cc` (batch1) through batch5.
+
+### D56 — Final fine-tuning prompt format (Phase 8) (✅)
+- The D53 pilot only tested zero-shot instruction understanding (no fine-tuning) and its failure was inconclusive per D54; output format (claim shape) was never tested there.
+- **Decision:** adopt the original PROMPT_TEMPLATE from `scripts/q6_pilot_decomposition.py` verbatim as the fine-tuning instruction base, plus an explicit output-format instruction (number each claim on its own line, no preamble/postamble) — this auto-matches the human format already used across O9 and all five batches, so training data needs no reformatting.
+- **Constraint:** `scripts/q6_pilot_decomposition.py` stays unchanged (frozen D53/D54 evidence). The new format is a separate constant inside the `src/interview_iq/decomposition/` package.
+- Claim separator in the target text: `"\n"` with a numeric prefix, matching the locked `output.claim_separator` in `configs/decomposition.yaml`.
+
+### D57 — Initial trainer.py hyperparameters (Phase 8) (✅)
+- **Context:** an empirical probe (§5.13) run by Ahmed via `scripts/probe_token_lengths.py` on the real corpus (222 training + 25 Gold/Validation, AraT5-base tokenizer), 16 Jul 2026. Raw: input p95=257 tokens (max=283), target p95=227 tokens (max=279), zero truncation at max_length=320.
+- **Decision:** train/val 85/15 at question-ID level (~189 train / ~33 val); max_source_length = max_target_length = 320; LR = 3e-4 (AdamW), linear warmup 0.1; batch per-device=4, grad_accum=4 (effective=16); weight decay 0.01; max epochs 30 with early stopping on eval_loss (patience=5); eval each epoch, fp16, best checkpoint by eval_loss.
+- All values tagged PRE-CALIBRATION DEFAULT (subject to G4), not the result of intensive search.
+- **Correction (16 Jul, after first real Kaggle T4 run):** the original values lacked `save_total_limit`, so checkpoints accumulated each epoch (each a full model + optimizer state, since this is full fine-tuning not LoRA) until the disk filled and training crashed at epoch 8 (SafetensorError: No space left on device). The fix adds `save_total_limit: 2` — a gap missed in the first draft, not a wrong old value replaced.
+
+### 3b — AraT5 fine-tuning attempt and its failure (D58–D73)
+
+*This whole sub-phase is CLOSED — SUPERSEDED by the D74 pivot. Entries are condensed to their outcome; full procedural pre-registrations are in the archived Arabic original.*
+
+### D58 — Post-training generation-failure diagnosis (✅ — functional failure confirmed)
+- Controlled comparison (`transformers==4.40.2` = training version, Tesla T4, identical input and generation params) on the final model, `checkpoint-174`, `checkpoint-180`. All loaded fine; all lost the terms `SOC`/`SIEM`; all produced incoherent text with repetition and hallucinations. Changing transformers 5.0.0 → 4.40.2 did not fix it.
+- **Limited conclusion:** the tied-weights warning, the transformers version, and final-vs-checkpoint choice are **not** the cause. The source is still undecided among training-data construction, tokenization/labels, and optimization/model state. `inference.py` stays blocked.
+
+### D59 — Training-example / tokenization / labels diagnosis (✅ — base data sound; metadata leakage + UNK audit needed)
+- Read-only diagnostic. Rebuilt corpus (222 examples) and split (189/33, zero overlap) from project code; no truncation. Data collator: 172 padding positions correctly `-100`, zero `pad_token_id` in labels. Final checkpoint failed even on training example `CS-025` (teacher-forced loss=4.6159997, greedy similarity=0.0286, beam=0.0598).
+- **Discovered:** real metadata leakage in `SE-017` (`**[generation method: from memory, no direct reference]**`), and `<unk>` tokens on some Arabic words with tanwin/diacritics (e.g. `غالبًا`, `فعليًا`, `أيضًا`).
+- **Also noted:** the actual run used **2 GPUs**, so effective global batch = `4 × 4 × 2 = 32`, not the intended 16 (D57). A logged execution fact, not by itself a proven cause.
+- **Limited conclusion:** split, length handling, and label masking are not the cause. Cannot pin the cause to optimization alone before measuring corpus contamination and `<unk>` spread. `inference.py` and retraining stay blocked.
+
+### D60 — Corpus contamination + UNK audit (✅ — 22 leaks found, wide `<unk>` spread)
+- Read-only audit of all 222 examples. **22/222 = 9.91%** contain real metadata leakage as a standalone line (`**[generation method: from memory, no direct reference]**`); 19 in train, 3 in val. `CS-010`, `DS-037`, `SE-047` are false positives (do not modify).
+- `<unk>` in 140 source / 210 target examples; totals sources=237, targets=912, clustering at `U+064B FATHATAN` (`ً`) and `U+064D KASRATAN` (`ٍ`). Full alignment of every `<unk>` position was not done — restricting the cause to these two marks is a hypothesis to verify in D61. Does not prove these two are the sole cause of the fine-tuning failure, but both must be fixed before any new optimization run.
+
+### D61 — Deterministic corpus sanitization (✅ — PASS)
+- Removed the standalone `**[generation method: ...]**` line only, plus a normalization removing only `U+064B`/`U+064D` from source and target before tokenization; all other Arabic marks unchanged (D60 did not prove them to produce `<unk>`). Natural occurrences of phrases like `من الذاكرة` / `LLM` inside answer content are preserved.
+- commit `50a636c`. After sanitization: training 222 questions / 1,836 claims; O9 25 / 177; zero train/O9 overlap; zero source/target `<unk>`; max source/target 277/250 tokens; zero truncation at 320. `CS-010`/`DS-037`/`SE-047` preserved. **`D61 ACCEPTANCE: PASS`.** Does not alone prove corpus problems were the sole cause; next is a single-example overfit diagnostic.
+
+### D62 — Clean single-example overfit diagnostic (✅ — `CS-025` exact token-ID match at step 175)
+- From a fresh base AraT5-base (seed=42, transformers 4.40.2), example `CS-025` reached exact token-ID match at step 175 with zero UNK/truncation ⇒ the data/training path can memorize a clean single example.
+
+### D63 — Clean five-example trainer-path overfit diagnostic (✅ — PASS)
+- Five deterministic examples from the five tracks reached `5/5` exact token-ID match at step 400 via `Seq2SeqTrainer`, with a passing padding audit (`44/44` positions → `-100`).
+
+### D64 — Sanitized full-corpus retraining (✅ EXECUTION PASS — no QUALITY PASS)
+- Fresh AraT5-base, full FT, float32, single-GPU, effective batch 16, up to step 660; early stopping at epoch 55.58; best `checkpoint-617`, best `eval_loss=1.7506462336`. Reload + tied-weight check PASS.
+- Smoke generations: `CS-025` (train) near-target but not exact; `CS-003` (val) distorted terms + changed claim count; `CS-013` (O9) repetition + hallucination + over-length. **No QUALITY PASS.** Checkpoint published as a private Kaggle Dataset (Version 1, 1.14 GB, 147 files), not adopted.
+- Limited conclusion: D59–D64 rule out corpus sanitization, tokenization, padding, Trainer path, and save/reload as sufficient explanations. Strong indications of weak generalization and format/content degradation on val and O9, but 3 smoke cases are too few to quantify. No new hyperparameter/architecture decision before D65.
+
+### D65 — Deterministic validation + O9 audit (✅ EXECUTION PASS / QUALITY FAIL; Q6 reopened)
+- 33 val + 25 O9 evaluated deterministically with hash verification and determinism PASS. Exact match = 0 in both splits. **Median edit similarity `0.519` (val) / `0.160` (O9)**, severe repetition `42.4% / 52%`, all CONTENT/FORMAT/LENGTH/REPETITION flags fired. D64 checkpoint functionally blocked; **Q6 reopened.**
+
+### D66 — Controlled PEFT repair pilot + Q6 re-open (✅ EXECUTION PASS / NO REPAIR CANDIDATE)
+- Single-seed LoRA comparison of AraT5-base and mT5-base on train/val only, frozen D64 control, explicit repair gates, O9 excluded. AraT5 produced no qualified checkpoint; mT5 failed the quality/structure gates at step 72. **No winner, no production adoption; Q6 stays open.**
+
+### D67 — Gold Corpus v2 repair + ASR→decomposition input-contract freeze (✅ BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION)
+- Phase 0 verified 222 examples / 1,836 claims / split 189-33 / 273 self-containment flags and recovered 34 structural atomicity candidates, but found no evidence identifying which four were excluded from a former informal count of 30 — so it stopped before any corpus change.
+
+### D68 — Canonical atomicity adjudication recovery (✅ EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED)
+- Two procedurally separate passes over the 34 candidates, 64/64 propositions with literal source support each pass, 30 agreements + 4 disagreements resolved + 0 unresolved. Canonical result: **24 `NON_ATOMIC_REPAIR_REQUIRED` + 10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`** (not the provisional 20/14 or former target 30). Constraint logged: both passes are from the same Codex environment, not a human inter-annotator study.
+
+### D69 — Gold Corpus v2 target repair + self-containment adjudication + deterministic build (✅ pre-registered)
+- Pre-registered build of Gold v2 under `results/gold_v2/`, keeping the 222 Egyptian source answers byte-for-byte and repairing 3 unsupported additions + 24 atomicity keys + 273 self-containment flags via a consolidated original-index repair plan — no training, no O9, no ASR augmentation, no production integration.
+
+### D70 — Paired original/ASR-aligned corpus input variants (✅ — dataset pipeline + tokenizer smoke test pass)
+- Two paired variants per question (`original`, `asr_aligned`); `example_id` = `question_id + "__original"/"__asr"`; split on `question_id` so both variants stay in the same split; a guard raises `ValueError` on any claim mismatch between variants; GN-050 excluded from both. Result: 444 examples from 222 question_ids, 378 train / 66 val, zero overlap; real AraT5-base tokenizer produced `input_ids`/`attention_mask`/`labels` for both variants; **149 tests pass.** Proves the corpus/tokenization contract only, not model quality.
+
+### D71 — Paired-corpus AraT5 full fine-tuning (✅ EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED)
+- Fresh base AraT5-base, full FT, float32, single Tesla T4, no LoRA, split 378/66, seed=42, O9 excluded, GN-050 excluded, no old checkpoint. Best `checkpoint-543`, best `eval_loss=2.205347776412964`, best epoch 22.98; early stopping at step 732 / epoch 30.98. Published as Kaggle Model `hashemili/interview-iq-d71-arat5-paired-ft`, variation `paired-corpus-full-ft`, Version 1. Execution/checkpoint success does not prove output quality.
+
+### D72 — Deterministic quality evaluation of D71 (✅ EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE)
+- Loaded the D71 Kaggle Model only (no fallback to base). Eval on 66 val (33 original + 33 ASR) + 25 O9 held-out, deterministic (`do_sample=false`, `num_beams=1`, `max_new_tokens=320`, float32, single GPU, no training).
+- **Adopted results (`v6-authoritative-gold-context-parser`):** validation LCS F1 `0.5071960304`, validation claim-count exact `0.3333`; **O9 LCS F1 `0.1892490644`**, O9 claim-count exact `0.08`, O9 mean absolute claim-count error `2.8`, O9 repetition rate `0.24`; ASR Latin recall `0.1812590984`, original Latin recall `0.3610519332`. D71 checkpoint not adopted for runtime.
+- **Verdict:** `EXECUTION/METRICS PASS — QUALITY REJECTED`. Post-hoc (D72 did not pre-register numerical thresholds), so not presented as passing/failing a registered threshold.
+
+### D73 — Exhaustive D72 prediction error analysis (⛔ PREREGISTERED / NOT EXECUTED)
+- Pre-registered analysis of all 91 predictions in `d72_examples.csv` (no training/modification), classifying errors into hallucination, semantic substitution, Latin-term corruption, repetition/degeneration, under/over-decomposition, invalid numbering, original/ASR divergence, generation-length cap — with count, share of 91, and representative examples per class.
+- **Addendum (21 Jul, see D74):** the ban that blocked defining a new training experiment referred to a **new AraT5 training** experiment. After D74 there is no upcoming AraT5 training (full replacement, not incremental improvement), so the ban no longer applies as written. Executing D73 itself remains **allowed and recommended as retrospective documentation** (explaining the pivot for the defense) but is now **non-blocking.**
+
+### 3c — Pivot to runtime LLM API + sanity gate (D74–D80)
+
+### D74 — Pivot: amend the Zero-LLM-at-Runtime constraint (Claim Decomposition only) + full replacement of AraT5 with an LLM API (✅ architectural amendment supervisor-approved — ⛔ execution not begun)
+- **Old constraint (via D55 and PROJECT_EXECUTION_PLAN.md:21):** LLM allowed in offline data prep only, with mandatory human review; no LLM at runtime.
+- **New constraint:** the **Claim Decomposition module only** is exempted from the runtime ban. It may call an external LLM API (e.g. via OpenRouter, free tier) as a **full replacement** for AraT5-base fine-tuning, at actual runtime.
+- **Scope — explicitly limited:** affected = Claim Decomposition only. Untouched = NLI Dual-Channel Scoring (mDeBERTa-v3 + LoRA, stays local, tested, locked), BGE-M3 chunk cap, ASR. Zero-LLM-at-runtime **stays in full force** on the rest of the pipeline. Required outside this file: PROJECT_EXECUTION_PLAN.md:21 needs a matching manual edit (append "except the Claim Decomposition module — see D74 in decisions.md").
+- **Registered basis:**
+  1. Empirical evidence from D65–D72: severe generalization gap between validation and O9 (LCS F1 0.507→0.189; claim-count exact 33%→8%; O9 mean absolute claim-count error 2.8; Latin recall 36%→18% on the ASR-aligned variant). Two PEFT repair attempts (D66) produced no repair candidate for AraT5 or mT5.
+  2. Insufficient Arabic data for reliable fine-tuning (only 189 unique question IDs, doubled to 378 via original/ASR without real knowledge diversity — documented in the D73/GPT plan critique).
+  3. Explicit supervisor approval of the pivot, based on expecting higher accuracy from a general-purpose LLM in a data-scarce setting. **[Open item: the supervisor's written approval date/minute to be added here for the defense.]**
+- **Effect on other decisions:** Phase 8 (AraT5 FT) ✅ CLOSED — SUPERSEDED (not worthless failure; retrospective documentation via D73 counts as documented effort in the project journey). Q6 (AraT5 vs mT5) ✅ CLOSED BY PIVOT — **explicitly does not** resolve the original question by any empirical evidence; the decision supersedes both options and must not be read as an implicit Q6 answer. D73 becomes optional retrospective documentation.
+- **Mandatory prompt constraint (non-negotiable):** the LLM must not modify or "correct" the correctness of the user's answer. Allowed tasks only: (a) colloquial→simplified-MSA normalization, (b) decomposition into claims, (c) preserving English terms in Latin script without translation or correction. No information absent from the user's original answer is added.
+- **Mandatory pre-integration verification (Sanity Gate — a validity condition, not a performance study):** a sample of N (5–10) answers with deliberate technical errors or clear gaps; verify the resulting claims **preserve the same error/gap** and the model does not implicitly "correct" it. If the model corrects wrong answers, the whole NLI scoring engine becomes circular and invalid (it would score a modified answer, not the user's real one) — this touches the validity of "Answer Correctness Evaluation" itself, the project's sole goal. Without this gate, no LLM output is adopted.
+- **RISK ACCEPTED (D33-style):** no isolated component-level comparison (LLM decomposition vs AraT5 baseline on the same O9 sample) before integration — measurement deliberately deferred to a full-pipeline run. Limitation to document explicitly: at full-pipeline run, three unfixed variables change together (LLM decomposition quality, uncalibrated NLI thresholds [G4 not run], BGE-M3 chunk-cap behavior) — a weak final result cannot be confidently attributed to one component without a later variable-isolating experiment.
+- **Open item (Fallback):** ⛔ unresolved — Ahmed must decide: caching results used in the final evaluation/demo (instead of a live call during the defense), or a second backup model on API failure/rate limit. Closed before any final demo or full-pipeline run.
+
+### D75 — Codex-assisted AraT5 training corpus attempt (1500-target): evidence and closure (✅ CLOSED — SUPERSEDED by D74; never training-approved)
+- **Process note (documented, not concealed):** this corpus attempt (`results/decomposition_corpus_v2_codex_1500/` and related scripts) was run without prior D## pre-registration and never committed to git — a pre-registration discipline violation, logged explicitly.
+- **Timeline:** supervisor approval for the D74 pivot was obtained **before** this attempt. Ahmed ran it afterward as a final independent effort to see if a larger synthetic corpus could rescue AraT5, before proceeding with the already-approved pivot. It did not cause or precede the approval.
+- **Evidence:** status INCOMPLETE_RESUMABLE; DRAFT_UNREVIEWED; SYNTHETIC; NOT TRAINING-APPROVED. Target 1500 records; completed 1050 (70%) across shards 1–7; shard 8 never assembled. 229 rejections; dominant reason: NON_ATOMIC_CLAIM(S) 76+43 = 119 (~52%); then NON_SELF_CONTAINED 12, MISSING_PROPOSITION 11, CASE_MISMATCH 11, UNSUPPORTED_PROPOSITION 7; remaining term_corruption_* are mostly a punctuation mark fused to a Latin token (a normalization artifact).
+- **Interpretation:** the dominant failure mode was claim-atomicity — a structural/format difficulty in the decomposition task itself, not primarily semantic incompetence or Arabic incapability. Generalizes beyond AraT5/Codex.
+- **Forward implication for D74:** the mandatory sanity gate should also spot-check claim atomicity on a small sample, since this is a demonstrated structural risk independent of the model.
+- **Disposition:** superseded by D74; retained as archived evidence (`archive/phase8_arat5_superseded/`), not deleted.
+- **Addendum — O9 integrity (21 Jul):** an uncommitted, unexplained working-tree change to `results/o9_decomposition_exercises.md` (SE-007 answer text) was found in git status. Per the O9 immutability principle (D51/D52, same standard as P48), it was **not** silently kept — the diff was preserved at `archive/phase8_arat5_superseded/o9_uncommitted_change_2026-07-21.patch` and the file reverted to HEAD via git checkout. Origin unknown (possibly Codex). Any genuine SE-007 data issue must go through a registered decision, not a silent edit.
+
+### D76 — First end-to-end LLM decomposition call: technical success, quality not yet adopted (✅ EXECUTION PASS — ⛔ QUALITY NOT YET VALIDATED)
+- **Environment:** Python rebuilt machine-wide (Python 3.14 removed due to a version conflict with `torch==2.2.2`; Python 3.11.9 kept as the sole system default, no in-project venv, by Ahmed's explicit decision). `requirements.txt` updated with `requests==2.34.2` and `python-dotenv==1.0.1` (D74 client dependencies).
+- **Test:** one hand-written Egyptian-Arabic sentence for testing only (not from O9 or any project corpus — deliberately avoiding protected data before the sanity gate exists).
+- **Observed:** simplified-MSA normalization sound; meaning preserved with no addition/deletion; Latin terms (D74 constraint #3) sound and positively noted — input had `هارد ديسك` (Arabic transliteration), output converted it to `hard disk` in correct Latin script. **Open note (non-decisive):** the first claim merged two ideas into one claim — a possible atomicity issue, the same dominant failure class (52%) from the D75 corpus. Single-example evidence; not generalized.
+- **Model actually used:** `nvidia/nemotron-3-nano-30b-a3b:free` — **not** the intended `google/gemma-4-31b-it:free`, which returned HTTP 429 (rate-limited upstream by Google AI Studio at test time) after exhausting retries. The retry/backoff logic (D74) worked correctly: it retried, then raised a clearly-typed exception instead of a silent failure or empty result.
+- **Model choice not resolved by this test.** One successful call on one model is not enough to prefer nano over Gemma; both remain candidates.
+- **Direct evidence for the D74 Fallback item:** since a specific free model can be rate-limited entirely independently of the user's own usage, the proper fallback design is a **list of candidate models tried in order**, not a single fixed model. The D74 Fallback item stays OPEN but now has concrete empirical justification.
+- **Required before any production adoption:** (a) run several more varied test examples (deliberately-wrong answers, more Latin terms, longer answers) across candidate models before deciding; (b) implement and run the mandatory D74 sanity gate before any O9-adjacent use or real evaluation.
+
+### D77 — Sanity gate design pre-registration (Claim Decomposition, D74 mandatory check) (✅ registered; executed in D78–D80)
+- **Environment discovery logged (not passed silently):** git status showed `src/interview_iq/decomposition_llm/` (client.py + system_prompt.md) and `.env.example` fully untracked, and a modified/unstaged `requirements.txt` — the same D75 pattern (code relied on before being registered in git). Recommendation: a small separate commit before/parallel to writing the gate — timing is Ahmed's call.
+- **Call interface confirmed from actual code (no assumption):** `from interview_iq.decomposition_llm.client import decompose_via_llm, LLMDecompositionError`; `decompose_via_llm(asr_text: str) -> DecompositionResult` (`DecompositionResult` imported from the old AraT5-era `interview_iq.decomposition.types` — a shared type, not new). **Correction to an earlier understanding (D74/D76):** there is no automatic multi-model fallback in code. `OPENROUTER_MODEL` is a single value read from `.env` once. The gemma↔nemotron switch in D76 was **manual by Ahmed**, not program behavior. The D74 Fallback item has **no code implementation yet.** A formal validation layer already exists inside `client.py` (`_parse_numbered_claims` rejects any output line not in `"N. claim"` form); the gate adds a **semantic** layer above it, not a duplicate.
+- **Fixtures:** a separate file outside any tracked corpus or O9. 8 cases: CS×2 / DS×2 / DA×2 / SE×1 / GN×1 (SG-01 to SG-08). Each: `case_id`, `track`, `injected_error_type`, `answer_text` (raw ASR form), `injected_error_anchor`, `latin_terms_expected`.
+- **Script execution:** direct call to `decompose_via_llm` (same production path). One model per full run (explicitly logged). Per case: raw input/response, `DecompositionResult`, actual model, timestamp, retries, any error in full. Output: `results/llm_decomposition_sanity_gate/` — raw JSON + a report with three empty human-verdict columns: `error_preserved` (YES/NO), `no_unauthorized_addition` (YES/NO), `atomicity_verdict` (ATOMIC/NON_ATOMIC/AMBIGUOUS).
+- **Decision rule (pre-registered):** fully human judgment — no auto-grading (to avoid circularity). **Blocking:** any case with `error_preserved=NO` or `no_unauthorized_addition=NO` ⇒ the gate FAILS entirely (zero tolerance, both equally severe). **Non-blocking:** `atomicity_verdict=NON_ATOMIC` ⇒ logged and tracked (Q8-style), does not stop adoption. The actual PASS/FAIL result is recorded later as an update to D77 or a new D##.
+- **Reference:** D74 (original requirement), D75 (atomicity-check extension), D76 (first test pattern, source of the no-real-fallback note).
+
+### D78 — Sanity gate first execution attempt: VOID (provider unavailability, not quality failure) (⛔ VOID — 0/8 outputs)
+- **Non-evidentiary on `google/gemma-4-31b-it:free` decomposition quality.** The first execution (`run_20260721T100837Z`) used gemma; all 8 cases returned `"claims": null` with HTTP 429 from OpenRouter, `provider_name: "Google AI Studio"`, `is_byok: false`, "temporarily rate-limited upstream." The retry/backoff (D74) worked: exhausted retries, raised a classified exception, no silent failure.
+- **Verdict:** a provider-side availability failure (shared free-tier rate limit), not a decomposition quality failure. No output to judge against the D77 criteria. Gemma's decomposition quality remains completely unknown — neither PASS nor FAIL.
+
+### D79 — Sanity gate second execution attempt: VOID (free-tier slug deprecated) (⛔ VOID — 0/8 outputs)
+- **Non-evidentiary on `meta-llama/llama-3.3-70b-instruct` decomposition quality.** The second attempt (`run_20260721T142126Z`) used `meta-llama/llama-3.3-70b-instruct:free`; all 8 cases returned HTTP 404: "This model is unavailable for free. The paid version is available now — use this slug instead: meta-llama/llama-3.3-70b-instruct."
+- **Verdict:** the free-tier slug was permanently removed from OpenRouter (unlike D78's temporary rate limit). A permanent availability failure, not a quality failure. Quality remains unknown.
+- **Impact on model selection:** after D78/D79, three attempts (nemotron/D76, gemma/D78, llama/D79) failed for three entirely different reasons (quality, temporary rate-limit, permanent deprecation), none producing a valid D77 judgment prior to D80.
+
+### D80 — Sanity gate PASS on `cohere/north-mini-code:free` (✅ PASS — 8/8, adopted as OPENROUTER_MODEL)
+- **Human verdict recorded by Ahmed: `error_preserved=YES` and `no_unauthorized_addition=YES` on all eight cases.** The fourth execution (`run_20260721T142708Z`) used `cohere/north-mini-code:free` (an instruct model, unrelated to any previously failed family). 8/8 execution SUCCESS. Human review (SG-01–SG-08) confirmed every deliberately-injected WRONG_FACT error was preserved without silent correction (notably SG-08, which preserved the incorrect port 80 instead of 443 across three simultaneous errors), and every INCOMPLETE case stayed incomplete without unauthorized additions (SG-04: recall entirely absent; SG-06: LEFT JOIN entirely absent).
+- **Atomicity note (non-blocking, Q8-style):** SG-05 split a single Normalization sentence into two claims (mean=0 / std=1). Ahmed's verdict: **ATOMIC** — an acceptable logical split, not excessive fragmentation.
+- **Decision:** `cohere/north-mini-code:free` is adopted as the current decomposition model for `OPENROUTER_MODEL`. D74's mandatory sanity gate is now **empirically satisfied** — the first actual PASS on the full chain (client.py → OpenRouter → DecompositionResult → human judgment matching D77 criteria).
+
+### D81 — English migration + reorganization of the decision log (✅ — 21 July 2026)
+- **Decision:** the entire decision log (D1–D80) was translated from Arabic to English and reorganized into clearer thematic sections (governance snapshot; NLI module; decomposition module split into O9/Q6, AraT5 attempt, and pivot/sanity-gate; open items; methodology). Motivation: (1) consistency with the English-only convention for Claude-Code-authored content (avoids cmd.exe RTL/mojibake corruption); (2) the file had grown large and hard to navigate.
+- **Faithfulness constraints applied during translation:** all numerical values, checkpoint names, commit hashes, thresholds, and model IDs carried over verbatim. Verbose procedural pre-registrations for the superseded AraT5 sub-phase (D58–D73) were condensed to their outcomes; no decision was dropped, and every D## retains its number, status, and essence.
+- **Archival:** the pre-D81 Arabic original is preserved (not overwritten silently) at `archive/decisions_arabic_pre_D81_2026-07-21.md`, per the project principle that corrections are documented rather than silently overwritten. This entry is that documentation.
+- **Not in scope:** this migration changes presentation only; it makes no architectural or empirical change to any decision D1–D80.
 
 ---
 
-## D50 — تسجيل مسبق لعيّنة O9 (Sample Pre-Registration) (✅ سُجِّلت قبل السحب — 11 يوليو 2026)
+## Section 4 — Open Items
 
-**حجم العينة:** `25` سؤال (`10%` من `250`)، موزّعة **stratified** بالتساوي: `5` أسئلة لكل track (`DA`/`DS`/`CS`/`SE`/`GN`).
-
-**أربعة أسئلة مكتملة بالفعل يدويًا قبل هذا التسجيل:** `DA-001`، `DA-002`، `DS-010`، `DS-011` (2 من DA، 2 من DS) — **تُحسب ضمن الـ 25 ولا تُعاد.**
-
-**المتبقي المطلوب سحبه عشوائيًا:** `DA=3`، `DS=3`، `CS=5`، `SE=5`، `GN=5` (إجمالي `21`).
-
-**طريقة الاختيار:** عشوائي بالكامل داخل كل track (باستثناء الأسئلة الأربعة المكتملة من مجمع DA وDS)، بـ `seed=20260711` ثابت وموثّق مسبقًا. **لا معيار صعوبة أو انتقاء يدوي.**
-
-**الهدف:** منع أي انحياز في اختيار annotator للأسئلة الأسهل عليه.
-
----
-
-## D51 (O9 — إغلاق كامل): اكتمل تفكيك جميع الـ 25 سؤال المسجَّلة في D50
-(results/o9_decomposition_exercises.md). التوزيع: DA=5، DS=5، CS=5،
-SE=5، GN=5. تضمّنت العينة حالات R1 (أخطاء محفوظة دون تصحيح) في **7 أسئلة
-بإجمالي 9 claims موسومة**: DA-029، DS-030 (×2)، DS-033، SE-007،
-SE-013 (×2)، SE-037، GN-004 — **جميعها عضوية ظهرت أثناء التأليف، ولم
-تُخطَّط أي منها مسبقًا**؛ سحب العينة في D50 كان عشوائيًا بالكامل
-(`seed=20260711`) بلا انتقاء يدوي، وD50 لا يسمّي أي سؤال كحالة اختبار R1.
-كما تضمّنت 5 حالات توثيق عدم يقين كـ claim مستقل (CS-024، CS-039، SE-041،
-GN-012، GN-045). توجد 3 ملاحظات مراجعة مفتوحة غير حاسمة موثَّقة داخل الملف
-نفسه (DA-001 ذرّية claim، DA-046 تصنيف جملة ختامية، DS-030 توثيق تردد
-اختياري) — لا تمنع القبول، متروكة لمراجعة لاحقة إن لزم. حالة O9: مغلقة.
-يُفتح الطريق أمام G2 ثم Phase 8 (محجوبة سابقًا على O9 حصريًا، انظر D44).
-
-## D52 — إغلاق G2 بالكامل، بالتبعية لإغلاق O9 (D51): التمارين اليدوية الـ25 في results/o9_decomposition_exercises.md كانت الأساس المشترك للبندين O9 وG2 معًا. بإغلاق O9 في D51 (commit 282fc87)، تُغلق G2 تلقائيًا دون عمل إضافي منفصل.
-
-## D53 — قاعدة قرار Q6 (AraT5 vs mT5-base): pilot تشخيصي على 5 أسئلة
-
-**العيّنة (مُحدَّدة بالاسم، لا عشوائية هنا — عيّنة قصدية لتغطية أصعب الحالات):**
-DA-029، DS-030، CS-039، SE-013، GN-004 — من results/o9_decomposition_exercises.md (الإجابة الخام + الـ claims المرجعية اليدوية لكل سؤال، كمرجع فقط لأحمد، غير مُمرَّرة للموديولين).
-
-**الإجراء:**
-- الموديولان: UBC-NLP/AraT5-base (candidate_a)، google/mt5-base (candidate_b) — بنفس الأسماء الموجودة في configs/decomposition.yaml
-- zero-shot حصريًا — بلا أي fine-tuning أو LoRA
-- نفس الـ prompt template بالحرف للموديولين الاثنين (لا تفاضل في الصياغة)
-- المدخل: الإجابة الخام (raw_answer) للسؤال كما وردت في results/o9_decomposition_exercises.md فقط — بدون أي معلومة إضافية عن الـ claims المرجعية اليدوية
-- المخرج: نص خام كما يولّده كل موديول، محفوظ بلا أي معالجة أو تصفية
-
-**معايير التقييم (اتجاهية، ليست إحصائية — n=5):**
-1. الالتزام بـ R1 (عدم تصحيح أخطاء المرشح)
-2. الالتزام بـ R3 (الحفاظ على التردد/عدم اليقين)
-3. الالتزام بـ R4 (تعميم الصيغة الشخصية)
-4. سلامة الفصحى المبسّطة + المصطلحات التقنية بحروف لاتينية
-5. غياب الهلوسة (عدم اختراع معلومات غير موجودة في الإجابة الأصلية)
-التقييم يدوي من أحمد فقط. لا معيار آلي مُبرمج في هذه المرحلة.
-
-**تنصيص صريح:** هذا الحكم اتجاهي (n=5) وليس إحصائيًا. لا يُستخدم كدليل نهائي منفرد — القرار في Q6 قد يستدعي pilot أوسع أو تجربة fine-tuning مصغّرة إذا تعادلت النتائج.
-
-**القيد المعماري:** هذا السكريبت (scripts/q6_pilot_decomposition.py) مستقل تمامًا عن src/interview_iq/decomposition/ المقفولة (D52). يُسمح له فقط، بصفته أداة قياس تشخيصية، بتحميل اسم موديول صريح — القيد الأصلي بمنع hardcoding الاسم يظل ساريًا حصريًا على حزمة src/interview_iq/decomposition/ ولا يُطبَّق على أدوات القياس التشخيصية خارجها.
-
-**ملحق على D53 (13 يوليو 2026):** التشغيل الأول لـ AraT5-base على Kaggle (13 يوليو) أنتج توليدًا منهارًا (تكرار لا نهائي لتوكن واحد) على كل الأسئلة الخمسة — عطل تقني في إعدادات generate() (غياب repetition_penalty/no_repeat_ngram_size)، وليس دليلاً على أداء الموديول الفعلي في المهمة. mT5-base أنتج مخرجات متماسكة نحويًا لكنها بادئة بـ `<extra_id_0>` (رمز span-corruption من مرحلة الـ pretraining)، مما يشير إلى أن zero-shot بتعليمة نصية فقط (بدون أمثلة) قد لا يكون كافيًا لأي من الموديولين لتنفيذ المهمة الفعلية — سيُحسم بعد إعادة التشغيل بإعدادات توليد مصححة. أُضيفت repetition_penalty=1.3 وno_repeat_ngram_size=3 وmin_new_tokens=5 لكلا الموديولين في scripts/q6_pilot_decomposition.py. النتائج السابقة (results/q6_pilot/*.json من التشغيل الأول) لن تُستخدم كأساس لقرار Q6.
-
-## D54 — حسم Q6: AraT5-base هو الموديول المختار لموديول الـ decomposition
-
-**نتيجة الـ pilot التشخيصي (D53) لم تُرجِّح أيًا من الموديولين:** كلا الموديولين فشلا zero-shot (بدون أمثلة) في تنفيذ مهمة الـ decomposition على الأسئلة الخمسة، حتى بعد تصحيح إعدادات التوليد (الملحق أعلاه). AraT5-base أنتج نصًا عشوائيًا متعدد اللغات دون تحسّن بعد إصلاح إعدادات التكرار؛ mT5-base أنتج مخرجات قصيرة بادئة بـ`<extra_id_0>` (نمط span-corruption من مرحلة الـ pretraining) في كلا التشغيلين. **لا يُستخدم أي من التشغيلين كدليل على تفوّق أحد الموديولين على الآخر.**
-
-**الأساس الفعلي للقرار (مستقل عن نتيجة zero-shot):** AraT5-base مُدرَّب حصريًا على اللغة العربية (فصحى ولهجات)، بينما mT5-base موزَّع على أكثر من 100 لغة بحصة عربية محدودة نسبيًا من إجمالي بيانات التدريب. المهمة المستهدفة (تفكيك إجابات بالعامية المصرية إلى claims بالفصحى المبسّطة) لغوية بطبيعتها ومتخصصة في العربي تحديدًا. الفرضية المعمارية: نقطة انطلاق AraT5-base لـ fine-tuning لاحق (Phase 8) أقرب للمهمة، حتى مع تعادل الأداء في zero-shot قبل أي تدريب.
-
-**القرار:** `configs/decomposition.yaml`'s `model.selected` سيُحدَّث لاحقًا (خارج نطاق هذه الجلسة) من `"TBD_pending_Q6"` إلى `"UBC-NLP/AraT5-base"`.
-
-**تنصيص صريح (يحافظ على الأثر التوثيقي):** هذا القرار **ليس** مبنيًا على أداء تجريبي مُقاس — الـ pilot (D53) كان غير حاسم بالتساوي بين الموديولين. القرار مبني على حجة معمارية/لغوية بديلة (تخصص AraT5-base في العربي). إذا ظهرت لاحقًا (أثناء fine-tuning Phase 8 الفعلي) مؤشرات تُضعف هذه الفرضية، يُعاد فتح Q6.
-
-## D55 — توسيع corpus decomposition: Gold/Validation Set + دفعات إضافية لإعداد البيانات بمساعدة LLM (✅ مكتمل — 223/225، 14 يوليو 2026)
-
-السياق: يسمح PROJECT_EXECUTION_PLAN.md:21 باستخدام LLM في مرحلة إعداد البيانات (offline data preparation) فقط، مع مراجعة بشرية إلزامية قبل اعتماد أي مثال. ولا يُستخدم LLM أثناء التشغيل (runtime).
-
-القرار (1) — إعادة تصنيف دور O9: يتحول الملف results/o9_decomposition_exercises.md من "corpus تدريب" إلى Gold/Validation Set، بنفس المنهجية المستخدمة في DS-014 وD28 الخاصة بـ NLI. هذا المحتوى مخصص للتقييم والتحقق فقط، وليس للتدريب المباشر.
-
-القرار (2) — إنشاء corpus تدريب إضافي: يتم بناء corpus تدريب يغطي الأسئلة المتبقية (225 سؤالًا من أصل 250) باستخدام LLM كأداة مساعدة في مرحلة إعداد البيانات فقط (offline)، مع مراجعة بشرية إلزامية لكل مثال قبل اعتماده.
-
-القيود الإلزامية:
-- يُمنع استهداف خطأ تقني معيّن عمدًا أو التخطيط له مسبقًا في أي إجابة (محظور كليًا بلا استثناء).
-- يُسمح بمحاكاة تفاوت أوسع في مستوى ثقة/تمكن المرشح الافتراضي بين الإجابات (مرشح أقل خبرة، تذكّر غير دقيق) — أي خطأ تقني ناتج يكون نتيجة طبيعية للأسلوب لا هدفًا مباشرًا للتوليد.
-
-تم تسجيل الدفعة التجريبية الأولى: commit 957f1cc — results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md.
-
-الأسئلة: DA-020، DA-021، DS-040، DS-046، CS-005، CS-033، SE-044، SE-049، GN-018، GN-023.
-
-إعدادات التنفيذ:
-- seed=20260713
-- كل Track يُنفذ بصورة مستقلة.
-- تم تطبيق مراجعات R1–R6.
-- لم تُسجَّل أخطاء R1 عضوية في الأسئلة العشرة الجديدة لهذه الدفعة (بخلاف نسبة 7/25 الموثّقة في O9 الأصلي).
-
-تم تنفيذ تصحيح لاحق (R2) على GN-018 وSE-044 لتحقيق اتساق تقسيم الـ Claims، بما يرفع إجمالي عدد الـ Claims من 84 إلى 90، دون أي تعديل لبقية الأمثلة.
-
-خطة التنفيذ: تقسيم الأسئلة المتبقية إلى دفعات تنفيذية (بحد أقصى مبدئي 50–60 سؤالًا لكل دفعة)، مع تنفيذ مراجعة كاملة R1/R2 بعد كل دفعة قبل بدء الدفعة التالية.
-
-الحالة: ✅ مكتمل.
-
-**تحديث لاحق (14 يوليو 2026) — آلية "التوليد من الذاكرة":**
-
-السياق: تراكميًا عبر batch1+batch2+batch3 (110 سؤالًا)، سُجِّلت صفر حالات R1 عضوية رغم تطبيق تعليمة D55 الأصلية بتوسيع تفاوت الثقة/الدقة. هذا التفاوت نجح في توسيع حالات hedging اللغوي لكنه لم يُنتج أي خطأ واقعي فعلي — الإجابات المولَّدة من قراءة الـ chunk المرجعي مباشرة تميل بطبيعتها للدقة الكاملة.
-
-الآلية الجديدة (للدفعات القادمة فقط، لا تُطبَّق بأثر رجعي على batch1/2/3): لنسبة ~20% من أسئلة كل دفعة (موزَّعة تناسبيًا عبر الـ tracks)، تُكتب raw_answer دون الرجوع المباشر لنص الـ chunk المرجعي أثناء الصياغة — اعتمادًا فقط على المعرفة العامة/"المتذكَّرة" بالمفهوم، بنفس الطريقة التي قد يجيب بها مرشح حقيقي من فهمه الشخصي لا من قراءة مرجع أمامه.
-
-القيد الملزم (لم يتغيّر، ما زال محظورًا كليًا): يُمنع استهداف خطأ تقني معيّن عمدًا أو التخطيط له مسبقًا. الفرق الوحيد هنا هو غياب المرجع المباشر أثناء الكتابة، وليس توجيهًا نحو خطأ بعينه — الفارق بين "اكتب من الذاكرة" و"اكتب خطأ".
-
-الـ 80% الباقية من كل دفعة تستمر بنفس آلية القراءة المباشرة للـ chunk المتبعة سابقًا (chunk-referenced).
-
-متطلب تتبع: كل سؤال في الملف الناتج يُوسَم بوضوح بطريقة التوليد المستخدمة (chunk-referenced / memory-based) لتحليل لاحق لمعدل ظهور R1 بين الطريقتين.
-
-**اكتمال التنفيذ (14 يوليو 2026):**
-الدفعات الخمس (batch1: 10، batch2: 50، batch3: 50، batch4: 50 منها GN-050 مستبعد، batch5: 63) = 223 سؤالًا مؤهلًا لـ corpus التدريب من أصل 225 (SE-006 معلَّق على Q2، DS-014 مستبعد دائمًا بـ D28). مراجعة بشرية كاملة (R1/R2) أُجريت على الخمس دفعات من أحمد مباشرة. النتيجة التراكمية: 0/273 R1 عضوية عبر كل الدفعات الاصطناعية رغم تجربة آلية "من الذاكرة" — القيد موثّق كحد بنيوي لقدرة الـ LLM على إنتاج خطأ عضوي، لا كخلل تنفيذي. commits: 957f1cc (batch1) وما تلاه حتى batch5.
-
-
-الحالة: ✅ مكتمل.
-
-## D56 — صيغة الـ prompt النهائية لمرحلة fine-tuning (Phase 8)
-
-السياق: pilot الـ Q6 (D53) اختبر فقط قدرة الموديل على فهم التعليمة
-zero-shot (بلا fine-tuning)، والفشل الناتج كان غير حاسم/غير دليلي وفق
-D54. تنسيق الإخراج (شكل الـ claims الناتجة) لم يُختبر مطلقًا في ذلك
-الـ pilot.
-
-القرار: يُعتمد نص PROMPT_TEMPLATE الأصلي من
-scripts/q6_pilot_decomposition.py حرفيًا كأساس لتعليمة الـ fine-tuning،
-مع إضافة تعليمة صريحة لتنسيق الإخراج (ترقيم كل claim في سطر مستقل، بلا
-نص تمهيدي أو ختامي) — هذا التنسيق يطابق تلقائيًا الصيغة البشرية
-المستخدمة بالفعل في نصوص Claims عبر O9 وكل الدفعات الخمس، فلا تحتاج
-بيانات التدريب أي إعادة تنسيق.
-
-القيد: scripts/q6_pilot_decomposition.py يبقى دون تعديل (دليل تاريخي
-مجمَّد لـ D53/D54). الصيغة الجديدة تُعرَّف كثابت منفصل داخل حزمة
-src/interview_iq/decomposition/، لا تستبدل الأصل.
-
-فاصل الـ claims عند التسلسل النصي (target text): "\n" مع بادئة رقم
-("١. النص")، مطابقةً لحقل output.claim_separator المُقفَل مسبقًا في
-configs/decomposition.yaml.
-
-الحالة: ✅ مكتمل.
-
-## D57 — قيم Hyperparameters الابتدائية لتدريب trainer.py (Phase 8)
-
-السياق: probe تجريبي (§5.13) شغّله أحمد فعليًا عبر
-scripts/probe_token_lengths.py على الـ corpus الحقيقي (222 سؤال تدريب +
-25 سؤال Gold/Validation، AraT5-base tokenizer)، بتاريخ 16 يوليو 2026.
-النتائج الخام: input p95=257 tokens (max=283)، target p95=227 tokens
-(max=279)، صفر truncation عند max_length=320 لكليهما.
-
-القرار:
-- Train/val split: 85/15 على مستوى question-ID (~189 تدريب / ~33 تحقق)
-- max_source_length = 320، max_target_length = 320 (مقاسة تجريبيًا، صفر truncation)
-- Learning rate = 3e-4 (AdamW)، linear warmup بنسبة 0.1
-- Batch size: per-device=4، grad_accum=4 (effective=16)
-- Weight decay = 0.01
-- الحد الأقصى للـ epochs = 30، مع early stopping على eval_loss (patience=5 تقييمات)
-- التقييم كل epoch، دقة fp16، اختيار أفضل checkpoint حسب eval_loss
-
-القيد: كل القيم دي موسومة PRE-CALIBRATION DEFAULT — خاضعة لمعايرة G4
-لاحقًا، مش نتيجة بحث مكثف.
-
-تصحيح (16 يوليو 2026، بعد أول تشغيل فعلي على Kaggle T4): القيم
-الأصلية ما كانتش فيها save_total_limit، فتراكمت checkpoints كل
-epoch (كل واحد فيه الموديل الكامل + optimizer states لأنه full
-fine-tuning مش LoRA) لحد ما القرص امتلأ وكرش التدريب عند epoch 8
-(SafetensorError: No space left on device). هدف الإصلاح إضافة
-save_total_limit: 2 — دي فجوة نسيت من المسودة الأولى، مش قيمة قديمة
-غلط اتبدلت بقيمة جديدة.
-
-الحالة: ✅ مكتمل.
-
-## D58 — تشخيص فشل Generation بعد تدريب AraT5 Decomposition
-
-**الحالة:** ✅ مكتمل — فشل وظيفي مؤكّد للـ checkpoints المختبرة.
-
-تم تنفيذ المقارنة المضبوطة باستخدام:
-- `transformers==4.40.2`، وهي نفس النسخة المستخدمة وقت التدريب.
-- GPU من نوع Tesla T4.
-- نفس test input.
-- نفس generation parameters:
-  - `max_source_length=320`
-  - `max_new_tokens=128`
-  - `num_beams=4`
-
-تم اختبار:
-- الـ final top-level model.
-- `checkpoint-174`.
-- `checkpoint-180`.
-
-النتائج الفعلية:
-- جميع مسارات الموديل تم تحميلها بنجاح.
-- الـ tokenizer تم تحميله من الـ final model root لجميع الاختبارات.
-- جميع tied embedding weights المختبرة شاركت نفس memory pointer.
-- جميع المخرجات فقدت المصطلحين `SOC` و`SIEM`.
-- جميع المخرجات أظهرت نصًا غير متماسك، مع تكرار وhallucinations.
-- تغيير نسخة `transformers` من 5.0.0 إلى نسخة التدريب 4.40.2 لم يعالج
-  الفشل.
-
-الاستنتاج المحدود:
-- تحذير tied weights ليس سبب الفشل الوظيفي.
-- اختلاف نسخة `transformers` ليس سبب الفشل.
-- اختيار final model بدل checkpoint منفرد ليس سبب الفشل.
-- مصدر الخلل ما زال غير محسوم بين training data construction،
-  tokenization/labels، وإعدادات optimization/model state.
-- يظل تنفيذ `inference.py` محجوبًا.
-
----
-
-## D59 — تشخيص Training Example وTokenization وLabels قبل إعادة التدريب
-
-**الحالة:** ✅ مكتمل — البيانات الأساسية سليمة، مع اكتشاف metadata leakage وحاجة إلى corpus-wide UNK audit.
-
-السياق:
-أثبت D58 أن الـ final model و`checkpoint-174` و`checkpoint-180`
-تُحمّل بنجاح، لكنها جميعًا تفشل وظيفيًا في الـ generation. لا يجوز
-إعادة التدريب أو تغيير hyperparameters قبل فحص مدخلات التدريب
-والـ labels الفعلية.
-
-ملاحظة تنفيذية مكتشفة قبل تشغيل D59:
-
-أظهر output التدريب الفعلي أن التشغيل تم على وحدتي GPU، وليس وحدة
-واحدة. مع:
-- 189 training examples
-- `per_device_train_batch_size=4`
-- `gradient_accumulation_steps=4`
-- 6 optimizer steps لكل epoch
-- 180 optimizer step عبر 30 epoch
-
-فإن الـ effective global batch المنفّذ فعليًا كان:
-
-`4 × 4 × 2 = 32`
-
-وليس 16 كما سُجّل كإعداد مقصود في D57. هذا تصحيح واقعة تنفيذية، ولا
-يثبت وحده أن حجم الـ batch هو سبب فشل generation. إذا أثبت D59 سلامة
-البيانات والـ tokenization والـ labels، يدخل هذا الاختلاف ضمن متغيرات
-optimization المطلوب اختبارها في تجربة لاحقة مسجّلة مسبقًا.
-
-النطاق:
-تجربة read-only تشخيصية فقط. لا تعدّل corpus أو Gold labels أو
-`trainer.py` أو hyperparameters، ولا تنفّذ أي optimizer step.
-
-الإجراء المسجّل مسبقًا:
-
-1. استخدام نفس Git repository state ونفس:
-   - `transformers==4.40.2`
-   - tokenizer الخاص بـ `UBC-NLP/AraT5-base`
-   - `max_source_length=320`
-   - `max_target_length=320`
-
-2. إعادة بناء نفس training corpus ونفس train/validation split من
-   كود المشروع الحالي، بدون كتابة implementation بديل داخل الـ
-   Notebook.
-
-3. اختيار training examples بطريقة deterministic مستقلة عن النتيجة:
-   - مثال الـ generation: أصغر `question_id` ترتيبيًا داخل train split،
-     بشرط أن يكون `target_token_count <= max_new_tokens`.
-   - مثال الـ padding القصير: المثال صاحب أقل `target_token_count`
-     داخل train split، ومع التعادل يُختار أصغر `question_id`.
-   - مثال الـ padding الطويل: المثال صاحب أعلى `target_token_count`
-     داخل train split، ومع التعادل يُختار أصغر `question_id`.
-
-4. طباعة وحفظ:
-   - `question_id`
-   - raw answer
-   - constructed source text
-   - raw target text
-   - source token count
-   - target token count
-   - source token IDs
-   - target token IDs
-   - decoded source
-   - decoded target
-
-5. تمرير المثالين من نفس الـ data collator المستخدم في التدريب،
-   ثم فحص:
-   - shape الخاصة بـ `input_ids`
-   - shape الخاصة بـ `labels`
-   - عدد مواضع `-100`
-   - عدد `pad_token_id` داخل labels
-   - مطابقة مواضع padding مع `-100`
-
-6. تشغيل teacher-forced forward pass على مثال التدريب وحفظ قيمة
-   الـ loss، بدون backward أو optimizer step.
-
-7. تشغيل checkpoint على نفس training example بإعدادين:
-   - greedy decoding: `num_beams=1`
-   - beam decoding: `num_beams=4`
-
-8. مقارنة الناتجين بالـ raw target وحفظ المخرجات بدون تعديل يدوي.
-
-قواعد تفسير النتيجة:
-
-- إذا كان raw source أو raw target خطأ قبل tokenization:
-  يكون الخلل في dataset construction أو prompt/target construction.
-
-- إذا كان الـ raw text صحيحًا لكن decoded text فاسدًا أو truncated:
-  يكون الخلل في tokenization أو length handling.
-
-- إذا كانت padding positions داخل labels غير محوّلة إلى `-100`
-  وفق الـ collator المستخدم:
-  تُسجّل مشكلة label masking قبل أي إعادة تدريب.
-
-- إذا كانت البيانات والـ labels سليمة لكن الموديل يفشل حتى على مثال
-  من training split:
-  ينتقل التشخيص إلى optimization/model-state، ولا يُعاد التدريب
-  قبل تسجيل تجربة مستقلة لتعديل hyperparameters.
-
-- إذا نجح الموديل على مثال التدريب وفشل على المثال الخارجي:
-  يُصنّف الخلل مبدئيًا كضعف generalization أو mismatch في توزيع
-  الإجابات، وليس فسادًا مباشرًا في training labels.
-  
-النتيجة الفعلية:
-
-- أُعيد بناء corpus من كود المشروع الحالي: 222 مثالًا.
-- أُعيد نفس split: 189 تدريب / 33 تحقق، بصفر overlap.
-- لم يظهر أي source أو target truncation.
-- فحص الـ Data Collator أثبت أن 172 موضع padding تحولت إلى `-100`
-  بصورة صحيحة، مع صفر `pad_token_id` داخل labels.
-- فشل final checkpoint على مثال التدريب `CS-025`:
-  - teacher-forced loss = 4.6159997
-  - greedy similarity = 0.0286
-  - beam similarity = 0.0598
-- اكتُشف metadata leakage فعلي في إجابة `SE-017`:
-  `**[طريقة التوليد: من الذاكرة، دون رجوع مباشر للمرجع]**`
-- ظهرت `<unk>` tokens في بعض الكلمات العربية ذات التنوين أو العلامات
-  الإملائية، مثل `غالبًا` و`فعليًا` و`أيضًا`.
-
-الاستنتاج المحدود:
-
-- split وlength handling وlabel masking ليست سبب الفشل.
-- لا يجوز حصر السبب في optimization فقط قبل قياس مدى تلوث corpus
-  وانتشار `<unk>` على جميع الأمثلة.
-- يظل `inference.py` وإعادة fine-tuning محجوبين.
-
-  المخرجات الإلزامية:
-- Notebook كاملة بمخرجاتها.
-- ملف JSON خام يحتوي كل الفحوص والمخرجات.
-- لا يبدأ `inference.py` ولا إعادة fine-tuning قبل مراجعة نتيجة D59
-  وتسجيل الاستنتاج رسميًا في `decisions.md`.
-
----
-
-## D60 — Corpus Contamination وUNK Audit
-
-**الحالة:** ✅ مكتمل — اكتشاف 22 حالة metadata leakage وانتشار واسع لـ `<unk>` يحتاج تحققًا حرفيًا قبل التنظيف.
-
-الهدف:
-إجراء audit read-only على جميع أمثلة Claim Decomposition training
-corpus قبل أي تنظيف أو إعادة تدريب.
-
-الإجراء:
-
-1. إعادة بناء نفس corpus المكوّن من 222 مثالًا باستخدام كود المشروع
-   الحالي ونسخة الـ repository المحفوظة مع Dataset التدريب.
-
-2. استخدام نفس tokenizer المحفوظ مع checkpoint، ونفس:
-   `transformers==4.40.2`.
-
-3. فحص كل raw answer بحثًا عن:
-   - `طريقة التوليد`
-   - `من الذاكرة`
-   - `دون رجوع مباشر للمرجع`
-   - Markdown metadata من نوع `**[...]**`
-   - الأسطر التي تبدأ بـ `**` أو `[`
-   - أي تعليقات أو metadata إدارية مشابهة.
-
-4. حساب لكل مثال:
-   - source token count
-   - target token count
-   - source `<unk>` count/rate
-   - target `<unk>` count/rate
-
-5. حفظ:
-   - كل question IDs المشتبه في تلوثها.
-   - النصوص والأسطر المطابقة.
-   - أعلى الأمثلة في source/target UNK rate.
-   - إجمالي ونسبة الأمثلة الملوثة.
-
-المخرجات الإلزامية:
-
-- JSON خام يحتوي جميع السجلات.
-- CSV summary لكل الأمثلة.
-- Markdown report.
-- Notebook كاملة بالمخرجات.
-
-لا يُعدّل corpus أو `dataset_builder.py`، ولا تبدأ إعادة fine-tuning
-قبل مراجعة نتيجة D60 وتسجيل قرار التنظيف رسميًا.
-
-النتيجة الفعلية:
-
-- تم فحص 222 training example.
-- أبلغ الـ audit مبدئيًا عن 25 مثالًا، لكن المراجعة أثبتت أن:
-  - 22 مثالًا تحتوي metadata leakage حقيقية كسطر مستقل:
-    `**[طريقة التوليد: من الذاكرة، دون رجوع مباشر للمرجع]**`
-  - `CS-010` و`DS-037` و`SE-047` false positives ولا يجب تعديلها.
-- نسبة التلوث الحقيقي: `22/222 = 9.91%`.
-- من الحالات الملوثة فعليًا: 19 في train split و3 في validation split.
-- ظهرت `<unk>` في 140 source example و210 target example.
-- إجمالي `<unk>`:
-  - sources: 237
-  - targets: 912
-- أظهرت عينات الـ decoded text تكرار `<unk>` عند كلمات تحتوي:
-  - `U+064B ARABIC FATHATAN` — `ً`
-  - `U+064D ARABIC KASRATAN` — `ٍ`
-- لم ينفّذ D60 alignment شاملًا لكل مواضع `<unk>`؛ لذلك يظل حصر
-  جميع المواضع في هاتين العلامتين فرضية يجب التحقق منها داخل D61
-  قبل اعتماد normalization النهائي.
-- لا يثبت D60 أن هاتين المشكلتين وحدهما سبب فشل fine-tuning،
-  لكن يجب إصلاحهما قبل أي تجربة optimization جديدة.
-
----
-
-## D61 — Deterministic Corpus Sanitization for AraT5
-
-**الحالة:** ✅ مكتمل — اجتازت عملية التنظيف جميع معايير القبول المسجّلة مسبقًا.
-
-الهدف:
-إزالة العيوب المؤكدة في مدخلات AraT5 دون تغيير محتوى claims أو
-المعنى التقني، ثم إعادة فحوص corpus/tokenizer قبل أي تدريب جديد.
-
-التعديلات المسجّلة مسبقًا:
-
-1. تعديل `dataset_builder.py` لحذف السطر المستقل المطابق فقط للنمط:
-   `**[طريقة التوليد: ...]**`
-   من answer section قبل إنشاء `KDExample`.
-
-2. يجب ألا تحذف عملية التنظيف أي ظهور طبيعي لعبارات مثل:
-   - `من الذاكرة`
-   - `LLM`
-   داخل محتوى الإجابة نفسه.
-
-3. اختبار normalization candidate مشتركة في `prompts.py` تزيل فقط:
-   - `U+064B ARABIC FATHATAN` (`ً`)
-   - `U+064D ARABIC KASRATAN` (`ٍ`)
-   من source وtarget قبل tokenization.
-
-4. لا تزال بقية العلامات العربية دون تغيير؛ لا يطبق حذف عام لكل
-   التشكيل لأن D60 لم يثبت أنها تنتج `<unk>`.
-
-معايير التحقق قبل القبول:
-
-- corpus يظل 222 سؤالًا و1,836 claim.
-- Gold/O9 يظل 25 سؤالًا و177 claim.
-- صفر overlap.
-- حذف metadata من الحالات الـ22 فقط.
-- بقاء `CS-010` و`DS-037` و`SE-047` دون حذف محتوى صحيح.
-- صفر `<unk>` في جميع training sources والـ targets.
-- صفر source/target truncation عند max length 320.
-- لا يبدأ fine-tuning أو `inference.py` قبل تحقق هذه المعايير فعليًا.
-
-النتيجة الفعلية:
-
-- نُفّذ التعديل في:
-  - `src/interview_iq/decomposition/dataset_builder.py`
-  - `src/interview_iq/decomposition/prompts.py`
-- commit التنفيذ:
-  `50a636c — fix: sanitize decomposition corpus for AraT5`
-- بيئة التحقق:
-  - Python `3.11.9`
-  - Transformers `4.40.2`
-  - Tokenizer: `T5TokenizerFast`
-  - Model tokenizer: `UBC-NLP/AraT5-base`
-- corpus بعد التنظيف:
-  - Training: 222 سؤالًا و1,836 claim.
-  - O9 Gold/Validation: 25 سؤالًا و177 claim.
-  - Train/O9 overlap: صفر.
-- وُجد في ملفات Markdown الأصلية 23 سؤالًا يحمل سطر generation
-  metadata:
-  - 22 سؤالًا داخل training corpus.
-  - `GN-050` مستبعد أصلًا من training corpus.
-- بعد بناء training corpus:
-  - remaining metadata lines: صفر.
-  - تم الحفاظ دون تغيير على:
-    `CS-010` و`DS-037` و`SE-047`.
-- نتيجة tokenizer audit على training:
-  - source `<unk>`: صفر.
-  - target `<unk>`: صفر.
-  - أقصى source length: 277 token.
-  - أقصى target length: 250 token.
-  - source/target truncation عند حد 320: صفر.
-- الملاحظة الإضافية على O9:
-  - source `<unk>`: صفر.
-  - target `<unk>`: صفر.
-  - أقصى source/target: 243/181 token.
-- النتيجة النهائية: `D61 ACCEPTANCE: PASS`.
-- لا تثبت D61 وحدها أن مشاكل corpus كانت السبب الوحيد لفشل التدريب
-  السابق؛ الانتقال التالي هو one-example overfit diagnostic قبل أي
-  full retraining.
-
----
-
-## D62 — Clean Single-Example Overfit Diagnostic
-
-**الحالة:** ✅ مكتمل — نجح المثال `CS-025` في exact token-ID match عند step 175.
-
-الهدف:
-
-اختبار ما إذا كان AraT5-base يستطيع حفظ training example واحد بعد
-تطبيق D61 sanitization، قبل السماح بأي full retraining. تهدف التجربة
-إلى عزل سلامة data/training path عن مشكلات حجم corpus أو generalization.
-
-الإعداد المسجّل مسبقًا:
-
-1. code baseline:
-   - كود sanitization المعتمد هو:
-     `50a636c — fix: sanitize decomposition corpus for AraT5`.
-   - يجوز تنفيذ التجربة من commit أحدث إذا كانت التغييرات اللاحقة
-     توثيقية فقط داخل `decisions.md`.
-   - لا يُسمح بأي tracked code changes بعد `50a636c` في:
-     - `dataset_builder.py`
-     - `prompts.py`
-     - `trainer.py`
-     - `configs/decomposition.yaml`
-   - يسجّل JSON قيمة Git HEAD وGit status وSHA256 لكل ملفات الكود
-     والـ config والـ diagnostic script المستخدمة.
-
-2. البيئة:
-   - Transformers `4.40.2`.
-   - seed = `42`.
-   - model = `UBC-NLP/AraT5-base`.
-   - يبدأ التدريب من base pretrained model جديد.
-   - لا يستخدم أي checkpoint من تجربة D57.
-
-3. المثال الثابت:
-   - `CS-025`.
-   - يُستخرج عبر `build_kd_dataset()` ثم `build_training_pair()`.
-   - يجب تسجيل source text وtarget text وtoken counts بعد D61
-     sanitization.
-
-4. tokenization وpreflight:
-   - max source length = `320`.
-   - max target length = `320`.
-   - `add_special_tokens=True`.
-   - يجب التحقق من:
-     - صفر `<unk>`.
-     - صفر truncation.
-     - target token count لا يتجاوز `160`.
-   - يسجّل التقرير:
-     - raw target text.
-     - target token IDs.
-     - النص الناتج من tokenizer round-trip:
-       `decode(encode(target))`.
-     - هل حافظ الـ round-trip على فواصل الأسطر أم طبّعها كمسافات.
-
-5. التدريب التشخيصي:
-   - جهاز CUDA واحد فقط؛ لا DDP ولا DataParallel.
-   - full-model training باستخدام `float32`.
-   - لا AMP ولا fp16 ولا bf16.
-   - batch size = `1`.
-   - gradient accumulation = `1`.
-   - optimizer = `torch.optim.AdamW`.
-   - learning rate = `3e-4`.
-   - betas = `(0.9, 0.999)`.
-   - epsilon = `1e-8`.
-   - weight decay = `0.0`.
-   - constant learning rate؛ لا scheduler ولا warmup.
-   - gradient clipping بقيمة `1.0`.
-   - بحد أقصى `500` optimizer step.
-   - لا validation split ولا early stopping.
-   - تُسجّل teacher-forced loss وgreedy generation عند step 0 ثم كل
-     25 step، وكذلك عند آخر step منفّذ.
-   - يتوقف التدريب عند أول checkpoint مسجّل يحقق exact token match.
-
-6. generation التشخيصي:
-   - greedy decoding:
-     - `do_sample=False`
-     - `num_beams=1`
-     - `max_new_tokens=160`
-   - `skip_special_tokens=True`.
-   - `clean_up_tokenization_spaces=False`.
-   - `max_new_tokens=160` خاص بالتجربة التشخيصية فقط، ولا يعد تغييرًا
-     في production generation config.
-
-معيار النجاح:
-
-- نجاح D62 يتطلب exact token-ID match بين:
-  - generated token IDs بعد حذف decoder-start token وأي padding.
-  - target token IDs المستخدمة فعليًا كـ labels، مع الاحتفاظ بـ EOS.
-- يجب أن تتحقق المطابقة قبل أو عند step 500.
-- لا تُقبل similarity score أو partial token match بدل exact match.
-- يسجّل decoded output للمراجعة البشرية، لكن اختلاف تنسيق whitespace
-  الناتج فقط عن tokenizer round-trip لا يحوّل exact token match إلى فشل.
-- exact token match يضمن عدم وجود claims أو tokens إضافية خارج target.
-
-معيار الفشل:
-
-- عدم الوصول إلى exact token-ID match عند step 500.
-- ظهور NaN أو Inf في loss أو gradients.
-- وجود `<unk>` أو truncation قبل التدريب.
-- تجاوز target length لقيمة `max_new_tokens=160`.
-- استخدام checkpoint سابق بدل base pretrained model.
-- تشغيل أكثر من GPU أو استخدام mixed precision خلاف الإعداد المسجّل.
-- وجود tracked code changes غير توثيقية بعد baseline commit `50a636c`.
-
-المخرجات المطلوبة:
-
-- JSON يتضمن:
-  - environment والإصدارات.
-  - Git HEAD وGit status.
-  - SHA256 للملفات المستخدمة.
-  - source وtarget texts وtoken counts.
-  - target token IDs وgenerated token IDs عند كل checkpoint مسجّل.
-  - tokenizer round-trip text ونتيجة فحص الحفاظ على newlines.
-  - CUDA device count واسم الـ GPU والـ dtype الفعلي.
-  - optimizer parameters وغياب scheduler.
-  - loss history.
-  - generations المسجلة.
-  - أول step حقق exact token match، إن تحقق.
-  - النتيجة النهائية PASS أو FAIL.
-
-القيود:
-
-- لا يبدأ full retraining.
-- لا يبدأ تعديل أو تنفيذ `inference.py`.
-- لا يُعتمد أي تغيير في hyperparameters الإنتاجية قبل مراجعة نتيجة D62.
-
-
-النتيجة الفعلية:
-
-- نُفّذت التجربة على Git HEAD:
-  `f290ba010f96bb980e5eb8d5fe821203bb00a4df`
-  (`f290ba0 — docs: close D61 and preregister D62 diagnostic`).
-- كان Git status نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
-  tracked changes بعده في:
-  - `dataset_builder.py`
-  - `prompts.py`
-  - `trainer.py`
-  - `configs/decomposition.yaml`
-- البيئة الفعلية:
-  - Python `3.12.13`
-  - PyTorch `2.10.0+cu128`
-  - Transformers `4.40.2`
-  - GPU واحد: `Tesla T4`
-  - model dtype: `torch.float32`
-  - tokenizer: `T5TokenizerFast`
-- بدأ التدريب من `UBC-NLP/AraT5-base` جديد، ولم يستخدم أي checkpoint
-  من D57.
-- corpus المبني: 222 training example و1,836 claim.
-- المثال `CS-025` بعد D61:
-  - source length = 189 token.
-  - target length = 119 token.
-  - source `<unk>` = صفر.
-  - target `<unk>` = صفر.
-  - source/target truncation = صفر.
-  - target ضمن `max_new_tokens=160`.
-- أثبت tokenizer round-trip أن فواصل الأسطر في target تُطبّع إلى مسافات؛
-  لذلك كان اعتماد exact token-ID match بدل raw-text formatting صحيحًا.
-- teacher-forced loss عند نقاط الفحص:
-  - step 0: `96.0456085`
-  - step 25: `10.7808914`
-  - step 50: `3.9210279`
-  - step 75: `0.4986662`
-  - step 100: `0.1935264`
-  - step 125: `0.0985054`
-  - step 150: `0.0603457`
-  - step 175: `0.0147992`
-- عند step 175:
-  - generated token IDs طابقت target token IDs كاملًا، بما فيها EOS.
-  - لا توجد tokens أو claims إضافية.
-  - `first_exact_match_step = 175`.
-  - النتيجة النهائية: `D62 PASS`.
-
-الاستنتاج المحدود:
-
-- ثبت أن AraT5-base الجديد يستطيع حفظ مثال decomposition نظيف واحد
-  باستخدام source/target الحاليين والـ greedy generation.
-- ثبت أن مسار D61 sanitization والـ prompt/target صالح وظيفيًا لهذا
-  المثال، وأن فشل D57 لا يثبت عدم صلاحية AraT5 للمهمة.
-- لا تثبت D62:
-  - سلامة التدريب على عدة أمثلة مع batching وpadding.
-  - سلامة `Seq2SeqTrainer` orchestration كاملًا.
-  - قدرة الموديل على generalization.
-  - كفاية hyperparameters D57 لإعادة التدريب الكاملة.
-- يظل full retraining و`inference.py` محجوبين حتى نتيجة D63.
-
----
-
-## D63 — Clean Five-Example Trainer-Path Overfit Diagnostic
-
-**الحالة:** ✅ مكتمل — حققت الأمثلة الخمسة exact token-ID match كاملًا عند step 400.
-
-الهدف:
-
-اختبار قدرة AraT5-base على حفظ mini-corpus متعدد الأمثلة مع استخدام
-مكونات مسار التدريب الفعلية الخاصة بالمشروع:
-`examples_to_dataset` و`DataCollatorForSeq2Seq` و`Seq2SeqTrainer`.
-تهدف التجربة إلى كشف أي خلل يظهر فقط مع batching أو padding أو
-التدريب على أكثر من target قبل السماح بـ full retraining.
-
-حد النطاق:
-
-- لا يُعد هذا اختبارًا كاملًا لدالة `run_training()`؛ لأنها تبني
-  تلقائيًا corpus الكامل وتقسيم D57.
-- الاختبار يغطي مكونات tokenization/collation/trainer الفعلية على
-  mini-corpus ثابت بطريقة تشخيصية خارج tracked production code.
-
-الإعداد المسجّل مسبقًا:
-
-1. code baseline:
-   - كود D61 المعتمد يبدأ من commit `50a636c`.
-   - يجوز التنفيذ من commit أحدث إذا كانت التغييرات اللاحقة توثيقية
-     أو diagnostic artifacts فقط.
-   - لا يُسمح بأي tracked changes غير مسجّلة في:
-     - `dataset_builder.py`
-     - `prompts.py`
-     - `trainer.py`
-     - `configs/decomposition.yaml`
-   - يسجّل JSON قيمة Git HEAD وGit status وSHA256 للملفات والسكريبت
-     التشخيصي المستخدم.
-
-2. البيئة:
-   - Transformers `4.40.2`.
-   - model = `UBC-NLP/AraT5-base` جديد من المصدر الأساسي.
-   - seed = `42`.
-   - data seed = `42`.
-   - جهاز CUDA واحد فقط.
-   - full-model training باستخدام `float32`.
-   - لا fp16 ولا bf16 ولا AMP ولا DDP ولا DataParallel.
-   - لا يستخدم أي checkpoint من D57 أو D62.
-
-3. اختيار mini-corpus بطريقة deterministic:
-   - يُعاد بناء corpus المكوّن من 222 مثالًا.
-   - يُعاد split D57 نفسه عبر `split_by_question_ids()` وإعدادات
-     `configs/decomposition.yaml`.
-   - من train split فقط، يُختار مثال واحد لكل track
-     (`DA` و`DS` و`CS` و`SE` و`GN`).
-   - داخل كل track يُختار أصغر `question_id` ترتيبيًا يحقق:
-     - target token count ≤ 160.
-     - صفر `<unk>`.
-     - صفر source/target truncation عند 320.
-   - تُسجّل IDs الخمسة قبل بدء أي optimizer step.
-   - إذا لم يتوفر مثال صالح لأي track، تتوقف التجربة كـ preflight FAIL.
-   - يجب أن تحتوي الأمثلة المختارة على طولَي target مختلفين على الأقل
-     حتى يُختبر padding فعليًا.
-
-4. مسار البيانات:
-   - بناء النصوص حصريًا عبر `build_training_pair()`.
-   - tokenization حصريًا عبر `examples_to_dataset()`.
-   - batching حصريًا عبر `DataCollatorForSeq2Seq(tokenizer, model)`.
-   - فحص batch حقيقي قبل التدريب وتسجيل:
-     - shapes لـ `input_ids` و`attention_mask` و`labels`.
-     - عدد مواضع `-100`.
-     - صفر `pad_token_id` داخل label positions المستخدمة في loss.
-     - مطابقة padding positions مع `-100`.
-
-5. إعداد `Seq2SeqTrainer` التشخيصي:
-   - `per_device_train_batch_size=2`.
-   - `gradient_accumulation_steps=1`.
-   - `optim="adamw_torch"`.
-   - learning rate = `3e-4`.
-   - `lr_scheduler_type="constant"`.
-   - warmup = صفر.
-   - weight decay = `0.0`.
-   - max gradient norm = `1.0`.
-   - `max_steps=1000`.
-   - `save_strategy="no"`.
-   - `evaluation_strategy="no"`.
-   - `load_best_model_at_end=False`.
-   - لا validation split ولا early stopping.
-   - `report_to=[]`.
-   - لا تعديل tracked على `trainer.py` لتنفيذ التجربة.
-
-6. فحص الحفظ:
-   - greedy decoding لكل مثال:
-     - `do_sample=False`
-     - `num_beams=1`
-     - `max_new_tokens=160`
-   - تُفحص الأمثلة الخمسة عند step 0 ثم كل 100 optimizer step، وعند
-     step 1000.
-   - يجوز إيقاف التدريب مبكرًا عند أول checkpoint مسجّل يحقق exact
-     token-ID match للأمثلة الخمسة جميعًا.
-   - المقارنة تحتفظ بـ EOS وتحذف فقط decoder-start token وأي padding
-     خارج التسلسل الدلالي.
-
-معيار النجاح:
-
-- `5/5` أمثلة تحقق exact token-ID match في checkpoint مسجّل قبل أو
-  عند step 1000.
-- لا تُقبل similarity أو مطابقة جزئية أو نجاح متوسط بدل المطابقة الكاملة.
-- لا يظهر NaN أو Inf في loss أو gradients.
-- ينجح فحص padding/label masking قبل التدريب.
-
-معيار الفشل:
-
-- أقل من `5/5` exact matches عند step 1000.
-- فشل padding/label masking.
-- ظهور `<unk>` أو truncation في أي مثال مختار.
-- ظهور NaN أو Inf.
-- استخدام checkpoint سابق أو أكثر من GPU أو mixed precision.
-- اختلاف tracked code عن baseline خلاف ما تسمح به هذه الوثيقة.
-
-المخرجات المطلوبة:
-
-- JSON خام يتضمن:
-  - environment وGit evidence وSHA256.
-  - IDs الخمسة وقاعدة اختيارها.
-  - source/target texts وtoken IDs وtoken counts.
-  - batch shapes ونتيجة masking audit.
-  - TrainingArguments الفعلية.
-  - loss history.
-  - generated/target token IDs لكل checkpoint ولكل مثال.
-  - exact-match count عند كل checkpoint.
-  - أول step حقق `5/5`، إن تحقق.
-  - النتيجة النهائية PASS أو FAIL.
-- Notebook كاملة بالمخرجات.
-
-القيود:
-
-- لا يبدأ full retraining قبل مراجعة نتيجة D63 وتسجيلها.
-- لا يبدأ تعديل أو تنفيذ `inference.py`.
-- لا تُعتمد hyperparameters إنتاجية جديدة من هذه التجربة وحدها.
-
-
-النتيجة الفعلية:
-
-- نُفّذت التجربة من Git HEAD:
-  `402360d58683109e4215fbecf44d724acf3c1de6`
-  (`402360d — docs: record D62 pass and preregister D63 diagnostic`).
-- كان Git status نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
-  tracked changes بعده في:
-  - `dataset_builder.py`
-  - `prompts.py`
-  - `trainer.py`
-  - `configs/decomposition.yaml`
-- البيئة الفعلية:
-  - Python `3.12.13`
-  - PyTorch `2.10.0+cu128`
-  - Transformers `4.40.2`
-  - Datasets `2.18.0`
-  - Accelerate `0.27.2`
-  - GPU واحد: `Tesla T4`
-  - model dtype: `torch.float32`
-- بُني corpus الكامل: 222 مثالًا، ثم أُعيد split D57 نفسه:
-  - train = 189
-  - validation = 33
-  - val ratio = `0.15`
-  - seed = `42`
-- الأمثلة الخمسة المختارة deterministic من train split:
-  - `DA-007`
-  - `DS-001`
-  - `CS-008`
-  - `SE-001`
-  - `GN-003`
-- أطوال targets المختلفة كانت:
-  `136, 148, 149, 151, 157` token، لذلك اختُبر padding فعليًا.
-- فحص الـ DataCollator:
-  - batch shapes:
-    - `input_ids = [5, 210]`
-    - `attention_mask = [5, 210]`
-    - `labels = [5, 157]`
-    - `decoder_input_ids = [5, 157]`
-  - expected padding positions = `44`
-  - actual `-100` positions = `44`
-  - `pad_token_id` داخل مواضع loss = صفر
-  - النتيجة: `Padding audit PASS`
-- تم تدريب جميع parameters:
-  - total = `282,770,688`
-  - trainable = `282,770,688`
-- إعدادات التدريب الفعلية:
-  - `Seq2SeqTrainer`
-  - batch size = `2`
-  - gradient accumulation = `1`
-  - AdamW، learning rate = `3e-4`
-  - constant scheduler
-  - weight decay = `0.0`
-  - gradient clipping = `1.0`
-  - float32، بلا mixed precision
-- تقدم exact match:
-  - step 0: `0/5`
-  - step 100: `0/5`
-  - step 200: `0/5`
-  - step 300: `3/5`
-  - step 400: `5/5`
-- توقف التدريب مبكرًا عند أول checkpoint مسجّل حقق `5/5`.
-- لم يظهر NaN أو Inf.
-- النتيجة النهائية: `D63 PASS`.
-
-الاستنتاج المحدود:
-
-- ثبت أن مكونات المسار الفعلي:
-  `examples_to_dataset` و`DataCollatorForSeq2Seq` و`Seq2SeqTrainer`
-  تعمل مع batching وpadding وlabel masking وأكثر من target.
-- ثبت أن base AraT5-base يستطيع حفظ mini-corpus من tracks الخمسة.
-- لا توجد إشارة حالية إلى خلل بنيوي في data construction أو tokenization
-  أو collator أو Trainer path.
-- لا تثبت D63:
-  - generalization على validation أو O9.
-  - أن إعدادات D57 القديمة كافية.
-  - أن checkpoint ناتجًا عن full-corpus training صالح للإنتاج.
-- يسمح نجاح D63 بتسجيل وتنفيذ D64، لكنه لا يسمح بتنفيذ
-  `inference.py` قبل تقييم checkpoint الكامل.
-
----
-
-## D64 — Sanitized Full-Corpus Retraining
-
-**الحالة:** ✅ EXECUTION PASS — اكتمل التدريب وحُفظ best checkpoint؛ جودة التعميم غير مقبولة أو معتمدة بعد.
-
-الهدف:
-
-إعادة تدريب AraT5-base من base pretrained model جديد على corpus D61
-النظيف كاملًا، بعد نجاح D62 وD63، لإنتاج checkpoint جديد قابل للتقييم.
-هذه التجربة تنتج checkpoint فقط؛ قبول جودة الموديل أو generalization
-يحتاج تجربة تقييم مستقلة مسجّلة بعد ظهور نتائج D64.
-
-الفرضية المحدودة:
-
-فشل D57 قد يكون مرتبطًا بقلة optimizer exposure وبالتشغيل الفعلي
-على GPUين وبـ effective global batch يساوي 32، بعد استبعاد فساد
-data/tokenization/labels والمسار الأساسي عبر D59–D63. هذه فرضية
-تشغيلية وليست سببًا مثبتًا بعد.
-
-الإعداد المسجّل مسبقًا:
-
-1. code/data baseline:
-   - Git baseline للتنفيذ:
-     `402360d — docs: record D62 pass and preregister D63 diagnostic`
-     أو commit أحدث بتغييرات توثيقية فقط.
-   - كود sanitization المعتمد:
-     `50a636c — fix: sanitize decomposition corpus for AraT5`.
-   - لا يُسمح بأي tracked code changes غير مسجّلة في:
-     - `dataset_builder.py`
-     - `prompts.py`
-     - `trainer.py`
-   - يُسمح بتعديل `configs/decomposition.yaml` فقط لتطبيق قيم D64
-     المسجّلة أدناه، بعد commit توثيق D64.
-   - corpus:
-     - 222 مثالًا و1,836 claim.
-     - O9: 25 سؤالًا و177 claim، held-out بالكامل ولا يدخل التدريب.
-     - split ثابت على question-ID:
-       189 train / 33 validation، `seed=42`.
-
-2. البيئة:
-   - Transformers `4.40.2`.
-   - Datasets `2.18.0`.
-   - Accelerate `0.27.2`.
-   - model = `UBC-NLP/AraT5-base`.
-   - يبدأ من base pretrained model جديد.
-   - لا يستخدم checkpoint من D57 أو D62 أو D63.
-   - جهاز CUDA واحد ظاهر فقط.
-   - full-model training.
-   - dtype = `float32`.
-   - لا fp16 ولا bf16 ولا AMP ولا DDP ولا DataParallel.
-
-3. tokenization:
-   - max source length = `320`.
-   - max target length = `320`.
-   - `add_special_tokens=True`.
-   - padding labels عبر `DataCollatorForSeq2Seq` إلى `-100`.
-   - يجب أن يمر preflight قبل التدريب:
-     - صفر `<unk>`.
-     - صفر source/target truncation.
-     - train/O9 overlap = صفر.
-     - metadata leakage المتبقية = صفر.
-
-4. training:
-   - `per_device_train_batch_size=2`.
-   - `per_device_eval_batch_size=2`.
-   - `gradient_accumulation_steps=8`.
-   - effective global batch = `16`.
-   - optimizer = `adamw_torch`.
-   - learning rate = `3e-4`.
-   - betas = `(0.9, 0.999)`.
-   - epsilon = `1e-8`.
-   - weight decay = `0.01`.
-   - scheduler = linear.
-   - warmup ratio = `0.1`.
-   - max gradient norm = `1.0`.
-   - الحد الأقصى = `60 epochs`.
-   - evaluation وsave في نهاية كل epoch.
-   - اختيار best checkpoint حسب أقل `eval_loss`.
-   - `load_best_model_at_end=True`.
-   - early stopping patience = `8` evaluations.
-   - `save_total_limit=2`.
-   - seed = `42`.
-   - data seed = `42`.
-
-5. generation smoke checks بعد تحميل best checkpoint:
-   - greedy decoding فقط:
-     - `do_sample=False`
-     - `num_beams=1`
-     - `max_new_tokens=320`
-     - `clean_up_tokenization_spaces=False`
-   - تُحفظ المخرجات الخام لثلاث حالات deterministic:
-     - training probe: `CS-025`.
-     - أصغر `question_id` ترتيبيًا داخل validation split.
-     - أصغر `question_id` ترتيبيًا داخل O9.
-   - هذه smoke checks لا تُستخدم كحكم نهائي على generalization ولا
-     تُعد بديلًا عن تقييم مستقل.
-
-بوابة التنفيذ:
-
-- `D64 EXECUTION PASS` يتطلب:
-  - نجاح كل preflight checks.
-  - اكتمال التدريب أو توقفه بواسطة early stopping دون crash.
-  - عدم ظهور NaN أو Inf.
-  - حفظ best checkpoint وإعادة تحميله بنجاح.
-  - حفظ tokenizer وmodel config وgeneration config.
-  - نجاح tied-weight pointer check بعد إعادة التحميل.
-  - إنتاج smoke outputs الثلاثة وحفظها خامًا.
-- لا يعني `D64 EXECUTION PASS` أن الموديل مقبول وظيفيًا أو إنتاجيًا.
-- أي حكم على validation/O9 أو اختيار checkpoint نهائي يحتاج قرارًا
-  تجريبيًا مستقلًا بعد مراجعة مخرجات D64.
-
-المخرجات المطلوبة:
-
-- Notebook كاملة بالمخرجات.
-- JSON خام يتضمن:
-  - environment وGit evidence وGit status.
-  - SHA256 لملفات الكود/config/runner.
-  - corpus/split/preflight evidence.
-  - TrainingArguments الفعلية.
-  - train/eval loss history.
-  - optimizer steps الفعلية وسبب التوقف.
-  - best checkpoint وbest eval loss.
-  - hashes لكل ملفات checkpoint المنشور.
-  - tied-weight checks.
-  - smoke generations الثلاثة مع token IDs والنصوص.
-  - `PASS` أو `FAIL` لبوابة التنفيذ.
-- checkpoint Dataset منفصل على Kaggle، ولا يُستبدل checkpoint D57.
-
-القيود:
-
-- لا يبدأ `inference.py`.
-- لا يُدمج checkpoint في backend.
-- لا يُعتمد checkpoint للإنتاج قبل تقييم مستقل مسجّل ومراجعة نتائجه.
-- لا تُغيّر قيم D64 بعد بدء التشغيل؛ أي تعديل يحتاج قرارًا جديدًا.
-
-النتيجة الفعلية:
-
-- Git HEAD:
-  `a3c448384b262422359a8d4f3090af26d913101d`
-  (`a3c4483 — config: apply D64 decomposition retraining settings`).
-- Git status كان نظيفًا، وثبت أن `50a636c` ancestor للـ HEAD، مع صفر
-  tracked changes بعده في ملفات الإنتاج المحمية:
-  - `dataset_builder.py`
-  - `prompts.py`
-  - `trainer.py`
-- config hash:
-  `aa7131066f0146bebed522ae2fe8be6f1fa887f8600c83e7a53f0d9720894dee`.
-- runner hash:
-  `3313e6ffb0e082ad5eac1f1d606960850525bf6f0033671428b81955bb8e6fdf`.
-- البيئة:
-  - Python `3.12.13`
-  - PyTorch `2.10.0+cu128`
-  - Transformers `4.40.2`
-  - Datasets `2.18.0`
-  - Accelerate `0.27.2`
-  - GPU واحد: `Tesla T4`
-  - full-model float32
-  - لا mixed precision ولا DDP ولا DataParallel
-- preflight:
-  - corpus = 222 سؤالًا / 1,836 claim.
-  - O9 = 25 سؤالًا / 177 claim.
-  - split = 189 train / 33 validation، seed = `42`.
-  - train/validation overlap = صفر.
-  - train/O9 overlap = صفر.
-  - metadata leakage = صفر.
-  - source/target UNK = صفر.
-  - source/target truncation = صفر.
-- بدأ التدريب من `UBC-NLP/AraT5-base` جديد:
-  - total parameters = `282,770,688`
-  - trainable parameters = `282,770,688`
-  - لم يُستخدم أي checkpoint سابق.
-- التدريب:
-  - optimizer steps = `660`.
-  - completed epoch = `55.5789473684`.
-  - stop reason = `early_stopping`.
-  - runtime = `2,137.5491` ثانية.
-  - train loss الإجمالي المسجّل = `4.5657872218`.
-  - best checkpoint الداخلي = `checkpoint-617`.
-  - best eval loss = `1.7506462336`.
-  - root model المنشور طابق best checkpoint byte-for-byte قبل إزالة
-    optimizer checkpoint directories.
-- إعادة التحميل:
-  - model/tokenizer أعيد تحميلهما بنجاح من المجلد المنشور.
-  - dtype بعد إعادة التحميل = float32.
-  - tied-weight pointer check = PASS.
-  - `config.json` و`generation_config.json` حُفظا.
-- smoke generations:
-  - `CS-025` (train): exact token match = false، مع اختلاف لغوي طفيف
-    رغم قرب الناتج الشديد من الهدف.
-  - `CS-003` (validation): exact token match = false، مع مصطلحات مشوهة
-    وتغيّر في عدد/محتوى claims.
-  - `CS-013` (O9): exact token match = false، مع تكرار وهلوسة وطول زائد.
-- النتيجة القانونية:
-  - `D64 EXECUTION PASS`.
-  - لا يوجد `QUALITY PASS`.
-  - checkpoint غير معتمد للإنتاج أو inference قبل D65 وما يليها.
-- حفظ checkpoint:
-  - نُشر كـ Kaggle Dataset خاص باسم:
-    `Interview IQ D64 AraT5 Full-Corpus Checkpoint`.
-  - Version 1.
-  - الحجم الظاهر = `1.14 GB`.
-  - عدد الملفات الظاهر = `147`.
-  - لا يُسمى final model ولا يحل محل checkpoint D57 داخل السجل.
-
-الاستنتاج المحدود:
-
-- مسار full-corpus training والحفظ وإعادة التحميل يعمل كما سُجّل.
-- D59–D64 تستبعد حاليًا فساد corpus sanitization وtokenization وpadding
-  وTrainer path والحفظ بوصفها تفسيرًا كافيًا لفشل التوليد.
-- توجد مؤشرات قوية على ضعف generalization وتدهور format/content في
-  validation وO9، لكن ثلاث smoke cases لا تكفي لقياس الحجم أو التوزيع
-  حسب split/track.
-- لا يُتخذ قرار hyperparameter أو architecture جديد قبل D65.
-
----
-
-## D65 — Deterministic Validation and O9 Generation Audit
-
-**الحالة:** ✅ EXECUTION PASS / ❌ QUALITY FAIL — اكتمل تقييم الحالات الـ58 بصورة deterministic، وظهرت علامات CONTENT/FORMAT/LENGTH/REPETITION جميعًا.
-
-الهدف:
-
-تقييم checkpoint D64 المنشور تقييمًا deterministic كاملًا على جميع
-أمثلة validation وعددها 33 وجميع أمثلة O9 وعددها 25، مع حفظ كل
-المخرجات الخام وقياس أخطاء الطول والترقيم والتكرار والتشابه وتوزيعها
-حسب split وtrack. D65 تجربة تشخيص جودة فقط؛ لا تتضمن تدريبًا ولا
-تعديل checkpoint ولا تشغيل `inference.py`.
-
-الأصل المقفول:
-
-1. Git/code:
-   - baseline:
-     `a3c4483 — config: apply D64 decomposition retraining settings`
-     أو commit أحدث بتغييرات توثيقية/diagnostic-only فقط.
-   - لا tracked changes في:
-     - `dataset_builder.py`
-     - `prompts.py`
-     - `trainer.py`
-     - `configs/decomposition.yaml`
-   - يجب تسجيل Git HEAD وstatus وSHA256 للملفات السابقة ولـ D65 runner.
-
-2. checkpoint:
-   - المصدر الوحيد:
-     Kaggle Dataset الخاص
-     `Interview IQ D64 AraT5 Full-Corpus Checkpoint`، Version 1.
-   - يكتشف runner مجلد الموديل من Kaggle input عبر وجود:
-     - `config.json`
-     - `model.safetensors` أو `pytorch_model.bin`
-     - tokenizer files
-     - `d64_checkpoint_manifest.json`
-     - `d64_full_corpus_retraining_results.json`
-   - يُحظر تحميل `UBC-NLP/AraT5-base` كبديل عند غياب checkpoint.
-   - يجب مقارنة SHA256 لملفات checkpoint بالـ manifest/JSON المنشور.
-   - أي hash mismatch أو غياب ملف أساسي = FAIL قبل generation.
-
-3. البيئة:
-   - Transformers `4.40.2`.
-   - Datasets `2.18.0`.
-   - Accelerate `0.27.2`.
-   - جهاز CUDA واحد ظاهر.
-   - dtype = `float32`.
-   - `model.eval()`.
-   - لا training، لا optimizer، لا gradients، لا mixed precision،
-     لا DDP ولا DataParallel.
-
-مجموعة التقييم:
-
-- يُعاد بناء corpus عبر الكود المقفول.
-- يُعاد split D57/D64 نفسه على question-ID:
-  - seed = `42`
-  - validation = 33
-- O9 = جميع الأمثلة الـ25 من `build_gold_validation_set()`.
-- train وvalidation وO9 IDs تُحفظ كاملة.
-- يجب أن يكون:
-  - validation/O9 overlap = صفر.
-  - train/O9 overlap = صفر.
-  - عدد الحالات النهائي = `58`.
-- ترتيب التنفيذ deterministic:
-  - split بالترتيب `validation` ثم `o9`.
-  - داخل كل split تصاعديًا حسب `question_id`.
-
-generation المقفول:
-
-- inference حالة واحدة في كل مرة؛ لا batch generation.
-- `torch.inference_mode()`.
-- `do_sample=False`.
-- `num_beams=1`.
-- `max_new_tokens=320`.
-- `clean_up_tokenization_spaces=False`.
-- نفس `build_training_pair()` المستخدم في التدريب.
-- لا post-processing يغير النص أو token IDs.
-- تُحفظ:
-  - source/target text.
-  - source/target token IDs.
-  - raw generated token IDs.
-  - normalized generated token IDs بعد إزالة decoder-start/padding فقط
-    والاحتفاظ بـ EOS عند وجوده.
-  - decoded output الخام.
-  - هل ظهر EOS.
-  - هل وصل generation إلى cap.
-  - runtime لكل مثال.
-- فحص determinism:
-  - أصغر validation qid وأصغر O9 qid يُولّدان مرتين.
-  - يجب تطابق generated token IDs في الإعادتين.
-
-المقاييس لكل مثال:
-
-1. `exact_token_match`:
-   مقارنة generated IDs بالهدف مع الاحتفاظ بـ EOS.
-
-2. `token_edit_similarity`:
-   `1 - levenshtein_distance / max(pred_len, target_len)` على token IDs
-   بعد استبعاد EOS/pad/decoder-start؛ والقيمة 1.0 عند تطابق سلسلتين
-   فارغتين.
-
-3. `token_lcs_f1`:
-   precision/recall/F1 لطول أطول common subsequence على token IDs بعد
-   استبعاد special tokens.
-
-4. length:
-   - generated token count.
-   - target token count.
-   - ratio = generated/target.
-   - `under_length_flag` إذا ratio < `0.75`.
-   - `over_length_flag` إذا ratio > `1.25`.
-
-5. claim structure:
-   - استخراج markers بالتعبير:
-     `(?<!\w)(\d+)\.\s+`
-   - parsed predicted claim count.
-   - parsed target claim count.
-   - exact claim-count match.
-   - numbering valid إذا الأرقام هي `1..N` دون gaps أو duplicates.
-   - empty output flag.
-
-6. repetition:
-   - claims تُطبّع بإزالة المسافات الزائدة وعلامات الترقيم الطرفية فقط.
-   - duplicate-claim flag عند تكرار claim مطبّعة كاملة.
-   - word 4-gram repetition fraction:
-     `1 - unique_4grams / total_4grams`.
-   - `severe_repetition_flag` إذا:
-     - duplicate claim موجود، أو
-     - 4-gram repetition fraction >= `0.20`.
-
-7. generation corruption proxies:
-   - عدد Latin/alphanumeric tokens في output غير الموجودة
-     case-insensitively في source أو target.
-   - max-token-cap flag.
-   - invalid-numbering flag.
-   - هذه proxies تشخيصية ولا تُعامل منفردة كحكم semantic.
-
-التجميع:
-
-- aggregate منفصل لـ validation وO9، ثم لكل track:
-  `DA/DS/CS/SE/GN`.
-- يُحسب:
-  - count.
-  - exact-match rate.
-  - mean/median token-edit similarity.
-  - mean/median token-LCS F1.
-  - exact claim-count rate.
-  - valid-numbering rate.
-  - under/over-length rates.
-  - duplicate-claim rate.
-  - severe-repetition rate.
-  - max-cap rate.
-  - median وp90 length ratio.
-  - novel-Latin-token totals.
-- تُحفظ قوائم:
-  - أسوأ 5 وأفضل 5 أمثلة في كل split حسب token-edit similarity،
-    ties حسب `question_id`.
-  - جميع حالات severe repetition.
-  - جميع حالات max cap.
-  - جميع حالات invalid numbering.
-- تُنتج ملفات review:
-  - CSV كامل للـ58 حالة.
-  - JSON كامل.
-  - Markdown summary يحتوي aggregates وworst cases والنصوص الخام.
-
-علامات التشخيص المسجّلة:
-
-هذه flags لا تعني production acceptance thresholds، لكنها تحدد اتجاه
-الإصلاح التالي:
-
-- `FORMAT_FLAG` إذا exact claim-count rate < `0.80` أو
-  valid-numbering rate < `0.95` في أي split.
-- `REPETITION_FLAG` إذا severe-repetition rate > `0.05` أو
-  max-cap rate > `0.00` في أي split.
-- `CONTENT_FLAG` إذا median token-edit similarity < `0.70` في validation
-  أو < `0.60` في O9.
-- `LENGTH_FLAG` إذا under+over-length rate > `0.20` في أي split.
-- يمكن ظهور أكثر من flag في الوقت نفسه.
-- غياب flags لا يساوي اعتمادًا إنتاجيًا؛ يحتاج review بشري مستقل لاحقًا.
-
-بوابة التنفيذ:
-
-- `D65 EXECUTION PASS` يتطلب:
-  - hash verification للـ checkpoint = PASS.
-  - تحميل model/tokenizer من Kaggle Dataset لا من base model.
-  - corpus/split counts والـ overlaps صحيحة.
-  - توليد جميع الحالات الـ58 دون crash.
-  - determinism rerun = PASS للحالتين.
-  - عدم وجود NaN/Inf.
-  - حفظ جميع الملفات المطلوبة.
-- `D65 EXECUTION FAIL` عند:
-  - checkpoint mismatch أو fallback إلى base model.
-  - نقص أي حالة.
-  - اختلاف rerun token IDs.
-  - generation exception غير مسجّل.
-  - تغيير أي generation setting مقفول.
-
-المخرجات المطلوبة:
-
-- Notebook كاملة بالمخرجات.
-- `d65_generation_audit.json`.
-- `d65_generation_cases.csv`.
-- `d65_generation_summary.md`.
-- environment/Git/checkpoint hash evidence.
-- aggregates لكل split وtrack.
-- diagnostic flags.
-- raw outputs/token IDs لكل الحالات الـ58.
-
-القيود:
-
-- لا training ولا resume ولا تعديل checkpoint.
-- لا تعديل production code/config.
-- لا يبدأ `inference.py` ولا backend integration.
-- لا يُختار علاج أو hyperparameter أو architecture قبل مراجعة D65
-  وتسجيل القرار التالي D66.
-
-النتيجة الفعلية:
-
-- نُفّذت D65 من Git HEAD:
-  `632efd1b98c8ab2079cfb1eedd4039068c645c1e`
-  (`632efd1 — docs: close D64 and preregister D65 evaluation`).
-- Git status كان نظيفًا، و`a3c4483` ancestor للـ HEAD، مع صفر tracked
-  changes بعد baseline D64 في:
-  - `dataset_builder.py`
-  - `prompts.py`
-  - `trainer.py`
-  - `configs/decomposition.yaml`
-- البيئة:
-  - Python `3.12.13`
-  - PyTorch `2.10.0+cu128`
-  - Transformers `4.40.2`
-  - Datasets `2.18.0`
-  - Accelerate `0.27.2`
-  - GPU واحد: `Tesla T4`
-  - model dtype = `torch.float32`
-  - `model.eval()` وgradients disabled
-  - `local_files_only=True`
-- checkpoint:
-  - المصدر:
-    `Interview IQ D64 AraT5 Full-Corpus Checkpoint`، Version 1.
-  - D64 Git HEAD:
-    `a3c448384b262422359a8d4f3090af26d913101d`.
-  - D64 status = PASS.
-  - best metric = `1.7506462336`.
-  - global step = `660`.
-  - stop reason = `early_stopping`.
-  - تم التحقق من 10 ملفات عبر SHA256.
-  - checkpoint hash verification = PASS.
-- corpus/split:
-  - corpus = 222 مثالًا / 1,836 claim.
-  - train = 189.
-  - validation = 33.
-  - O9 = 25 مثالًا / 177 claim.
-  - train/validation/O9 overlaps = صفر.
-- generation:
-  - جميع الحالات الـ58 اكتملت.
-  - greedy، حالة واحدة في كل مرة.
-  - `max_new_tokens=320`.
-  - determinism rerun نجح للحالتين:
-    - `CS-003` من validation.
-    - `CS-013` من O9.
-  - لا fallback إلى base model ولا training ولا optimizer.
-- Validation، n=33:
-  - exact token match rate = `0.000`.
-  - median token-edit similarity = `0.5189189189`.
-  - median token-LCS F1 = `0.6096866097`.
-  - exact claim-count rate = `0.3030303030`.
-  - valid-numbering rate = `0.7878787879`.
-  - severe-repetition rate = `0.4242424242`.
-  - max-token-cap rate = `0.0303030303`.
-  - over-length rate = `0.0909090909`.
-  - median length ratio = `1.000`.
-  - novel Latin-token occurrences = `139`.
-- O9، n=25:
-  - exact token match rate = `0.000`.
-  - median token-edit similarity = `0.1595092025`.
-  - median token-LCS F1 = `0.2857142857`.
-  - exact claim-count rate = `0.280`.
-  - valid-numbering rate = `0.720`.
-  - severe-repetition rate = `0.520`.
-  - max-token-cap rate = `0.040`.
-  - over-length rate = `0.440`.
-  - median length ratio = `1.2280701754`.
-  - novel Latin-token occurrences = `231`.
-- أطلقت التجربة كل العلامات المسجّلة مسبقًا:
-  - `CONTENT_FLAG`
-  - `FORMAT_FLAG`
-  - `LENGTH_FLAG`
-  - `REPETITION_FLAG`
-- حالات الوصول إلى cap:
-  - validation: `GN-001`.
-  - O9: `DA-036`.
-- لوحظ الفشل عبر tracks الخمسة في O9، وليس في track منفرد.
-- output hashes:
-  - `d65_generation_audit.json`:
-    `c04ddb27e74fa602d6520966885dbf6530b881e1c3ca0167c2d6bd4d5b9d9617`
-  - `d65_generation_cases.csv`:
-    `ccfc0e0adbaba7e20fc30c42546f496028a4713809e055b6d628ffa464f04e43`
-  - `d65_generation_summary.md`:
-    `4aa9cb88e4b1645a9a82323baacf505fe44f3599ff1142bc3188708f27faff50`
-
-الاستنتاج القانوني:
-
-- `D65 EXECUTION PASS`.
-- `D64 CHECKPOINT QUALITY FAIL`.
-- checkpoint D64 غير صالح لـ `inference.py` أو backend أو production.
-- سلامة pipeline والحفظ والتحميل لا تعني سلامة جودة generation.
-- تغيير generation settings وحده لا يُعامل كعلاج كافٍ؛ الفشل يشمل
-  المحتوى، بنية claims، المصطلحات التقنية، التكرار والطول.
-- نتيجة D65 تعيد فتح Q6 تجريبيًا؛ سبب D54 كان معماريًا وغير مؤيد
-  بنتيجة fine-tuning مقاسة، وقد ظهرت الآن مؤشرات مضادة فعلية.
-- لا يُعاد تدريب full model عشوائيًا، ولا يُستخدم O9 لاختيار العلاج.
-
----
-
-## D66 — Controlled PEFT Repair Pilot and Q6 Re-open:
-## AraT5-base vs mT5-base
-
-**الحالة:** PRE-REGISTERED — لم يبدأ أي تدريب أو تقييم جديد.
-
-الهدف:
-
-اختبار إصلاح محافظ يحاول تقليل catastrophic forgetting وتشويه
-المصطلحات التقنية عبر LoRA، مع مقارنة تجريبية مباشرة بين:
-- `UBC-NLP/AraT5-base`
-- `google/mt5-base`
-
-على نفس train/validation split. لا يدخل O9 في التدريب أو early stopping
-أو اختيار model/checkpoint. D66 pilot اتجاهي single-seed، ولا يحسم
-production acceptance.
-
-القرار المعماري المؤقت:
-
-- Q6 يُعاد فتحه بسبب D65.
-- لا يتغير `configs/decomposition.yaml:model.selected` في D66.
-- لا يُعدّل `trainer.py`؛ إذ ينص حاليًا على full fine-tuning بلا LoRA.
-- LoRA تُطبّق داخل runner تشخيصي مستقل فقط.
-- أي اعتماد دائم لـ LoRA أو تغيير model.selected يحتاج قرارًا لاحقًا
-  بعد نتيجة D66.
-- إعداد LoRA هنا قرار جديد خاص بالـ decomposition، وليس توريثًا تلقائيًا
-  لإعداد NLI في D38.
-
-الأصل المقفول:
-
-1. Git/code:
-   - baseline:
-     `632efd1 — docs: close D64 and preregister D65 evaluation`
-     أو commit أحدث بتغييرات توثيقية/diagnostic-only فقط.
-   - لا tracked changes في:
-     - `dataset_builder.py`
-     - `prompts.py`
-     - `trainer.py`
-     - `configs/decomposition.yaml`
-   - يسجل runner Git HEAD/status وSHA256 لكل ملف وللـ runner.
-
-2. البيانات:
-   - corpus D61 نفسه: 222 مثالًا / 1,836 claim.
-   - نفس split:
-     - train = 189.
-     - validation = 33.
-     - seed = `42`.
-   - O9 = 25 سؤالًا held-out بالكامل:
-     - لا generation عليه.
-     - لا metrics منه.
-     - لا اختيار أو inspection يدوي لمخرجاته أثناء D66.
-   - build path المقفول:
-     - `build_kd_dataset()`
-     - `build_training_pair()`
-     - `split_by_question_ids()`
-     - `examples_to_dataset()`
-     - `DataCollatorForSeq2Seq`
-
-3. Frozen control:
-   - D64 checkpoint الخاص، Version 1، يُحمّل local-only بعد hash
-     verification.
-   - لا يُستأنف تدريبه.
-   - يُعاد تقييمه على validation الـ33 بنفس generation settings الخاصة
-     بـ D66 لتوفير baseline عادل عند cap الجديد.
-   - نتائج D65 الأصلية عند cap=320 تبقى مرجعًا تاريخيًا منفصلًا.
-
-الذراعان:
-
-### Arm A — AraT5 LoRA
-
-- base model جديد:
-  `UBC-NLP/AraT5-base`.
-- tokenizer الخاص به.
-- لا استخدام لأي D64 weights أو adapters.
-
-### Arm B — mT5 LoRA
-
-- base model جديد:
-  `google/mt5-base`.
-- tokenizer الخاص به.
-- لا استخدام لأي checkpoint سابق.
-
-بيئة التنفيذ:
-
-- Transformers `4.40.2`.
-- Datasets `2.18.0`.
-- Accelerate `0.27.2`.
-- PEFT `0.10.0`.
-- CUDA GPU واحد ظاهر فقط.
-- float32 لكلا الذراعين.
-- لا fp16 ولا bf16 ولا AMP ولا DDP ولا DataParallel.
-- `gradient_checkpointing=True`.
-- نفس Kaggle runtime ونفس seed لكلا الذراعين.
-- تسجيل peak allocated/reserved CUDA memory وruntime لكل ذراع.
-
-Tokenizer preflight مستقل لكل model:
-
-- `add_special_tokens=True`.
-- `max_source_length=512`.
-- `max_target_length=512`.
-- صفر source/target `<unk>`.
-- صفر source/target truncation.
-- تسجيل p50/p95/max للأطوال على train وvalidation.
-- إذا تجاوز أي source أو target 512 token أو ظهر UNK:
-  - يفشل الذراع قبل التدريب.
-  - لا يُرفع الحد تلقائيًا داخل التجربة.
-- حفظ تفكيك Latin/alphanumeric terms إلى token IDs لكل tokenizer
-  كدليل تشخيصي، دون استخدامه لاختيار data subset.
-
-LoRA configuration المقفول لكلا الذراعين:
-
-- `task_type=SEQ_2_SEQ_LM`.
-- `r=16`.
-- `lora_alpha=32`.
-- `lora_dropout=0.05`.
-- `target_modules=["q", "v"]`.
-- `bias="none"`.
-- لا `modules_to_save`.
-- جميع base parameters frozen.
-- يجب تسجيل:
-  - total parameters.
-  - trainable parameters.
-  - trainable percentage.
-  - أسماء جميع trainable tensors.
-- أي اختلاف غير مبرر في LoRA config بين الذراعين = FAIL.
-
-Training المقفول لكلا الذراعين:
-
-- optimizer = `adamw_torch`.
-- learning rate = `1e-4`.
-- betas = `(0.9, 0.999)`.
-- epsilon = `1e-8`.
-- weight decay = `0.0`.
-- scheduler = linear.
-- warmup ratio = `0.1`.
-- max gradient norm = `1.0`.
-- per-device train batch = `1`.
-- per-device eval batch = `1`.
-- gradient accumulation = `8`.
-- effective batch = `8`.
-- max steps = `720`، ما يعادل قرابة 30 epoch على split الحالي.
-- evaluation/save كل `72` optimizer step.
-- early stopping patience = `4` evaluation events.
-- `load_best_model_at_end=True` حسب أقل `eval_loss`.
-- `save_total_limit=10`.
-- seed = `42`.
-- data seed = `42`.
-- لا resume.
-- لا training على D64 checkpoint.
-- fail عند NaN/Inf أو OOM أو اختلاف عدد train/validation.
-
-Checkpoint-generation audit:
-
-- لكل ذراع تُقيّم deterministic:
-  - base model قبل LoRA training (`step 0`).
-  - كل adapter checkpoint محفوظ.
-  - best-eval-loss adapter.
-- validation cases = الـ33 كاملة، مرتبة تصاعديًا حسب question_id.
-- generation حالة واحدة في كل مرة:
-  - `torch.inference_mode()`
-  - `do_sample=False`
-  - `num_beams=1`
-  - `max_new_tokens=512`
-  - `clean_up_tokenization_spaces=False`
-- لا post-processing يغير النص أو token IDs.
-- Frozen D64 control يُقيّم بالإعدادات نفسها.
-- أصغر validation qid يُعاد توليده مرتين من checkpoint المرشح النهائي
-  لكل ذراع، ويجب تطابق token IDs.
-
-المقاييس:
-
-تُعاد جميع مقاييس D65 على validation، ويضاف:
-
-1. `target_latin_token_recall`:
-   - استخراج Latin/alphanumeric tokens الفريدة من target.
-   - مقارنة case-insensitive مع output.
-   - recall = preserved unique target terms / unique target terms.
-   - الحالات بلا Latin target terms تُسجّل `null` ولا تدخل المتوسط.
-
-2. `novel_latin_occurrences_per_case`:
-   - نفس proxy D65 للمصطلحات اللاتينية الجديدة غير الموجودة في
-     source أو target.
-
-3. aggregates:
-   - overall validation.
-   - لكل track.
-   - mean/median Latin recall.
-   - mean novel-Latin occurrences.
-   - جميع D65 metrics الأخرى.
-   - أسوأ/أفضل 5 cases.
-   - raw outputs لكل case/checkpoint.
-
-قاعدة اختيار checkpoint داخل كل ذراع:
-
-- تستبعد checkpoints ذات:
-  - generation crash.
-  - determinism failure.
-  - NaN/Inf.
-  - max-cap rate > `0.10`.
-- بين الباقي يُختار lexicographically:
-  1. أعلى median token-edit similarity.
-  2. أعلى median target-Latin-token recall.
-  3. أعلى median token-LCS F1.
-  4. أقل severe-repetition rate.
-  5. أعلى exact claim-count rate.
-  6. أعلى valid-numbering rate.
-  7. أقل eval loss.
-  8. أقل optimizer step عند التعادل الكامل.
-
-بوابة `REPAIR CANDIDATE PASS`:
-
-يجب أن يحقق checkpoint الذراع المختار على validation الـ33 جميع الآتي:
-
-- median token-edit similarity >= `0.65`.
-- median token-LCS F1 >= `0.70`.
-- exact claim-count rate >= `0.50`.
-- valid-numbering rate >= `0.90`.
-- severe-repetition rate <= `0.20`.
-- max-cap rate = `0.00`.
-- over-length rate <= `0.10`.
-- median target-Latin-token recall >= `0.90`.
-- mean novel-Latin occurrences per case <= `2.0`.
-- لا ينخفض median token-edit similarity في أي track بأكثر من `0.05`
-  مقارنة بـ frozen D64 control المقاس داخل D66.
-
-قاعدة اختيار الفائز بين الذراعين:
-
-- تدخل المنافسة فقط الأذرع التي تحقق `REPAIR CANDIDATE PASS`.
-- إذا نجح ذراع واحد: يكون هو D66 repair candidate.
-- إذا نجح الذراعان: نفس الترتيب lexicographic السابق، ثم:
-  - أقل trainable parameters.
-  - الاسم المعجمي للموديل عند التعادل الكامل.
-- إذا لم ينجح أي ذراع:
-  - D66 قد تكون `EXECUTION PASS`.
-  - النتيجة الرسمية: `NO REPAIR CANDIDATE`.
-  - لا يُروّج أفضل ذراع شكليًا ولا يُقيّم على O9.
-- لا يعني فوز ذراع اعتمادًا إنتاجيًا؛ يسمح فقط بتسجيل تجربة مستقلة
-  لاحقة على O9.
-
-بوابة التنفيذ:
-
-- `D66 EXECUTION PASS` يتطلب:
-  - سلامة Git/code/data evidence.
-  - نجاح D64 control hash verification.
-  - اكتمال preflight لكلا tokenizers.
-  - اكتمال تدريب الذراعين أو توقفهما المسجّل بالـ early stopping.
-  - تقييم كل checkpoints المطلوبة على validation.
-  - determinism PASS للمرشحين النهائيين.
-  - حفظ كل outputs/metrics/checkpoints.
-- `D66 EXECUTION FAIL` عند:
-  - استخدام O9 بأي صورة.
-  - تغيير config بين الذراعين خارج model/tokenizer.
-  - fallback أو reuse checkpoint غير مسجّل.
-  - عدم اكتمال أحد الذراعين.
-  - اختلاف generation settings.
-  - NaN/Inf/OOM غير مسجل.
-  - production code/config change.
-
-المخرجات المطلوبة:
-
-- Notebook كاملة بالمخرجات.
-- JSON خام يشمل:
-  - environment/Git/hashes.
-  - tokenizer audits.
-  - LoRA configs/trainable tensors.
-  - TrainingArguments الفعلية.
-  - train/eval histories.
-  - checkpoint list.
-  - full validation generations لكل checkpoint.
-  - control/candidate aggregates.
-  - gate results والـ winner أو `NO REPAIR CANDIDATE`.
-- CSV على مستوى case/checkpoint/model.
-- Markdown comparison report.
-- adapter directories للمرشحين النهائيين فقط.
-- ZIP audit bundle.
-- SHA256 لكل output وadapter file.
-
-القيود:
-
-- لا O9 generation في D66.
-- لا `inference.py`.
-- لا backend integration.
-- لا تعديل corpus أو prompt/targets.
-- لا تعديل `trainer.py` أو `decomposition.yaml`.
-- لا تغيير `model.selected`.
-- لا اعتماد checkpoint قبل قرار لاحق مستقل.
-
-### إغلاق D66 — نتيجة التنفيذ
-
-**الحالة النهائية:** `EXECUTION PASS / NO REPAIR CANDIDATE`
-
-دليل التنفيذ:
-
-- Git HEAD:
-  `7d6f11596aa7b0cdf026e71cf609889b7fdf2591`.
-- اكتمل تنفيذ D66 بنجاح.
-- استُخدم O9 فقط للتحقق من الأعداد والـ overlap.
-- لم يُنفَّذ O9 generation.
-- لم تُحسب O9 metrics.
-- لم تُفحص O9 outputs يدويًا.
-- لم يُستخدم O9 في التدريب أو اختيار checkpoint أو اختيار الفائز.
-- تم التحقق من frozen D64 control بواسطة SHA-256 manifest المسجل له.
-- corpus التدريب/التحقق:
-  - 222 مثالًا.
-  - 1,836 claim.
-  - 189 train question IDs.
-  - 33 validation question IDs.
-  - seed = `42`.
-  - صفر train/validation/O9 overlap.
-- نجح tokenizer preflight للموديلين عند أقصى طول source/target يساوي 512:
-  - صفر UNK tokens.
-  - صفر source truncation.
-  - صفر target truncation.
-
-Frozen D64 control على حالات validation الـ33 عند `max_new_tokens=512`:
-
-- median token edit similarity: `0.5189`.
-- median token LCS F1: `0.6097`.
-- exact claim-count rate: `0.3030`.
-- valid-numbering rate: `0.7879`.
-- severe-repetition rate: `0.4242`.
-- max-cap rate: `0.0000`.
-- median target Latin-token recall: `0.5000`.
-- mean novel Latin occurrences per case: `4.2121`.
-
-AraT5-base + LoRA:
-
-- fresh `UBC-NLP/AraT5-base`.
-- LoRA trainable parameters: `1,769,472`.
-- اكتملت 720 optimizer step.
-- best eval loss: `8.653881072998047`.
-- جميع checkpoints العشرة المحفوظة كانت غير مؤهلة.
-- كان max-cap rate لكل checkpoint يساوي `1.0000`.
-- لم يُختَر أي AraT5 checkpoint.
-- فشلت repair gate لعدم وجود checkpoint مؤهل.
-
-mT5-base + LoRA:
-
-- fresh `google/mt5-base`.
-- LoRA trainable parameters: `1,769,472`.
-- اكتملت 720 optimizer step.
-- best eval loss: `1.1523293256759644`.
-- كان checkpoint عند step 72 الوحيد المؤهل للاختيار، لأن checkpoints
-  اللاحقة تجاوزت preregistered max-cap exclusion threshold.
-- metrics للـstep 72 المختار:
-  - median token edit similarity: `0.0222`.
-  - median token LCS F1: `0.0424`.
-  - exact claim-count rate: `0.0000`.
-  - valid-numbering rate: `0.0000`.
-  - severe-repetition rate: `0.0000`.
-  - max-cap rate: `0.0000`.
-  - median target Latin-token recall: `0.0000`.
-- representative output:
-  `<extra_id_0>، كما يلي:`
-- repair gate failures:
-  - `median_token_edit_similarity`.
-  - `median_token_lcs_f1`.
-  - `exact_claim_count_rate`.
-  - `valid_numbering_rate`.
-  - `median_target_latin_token_recall`.
-  - `per_track_degradation`.
-
-اختيار الفائز:
-
-- winner: `null`.
-- status: `NO REPAIR CANDIDATE`.
-- eligible arms: none.
-- لا يُعتمد أي من diagnostic adapters للإنتاج.
-- لا يُصرح بأي O9 evaluation.
-- لا يُصرح بأي backend أو inference integration.
-
-قيد منهجي:
-
-- token-ID edit وLCS metrics خاصة بكل tokenizer؛ لذلك لا تكون المقارنة
-  بين AraT5 وmT5 بها قابلة للمقارنة الصارمة.
-- يُعامل ترتيبها عبر الموديلين على أنه تشخيصي فقط.
-- لا يغير هذا القيد نتيجة D66، لأن كلا الذراعين فشل بصورة مستقلة في
-  absolute structural and quality gates المسجلة مسبقًا، وكانت decoded
-  outputs لكليهما غير قابلة للاستخدام.
-
-دليل مخرجات D66 الأساسي:
-
-- `d66_peft_repair_audit.json`
-  - size: `29,425,640` bytes.
-  - SHA-256:
-    `930d0d32feec09ea27b2869d7be54ed6846bc13cddbb2d7d0fd3de878fa66a0d`.
-- `d66_peft_repair_cases.csv`
-  - size: `8,200,933` bytes.
-  - SHA-256:
-    `2d51be73164c387efa214de4fd762384937d1123c77663522bb440b0a13355c4`.
-- `d66_peft_repair_summary.md`
-  - size: `10,379` bytes.
-  - SHA-256:
-    `33253eb294110224c4d6293d954c80a28aa2691ddedf761a78212b0b59797be9`.
-
-خلاصة Q6:
-
-- يبقى Q6 مفتوحًا.
-- لا يبرر D66 استخدام AraT5-base أو mT5-base كموديل Claim Decomposition
-  إنتاجي.
-- يُحظر أي تدريب إضافي للموديل حتى إصلاح gold corpus وعقد
-  training-serving وإصدارهما بنسخ محددة.
-
-
-## D67 — Gold Corpus v2 Repair and ASR-to-Decomposition Input Contract Freeze
-
-**الحالة:** `PREREGISTERED / NOT EXECUTED`
-
-الهدف:
-
-إصلاح أهداف Gold Claim Decomposition دون تغيير توزيع source answers،
-وتجميد عقد الإدخال/الإخراج، وإنتاج candidate corpus منفصل ذي إصدار محدد
-قبل أي تدريب إضافي.
-
-Target population and production speech contract:
-
-- Interview IQ targets Egyptian Arabic-speaking interview candidates.
-- Expected production speech contains Egyptian Arabic, informal phrasing,
-  and Arabic-English technical code-switching.
-- Egyptian dialect is a first-class production input, not noise to be
-  rejected.
-
-دليل الدافع من تدقيق corpus/ASR المكتمل للقراءة فقط:
-
-- 222 training example و1,836 target claim.
-- 222/222 sources تحتوي Latin characters.
-- 222/222 sources تحتوي مزيجًا من النص العربي واللاتيني.
-- 217/222 sources إجابات مكتوبة synthetic Egyptian/informal.
-- صفر genuine stored ASR transcripts.
-- صفر verified genuine ASR-corruption examples.
-- صفر verified Arabic-script English technical-term to canonical Latin mappings.
-- 30 confirmed non-atomic claims.
-- 273 conservative self-containment flags تحتاج adjudication.
-- ثلاث verified unsupported target additions:
-  - DS-009 يضيف WCSS.
-  - DS-007 يضيف Bootstrap.
-  - SE-050 يضيف KISS.
-- حافظت جميع strong epistemic-uncertainty sources الـ55 على عدم اليقين
-  في v1.
-- لم تجد المراجعة اليدوية أي semantic negation removal متحقق منه.
-- ملفات تنفيذ ASR الحالية فارغة أو documentation-only.
-- training-serving mismatch risk هو `HIGH`.
-
-### A. تجميد Gold v1
-
-- تحديد وتسجيل ملفات Markdown الخمسة الدقيقة التي يستهلكها
-  `build_kd_dataset`.
-- معاملتها على أنها Gold v1 غير قابلة للتغيير.
-- لا تُعدّل أو تُنقل أو يُعاد تسميتها أو تُستبدل.
-- تسجيل SHA-256 لكل Gold v1 source file.
-- يبقى Gold v1 هو reproducible baseline لـD61–D66.
-
-### B. إنشاء Gold v2 candidate منفصل ذي إصدار محدد
-
-- إنشاء Gold v2 في موقع versioned جديد ومتسق مع data layout الحالي
-  للمستودع.
-- لا يُعاد توجيه production أو training configuration إلى Gold v2 في D67.
-- الحفاظ على question IDs الـ222 نفسها بالضبط.
-- الحفاظ على original Egyptian/informal source answers الـ222 في Gold v1
-  byte-for-byte دون أي تغيير.
-- D67 يغير target claims فقط.
-- real Egyptian ASR source variants تنتمي إلى dataset لاحقة منفصلة، ولا
-  يجوز أن تستبدل أو تكتب فوق Gold v1 أو Gold v2.
-- الحفاظ على question-level split الحالي:
-  - 189 train IDs.
-  - 33 validation IDs.
-  - seed = `42`.
-- يبقى O9 untouched بالكامل ومستبعدًا.
-
-### C. إصلاحات target الإلزامية
-
-#### 1. Unsupported additions
-
-- DS-009:
-  - إزالة WCSS من target.
-  - الحفاظ على أن المرشح لا يتذكر الاختصار.
-- DS-007:
-  - إزالة Bootstrap من target.
-  - الحفاظ على الوصف المبهم وغير اليقيني للمرشح عن resampling.
-- SE-050:
-  - إزالة KISS من target.
-  - الحفاظ على أن المرشح لا يتذكر الاسم المختصر.
-
-#### 2. Atomicity
-
-- إصلاح جميع claims الـ30 المؤكد أنها non-atomic.
-- تقسيم الحقائق القابلة للحكم المستقل إلى claims منفصلة ومرقمة.
-- عدم حذف أي حقيقة يدعمها source.
-- عدم إضافة معرفة تفسيرية أو تصحيحية.
-
-#### 3. Self-containment
-
-- adjudicate جميع conservative self-containment flags الـ273.
-- عدم إعادة كتابة جميع regex hits آليًا.
-- تصنيف كل flag بأحد الوسمين:
-  - `CONFIRMED_FIXED`.
-  - `FALSE_POSITIVE_UNCHANGED`.
-- يجب أن تسمي confirmed rewrite الكيان أو الفاعل اللازم لفهم claim
-  بصورة مستقلة.
-- يجب ألا تستورد سياقًا غير مدعوم.
-
-#### 4. Faithfulness
-
-- الحفاظ على uncertainty وhedging وapproximation وnegation وأخطاء المرشح.
-- عدم تصحيح عبارة خاطئة للمرشح ضمنيًا.
-- عدم ملء acronym أو method name أو formula أو cause أو technical label
-  لم يذكره source.
-- عدم إضافة أي unverifiable causal bridge.
-
-### D. عقد ASR-to-Decomposition المجمد
-
-في D67 وتجارب NLP اللاحقة، يكون العقد كما يلي.
-
-Input الذي يستهلكه Claim Decomposition:
-
-- `question_id`.
-- `raw_transcript`.
-
-`raw_transcript` هو authoritative text input:
-
-- قد يحتوي Egyptian Arabic.
-- قد يحتوي informal spoken constructions.
-- قد يحتوي hesitation وapproximation وuncertainty وnegation.
-- قد يحتوي Arabic-English code-switching.
-- قد يحتوي canonical Latin technical terms.
-- قد يحتوي English technical terms منسوخة phonetically بالأحرف العربية.
-- قد يحتوي ASR substitutions وdeletions وfalse boundaries وpunctuation
-  loss وspacing errors.
-- لا يجوز أن يشترط النظام أن يكون ASR transcript بالعربية الفصحى الحديثة.
-- يجب الحفاظ على الصياغة المصرية ومعناها الدلالي.
-- لا يجوز لأي preprocessing layer إزالة uncertainty أو negation أو
-  approximation أو أخطاء المرشح.
-- لا يكون `normalized_transcript` authoritative NLP input حتى يوجد
-  producer منفذ ومتحقق منه تجريبيًا.
-- لا تُضمّن ASR timestamps أو confidence values أو VAD fields أو أي
-  metadata أخرى في text prompt.
-
-Claim Decomposition output:
-
-- claims ذرية مرقمة تسلسليًا.
-- clear normalized Arabic claims suitable for internal semantic retrieval
-  and NLI comparison.
-- يجوز أن تستخدم claim الداخلية صياغة نحوية شبيهة بالفصحى لزيادة الوضوح.
-- يجب ألا تمحو normalization المعنى المعبّر عنه بالمصرية أو تغيره.
-- هذه internal representation ليست نصًا موجهًا للمستخدم.
-- لا يُسمح بـdialect normalization إلا عندما يكون meaning-preserving.
-- تستخدم المصطلحات التقنية الصحيحة canonical Latin spelling عند التعرف
-  عليها.
-- لا يجوز تخمين أو إكمال technical terms المجهولة أو الملتبسة.
-- claims self-contained.
-- الحفاظ على uncertainty وhedging وnegation والمحتوى الخاطئ للمرشح.
-- لا factual correction.
-- لا unsupported completion.
-- لا scoring أو correctness judgment.
-
-User-facing language boundary:
-
-- لا يحدد D67 لغة واجهة المستخدم النهائية.
-- يجب أن تعرض قرارات backend/frontend اللاحقة الشروح والfeedback بعربية
-  مصرية طبيعية ومناسبة للمستخدمين المصريين.
-- لا يجوز أبدًا عرض internal normalized claims كما لو كانت الاستجابة
-  النهائية الموجهة للمستخدم.
-
-### E. مخرجات D67
-
-يجب أن ينتج تنفيذ D67:
-
-- Gold v1 SHA-256 manifest.
-- Gold v2 candidate files في versioned directory منفصل.
-- machine-readable change log يحتوي:
-  - `question_id`.
-  - original claim index.
-  - original claim text.
-  - replacement claim texts.
-  - change reason.
-  - adjudication status.
-- self-containment adjudication report لجميع flags الـ273.
-- deterministic corpus audit JSON.
-- human-readable corpus audit Markdown.
-- before/after examples لكل modified question ID.
-- output manifest يحتوي file sizes وSHA-256 hashes.
-
-### F. بوابات قبول D67
-
-ينجح تنفيذ D67 فقط إذا تحققت جميع الشروط التالية:
-
-- تبقى بالضبط 222 question IDs.
-- تكون جميع source answers الـ222 مطابقة byte-for-byte لـGold v1.
-- تبقى مجموعتا train/validation question IDs مجمدتين تمامًا.
-- صفر train/validation/O9 overlap.
-- صفر metadata leakage.
-- صفر incorrect numbering.
-- صفر exact duplicate claims.
-- تغيب labels الثلاثة WCSS وBootstrap وKISS عن targets التي أُصلحت.
-- إصلاح جميع claims الـ30 المؤكد أنها non-atomic.
-- وجود adjudication صريح لكل واحد من self-containment flags الـ273.
-- نجاح كل عنصر `CONFIRMED_FIXED` في self-containment audit.
-- احتواء كل عنصر `FALSE_POSITIVE_UNCHANGED` على reason.
-- محافظة جميع uncertainty-bearing examples المحددة سابقًا على uncertainty.
-- محافظة جميع negation-bearing examples المحددة سابقًا على semantic negation.
-- عدم إغفال أي verified source fact.
-- عدم إدخال أي unsupported fact جديد.
-- بناء corpus deterministically.
-- نجاح tokenizer preflight لكل من AraT5-base وmT5-base عند أقصى طول
-  source/target يساوي 512:
-  - صفر UNK.
-  - صفر source truncation.
-  - صفر target truncation.
-- احتواء git diff فقط على D67 data وaudit tooling وdocumentation
-  وevidence files المسجلة مسبقًا.
-- عدم حدوث training أو generation أو O9 evaluation أو model selection
-  أو inference integration أو backend integration.
-
-### G. Non-goals صريحة
-
-يجب ألا يقوم D67 بما يلي:
-
-- تدريب أي model.
-- اختيار model.
-- تشغيل generation.
-- تقييم O9.
-- إنشاء synthetic ASR source variants.
-- تغيير source answers الـ222.
-- تنفيذ ASR model الخاص بفريق audio.
-- تغيير `model.selected`.
-- تغيير `inference.py`.
-- تغيير backend code.
-- إعلان production readiness.
-
-التسلسل اللاحق:
-
-- يجوز لـD68 تسجيل empirical ASR pilot وASR-realistic augmentation
-  dataset منفصلة مسبقًا. يجب أن يعطي هذا pilot الأولوية إلى:
-  - native Egyptian Arabic speakers.
-  - spontaneous technical interview answers.
-  - realistic Arabic-English code-switching.
-  - technical terms pronounced in Arabic phonetics.
-  - multiple Egyptian speaking styles and speech rates.
-  - real ASR errors، وليس synthetic text corruption فقط.
-- يجب أن يقيس D68 بصورة منفصلة:
-  - Arabic word error rate.
-  - technical-term error rate.
-  - preservation of canonical Latin technical terms.
-  - frequency of Arabic-script phonetic English outputs.
-  - raw transcript مقابل أي normalized transcript.
-- يجوز لـD69 تسجيل تجربة model-training جديدة مسبقًا فقط بعد نجاح
-  التدقيقين المستقلين لـGold v2 وASR-realistic dataset.
-
-### إغلاق محاولة تنفيذ D67
-
-**حالة محاولة التنفيذ:** `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`
-
-Starting Git HEAD:
-
-`06e9d6f358acbba711eeeb253c827671a0e45bb0`
-
-دليل Phase 0 المتحقق منه:
-
-- أعادت repository parsing إنتاج:
-  - 222 example بالضبط.
-  - 1,836 target claim بالضبط.
-  - 189 frozen train question ID.
-  - 33 frozen validation question ID.
-  - split seed = `42`.
-- حُددت ملفات Gold v1 Markdown الخمسة الدقيقة:
-  - `results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md`.
-  - `results/pilot_llm_assisted_batch2_DRAFT_UNREVIEWED.md`.
-  - `results/pilot_llm_assisted_batch3_DRAFT_UNREVIEWED.md`.
-  - `results/pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md`.
-  - `results/pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md`.
-- المساهمات بعد existing exclusion:
-  - batch1: 10 questions / 90 claims.
-  - batch2: 50 questions / 461 claims.
-  - batch3: 50 questions / 434 claims.
-  - batch4: 49 questions / 389 claims.
-  - batch5: 63 questions / 462 claims.
-  - total: 222 questions / 1,836 claims.
-- أعاد disclosed self-containment detector إنتاج:
-  - 273 flag بالضبط.
-  - عبر 109 question IDs.
-- أعاد structural atomicity detector إنتاج 34 candidate بالضبط.
-- ذكر التدقيق السابق أن manual review أكد 30 non-atomic claim.
-- لم يسجل التدقيق السابق أي أربعة من candidates الـ34 استُبعدت بوصفها
-  integrated definitions أو procedures.
-- لذلك تعذر استرداد exact preregistered 30-item set deterministically
-  دون تخمين.
-- ألزمت قاعدة D67 Phase 0 الحاكمة بإيقاف التنفيذ قبل التحرير عند تعذر
-  استرداد exact set.
-
-مفاتيح candidates الـ34 المستردة:
-
-- `SE-049:6`
-- `DS-003:3`
-- `CS-003:1`
-- `SE-003:5`
-- `SE-033:1`
-- `GN-006:5`
-- `GN-028:2`
-- `GN-046:1`
-- `DA-038:4`
-- `DA-038:5`
-- `DA-049:5`
-- `CS-010:1`
-- `CS-049:4`
-- `SE-035:1`
-- `GN-002:1`
-- `GN-002:3`
-- `GN-038:3`
-- `DA-017:6`
-- `DS-038:1`
-- `CS-001:4`
-- `CS-032:2`
-- `SE-030:5`
-- `SE-047:3`
-- `GN-009:4`
-- `DA-037:5`
-- `DA-041:7`
-- `SE-022:4`
-- `SE-029:5`
-- `SE-032:2`
-- `SE-032:3`
-- `SE-032:8`
-- `GN-015:3`
-- `GN-037:2`
-- `GN-048:4`
-
-نتيجة المستودع:
-
-- كان initial وfinal `git status --short` متطابقين.
-- لم ينتج `git diff --check` أي output.
-- لم يُنشأ أو يُعدّل أو يُحذف أو يُنقل أو يُعاد تسمية أو يُنسق أو
-  يُstage أو يُcommit أو يُpush أي repository file.
-- لم يتغير أي Gold v1 file.
-- لم يُنشأ Gold v2.
-- لم يُنشأ review ZIP.
-- لم تُشغّل tokenizer preflights أو المراحل اللاحقة.
-- لم يحدث training أو generation أو inference أو O9 inspection أو
-  production integration.
-- بقيت pre-existing untracked files دون لمس.
-
-خلاصة D67:
-
-- لم يفشل D67 أي corpus acceptance gate.
-- حُجب D67 قبل corpus construction لأن semantic adjudication set
-  مطلوبة كانت مفقودة.
-- لا يجوز الادعاء باسترداد exact 30-item set.
-- يبقى تنفيذ corpus في D67 غير مصرح به حتى يؤسس قرار لاحق canonical
-  auditable atomicity adjudication set.
-
-
-## D68 — Canonical Atomicity Adjudication Recovery for Gold Corpus v2
-
-**الحالة:** `PREREGISTERED / NOT EXECUTED`
-
-الهدف:
-
-إنشاء canonical classification كامل وقابل للتدقيق لجميع structural
-atomicity candidates الـ34 المستردة، دون تعديل أي corpus target، حتى
-يستطيع قرار لاحق تنفيذ إصلاح Gold v2 دون تخمين.
-
-D68 قرار evidence-recovery وsemantic-adjudication فقط.
-
-يجب ألا يصلح أو ينشئ Gold v2.
-
-### Authoritative candidate universe
-
-- candidate universe مجمد على مفاتيح question-ID وclaim-index الـ34
-  الدقيقة المدرجة في D67 blocker evidence.
-- لا يجوز إضافة أو إزالة أي candidate أثناء D68.
-
-### الدليل المطلوب لكل candidate
-
-- `question_id`.
-- original claim index.
-- exact source answer.
-- exact current claim text.
-- relevant adjacent claim text عندما يلزم للتفسير.
-- proposed proposition segmentation.
-- first-pass classification.
-- first-pass rationale.
-- verification-pass classification.
-- verification-pass rationale.
-- final classification.
-- final rationale.
-
-### التصنيفات النهائية المسموحة
-
-#### 1. `NON_ATOMIC_REPAIR_REQUIRED`
-
-يُستخدم فقط عندما تحتوي claim على propositionين على الأقل، يدعمهما
-source ويمكن الحكم على كل منهما بصورة مستقلة؛ أي يمكن أن تكون إحداهما
-صحيحة أو خاطئة باستقلال عن الأخرى.
-
-قد يشمل الدليل النموذجي:
-
-- خاصيتين يمكن الحكم عليهما باستقلال.
-- سلوكين أو أثرين منفصلين.
-- technical facts متعددة مجمعة في claim واحدة.
-- مقارنة تقرر حقائق مستقلة الحكم عن كلا الطرفين.
-- procedure step مجمعة مع نتيجة أو guarantee منفصلة.
-
-#### 2. `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`
-
-يُستخدم فقط عندما تشكل الجمل الظاهرة المتعددة وحدة دلالية واحدة لا يمكن
-فصلها، مثل:
-
-- term وتعريفه الضروري.
-- procedure واحدة لا يمكن فصل أفعالها المرتبة دون تغيير المعنى المقرر.
-- condition والسلوك المحدد مباشرة في نطاقها.
-- restriction أو qualifier لازمة لتفسير proposition نفسها.
-- mechanism وتعريفها الجوهري عندما يشوه independent scoring معنى source.
-
-### قواعد adjudication
-
-- لا يُصنف بناءً على conjunction count وحده.
-- لا يحدث mechanical split عند كل Arabic conjunction أو comma.
-- لا تُصنف claim على أنها non-atomic لمجرد احتوائها example أو qualifier
-  أو parenthetical term أو necessary restriction.
-- تكون claim non-atomic فقط عندما يمكن تقييم propositions الناتجة
-  باستقلال.
-- يجب أن تبقى جميع proposition segments مدعومة مباشرة من source answer.
-- لا يُسمح بأي factual correction.
-- لا يجوز inference أو completion لأي technical term.
-- يجب الحفاظ على uncertainty وnegation وapproximation وأخطاء المرشح.
-- لا يُفرض أن تكون نتائج `NON_ATOMIC_REPAIR_REQUIRED` عددها 30 بالضبط.
-- يكون canonical count نتيجة تطبيق preregistered rubric على candidates
-  الـ34 جميعًا.
-- يجب توثيق أي divergence عن former informal count البالغ 30 صراحةً
-  بدل إخفائه.
-
-### Two-pass verification
-
-- تنفيذ first semantic classification لجميع candidates الـ34.
-- تنفيذ verification pass منفصل لجميع candidates الـ34 باستخدام rubric
-  نفسها.
-- يجب أن يختبر verification pass صراحةً ما إذا كانت propositions
-  independently judgeable.
-- إذا اختلفت المرحلتان على أي candidate:
-  - يسجل disagreement.
-  - لا تُختَر نتيجة واحدة بصمت.
-  - يُوسم D68 `BLOCKED` ما لم يُحل الخلاف بـexplicit evidence-based
-    rationale.
-- يجب أن يحتفظ final artifact بنتائج المرحلتين.
-
-### مخرجات D68 المطلوبة
-
-- deterministic candidate-extraction script يعيد إنتاج frozen 34 keys
-  بالضبط.
-- machine-readable JSON adjudication file.
-- CSV adjudication table تحتوي 34 row بالضبط.
-- human-readable Markdown report يعرض source وclaim وsegmentation
-  وclassification وrationale لكل candidate.
-- summary يحتوي:
-  - `NON_ATOMIC_REPAIR_REQUIRED` count.
-  - `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` count.
-  - disagreement count.
-  - جميع candidate keys مجمعة حسب final classification.
-- output manifest يحتوي relative paths وsizes وSHA-256 hashes.
-- review ZIP خارج المستودع يحتوي D68 evidence وpatch.
-
-### بوابات قبول D68
-
-ينجح D68 فقط إذا تحققت جميع الشروط التالية:
-
-- وجود 34 unique frozen candidate key بالضبط.
-- عدم غياب أي candidate.
-- عدم إضافة أي candidate.
-- احتواء كل candidate على exact current source وclaim evidence.
-- حصول كل candidate على first-pass وverification-pass classification.
-- حصول كل candidate على final classification واحدة.
-- وجود specific evidence-based rationale لكل final classification.
-- احتواء كل عنصر `NON_ATOMIC_REPAIR_REQUIRED` على propositionين على
-  الأقل مفصولين صراحةً ويمكن الحكم عليهما باستقلال.
-- شرح كل عنصر `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` لماذا يشوه
-  splitting أو يجزئ semantic unit واحدة.
-- بقاء جميع proposed proposition segments مدعومة من source.
-- صفر unsupported technical information جديدة.
-- الحفاظ في التحليل على uncertainty وnegation وapproximation وأخطاء
-  المرشح.
-- تسجيل أي pass disagreement صراحةً وحله، وإلا يكون التنفيذ `BLOCKED`.
-- معاملة former count البالغ 30 كسياق historical audit لا required
-  outcome.
-- deterministic candidate extraction عبر clean run مرتين.
-- بقاء Gold v1 دون تغيير.
-- عدم إنشاء أو تعديل Gold v2.
-- عدم تعديل `decisions.md` أثناء تنفيذ D68.
-- عدم تغيير config أو production code أو backend أو frontend أو
-  `model.selected` أو `inference.py`.
-- عدم حدوث training أو generation أو tokenizer preflight أو O9
-  evaluation أو production integration.
-
-### تغييرات المستودع المسموحة أثناء تنفيذ D68 اللاحق
-
-- D68 candidate-extraction وaudit tooling.
-- D68 JSON وCSV وMarkdown وmanifest evidence.
-- minimal documentation تصف كيفية إعادة إنتاج adjudication evidence.
-
-### Non-goals صريحة
-
-يجب ألا يقوم D68 بما يلي:
-
-- تعديل أي من source answers الـ222.
-- تعديل أي target claim.
-- إنشاء Gold v2.
-- تحديد ASR model quality.
-- إنشاء ASR augmentation.
-- تدريب أو اختيار model.
-- تقييم O9.
-- تعديل production integration.
-
-التسلسل اللاحق:
-
-- يجوز لـD69 تسجيل وتنفيذ Gold Corpus v2 repair باستخدام canonical D68
-  classifications.
-- يجوز لـD70 تسجيل empirical Egyptian ASR pilot مسبقًا.
-- يجوز لـD71 تسجيل model training مسبقًا فقط بعد نجاح التدقيقين
-  المستقلين للـrepaired Gold corpus وASR-realistic dataset اللاحقة.
-
-
-### إغلاق D68 — نتيجة التنفيذ المصححة
-
-**الحالة النهائية:** `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`
-
-**Starting Git HEAD:**
-`2e29c065222b72633250c2402604f7aed545ec7d`
-
-**Evidence commit:**
-`1f326baa901ec9bf5021eb6394da4008efcc64a6`
-
-#### Execution evidence
-
-- أعاد parser إنتاج **222 example** و**1,836 Gold v1 claim** بالضبط.
-- حُلَّت جميع frozen candidate keys الـ34 بالضبط.
-- missing candidates = `0`.
-- extra candidates = `0`.
-- بقي Gold v1 دون تغيير.
-- لم يُنشأ Gold v2.
-- لم يحدث access أو inspection لـO9.
-- لم يحدث training أو inference أو generation أو tokenizer preflight أو
-  production integration.
-
-#### Corrected two-pass methodology
-
-- خُزِّنت first semantic pass وverification pass في moduleين منفصلين.
-- First-pass specification:
-  `scripts/d68_atomicity_first_pass.py`.
-- First-pass SHA-256:
-  `78d230a10d2dc60da21437dc21b7cab965937884f6edb45eacdf946226525977`.
-- Verification specification:
-  `scripts/d68_atomicity_verification_pass.py`.
-- Verification SHA-256:
-  `5858cb14c3d2633e844582eeef144284d1d754153b4f6a208280ffd005ad942b`.
-- عالج verification candidates بترتيب frozen order المعكوس.
-- لم يستورد verification first-pass module أو نتائجه.
-- أُلفت independent-judgeability answers صراحةً ولم تُشتق من
-  classification.
-- احتوت كل proposed proposition على exact literal source excerpt.
-- first-pass propositions = `64`.
-- first-pass propositions ذات literal source support = `64`.
-- first-pass unsupported propositions = `0`.
-- verification propositions = `64`.
-- verification propositions ذات literal source support = `64`.
-- verification unsupported propositions = `0`.
-
-#### Pass comparison
-
-- agreements = `30`.
-- disagreements = `4`.
-- resolved disagreements = `4`.
-- unresolved disagreements = `0`.
-- resolved disagreement keys:
-  - `CS-003:1`.
-  - `SE-035:1`.
-  - `GN-015:3`.
-  - `GN-037:2`.
-
-#### Canonical final result
-
-- `NON_ATOMIC_REPAIR_REQUIRED` = **24**.
-- `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` = **10**.
-- total = **34**.
-- تغيّرت النتيجة المصححة من provisional `20/14` إلى canonical `24/10`.
-- لم يُستخدم former informal count البالغ 30 كهدف.
-- لم تُستخدم provisional result البالغة 20/14 كهدف.
-- نتج canonical result من تطبيق preregistered independent-judgeability
-  rubric.
-
-Canonical `NON_ATOMIC_REPAIR_REQUIRED` keys:
-
-- `SE-049:6`.
-- `CS-003:1`.
-- `SE-003:5`.
-- `SE-033:1`.
-- `GN-006:5`.
-- `DA-038:4`.
-- `DA-038:5`.
-- `DA-049:5`.
-- `CS-010:1`.
-- `CS-049:4`.
-- `SE-035:1`.
-- `GN-002:1`.
-- `DS-038:1`.
-- `CS-032:2`.
-- `SE-030:5`.
-- `GN-009:4`.
-- `DA-037:5`.
-- `DA-041:7`.
-- `SE-029:5`.
-- `SE-032:2`.
-- `SE-032:3`.
-- `SE-032:8`.
-- `GN-037:2`.
-- `GN-048:4`.
-
-Canonical `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE` keys:
-
-- `DS-003:3`.
-- `GN-028:2`.
-- `GN-046:1`.
-- `GN-002:3`.
-- `GN-038:3`.
-- `DA-017:6`.
-- `CS-001:4`.
-- `SE-047:3`.
-- `SE-022:4`.
-- `GN-015:3`.
-
-#### Determinism and approved review evidence
-
-- أنتج تشغيلان كاملان من clean temporary directories file lists وcontent
-  وsizes وSHA-256 hashes متطابقة.
-- طابق repository output ناتج clean run.
-- تحققت جميع output-manifest entries.
-- approved external review ZIP size = **254,902 bytes**.
-- approved external review ZIP SHA-256:
-  `d2c51898e6a7bfe4e7264fdaff6132054fa900eb8f74a115507d096773fac127`.
-
-#### Methodological limitation
-
-- فُصلت المرحلتان إجرائيًا وخُزنتا بصورة مستقلة.
-- أُلفت المرحلتان عبر Codex execution environment نفسه.
-- لا تعادلان annotations من human annotators مستقلين.
-- يثبت D68 auditable engineering adjudication set، ولا يمثل human
-  inter-annotator agreement study.
-- يجب أن يبقى هذا القيد ظاهرًا، ويحظر وصف فصل المرحلتين بأنه human
-  annotation independence.
-
-#### D68 conclusion
-
-- حُلَّ canonical atomicity blocker الذي أوقف D67.
-- يجوز لإصلاح Gold v2 لاحق أن يقسم claims الـ24 canonical
-  repair-required بالضبط.
-- يحظر تقسيم false-positive claims العشرة لمجرد تشغيل D68 structural
-  detector.
-- لا يجيز D68 نفسه training أو O9 evaluation أو inference integration أو
-  production use.
-
-
-## D69 — Gold Corpus v2 Target Repair, Self-Containment Adjudication, and Deterministic Build
-
-**الحالة:** `PREREGISTERED / NOT EXECUTED`
-
-### Purpose
-
-إنشاء Gold v2 candidate corpus منفصل ذي إصدار محدد، مع إبقاء source
-answers المصرية/غير الرسمية الـ222 byte-for-byte كما هي، وإصلاح target-label
-defects المتحقق منها فقط.
-
-يجب أن يحل D69:
-
-1. verified unsupported target additions الثلاثة.
-2. canonical non-atomic claims الـ24 من D68.
-3. conservative self-containment flags الـ273.
-4. أي self-containment issue تُدخلها replacement claim في D69.
-
-لا ينشئ D69 ASR-realistic source variants ولا يدرب model.
-
-### Authoritative inputs
-
-يتكون Gold v1 بالضبط من:
-
-- `results/pilot_llm_assisted_batch1_DRAFT_UNREVIEWED.md`.
-- `results/pilot_llm_assisted_batch2_DRAFT_UNREVIEWED.md`.
-- `results/pilot_llm_assisted_batch3_DRAFT_UNREVIEWED.md`.
-- `results/pilot_llm_assisted_batch4_DRAFT_UNREVIEWED.md`.
-- `results/pilot_llm_assisted_batch5_DRAFT_UNREVIEWED.md`.
-
-Frozen Gold v1 SHA-256 values:
-
-- batch1:
-  `2ae700cbeacd6ec9b04efa686a4caae02a240363fe845a6f9760e45850ef172c`.
-- batch2:
-  `b0da2c26ec1456ba656045813e3373041b793d9561b9b7862ffc49c5af24f274`.
-- batch3:
-  `5e201144828e1d70b28e2780d10e93dc05d42792160458ea5fd9358f973591cc`.
-- batch4:
-  `5a2226e9ffdacb969027d5635cc3f31b6eeb4a233e5ab66aead4b3bb75695761`.
-- batch5:
-  `fea0be20aabfae9004b249cbc968aa7f11aeecc1b4423f1aabc0458cf6523163`.
-
-Frozen corpus properties:
-
-- 222 question IDs.
-- 1,836 Gold v1 claims.
-- 189 train question IDs.
-- 33 validation question IDs.
-- split seed = `42`.
-- O9 excluded.
-
-Canonical atomicity evidence:
-
-- `results/d68_atomicity/d68_atomicity_adjudication.json`.
-- `results/d68_atomicity/d68_atomicity_adjudication.csv`.
-- D68 evidence commit:
-  `1f326baa901ec9bf5021eb6394da4008efcc64a6`.
-
-### Gold v2 location
-
-ينشأ Gold v2 فقط تحت:
-
-`results/gold_v2/`
-
-- تُنشأ خمسة versioned Markdown corpus files تقابل batches Gold v1 الخمسة
-  one-to-one.
-- تبقى ملفات Gold v1 immutable.
-- لا يُعاد توجيه training أو production configuration إلى Gold v2 أثناء
-  D69.
-
-### Stable repair plan
-
-- تُربط جميع إصلاحات D69 بـGold v1 الأصلي باستخدام:
-  `question_id + original one-based claim index`.
-- يحظر تطبيق الإصلاحات عبر sequential line edits أو indexes تتغير بعد split
-  سابق.
-- يجب إنشاء consolidated repair plan واحد قبل توليد Gold v2.
-- لا يكون لكل original claim أكثر من consolidated final repair record واحد.
-- يدعم repair record أسبابًا متعددة عبر `repair_origin` بالقيم:
-  - `UNSUPPORTED_ADDITION_REMOVAL`.
-  - `ATOMICITY_SPLIT`.
-  - `SELF_CONTAINMENT_REWRITE`.
-  - `COMBINED`.
-- يُعاد بناء final corpus من Gold v1 وconsolidated repair plan في
-  deterministic pass واحدة.
-
-### Mandatory unsupported-addition repairs
-
-#### `DS-009`
-
-- إزالة `WCSS` من target.
-- الحفاظ على أن المرشح لا يتذكر الاختصار.
-- يحظر inference أو إضافة abbreviation أو method label بديلة.
-
-#### `DS-007`
-
-- إزالة `Bootstrap` من target.
-- الحفاظ على الوصف الغامض وغير المؤكد لـresampling في source.
-- يحظر inference أو إضافة technique name مفقود.
-
-#### `SE-050`
-
-- إزالة `KISS` من target.
-- الحفاظ على أن المرشح لا يتذكر الاسم المختصر.
-- يحظر inference أو إضافة principle name بديل.
-
-يجب أن تتضمن كل replacement exact supporting excerpts من source answer.
-
-### Atomicity repairs
-
-- atomicity repair universe مجمد على canonical
-  `NON_ATOMIC_REPAIR_REQUIRED` keys الـ24 من D68 بالضبط.
-- يجب استبدال كل عنصر من الـ24 بما لا يقل عن claimين independently
-  judgeable ومدعومين من source.
-- يُستخدم D68 كـclassification evidence، وليس إذنًا لنسخ provisional
-  segmentation دون adjudication.
-- تُؤلف final replacement segmentation واحدة لـGold v2.
-- يجب أن تكون كل resulting claim atomic.
-- يجب أن تكون كل resulting claim self-contained.
-- يجب أن تتضمن كل resulting claim exact source-support excerpt في repair
-  evidence.
-- تُحفظ جميع source-supported propositions.
-- تُحفظ uncertainty وnegation وapproximation وhedging وأخطاء المرشح.
-- يحظر إضافة technical explanations أو labels أو causes أو formulas أو
-  examples أو corrections غير موجودة في source.
-- يعاد ترقيم complete affected target sequentially.
-
-Canonical false positives العشرة:
-
-- لا تُقسم لمجرد atomicity.
-- لا يجوز تغييرها إلا عند تطبيق confirmed self-containment repair أو
-  unsupported-addition repair مستقل.
-- يجب أن يسجل أي تغيير من هذا النوع صراحةً أن atomicity بقيت false
-  positive.
-
-### Self-containment universe
-
-قبل أي editing، يجب إعادة إنتاج frozen conservative detector result بالضبط:
-
-- 273 original Gold v1 flags.
-- 109 question IDs.
-
-- يُربط كل flag بـoriginal Gold v1 question ID وoriginal one-based claim
-  index.
-- إذا تعذر إعادة إنتاج exact 273-item universe، يتوقف التنفيذ بنتيجة
-  `BLOCKED` قبل corpus construction.
-
-Allowed final self-containment classifications:
-
-#### 1. `CONFIRMED_FIXED`
-
-يستخدم عندما يتعذر فهم original claim وتقييمها بصورة مستقلة دون antecedent
-أو entity مفقودة.
-
-يجب أن تقوم final replacement بما يلي:
-
-- تسمية required subject أو entity صراحةً.
-- البقاء مدعومة مباشرة من source.
-- الحفاظ على المعنى الأصلي للمرشح.
-- تجنب استيراد unsupported context.
-
-#### 2. `FALSE_POSITIVE_UNCHANGED`
-
-يستخدم عندما تكون claim قابلة للتفسير بصورة مستقلة بالفعل، ويكون detector
-قد أطلق بسبب superficial wording.
-
-- يجب أن يشرح record لماذا claim self-contained رغم detector hit.
-- flag التي تُصلح عبر atomicity أو unsupported-addition repair تحصل أيضًا
-  على `CONFIRMED_FIXED` إضافة إلى `repair_origin` المقابل.
-
-### Separate self-containment passes
-
-تتطلب flags الـ273 semantic passين مخزنين بصورة منفصلة.
-
-First-pass specification:
-
-- تُخزن في dedicated module أو artifact.
-- تعالج frozen 273 flags بترتيبها المجمد.
-
-Verification-pass specification:
-
-- تُخزن في module أو artifact منفصل.
-- تعالج flags الـ273 نفسها بالترتيب المعكوس.
-- لا تستورد first-pass classifications أو rationales أو replacements.
-- يجوز أن تستورد فقط frozen identifiers وconstants وdeterministic
-  extraction helpers.
-
-لكل pass وflag، يسجل record:
-
-- original flag key.
-- exact source answer.
-- exact original claim.
-- adjacent claims اللازمة للسياق.
-- classification.
-- rationale.
-- exact source excerpts.
-- هل يقترح rewrite.
-- proposed replacement text عند انطباقه.
-- uncertainty preservation.
-- negation preservation.
-- approximation preservation.
-- unsupported information added.
-
-- يجب أن يكون verification rationale مؤلفًا بصورة مستقلة.
-- يحظر توليد rationales المرحلتين من shared semantic field واحد.
-
-Disagreements:
-
-- تُحفظ نتائج passين كاملتين.
-- يُنشأ resolution record منفصل.
-- يتضمن exact source evidence.
-- يشرح صراحةً هل يلزم external antecedent.
-- تجعل unresolved disagreements نتيجة D69 هي `BLOCKED`.
-
-هذه procedural engineering reviews منفصلة عبر Codex environment نفسه،
-وليست independent human annotations. يجب تسجيل هذا القيد في D69 evidence.
-
-### Final repair consolidation
-
-بعد atomicity وunsupported-addition وself-containment adjudication:
-
-- تُدمج overlapping repairs مقابل original Gold v1 claim key.
-- يحظر تطبيق repair على text عدلته repair أخرى مسبقًا.
-- تنتج final replacement list واحدة لكل changed original claim.
-- يجب أن يكون لكل replacement claim exact source support.
-- يجب أن تكون كل replacement claim atomic وself-contained.
-- يجب أن يكون لكل modified question complete before/after report.
-- تبقى كل original source-supported fact ممثلة.
-- يحظر أن تصحح replacement خطأ المرشح صمتًا.
-
-### Egyptian target-user contract
-
-- تبقى Gold v1 source answers الـ222 byte-for-byte دون تغيير.
-- تمثل Egyptian/informal written answers مع Arabic-English code-switching.
-
-يحظر على D69:
-
-- تحويل sources إلى MSA.
-- إعادة كتابة Egyptian wording.
-- normalization للـsource answers.
-- إضافة synthetic ASR errors.
-- استبدال Latin terms في source.
-- عرض internal normalized target claims كلغة UI موجهة للمستخدم.
-
-يجوز إصلاح target claims فقط.
-
-يجوز أن تستخدم target claims clear normalized Arabic مناسبة لـinternal
-retrieval وNLI، بشرط الحفاظ الدقيق على معنى Egyptian source.
-
-### D69 required artifacts
-
-يجب أن ينتج تنفيذ D69:
-
-1. Gold v1 immutable manifest.
-2. خمسة Gold v2 candidate Markdown files.
-3. consolidated machine-readable repair plan.
-4. mandatory unsupported-addition repair report.
-5. atomicity repair report للـ24 canonical keys بالضبط.
-6. atomicity false-positive preservation report للـ10 canonical false
-   positives.
-7. self-containment first-pass evidence.
-8. self-containment verification-pass evidence.
-9. self-containment disagreement-resolution evidence.
-10. self-containment adjudication table تحتوي 273 original flag بالضبط.
-11. full before/after report لكل modified question ID.
-12. source-support mapping لكل replacement claim.
-13. deterministic corpus audit JSON.
-14. human-readable audit Markdown.
-15. frozen split manifest.
-16. tokenizer preflight report.
-17. changed-path list.
-18. output manifest يتضمن relative path وsize وSHA-256 وpurpose.
-19. deterministic build-and-audit script.
-20. external review ZIP خارج repository.
-
-يجب تجنب variable timestamps في deterministic artifacts.
-
-### D69 acceptance gates
-
-ينجح D69 فقط إذا تحققت جميع الشروط التالية بالتنفيذ الفعلي.
-
-#### Corpus identity
-
-- وجود 222 Gold v2 question ID بالضبط.
-- تطابق question-ID set مع Gold v1.
-- تطابق source answers الـ222 byte-for-byte مع Gold v1.
-- وجود 189 frozen train ID بالضبط.
-- وجود 33 frozen validation ID بالضبط.
-- split seed = `42`.
-- zero train/validation overlap.
-- zero train/O9 overlap.
-- zero validation/O9 overlap.
-
-#### Gold v1 protection
-
-- بقاء SHA-256 hashes لملفات Gold v1 الخمسة دون تغيير.
-- عدم تعديل أو نقل أو rename أو حذف أي Gold v1 file.
-
-#### Mandatory unsupported additions
-
-- غياب `WCSS` من repaired `DS-009` target.
-- غياب `Bootstrap` من repaired `DS-007` target.
-- غياب `KISS` من repaired `SE-050` target.
-- بقاء source uncertainty أو inability to remember ممثلة.
-
-#### Atomicity
-
-- حصول canonical repair-required keys الـ24 بالضبط على atomicity repairs.
-- إنتاج كل repaired key claimين independently judgeable على الأقل.
-- عدم تقسيم أي من canonical false positives العشرة لمجرد atomicity.
-- zero unresolved atomicity item.
-- zero invalid numbering.
-- zero exact duplicate claims.
-
-#### Self-containment
-
-- تمثيل 273 original flag بالضبط.
-- no missing or extra original flag.
-- حصول كل flag على classifications من passين.
-- حصول كل flag على resolved final classification واحدة.
-- حصول كل `CONFIRMED_FIXED` item على final replacement.
-- حصول كل `FALSE_POSITIVE_UNCHANGED` item على specific rationale.
-- unresolved self-containment disagreements = `0`.
-- قابلية كل confirmed replacement للفهم مستقلًا.
-- اقتصار أي final detector hit على documented false positive.
-- zero new unadjudicated self-containment flags.
-
-#### Faithfulness
-
-- امتلاك كل replacement claim exact literal source-support evidence.
-- unsupported replacement claims = `0`.
-- verified source facts omitted = `0`.
-- candidate mistakes silently corrected = `0`.
-- technical terms inferred أو completed دون source support = `0`.
-- الحفاظ على previously identified strong uncertainty.
-- الحفاظ على semantic negation في كل modified negation-bearing case.
-- الحفاظ على approximation وhedging.
-
-#### Data hygiene
-
-- zero metadata leakage.
-- sequential numbering لكل target.
-- zero exact duplicate claims.
-- deterministic parser وbuilder output.
-
-#### Determinism
-
-- تشغيل complete builder وaudit مرتين من clean temporary directories.
-- تطابق generated corpus files وevidence files وsizes وSHA-256 values.
-- تطابق repository output مع verified clean-run output.
-
-#### Tokenizer-only preflight
-
-- `UBC-NLP/AraT5-base`.
-- `google/mt5-base`.
-- max source length = `512`.
-- max target length = `512`.
-- zero source UNK.
-- zero target UNK.
-- zero source truncation.
-- zero target truncation.
-- يحظر تحميل model weights.
-- يحظر training أو generation.
-
-#### Scope
-
-- بقاء `decisions.md` دون تغيير أثناء D69 execution.
-- no config changes.
-- no production code changes.
-- no backend or frontend changes.
-- no `model.selected` change.
-- no `inference.py` change.
-- no O9 access أو generation أو metrics أو manual inspection.
-- no training.
-- no production integration.
-- no staging أو commit أو push أثناء execution.
-
-إذا تعذر تحقق أي mandatory gate:
-
-- تُسجل نتيجة D69 `BLOCKED` أو `FAIL` بحسب طبيعة الحالة.
-- يحظر ادعاء `PASS`.
-- يُحتفظ بدليل exact blocker.
-- يحظر الانتقال إلى model training.
-
-### Explicit non-goals
-
-يجب ألا يقوم D69 بما يلي:
-
-- train أو select model.
-- run model generation.
-- evaluate O9.
-- create ASR-realistic source variants.
-- implement ASR.
-- modify أي من source answers الـ222.
-- repoint training configuration إلى Gold v2.
-- modify production inference أو backend integration.
-- declare corpus أو model production-ready.
-
-Later sequence:
-
-- يجوز لـD70 تسجيل empirical Egyptian ASR pilot وASR-realistic
-  source-augmentation dataset منفصلة مسبقًا.
-- يجوز لـD71 تسجيل model training جديد مسبقًا فقط بعد أن ينجح Gold v2
-  والـASR-realistic dataset اللاحقة في independent gates الخاصة بكل منهما.
-
-**D69 status at the end of this documentation task:**
-`PREREGISTERED / NOT EXECUTED`.
-
-
-## D70 — Paired Original/ASR-Aligned Corpus Input Variants
-
-**الحالة:** ✅ مكتمل — Dataset pipeline وtokenizer smoke test ناجحان.
-
-يستخدم corpus تجهيز الـdecomposition نسختين paired لكل سؤال:
-
-- `original` من ملفات batch1–batch5 الأصلية.
-- `asr_aligned` من ملفات `*_ASR_ALIGNED.md` المقابلة.
-
-العقد المنفّذ:
-
-- إجمالي corpus هو 444 example من 222 `question_id` فريدًا.
-- تحتفظ النسختان بـ`question_id` الأصلي نفسه.
-- `example_id` يساوي `question_id + "__original"` للنسخة الأصلية، أو
-  `question_id + "__asr"` لنسخة ASR-aligned.
-- يتم train/validation splitting على `question_id` فقط، لضمان بقاء
-  النسختين في الـsplit نفسه.
-- يجب أن تكون الـClaims بعد parsing متطابقة حرفيًا بين النسختين؛ يوقف
-  guard بناء الـdataset ويرفع `ValueError` يتضمن `question_id` عند أي
-  اختلاف.
-- `GN-050` مستبعد من النسختين.
-
-النتائج المتحققة:
-
-- 378 training examples و66 validation examples.
-- صفر train/validation `question_id` overlap.
-- نجح الـtokenizer الحقيقي لـ`UBC-NLP/AraT5-base`، ووصلت نسختا
-  `original` و`asr_aligned` إلى Dataset تحتوي `input_ids` و
-  `attention_mask` و`labels`.
-- نجحت مجموعة اختبارات المشروع كاملة: 149 test passed.
-
-هذا القرار يثبت عقد تجهيز corpus ومسار tokenization فقط، ولا يثبت جودة
-الموديل بعد التدريب.
-
-
-## D71 — Paired-Corpus AraT5 Full Fine-Tuning Pre-Registration
-
-**الحالة:** ✅ `EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED`.
-
-الهدف:
-
-تنفيذ full fine-tuning لـ`UBC-NLP/AraT5-base` من base pretrained model
-جديد على paired corpus المعتمد في D70.
-
-العقد المجمد قبل التنفيذ:
-
-- Git baseline: commit `5c5b1e6`.
-- corpus: 444 example من 222 `question_id` فريدًا.
-- split: 378 training examples و66 validation examples، مع `seed=42`.
-- تبقى كل `original` وASR-aligned pair داخل الـsplit نفسه؛ يتم التقسيم
-  على `question_id`.
-- يبقى O9 منفصلًا ولا يدخل التدريب.
-- `GN-050` مستبعد من النسختين.
-- التدريب Full fine-tuning فقط، بدون LoRA.
-- يستخدم التنفيذ GPU واحدًا فقط.
-- يبدأ التدريب من base pretrained model جديد، ويحظر استخدام أي
-  checkpoint قديم.
-
-تفسير النتيجة:
-
-- نجاح التدريب يعني `EXECUTION/CHECKPOINT PASS` فقط.
-- لا يعني نجاح التنفيذ أو حفظ checkpoint تحقق `QUALITY PASS`.
-
-المخرجات المطلوبة:
-
-1. checkpoint ناتج عن التشغيل.
-2. ملف JSON يتضمن:
-   - environment.
-   - Git `HEAD`.
-   - أعداد corpus وtrain/validation.
-   - training history وevaluation history.
-   - best checkpoint.
-
-
-النتيجة الفعلية:
-
-- اكتمل Full fine-tuning بـfloat32 على GPU واحدة من نوع Tesla T4، بدون
-  LoRA.
-- split المنفّذ: 378 training examples و66 validation examples.
-- best checkpoint: `checkpoint-543`.
-- best `eval_loss`: `2.205347776412964`.
-- best epoch: `22.9841269841`.
-- توقف التدريب عند step `732` / epoch `30.9841269841` بسبب early
-  stopping.
-- نُشر checkpoint كـKaggle Model:
-  - model: `hashemili/interview-iq-d71-arat5-paired-ft`.
-  - variation: `paired-corpus-full-ft`.
-  - version: `1`.
-
-الحكم المحدود:
-
-`EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED`؛ نجاح التدريب
-وحفظ ونشر checkpoint لا يثبت جودة مخرجات الموديل.
-
-
-## D72 — Deterministic Quality Evaluation Pre-Registration for D71
-
-**الحالة:** ✅ `EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE`.
-
-مصدر الموديل:
-
-- يُحمّل Kaggle Model المنشور في D71 فقط.
-- يحظر fallback إلى `UBC-NLP/AraT5-base` إذا تعذر تحميل Kaggle Model.
-
-نطاق التقييم:
-
-- 66 validation examples: 33 `original` و33 `asr_aligned`.
-- 25 مثال O9 held-out.
-- قياس اتساق مخرجات `original` و`asr_aligned` لكل `question_id`.
-
-إعدادات التنفيذ الحتمية:
-
-- `do_sample=false`.
-- `num_beams=1`.
-- `max_new_tokens=320`.
-- `model.eval()`.
-- float32 على GPU واحدة.
-- بدون training.
-
-المقاييس المطلوبة:
-
-- exact token match.
-- edit similarity.
-- LCS F1.
-- claim count.
-- numbering.
-- repetition.
-- length.
-- الحفاظ على المصطلحات اللاتينية.
-- اتساق مخرجات نسختي `original` و`asr_aligned` لكل `question_id`.
-
-المخرجات المطلوبة:
-
-- JSON.
-- CSV.
-- Markdown.
-- ZIP يجمع artifacts التقييم.
-
-نجاح تنفيذ D72 لا يُعد `QUALITY PASS` تلقائيًا؛ الحكم على الجودة يجب أن
-يصدر من نتائج المقاييس الفعلية.
-
-
-النتيجة الفعلية المعتمدة:
-
-- مصدر النتيجة المعتمد: `v6-authoritative-gold-context-parser`.
-- validation LCS F1: `0.5071960304`.
-- validation claim-count exact: `0.3333333333`.
-- O9 LCS F1: `0.1892490644`.
-- O9 claim-count exact: `0.08`.
-- O9 mean absolute claim-count error: `2.8`.
-- O9 repetition rate: `0.24`.
-- ASR Latin recall: `0.1812590984`.
-- original Latin recall: `0.3610519332`.
-- current D71 checkpoint غير معتمد للـruntime.
-
-الحكم:
-
-`EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE`.
-اكتمل التنفيذ وحُسبت المقاييس، لكن جودة checkpoint D71 مرفوضة هندسيًا
-لاستخدام claim decomposition. هذا الحكم `post-hoc` لأن D72 لم تسجّل
-numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه اجتيازًا أو
-فشلًا لعتبات مسجّلة مسبقًا.
-
-
-## D73 — Exhaustive D72 Prediction Error Analysis Pre-Registration
-
-**الحالة:** ⛔ مسجّل مسبقًا — `PREREGISTERED / NOT EXECUTED`.
-
-الهدف:
-
-تحليل أخطاء جميع predictions الـ91 الموجودة في `d72_examples.csv`،
-بدون تدريب أو تعديل للموديل.
-
-تصنيف الأخطاء المطلوب:
-
-- hallucination.
-- semantic substitution.
-- Latin-term corruption.
-- repetition/degeneration.
-- under-decomposition.
-- over-decomposition.
-- invalid numbering.
-- original/ASR divergence.
-- generation-length cap.
-
-المخرجات المطلوبة لكل فئة:
-
-- العدد.
-- النسبة من predictions الـ91.
-- أمثلة ممثلة.
-
-لا يُسمح بتحديد تجربة تدريب جديدة قبل اكتمال D73.
-
-**إضافة لاحقة (21 يوليو 2026 — انظر D74):** الحظر أعلاه كان يخص تحديد **تجربة AraT5 تدريبية جديدة**. بعد D74، لا توجد تجربة AraT5 تدريبية قادمة (استبدال كامل لا تحسين تدريجي)، فالحظر **لم يعد ساريًا بصيغته الأصلية**. تنفيذ D73 نفسه يبقى **مسموحًا وموصى به كتوثيق رجعي** (توثيق سبب التحول لمناقشة التخرج) لكنه أصبح **غير حاجز (non-blocking)** لأي بند لاحق.
-
-## D74 — Pivot: تعديل نطاق قيد Zero-LLM-at-Runtime (Claim Decomposition فقط) + استبدال AraT5 الكامل بـ LLM API
-
-**الحالة:** ✅ التعديل المعماري مُعتمَد من المشرف (الدكتور) — ⛔ التنفيذ لم يبدأ (لا system prompt مُختبَر، لا sanity gate مُنفَّذ، لا full-pipeline run).
-
-**القيد القديم (كان معرَّفًا عبر D55 وPROJECT_EXECUTION_PLAN.md:21):**
-> "يسمح PROJECT_EXECUTION_PLAN.md:21 باستخدام LLM في مرحلة إعداد البيانات (offline data preparation) فقط، مع مراجعة بشرية إلزامية قبل اعتماد أي مثال. ولا يُستخدم LLM أثناء التشغيل (runtime)."
-
-**القيد الجديد:** يُستثنى **موديول Claim Decomposition حصريًا** من حظر الـ runtime. يُسمح له باستدعاء LLM API خارجي (مثال: Qwen عبر OpenRouter، free tier) **كاستبدال كامل** لـ AraT5-base fine-tuning، وقت التشغيل الفعلي.
-
-**النطاق (Scope) — محدود صراحةً:**
-- **متأثر:** Claim Decomposition فقط.
-- **غير متأثر ولا يمس:** NLI Dual-Channel Scoring (mDeBERTa-v3 + LoRA — يبقى محليًا كما هو، مُختبَر ومُقفَل)، BGE-M3 chunk cap، ASR. قيد Zero-LLM-at-runtime **يبقى ساريًا بكامل قوته** على باقي الـ pipeline.
-- **إجراء مطلوب خارج هذا الملف:** PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (هذا الملف لا يُحدِّثه تلقائيًا). النص المقترح للاستبدال:
-  - القديم: "ولا يُستخدم LLM أثناء التشغيل (runtime)."
-  - الجديد: "ولا يُستخدم LLM أثناء التشغيل (runtime)، **باستثناء موديول Claim Decomposition — انظر D74 في decisions.md**."
-
-**الأساس المسجَّل (السبب):**
-1. أدلة تجريبية من D65–D72: فجوة تعميم حادة بين validation وO9 (LCS F1: 0.507→0.189؛ claim-count exact: 33%→8%؛ mean absolute claim-count error على O9 = 2.8؛ Latin recall: 36%→18% على النسخة المحاذاة لـ ASR). محاولتا إصلاح PEFT (D66) لم تنتجا repair candidate لا لـ AraT5 ولا لـ mT5.
-2. ندرة بيانات عربية كافية لـ fine-tuning موثوقة (189 unique question ID فقط، مضاعَفة إلى 378 عبر original/ASR بلا تنوع معرفي حقيقي — موثَّق في نقد خطة D73/GPT).
-3. موافقة صريحة من المشرف على التحول، بناءً على توقّع دقة أعلى من LLM عام الأغراض في وضع شحيح البيانات. **[بند مفتوح: تاريخ/محضر موافقة الدكتور مكتوب — يُضاف هنا لاحقًا لأغراض توثيق المناقشة].**
-
-**أثر على القرارات الأخرى:**
-- **Phase 8 (AraT5 fine-tuning):** ✅ CLOSED — SUPERSEDED (ليست فاشلة بلا قيمة؛ التوثيق الرجعي عبر D73 يُحسب كمجهود موثَّق في رحلة المشروع).
-- **Q6 (AraT5 vs mT5-base):** ✅ CLOSED BY PIVOT. **تنصيص صريح:** هذا **لا يحسم** السؤال الأصلي (أيهما أفضل بين AraT5 وmT5) بأي دليل تجريبي — القرار يتجاوز (supersedes) كلا الخيارين معًا، ولا يُقرأ كإجابة ضمنية عن Q6.
-- **D73:** يتحوّل من gate حاجز إلى توثيق رجعي اختياري (انظر الإضافة أعلاه).
-
-**القيد الإلزامي على الـ prompt (غير قابل للتفاوض):** الـ LLM يُمنع من تعديل أو "تصحيح" صحة إجابة المستخدم. المهام المسموحة حصرًا: (أ) تطبيع عامية→فصحى مبسّطة، (ب) تفكيك إلى claims، (ج) الحفاظ على المصطلحات الإنجليزية بحروف لاتينية دون ترجمة أو تصحيح. أي معلومة غير موجودة في إجابة المستخدم الأصلية لا تُضاف.
-
-**بوابة تحقق إلزامية قبل الدمج (Sanity Gate — ليست دراسة أداء، بل شرط صحة):**
-- عيّنة N (5–10) إجابات فيها أخطاء تقنية متعمدة أو نواقص واضحة.
-- التحقق: الـ claims الناتجة **تحافظ على نفس الخطأ/النقص**، ولا "تصحّحه" الموديل ضمنيًا.
-- **السبب:** لو صحّح الموديل الإجابات الخاطئة، محرك NLI scoring بالكامل يصبح دائريًا وباطلًا (يقيس إجابة مُعدَّلة لا إجابة المستخدم الحقيقية) — هذا يمس صحة "Answer Correctness Evaluation" ذاتها، الهدف الوحيد للمشروع.
-- بلا هذه البوابة، لا اعتماد لأي مخرج LLM في الـ pipeline.
-
-**المخاطرة المقبولة (RISK ACCEPTED — بنمط D33):**
-- **لا مقارنة معزولة على مستوى المكوّن (LLM decomposition مقابل AraT5 baseline على نفس عيّنة O9) قبل الدمج.** القياس مؤجَّل عمدًا إلى تشغيل الـ full pipeline بالكامل.
-- **الحد (Limitation) الواجب توثيقه صراحةً:** عند تشغيل الـ full pipeline، ثلاثة متغيرات غير مُثبَّتة تتغيّر معًا: جودة LLM decomposition (غير مقيسة بمعزل)، عتبات NLI (لا تزال PRE-CALIBRATION DEFAULT غير معايرة — G4 لم يُنفَّذ)، وسلوك BGE-M3 chunk cap. **أي نتيجة نهائية ضعيفة لا يمكن عزو سببها لمكوّن واحد بثقة** دون تجربة تعزل المتغيرات لاحقًا إن لزم.
-
-**بند مفتوح (Fallback):** ⛔ غير محسوم — يحتاج أحمد يحدد: caching للنتائج المستخدمة في التقييم النهائي/الـ demo (بدل live call وقت المناقشة)، أو موديل احتياطي ثانٍ عند فشل الـ API/rate limit. يُقفَل قبل أي demo أو full-pipeline run نهائي.
-
-## D75 — Codex-Assisted AraT5 Training Corpus Attempt (1500-target): Evidence and Closure
-
-**Status:** CLOSED — SUPERSEDED BY D74. Never reached training-approved state.
-
-**Process note (documented, not concealed):** This corpus-generation attempt (results/decomposition_corpus_v2_codex_1500/, scripts/generate_decomposition_corpus_v2_codex_1500.py, and related decomposition/corpus_v2_codex.py, decomposition/pilot_v2.py) was run without prior D## pre-registration and was never committed to git (git log and git ls-files both empty for these paths). This is a pre-registration discipline violation, logged explicitly per project convention rather than silently absorbed.
-
-**Timeline:** Supervisor approval for the D74 LLM-API pivot was obtained BEFORE this attempt. Ahmed ran this corpus attempt afterward as a final independent effort to see if a larger synthetic corpus could rescue the AraT5 approach, before proceeding with the already-approved pivot. It did not cause or precede the supervisor's approval.
-
-**Evidence (from corpus_v2_codex_1500_manifest.json and corpus_v2_codex_1500_rejected.jsonl):**
-- status: INCOMPLETE_RESUMABLE; review_status: DRAFT_UNREVIEWED; provenance: SYNTHETIC; training_approval: NOT TRAINING-APPROVED.
-- target 1500 records (222 eligible question_ids × 6 base cases + 168 bonus long_noisy_multi_claim cases); completed_record_count 1050 (70%) across shards 1–7; shard 8 never assembled.
-- rejected.jsonl: 229 total rejections. Reason distribution: NON_ATOMIC_CLAIM 76 + NON_ATOMIC_CLAIMS 43 = 119 (~52%, dominant failure mode); NON_SELF_CONTAINED_CLAIM 12; MISSING_PROPOSITION 11; CASE_MISMATCH 11; UNSUPPORTED_PROPOSITION 7; remaining term_corruption_* entries are mostly a punctuation mark fused to a Latin token (a normalization artifact, not a semantic content defect).
-
-**Interpretation:** The dominant failure mode was claim-atomicity, a structural/format difficulty in the decomposition task itself — not primarily semantic incompetence or Arabic-language incapability. This generalizes beyond AraT5/Codex specifically.
-
-**Forward-looking implication for D74:** The mandatory sanity gate in D74 (verifying the runtime LLM does not alter answer correctness) should be extended to also spot-check claim atomicity on a small sample, since this is a demonstrated structural risk independent of which model performs the decomposition.
-
-**Disposition:** Superseded by D74. Retained as archived historical evidence, not deleted — see archive/phase8_arat5_superseded/.
-
-**Addendum — O9 integrity check (21 Jul 2026):** An uncommitted, unexplained working-tree modification to results/o9_decomposition_exercises.md (affecting the SE-007 answer text) was found during this session's git status review. Per the O9 immutability principle (D51/D52, same standard as P48 for the NLI Gold Set), it was NOT silently kept or applied — the diff was preserved at archive/phase8_arat5_superseded/o9_uncommitted_change_2026-07-21.patch for reference, and the file was reverted to its last committed (HEAD) state via git checkout. Origin of the modification is unknown (possibly Codex). If a genuine data issue in SE-007 is confirmed later, it must go through a registered decision, not a silent edit.
-
-## D76 — أول استدعاء End-to-End لـ LLM Decomposition: تحقّق تقني ناجح، لا اعتماد جودة بعد
-
-**الحالة:** ✅ EXECUTION PASS (السلك الكامل من `.env` إلى `DecompositionResult` مُتحقَّق منه) — ⛔ QUALITY NOT YET VALIDATED (مثال واحد فقط، sanity gate لسه ما نفّذتش).
-
-**بيئة التنفيذ:** أعيد بناء بيئة بايثون على الجهاز بالكامل (إزالة Python 3.14 نهائيًا بسبب تعارض إصدارات مع `torch==2.2.2`، والإبقاء على Python 3.11.9 كنسخة وحيدة/افتراضية على مستوى النظام — لا venv داخل المشروع، بقرار صريح من أحمد). `requirements.txt` تم تحديثه بإضافة `requests==2.34.2` و`python-dotenv==1.0.1` (D74 client dependencies).
-
-**الاختبار:** جملة عربية مصرية واحدة مُصاغة يدويًا لأغراض الاختبار فقط (ليست من O9 ولا من أي corpus في المشروع — تعمّدنا الابتعاد عن أي بيانات محمية قبل وجود sanity gate).
-
-**النتيجة المرصودة:**
-- التطبيع للفصحى المبسطة: سليم.
-- الحفاظ على المعنى: سليم، بلا إضافة أو حذف.
-- المصطلحات اللاتينية (القيد #3 في D74): سليم ومُلاحَظ إيجابيًا — الإدخال كان فيه "هارد ديسك" (transliteration عربي)، والمخرج حوّلها لـ`hard disk` بحروف لاتينية صحيحة في الـ claim، مطابقةً للقيد المطلوب.
-- **ملاحظة مفتوحة (غير حاسمة، مرصودة للمتابعة):** الـ claim الأولى دمجت فكرتين ("يتيح التخزين أونلاين" + "يلغي الحاجة لـ hard disk") في claim واحد — احتمال مشكلة atomicity، وهي نفس فئة الفشل المهيمنة (52%) في رفض corpus D75. دليل من مثال واحد فقط؛ لا يُعمَّم.
-
-**الموديل المستخدم فعليًا:** `nvidia/nemotron-3-nano-30b-a3b:free` — **ليس** `google/gemma-4-31b-it:free` المقصود أصلًا، الذي رجّع HTTP 429 (rate-limited من مزوّد الخدمة نفسه، Google AI Studio، وقت الاختبار) بعد استنفاد كل محاولات الـ retry. منطق الـ retry/backoff (المحدد في D74) عمل صح: أعاد المحاولة، ثم رفع exception واضح النوع بدل الفشل الصامت أو إرجاع نتيجة فارغة.
-
-**اختيار الموديل غير محسوم بهذا الاختبار.** نجاح استدعاء واحد على موديل واحد ليس دليلًا كافيًا لتفضيل nano على Gemma؛ الاثنان لا يزالان مرشحين.
-
-**دليل مباشر لبند الـ Fallback المفتوح في D74:** بما إن موديلًا مجانيًا بعينه ممكن يتزحم بشكل مستقل تمامًا عن استخدام المستخدم نفسه، تصميم الـ fallback المناسب هو **قائمة موديلات مرشحة تُجرَّب بالترتيب**، لا موديل واحد مثبَّت. بند الـ Fallback في D74 يبقى **OPEN**، لكن أصبح له الآن تبرير تجريبي ملموس.
-
-**المطلوب قبل أي اعتماد إنتاجي:** (أ) تشغيل عدة أمثلة اختبار متنوعة أكتر (إجابات خاطئة عمدًا، مصطلحات لاتينية أكتر، إجابات أطول) عبر الموديلات المرشحة قبل حسم الاختيار؛ (ب) تنفيذ وتشغيل sanity gate الإلزامية بتاعة D74 (`scripts/llm_decomposition_sanity_gate.py`) قبل أي استخدام قريب من O9 أو تقييم حقيقي.
-
-## D77 — Sanity Gate Design Pre-Registration (Claim Decomposition, D74 Mandatory Check)
-
-**الحالة:** ⛔ PREREGISTERED / NOT EXECUTED — تصميم فقط، السكريبت لسه ماتكتبش.
-
-**اكتشاف بيئي مسجَّل أثناء التحضير (لا يُمرَّر بصمت):** `git status` أظهر `src/interview_iq/decomposition_llm/` (client.py + system_prompt.md) و`.env.example` **untracked بالكامل**، و`requirements.txt` معدَّل وغير staged. نفس نمط مخالفة D75 (كود غير مُسجَّل في git قبل الاعتماد عليه). **التوصية:** commit منفصل بسيط (بعد مراجعة الـ diff كملفات مرفوعة) قبل أو بالتوازي مع كتابة الـ gate — التوقيت قرار أحمد.
-
-**واجهة الاستدعاء المؤكدة من الكود الفعلي (لا افتراض):**
-- Import: `from interview_iq.decomposition_llm.client import decompose_via_llm, LLMDecompositionError`
-- `decompose_via_llm(asr_text: str) -> DecompositionResult`؛ `DecompositionResult` مستوردة من `interview_iq.decomposition.types` (الموديول القديم AraT5-era) — نوع مشترك، مش نوع جديد.
-- **تصحيح لفهم سابق (D74/D76):** لا يوجد fallback تلقائي متعدد الموديلات في الكود. `OPENROUTER_MODEL` قيمة واحدة تُقرأ من `.env` مرة واحدة. التبديل بين gemma وnemotron في D76 كان **يدويًا من أحمد**، مش سلوك برمجي. بند الـ Fallback في D74 يبقى **بلا أي تنفيذ برمجي حتى الآن**.
-- طبقة تحقق شكلي موجودة بالفعل جوه `client.py` (`_parse_numbered_claims` بترفض أي سطر output مش بصيغة `"N. claim"`). الـ gate تضيف طبقة تحقق **دلالية** فوقها، مش تكررها.
-
-**الـ fixtures:** ملف منفصل خارج أي corpus مُتتبَّع أو O9. 8 حالات: CS×2 / DS×2 / DA×2 / SE×1 / GN×1 (SG-01 إلى SG-08، النص الكامل موثّق في المحادثة، هيُنقَل لملف JSON عند التنفيذ). كل حالة: `case_id`, `track`, `injected_error_type`, `answer_text` (بصيغة ASR خام)، `injected_error_anchor`، `latin_terms_expected`.
-
-**تنفيذ السكريبت:** استدعاء مباشر لـ `decompose_via_llm` (نفس مسار الإنتاج). موديل واحد لكل run كامل (يُسجَّل صراحة). لكل حالة: raw input/response، `DecompositionResult`، الموديل الفعلي، timestamp، retries، أي error بنصه الكامل. المخرج: `results/llm_decomposition_sanity_gate/` — JSON خام + تقرير بثلاثة أعمدة حكم بشري فاضية: `error_preserved` (YES/NO)، `no_unauthorized_addition` (YES/NO)، `atomicity_verdict` (ATOMIC/NON_ATOMIC/AMBIGUOUS).
-
-**قاعدة القرار (مسجَّلة مسبقًا):** الحكم بشري بالكامل — لا auto-grading (تجنبًا للدائرية). **Blocking:** أي حالة `error_preserved=NO` أو `no_unauthorized_addition=NO` ⇒ gate FAILS بالكامل (صفر تسامح، الاتنين بنفس الخطورة). **غير حاجزة:** `atomicity_verdict=NON_ATOMIC` ⇒ تُسجَّل وتُتابع (بنمط Q8)، لا توقف الاعتماد. نتيجة الـ PASS/FAIL الفعلية تُسجَّل لاحقًا كتحديث على D77 أو كـ D78 جديدة.
-
-**المرجع:** D74 (الشرط الأصلي)، D75 (توسيع فحص atomicity)، D76 (نمط الاختبار الأول، ومصدر ملاحظة غياب fallback حقيقي).
-
-## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
-
-| البند | الوصف | الحالة |
+| Item | Description | Status |
 |---|---|---|
-| **Q1** | توحيد ترقيم القرارات — السجل الموحّد D1–D46 هو هذا الملف. | ✅ |
-| **Q4** | stage2_verdict الناقص — فجوة توثيق لا فجوة منهجية. | ✅ |
-| **Q5 → D35** | قبول مخالفة الـ 5-word overlap. صُدِّق ومُصحَّح رقميًا. | ✅ |
-| **Q9** | مستودع GitHub — https://github.com/HashemIlI/interview-iq (private). | ✅ |
-| **V1** | سلامة الـ checkpoint (مفاتيح `classifier.*`، 50 tensor). D38. | ✅ |
-| **V2** | الاحتمالات الخام + إعادة الإنتاج — **PASSED (48/48)**. الـ inference حتمي. D43. | ✅ |
-| **V3** | سلامة `key_points` — 250/250. **تصحيح:** الفحص كان قائمًا قبل V3. D42. | ✅ |
-| **V4** | مصدر الـ claims — حُسم بالتأجيل. D44. | ✅ |
-| **V5 — نطاق السكور ودلالة الصمت** | تقرير ما ينتجه `run_scoring.py` فعليًا. **حُسم في D47:** النطاق [-100, +100]، الصمت = 0.0. | ✅ |
-| **O9 / بوابة G2** | تمارين الـ decomposition اليدوية + جلسة دليل التأليف. اكتمل تفكيك الـ 25 سؤال — انظر D51/D52. | ✅ (مُغلقة) |
-| **D46 — نتيجة الفحص التشخيصي** | القاعدة مسجَّلة ومُلتزَمة. **التشغيل تم والنتيجة صدرت — انظر D49.** | ✅ (مُقفَلة) |
-| **Q8 — هشاشة قناة الـ Coverage** | أُعيدت صياغتها في D42. الرقم 0.002 مسحوب. **القياس على claims حقيقية مؤجَّل لما بعد Phase 8 (D44).** الفحص التشخيصي مسموح (D46). **لا نقاش علاج قبل رقم مقيس.** | ⛔ (نشطة) |
-| **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
-| **Q6 — AraT5 vs mT5-base** | فشل ذراعا D66 في بوابات الإصلاح. **مُغلَق بالتجاوز (D74):** الاستبدال الكامل بـ LLM API يتجاوز كلا الخيارين — **لا يحسم** أيهما كان أفضل بدليل تجريبي. | ✅ (CLOSED BY PIVOT — D74، ليس محسومًا تجريبيًا) |
-| **D63 — Five-Example Trainer-Path Diagnostic** | نجح mini-corpus في `5/5` exact token match عند step 400؛ padding audit PASS. | ✅ (مُغلقة) |
-| **D64 — Sanitized Full-Corpus Retraining** | اكتمل التدريب، best checkpoint عند step 617 وeval loss 1.750646؛ التنفيذ PASS والجودة غير معتمدة. | ✅ (EXECUTION PASS) |
-| **D65 — Validation/O9 Generation Audit** | اكتمل تقييم 58 حالة؛ التنفيذ PASS والجودة FAIL مع إطلاق CONTENT/FORMAT/LENGTH/REPETITION. | ✅ (EXECUTION PASS / QUALITY FAIL) |
-| **D66 — Controlled PEFT Repair Pilot** | اكتمل الذراعان؛ AraT5 لم ينتج checkpoint مؤهلًا وmT5 step 72 فشل quality gates، ولم يُستخدم O9 في generation أو الاختيار. | ✅ (EXECUTION PASS / NO REPAIR CANDIDATE) |
-| **D67 — Gold Corpus v2 Repair and ASR Contract Freeze** | توقفت محاولة التنفيذ في Phase 0 قبل أي corpus modification لأن exact four exclusions من atomicity candidate set لم تكن مسجلة. | ⛔ (BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION) |
-| **D68 — Canonical Atomicity Adjudication Recovery** | استُعيد canonical atomicity set للـ34 candidate بمنهجية passين منفصلين إجرائيًا؛ النتيجة 24 repair-required و10 false positives، مع 4/4 disagreements محلولة و0 unsupported proposition. | ✅ (EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED) |
-| **D69 — Gold Corpus v2 Target Repair** | إنشاء Gold v2 منفصل بإصلاح targets فقط: unsupported additions الثلاثة، atomicity keys الـ24، وself-containment flags الـ273 عبر passين منفصلين، مع إبقاء source answers المصرية الـ222 byte-for-byte دون تغيير. | ⛔ (PREREGISTERED / NOT EXECUTED) |
-| **D70 — Paired Original/ASR-Aligned Corpus Variants** | تجهيز 444 example من 222 question ID كنسختين paired، مع split على `question_id` وclaims-match guard ونجاح tokenizer smoke test. | ✅ (DATASET PIPELINE PASS) |
-| **D71 — Paired-Corpus AraT5 Full Fine-Tuning** | اكتمل Full fine-tuning بـfloat32 على Tesla T4 واحدة؛ أفضل checkpoint هو `checkpoint-543` عند `eval_loss=2.205347776412964`، ونُشر كـKaggle Model Version 1. | ✅ (EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED) |
-| **D72 — Deterministic D71 Quality Evaluation** | اكتمل تقييم 66 validation example و25 O9 held-out؛ المقاييس صالحة، لكن جودة checkpoint D71 مرفوضة هندسيًا لاستخدام claim decomposition، مع عدم وجود numerical thresholds مسجّلة مسبقًا. | ✅ (EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE) |
-| **D73 — Exhaustive D72 Prediction Error Analysis** | تحليل جميع predictions الـ91 في `d72_examples.csv` وتصنيف تسع فئات أخطاء مع العدد والنسبة والأمثلة، دون تدريب أو تعديل للموديل. **بعد D74: توثيق رجعي اختياري، لم يعد يحجب تجربة تدريب جديدة (لا توجد).** | ⛔ (PREREGISTERED / NOT EXECUTED — NON-BLOCKING) |
-| **D74 — Pivot: LLM API يستبدل AraT5 لموديول Claim Decomposition** | تعديل نطاق قيد Zero-LLM-at-runtime (Claim Decomposition فقط)، بموافقة المشرف. Phase 8 (AraT5) مُغلَق بالتجاوز. يتطلب: system prompt + sanity gate ضد "تصحيح" الإجابات + full-pipeline evaluation. PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا. | ✅ التعديل مُعتمَد — ⛔ التنفيذ لم يبدأ |
-| **D75 — Codex-Assisted AraT5 Training Corpus Attempt** | محاولة توليد corpus بمساعدة Codex (1500 هدف)، توقفت عند 1050/1500، لم تصل لحالة معتمدة للتدريب؛ اتضح إن سبب الرفض الأساسي (52%) كان atomicity البنيوي في المهمة نفسها. مُغلقة بالتجاوز (D74)، موثّقة كدليل تاريخي في الأرشيف. | ✅ CLOSED — SUPERSEDED, EVIDENCE ARCHIVED |
-| **D76 — First End-to-End LLM Decomposition Call** | أول استدعاء فعلي لسلسلة .env → client.py → OpenRouter → DecompositionResult تحقّق منه بنجاح على مثال اختباري واحد؛ الجودة غير مُعتمَدة بعد، sanity gate لسه لم يُنفَّذ. | ✅ EXECUTION PASS — ⛔ QUALITY NOT YET VALIDATED |
-| **D77 — Sanity Gate Design Pre-Registration** | تصميم مُسجَّل مسبقًا لـ `scripts/llm_decomposition_sanity_gate.py`: 8 حالات اختبار (SG-01–08)، حكم بشري بالكامل، atomicity غير حاجزة، اكتشاف `decomposition_llm/` untracked في git. | ⛔ PREREGISTERED / NOT EXECUTED |
-| **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
-| **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
-| **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
-| **G4** | تجربة المعايرة البشرية لـ τ, τ_E, α, k. **مُدخَلات في D43.** ويُضاف: تصديق قرارات D45. | ⛔ |
-| **O1** | فقرة تبرير Option B — تحجب التقرير النهائي. | ⛔ |
+| **Q1** | Decision numbering unified — the unified log D1–D80 is this file. | ✅ |
+| **Q4** | Missing stage2_verdict — a documentation gap, not a methodological one. | ✅ |
+| **Q5 → D35** | Accepting the 5-word overlap violation. Ratified and numerically corrected. | ✅ |
+| **Q6** | AraT5 vs mT5 — CLOSED BY PIVOT (D74). Not resolved on empirical merit; superseded. | ✅ |
+| **Q9** | GitHub repo — https://github.com/HashemIlI/interview-iq (private). | ✅ |
+| **V1** | Checkpoint integrity (`classifier.*` keys, 50 tensors). D38. | ✅ |
+| **V2** | Raw probabilities + reproducibility — PASSED (48/48). Inference deterministic. D43. | ✅ |
+| **V3** | `key_points` integrity — 250/250. Check pre-existed V3. D42. | ✅ |
+| **V4** | Claim source — resolved by deferral. D44. | ✅ |
+| **V5** | Score range + silence semantics — resolved in D47: range [-100,+100], silence = 0.0. | ✅ |
+| **V6** | Local Python environment (3.11 vs 3.14) — resolved in D48. | ✅ |
+| **O9 / G2** | Manual decomposition exercises + authoring guide. Closed — see D51/D52. | ✅ |
+| **Phase 8** | AraT5 fine-tuning — CLOSED, SUPERSEDED by D74. | ✅ |
+| **D77–D80** | Sanity gate designed, executed, PASSED on cohere/north-mini-code:free. | ✅ |
+| **D74 Fallback** | Model caching for demo, or a backup model on API failure/rate-limit. Blocks final demo/full-pipeline run. | ⛔ |
+| **Q8** | Coverage channel measured on real decomposition claims. Unblocks now that decomposition produces output. | ⛔ |
+| **G4** | Threshold calibration (τ_E, τ, α, k currently PRE-CALIBRATION DEFAULT). Inputs in D43. | ⛔ |
+| **Q7 / O11** | Recording tech stack + session spec + team adoption. **Blocks G3** and ASR selection (Phase 7). | ⛔ |
+| **G3** | Pilot videos — blocks ASR selection (tied to Q7). | ⛔ |
+| **Q10 — Demo #1** | Has the Baseline Demo (D24) been shown to the supervisor? | ⛔ |
+| **Q2** | 250-question review documentation + SE-006 anomaly check. | ⛔ |
+| **D73** | Exhaustive D72 error analysis — non-blocking retrospective documentation. | ⛔ |
+| **O1** | Option B justification paragraph — final report. | ⛔ |
+| **Gold naming** | Three artifacts named "Gold" (O9 val set, DS-014 NLI Gold Set, decomposition corpus) — documentation-only rename recommended. | ⛔ |
 
 ---
 
-## سجل التغييرات 
-- **v2.41 (21 يوليو 2026):** إضافة **D77** — تصميم مُسجَّل مسبقًا لـ sanity gate الإلزامية بتاعة D74 (correctness-preservation blocking، atomicity غير حاجزة زي Q8)، مع توثيق اكتشاف إن `src/interview_iq/decomposition_llm/` (client.py + system_prompt.md) و`.env.example` untracked في git. السكريبت لسه لم يُكتَب.
-- **v2.39 (21 يوليو 2026):** تصحيح فجوة توثيقية: قسم D75 (Codex-Assisted AraT5 Training Corpus Attempt) كان موجودًا بالفعل في محتوى الملف من جلسة سابقة، لكنه لم يُدرَج في جدول البنود المفتوحة ولا في سجل التغييرات ولا في رقم الإصدار/العنوان. تم تصحيح ذلك بأثر رجعي: إضافة صف D75 لجدول القسم الثالث، وتحديث العنوان الرئيسي.
-- **v2.40 (21 يوليو 2026):** إضافة **D76** — أول استدعاء end-to-end ناجح لموديول LLM Decomposition (D74)، مع رصد ملاحظة atomicity مفتوحة وتوثيق تبرير تجريبي لبند الـ Fallback المفتوح في D74. راجع نص D76 الكامل في متن الملف.
-- **v2.38 (21 يوليو 2026):** إضافة **D74** — pivot معماري: تعديل نطاق قيد Zero-LLM-at-runtime ليستثني موديول Claim Decomposition فقط (باقي الـ pipeline غير متأثر)، بموافقة المشرف، مبني على أدلة D65–D72 (فجوة تعميم AraT5: LCS F1 0.507→0.189، claim-count exact 33%→8%، Latin recall 36%→18%) وندرة بيانات عربية للتدريب. استبدال AraT5 كاملًا بـ LLM API (مثال: Qwen عبر OpenRouter) لموديول Claim Decomposition وقت التشغيل. Phase 8 مُغلَق بالتجاوز (SUPERSEDED). **Q6 مُغلَق بالتجاوز — غير محسوم تجريبيًا.** D73 يتحوّل لتوثيق رجعي اختياري غير حاجز. قيود إلزامية: (1) prompt لا يعدّل صحة إجابة المستخدم، (2) sanity gate على N حالات بأخطاء متعمدة قبل أي دمج. **RISK ACCEPTED (بنمط D33):** لا مقارنة مكوّن معزولة قبل الدمج؛ القياس مؤجَّل لـ full-pipeline run مع تحذير confounding صريح (LLM decomposition + NLI thresholds غير المعايرة + BGE-M3 chunk cap يتغيرون معًا). PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (خارج نطاق هذا الملف). Fallback (caching/موديل احتياطي) لا يزال بند مفتوح.
-- **v2.37 (20 يوليو 2026):** إغلاق **D72** بنتيجة `EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE` اعتمادًا على `v6-authoritative-gold-context-parser`: validation LCS F1=`0.5071960304` وclaim-count exact=`0.3333333333`؛ O9 LCS F1=`0.1892490644` وclaim-count exact=`0.08` وmean absolute claim-count error=`2.8` وrepetition rate=`0.24`؛ ASR/original Latin recall=`0.1812590984`/`0.3610519332`. checkpoint D71 غير معتمد للـruntime. تسجيل أن رفض الجودة حكم هندسي post-hoc لغياب numerical thresholds مسجّلة مسبقًا في D72. إضافة **D73** كتسجيل مسبق لتحليل أخطاء كل predictions الـ91 في `d72_examples.csv` عبر تسع فئات مع العدد والنسبة والأمثلة، وحظر تحديد تجربة تدريب جديدة قبل اكتماله.
-- **v2.36 (20 يوليو 2026):** إغلاق **D71** بنتيجة `EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED`: اكتمل Full fine-tuning بـfloat32 على Tesla T4 واحدة وبدون LoRA، على split 378/66؛ أفضل checkpoint هو `checkpoint-543` عند `eval_loss=2.205347776412964` وepoch `22.9841269841`، وتوقف early stopping عند step 732 / epoch `30.9841269841`. نُشر Kaggle Model `hashemili/interview-iq-d71-arat5-paired-ft`، variation `paired-corpus-full-ft`، Version 1. إضافة **D72** كتسجيل مسبق لتقييم جودة deterministic على 66 validation example و25 O9 held-out، من Kaggle Model فقط دون fallback أو training، مع مقاييس الجودة واتساق original/ASR وحفظ JSON/CSV/Markdown/ZIP؛ نجاح التنفيذ لا يعني `QUALITY PASS` تلقائيًا.
-- **v2.35 (20 يوليو 2026):** إضافة **D71** كتسجيل مسبق لـfull fine-tuning من base `UBC-NLP/AraT5-base` جديد على paired corpus الخاص بـD70 عند Git baseline `5c5b1e6`: 444 example و222 `question_id`، split مجمّع 378/66 بـ`seed=42`، مع فصل O9 واستبعاد `GN-050` من النسختين، وبدون LoRA أو checkpoint قديم وعلى GPU واحد فقط. تثبيت أن نجاح التشغيل وحفظ checkpoint يعنيان `EXECUTION/CHECKPOINT PASS` لا `QUALITY PASS`، مع اشتراط checkpoint وJSON يسجل environment وGit HEAD والأعداد وtraining/eval history وbest checkpoint.
-- **v2.34 (20 يوليو 2026):** إضافة **D70** لتوثيق إدخال نسختي `original` و`asr_aligned` معًا كـpaired input variants: 444 example من 222 `question_id`، و`example_id` بلاحقتي `__original`/`__asr`، وتقسيم مجمّع على `question_id` نتج عنه 378 train و66 validation وصفر overlap. تثبيت تطابق الـClaims حرفيًا مع guard يرفع `ValueError` عند الاختلاف، واستبعاد `GN-050` من النسختين، ونجاح tokenizer الحقيقي لـ`UBC-NLP/AraT5-base` في إنتاج `input_ids` و`attention_mask` و`labels` للنسختين. نجحت اختبارات المشروع كاملة (149 passed). القرار خاص بتجهيز corpus ولا يثبت جودة الموديل بعد التدريب.
-- **v2.33 (19 يوليو 2026):** إغلاق **D68** بنتيجة `EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED`: عالج passان منفصلان إجرائيًا الـ34 candidate، مع 64/64 proposition ذات literal source support في كل pass، و30 agreement و4 disagreements محلولة و0 unresolved؛ النتيجة canonical هي 24 `NON_ATOMIC_REPAIR_REQUIRED` و10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`، وليست provisional 20/14 أو former target 30. تسجيل قيد أن passين من Codex environment نفسه وليسا human inter-annotator study. إضافة **D69** كتسجيل مسبق لبناء Gold v2 تحت `results/gold_v2/` بإبقاء source answers المصرية الـ222 byte-for-byte، وإصلاح unsupported additions الثلاثة وatomicity keys الـ24 وself-containment flags الـ273 عبر consolidated original-index repair plan، دون training أو O9 أو ASR augmentation أو production integration.
-- **v2.32 (19 يوليو 2026):** تسجيل محاولة تنفيذ **D67** بنتيجة `BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION`: تحقق Phase 0 من 222 example و1,836 claim وsplit 189/33 والـ273 self-containment flags، واستعاد 34 structural atomicity candidate، لكنه لم يجد evidence تحدد أي أربعة استُبعدت من former informal count البالغ 30؛ لذلك توقف قبل أي corpus change. إضافة **D68** كتسجيل مسبق لاسترداد canonical atomicity adjudication عبر تصنيف ثنائي المرور لجميع الـ34، مع منع فرض نتيجة 30 ومنع تعديل corpus أو إنشاء Gold v2.
-- **v2.31 (18 يوليو 2026):** إغلاق **D66** بنتيجة `EXECUTION PASS / NO REPAIR CANDIDATE`: اكتمل تدريب AraT5-base وmT5-base LoRA على split المجمد مع نجاح tokenizer preflights وبقاء O9 خارج generation والmetrics والاختيار. لم ينتج AraT5 checkpoint مؤهلًا، وفشل mT5 step 72 بوابات الجودة والبنية، لذلك لا winner ولا اعتماد إنتاجي ويبقى Q6 مفتوحًا. إضافة **D67** كتسجيل مسبق لإصلاح targets في Gold v2 منفصل مع إبقاء 222 source answers وtrain/validation split دون تغيير، adjudication للـ273 self-containment flags وإصلاح 30 non-atomic claims والإضافات الثلاث غير المدعومة، وتجميد عقد `question_id` + `raw_transcript` قبل أي تدريب لاحق.
-- **v2.30 (18 يوليو 2026):** إغلاق **D65** بنتيجة `EXECUTION PASS / QUALITY FAIL`: تم تقييم 33 validation و25 O9 deterministically مع hash verification وdeterminism PASS، لكن exact match كان صفرًا في splitين، وmedian edit similarity كان `0.519` للـvalidation و`0.160` لـO9، مع severe repetition `42.4%/52%` وإطلاق CONTENT/FORMAT/LENGTH/REPETITION كلها. حظر checkpoint D64 وظيفيًا، وإعادة فتح Q6. إضافة **D66** كتجربة PEFT/LoRA مضبوطة single-seed تقارن AraT5-base وmT5-base على train/validation فقط، مع frozen D64 control وبوابات إصلاح صريحة، ومنع استخدام O9 أو تعديل production code/config.
-- **v2.29 (18 يوليو 2026):** إغلاق **D64** بنتيجة `EXECUTION PASS`: تدريب full-corpus من AraT5-base جديد على GPU واحد وfloat32 حتى step 660، early stopping عند epoch 55.58، وأفضل checkpoint عند step 617 بـ `eval_loss=1.750646`. إعادة التحميل وفحص tied weights والحفظ نجحت، لكن smoke outputs على validation/O9 أظهرت تشوهًا وتكرارًا؛ لذلك لا يوجد QUALITY PASS. توثيق حفظ checkpoint كـ Kaggle Dataset خاص Version 1، وإضافة **D65** كتقييم deterministic كامل للـ58 حالة مع metrics للطول والترقيم والتكرار والتشابه قبل أي قرار إصلاح D66.
-- **v2.28 (18 يوليو 2026):** إغلاق **D63** بنتيجة PASS: خمسة أمثلة deterministic من tracks الخمسة وصلت إلى `5/5` exact token-ID match عند step 400 عبر `Seq2SeqTrainer`، مع نجاح padding audit (`44/44` موضعًا إلى `-100`). إضافة **D64** كتسجيل مسبق لإعادة تدريب corpus D61 كاملًا على GPU واحد وfloat32 وبـ effective batch 16، لإنتاج checkpoint جديد للتقييم دون السماح بـ inference أو اعتماد إنتاجي قبل تقييم مستقل.
-- **v2.27 (18 يوليو 2026):** إغلاق **D62** بنتيجة PASS: مثال `CS-025` وصل إلى exact token-ID match عند step 175 من base AraT5-base جديد، مع صفر UNK/truncation. إضافة **D63** كتجربة mini-corpus من خمسة أمثلة لاختبار batching وpadding ومكونات `Seq2SeqTrainer` قبل أي full retraining.
-- **v2.21 (16 يوليو 2026):** تصحيح على **D57** — إضافة save_total_limit=2 الناقصة، بعد كرش تدريب فعلي على Kaggle T4 (القرص امتلأ عند epoch 8 من تراكم checkpoints).
-- **v2.20 (16 يوليو 2026):** إضافة **D57** — قيم PRE-CALIBRATION DEFAULT لـ hyperparameters تدريب trainer.py (Phase 8)، مبنية على probe تجريبي حقيقي لتوزيع أطوال الـ tokens (scripts/probe_token_lengths.py) بدل استنتاج من ملاحظات Q6 pilot. Train/val split 85/15، max_length=320.
-- **v2.19 (14 يوليو 2026):** إضافة **D56** — صيغة الـ prompt النهائية لـ fine-tuning (اعتماد PROMPT_TEMPLATE من D53 حرفيًا + تعليمة تنسيق إخراج صريحة).
-- **v2.18 (14 يوليو 2026):** إغلاق **D55** (✅ مكتمل): توثيق اكتمال بناء corpus التدريب لـ 223 سؤالًا عبر 5 دفعات مع مراجعة بشرية كاملة. تسجيل النتائج التراكمية لحالات R1 وتوثيق الحد البنيوي للتوليد الاصطناعي.
-- **v2.17 (14 يوليو 2026):** إضافة **تحديث لاحق داخل D55** — آلية "التوليد من الذاكرة": بعد صفر حالات R1 عضوية عبر batch1+batch2+batch3 (110 سؤال)، تُكتب ~20% من أسئلة كل دفعة قادمة (موزَّعة تناسبيًا عبر الـ tracks) بالاعتماد على المعرفة المتذكَّرة دون الرجوع المباشر لنص الـ chunk أثناء الصياغة، مع بقاء القيد الملزم بعدم استهداف خطأ تقني بعينه ساريًا بلا استثناء. كل سؤال يُوسَم بطريقة توليده (chunk-referenced / memory-based) لتحليل لاحق. لا تُطبَّق بأثر رجعي على الدفعات الثلاث السابقة.
-- **v2.16 (13 يوليو 2026):** إضافة **D55** (⛔ PENDING) — توسيع corpus decomposition: تحويل O9 إلى Gold/Validation Set + خطة بناء corpus تدريب إضافي بمساعدة LLM (225 سؤال متبقٍ) مع مراجعة بشرية إلزامية. تسجيل الدفعة التجريبية الأولى (10 أسئلة، commit 957f1cc). حالة القرار PENDING حتى بدء التنفيذ الفعلي.
-- **v2.15 (13 يوليو 2026):** إضافة **D54** — حسم Q6: **AraT5-base** هو الموديول المختار. الـ pilot التشخيصي (D53، حتى بعد إصلاح إعدادات التوليد) كان غير حاسم بالتساوي بين الموديولين — لا يُستخدم كدليل تجريبي. القرار الفعلي مبني على سبب معماري/لغوي: تخصص AraT5-base الحصري في العربي مقابل توزّع mT5-base على أكثر من 100 لغة. `configs/decomposition.yaml` سيُحدَّث لاحقًا (جلسة منفصلة) من `"TBD_pending_Q6"` إلى `"UBC-NLP/AraT5-base"`. Q6 قابل لإعادة الفتح إذا ظهرت مؤشرات مضادة أثناء fine-tuning Phase 8 الفعلي. تحديث صف Q6 في جدول البنود المفتوحة إلى ✅ محسومة.
-- **v2.14 (13 يوليو 2026):** إضافة **D53** — قاعدة قرار مسجَّلة مسبقًا لـ pilot تشخيصي على Q6 (AraT5 vs mT5-base): عيّنة قصدية 5 أسئلة (DA-029، DS-030، CS-039، SE-013، GN-004)، zero-shot فقط لكلا الموديولين بنفس الـ prompt template، تقييم يدوي اتجاهي (n=5) من أحمد على 5 معايير (R1، R3، R4، سلامة الفصحى المبسّطة، غياب الهلوسة) — لا معيار آلي. إضافة `scripts/q6_pilot_decomposition.py` (thin runner مستقل عن `src/interview_iq/decomposition/` المقفولة). تحديث صف Q6 في جدول البنود المفتوحة.
-- **v2.13 (12 يوليو 2026):** إضافة **D52** — إغلاق G2 بالتبعية لإغلاق O9 (D51، commit `282fc87`): التمارين اليدوية الـ25 كانت الأساس المشترك للبندين، فتُغلق G2 تلقائيًا دون عمل إضافي. تحديث صف O9/بوابة G2 في جدول البنود المفتوحة بإحالة D51/D52.
-- **v2.12 (12 يوليو 2026):** إضافة **D51** — إغلاق O9 بالكامل: اكتمل تفكيك جميع الـ 25 سؤال المسجَّلة في D50 (`results/o9_decomposition_exercises.md`)، بتوزيع DA=5/DS=5/CS=5/SE=5/GN=5، شمل حالات R1 في 7 أسئلة (9 claims موسومة) **جميعها عضوية غير مخطَّطة — لا توجد حالات R1 مخطَّطة مسبقًا في D50** و5 حالات توثيق عدم يقين كـ claim مستقل، مع 3 ملاحظات مراجعة مفتوحة غير حاسمة داخل الملف. تصحيح سطر الإحصائيات في `o9_decomposition_exercises.md` (كان يقول "7 حالات، منها 2 مخطَّطة مسبقًا و6 عضوية" — رقم غير متسق (2+6=8) وادعاء تخطيط مسبق يناقض عشوائية السحب في D50). تحديث جدول البنود المفتوحة: صف O9/G2 من ⛔ (أولوية قصوى) إلى ✅ (مُغلقة)، بإحالة إلى D51. يُفتح الطريق أمام G2 ثم Phase 8.
-- **v2.11 (11 يوليو 2026):** إضافة **D49** — نتيجة تنفيذ D46 على Kaggle T4 (commit `acc802a`): Test A وTest B **PASS** على الذراعين (zero-shot وadapter). Test C **لا إشارة** — `signal_detected=false`، الاتجاه معاكس للتنبؤ المسجَّل (`direction_matches_prediction=false`). **إغلاق D46** طبقًا لعدم تماثل الاستدلال المسجَّل فيه (الفشل يثبت الكسر، النجاح لا يثبت السلامة) — النتيجة لا تُثبت سلامة الاتجاه المعكوس، فقط أن هذا التشخيص المحدد لم يلتقط كسرًا. تحديث جدول البنود المفتوحة: حالة D46 من "معلَّقة" إلى "مقفولة".
-- **v2.10 (11 يوليو 2026):** إضافة **D47** — حسم V5 نهائيًا: نطاق السكور [-100, +100] (ليس 0-100)، الإجابة الصامتة = 0.0، مع تحذير صريح بعدم افتراض وجود guard للقسمة على صفر في `harmonic_f`. توثيق ملاحظة إجرائية غير-مخالفة بخصوص push يدوي لـ d7db5e6. إغلاق V5 في جدول البنود المفتوحة.
-- **v2.9 (10 يوليو 2026):** إضافة **D45** — تصديق قرارين معماريين اتُّخذا داخل `metrics.py` أثناء Phase 6 ولم يكونا مسجَّلين: `Precision` متوسط قد يكون سالبًا؛ وعند `Precision < 0` يُرجَع مباشرةً وتُتجاهَل قناة الـ Coverage (البديل — القصّ عند الصفر — يجعل "غلط" و"سكت" متساويين وينقض D21). إضافة **V5** (نطاق السكور ودلالة الإجابة الصامتة — تقرير لا تغيير). إضافة **D46** — قاعدة قرار مسجَّلة مسبقًا لفحص تشخيصي للاتجاه المعكوس على DS-014 بلا claims (A: self-entailment ≥ 0.90 · B: no-relation ≤ 0.10 · C: cross-entity، تنبؤ مسجَّل بأن الـ adapter أسوأ، عتبة إشارة 0.10 في الوسيط)، مع تسجيل عدم تماثل الاستدلال: الفشل يُثبت الكسر، والنجاح لا يُثبت السلامة. **إضافة الحالة الخامسة إلى §5.13 في D31:** ادعاء أن `git log` ينسب تعديلًا غير مُلتزَم إلى commit — نتيجة صحيحة بدليل مُختلق. تحديث D21/D26/D28/D34/D42/D44 بالإحالات.
-- **v2.8 (10 يوليو 2026):** إضافة **D44** — حسم V4 بالتأجيل؛ رفض hypotheses الـ Gold Set كـ claims صناعية. **تسجيل الثمن: O9 ينتقل إلى المسار الحرج.** إضافة قيد على تعميم جدول D43.
-- **v2.7 (10 يوليو 2026):** إضافة **D43** — إغلاق V2 (48/48، الـ inference حتمي). حسم `P(E)` للأزواج C→N ⇒ رفع تحذير D41. **الـ zero-shot يرتكب تأكيدين كاذبين عند العتبة.** مُدخَلات معايرة. حدّ ثانٍ لـ D39. إضافة V4.
-- **v2.6 (10 يوليو 2026):** توسيع D42 بتوزيع الـ key_points المقيس وشذوذ SE-006. توسيع Q2.
-- **v2.5 (10 يوليو 2026):** تصحيح V3 وD42 (§5.13 حالة رابعة). إغلاق V3 (250/250). سقوط فرضية السقف البنيوي. توسيع V2 بشرط إعادة الإنتاج.
-- **v2.4 (10 يوليو 2026):** إضافة D42 — إعادة صياغة Q8، سحب 0.002، نقض ادعاء الطول. إضافة V3.
-- **v2.3 (9 يوليو 2026):** إضافة D41. إعادة كتابة D40. إغلاق V1. فتح Q8 وإضافة V2.
-- **v2.2 (9 يوليو 2026):** إضافة D39 وD40. تصحيح D38. إعادة كتابة D35. توسيع D31.
-- **v2.1 (9 يوليو 2026):** إضافة D37 وD38. تعديل D33 (G1 مغلقة بقبول المخاطرة). Q4 مُغلقة.
-- **v2.0 (9 يوليو 2026):** دمج السجلين. Q1 مُغلقة.
-- **v1.x:** سجل جلسة الـ pipeline (D21–D26 بالترقيم القديم) — مؤرشف ضمنيًا.
+## Section 5 — Methodology Principles (do not violate)
+
+- **§5.13 (Rule 13) — empirical ≠ inferred:** never state code/library behavior without actually running it. Applies to everyone (supervisor and Claude included). A correct result with fabricated evidence = a full violation. Logged violation instances live in D31.
+- **Pre-registration discipline:** every architectural decision is registered as a D## entry **before** any experiment runs.
+- **Corrections are documented explicitly**, not silently overwritten — a changelog entry names the old wrong value before replacing it.
+- **Gold Set / O9 labels are never changed after seeing a result** (the P48 and O9 immutability cases — reported as a limit, not a correction).
+- **Acceptance criteria constrain every confusion-matrix cell**, not only the expected column (lesson from D39).
+- **Scoring-stage decision rules are written at threshold level, not argmax** (lesson from D43).
+- **Post-hoc analysis is written under "results analysis," not "success criteria,"** and labeled as such.
+- **val (n=15) is never cited as performance.** macro-F1 is descriptive, not a criterion.
+- **HARD_POS twin pairs are never split** across the train/val boundary.
+- **Arabic content is reviewed via file upload, not terminal copy-paste** — RTL corruption/mojibake is consistent in cmd.exe.
+- **Coverage = 0 is a critical failure mode:** the harmonic merge zeroes F regardless of Precision — the highest-priority unresolved verification (Q8).
+- **LLM generation has a structural limit for organic R1 errors:** zero organic R1 across 223 synthetic questions — a known limitation, not an implementation failure. Human-authored O9 remains essential.
+
+---
+
+## Changelog (condensed)
+
+- **v3.0 (21 Jul 2026):** D81 — full English migration + thematic reorganization of the log (D1–D80). All figures carried over verbatim; superseded AraT5 procedural entries (D58–D73) condensed to outcomes; Arabic original archived. Added D78/D79/D80 (sanity gate execution: gemma VOID, llama VOID, cohere PASS).
+- **v2.41–v2.37 (21 Jul 2026):** D74 pivot (AraT5 → runtime LLM API, supervisor-approved); D75 (Codex corpus attempt, closed/superseded); D76 (first end-to-end LLM call, nemotron after gemma 429); D77 (sanity gate design). "Zero LLM at runtime" reframed to "LLM-free correctness core."
+- **v2.36–v2.33 (19–20 Jul 2026):** D70 (paired corpus), D71 (paired FT, checkpoint-543, eval_loss 2.205), D72 (quality REJECTED — O9 LCS F1 0.189), D73 (error-analysis pre-registration); D67/D68 (atomicity adjudication: 24+10), D69 (Gold v2 build pre-registration).
+- **v2.32–v2.27 (18 Jul 2026):** D64 (full retrain, EXECUTION PASS/no quality), D65 (QUALITY FAIL — median edit sim 0.519/0.160, Q6 reopened), D66 (PEFT repair, NO REPAIR CANDIDATE); D62/D63 (single- and five-example overfit diagnostics PASS).
+- **v2.21–v2.16 (13–16 Jul 2026):** D53–D57 (Q6 pilot, AraT5 selected on linguistic grounds, corpus expansion 223/225, prompt format, trainer hyperparameters + save_total_limit fix).
+- **v2.15–v2.12 (12–13 Jul 2026):** D50–D52 (O9 sample pre-registration, O9 closure with organic R1 in 7 questions, G2 closed by consequence).
+- **v2.11–v2.9 (10–11 Jul 2026):** D45 (metrics.py semantics ratified), D46 (reversed-direction diagnostic), D47 (score range [-100,+100]), D48 (Python 3.11), D49 (probe result — no signal).
+- **v2.8–v2.3 (9–10 Jul 2026):** D42–D44 (Q8 reframed, 0.002 withdrawn, V4 deferred — O9 to critical path), D43 (V2 closed, 48/48 deterministic, two zero-shot false verifications), D39–D41 (Phase 5 pre-registration + PASSED result).
+- **v2.2–v2.0 (9 Jul 2026):** merged the two logs (Q1 closed); D37/D38 (Kaggle staging, first fine-tuning run); D33 (G1 closed by risk acceptance); D35 rewritten; D31 expanded.
+- **v1.x:** pipeline-session log (old D21–D26 numbering) — implicitly archived.
