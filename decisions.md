@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D74)
-**الإصدار:** v2.38 — 21 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D76)
+**الإصدار:** v2.40 — 21 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -3546,6 +3546,28 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 
 **Addendum — O9 integrity check (21 Jul 2026):** An uncommitted, unexplained working-tree modification to results/o9_decomposition_exercises.md (affecting the SE-007 answer text) was found during this session's git status review. Per the O9 immutability principle (D51/D52, same standard as P48 for the NLI Gold Set), it was NOT silently kept or applied — the diff was preserved at archive/phase8_arat5_superseded/o9_uncommitted_change_2026-07-21.patch for reference, and the file was reverted to its last committed (HEAD) state via git checkout. Origin of the modification is unknown (possibly Codex). If a genuine data issue in SE-007 is confirmed later, it must go through a registered decision, not a silent edit.
 
+## D76 — أول استدعاء End-to-End لـ LLM Decomposition: تحقّق تقني ناجح، لا اعتماد جودة بعد
+
+**الحالة:** ✅ EXECUTION PASS (السلك الكامل من `.env` إلى `DecompositionResult` مُتحقَّق منه) — ⛔ QUALITY NOT YET VALIDATED (مثال واحد فقط، sanity gate لسه ما نفّذتش).
+
+**بيئة التنفيذ:** أعيد بناء بيئة بايثون على الجهاز بالكامل (إزالة Python 3.14 نهائيًا بسبب تعارض إصدارات مع `torch==2.2.2`، والإبقاء على Python 3.11.9 كنسخة وحيدة/افتراضية على مستوى النظام — لا venv داخل المشروع، بقرار صريح من أحمد). `requirements.txt` تم تحديثه بإضافة `requests==2.34.2` و`python-dotenv==1.0.1` (D74 client dependencies).
+
+**الاختبار:** جملة عربية مصرية واحدة مُصاغة يدويًا لأغراض الاختبار فقط (ليست من O9 ولا من أي corpus في المشروع — تعمّدنا الابتعاد عن أي بيانات محمية قبل وجود sanity gate).
+
+**النتيجة المرصودة:**
+- التطبيع للفصحى المبسطة: سليم.
+- الحفاظ على المعنى: سليم، بلا إضافة أو حذف.
+- المصطلحات اللاتينية (القيد #3 في D74): سليم ومُلاحَظ إيجابيًا — الإدخال كان فيه "هارد ديسك" (transliteration عربي)، والمخرج حوّلها لـ`hard disk` بحروف لاتينية صحيحة في الـ claim، مطابقةً للقيد المطلوب.
+- **ملاحظة مفتوحة (غير حاسمة، مرصودة للمتابعة):** الـ claim الأولى دمجت فكرتين ("يتيح التخزين أونلاين" + "يلغي الحاجة لـ hard disk") في claim واحد — احتمال مشكلة atomicity، وهي نفس فئة الفشل المهيمنة (52%) في رفض corpus D75. دليل من مثال واحد فقط؛ لا يُعمَّم.
+
+**الموديل المستخدم فعليًا:** `nvidia/nemotron-3-nano-30b-a3b:free` — **ليس** `google/gemma-4-31b-it:free` المقصود أصلًا، الذي رجّع HTTP 429 (rate-limited من مزوّد الخدمة نفسه، Google AI Studio، وقت الاختبار) بعد استنفاد كل محاولات الـ retry. منطق الـ retry/backoff (المحدد في D74) عمل صح: أعاد المحاولة، ثم رفع exception واضح النوع بدل الفشل الصامت أو إرجاع نتيجة فارغة.
+
+**اختيار الموديل غير محسوم بهذا الاختبار.** نجاح استدعاء واحد على موديل واحد ليس دليلًا كافيًا لتفضيل nano على Gemma؛ الاثنان لا يزالان مرشحين.
+
+**دليل مباشر لبند الـ Fallback المفتوح في D74:** بما إن موديلًا مجانيًا بعينه ممكن يتزحم بشكل مستقل تمامًا عن استخدام المستخدم نفسه، تصميم الـ fallback المناسب هو **قائمة موديلات مرشحة تُجرَّب بالترتيب**، لا موديل واحد مثبَّت. بند الـ Fallback في D74 يبقى **OPEN**، لكن أصبح له الآن تبرير تجريبي ملموس.
+
+**المطلوب قبل أي اعتماد إنتاجي:** (أ) تشغيل عدة أمثلة اختبار متنوعة أكتر (إجابات خاطئة عمدًا، مصطلحات لاتينية أكتر، إجابات أطول) عبر الموديلات المرشحة قبل حسم الاختيار؛ (ب) تنفيذ وتشغيل sanity gate الإلزامية بتاعة D74 (`scripts/llm_decomposition_sanity_gate.py`) قبل أي استخدام قريب من O9 أو تقييم حقيقي.
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -3576,6 +3598,8 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 | **D72 — Deterministic D71 Quality Evaluation** | اكتمل تقييم 66 validation example و25 O9 held-out؛ المقاييس صالحة، لكن جودة checkpoint D71 مرفوضة هندسيًا لاستخدام claim decomposition، مع عدم وجود numerical thresholds مسجّلة مسبقًا. | ✅ (EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE) |
 | **D73 — Exhaustive D72 Prediction Error Analysis** | تحليل جميع predictions الـ91 في `d72_examples.csv` وتصنيف تسع فئات أخطاء مع العدد والنسبة والأمثلة، دون تدريب أو تعديل للموديل. **بعد D74: توثيق رجعي اختياري، لم يعد يحجب تجربة تدريب جديدة (لا توجد).** | ⛔ (PREREGISTERED / NOT EXECUTED — NON-BLOCKING) |
 | **D74 — Pivot: LLM API يستبدل AraT5 لموديول Claim Decomposition** | تعديل نطاق قيد Zero-LLM-at-runtime (Claim Decomposition فقط)، بموافقة المشرف. Phase 8 (AraT5) مُغلَق بالتجاوز. يتطلب: system prompt + sanity gate ضد "تصحيح" الإجابات + full-pipeline evaluation. PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا. | ✅ التعديل مُعتمَد — ⛔ التنفيذ لم يبدأ |
+| **D75 — Codex-Assisted AraT5 Training Corpus Attempt** | محاولة توليد corpus بمساعدة Codex (1500 هدف)، توقفت عند 1050/1500، لم تصل لحالة معتمدة للتدريب؛ اتضح إن سبب الرفض الأساسي (52%) كان atomicity البنيوي في المهمة نفسها. مُغلقة بالتجاوز (D74)، موثّقة كدليل تاريخي في الأرشيف. | ✅ CLOSED — SUPERSEDED, EVIDENCE ARCHIVED |
+| **D76 — First End-to-End LLM Decomposition Call** | أول استدعاء فعلي لسلسلة .env → client.py → OpenRouter → DecompositionResult تحقّق منه بنجاح على مثال اختباري واحد؛ الجودة غير مُعتمَدة بعد، sanity gate لسه لم يُنفَّذ. | ✅ EXECUTION PASS — ⛔ QUALITY NOT YET VALIDATED |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -3585,6 +3609,8 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 ---
 
 ## سجل التغييرات 
+- **v2.39 (21 يوليو 2026):** تصحيح فجوة توثيقية: قسم D75 (Codex-Assisted AraT5 Training Corpus Attempt) كان موجودًا بالفعل في محتوى الملف من جلسة سابقة، لكنه لم يُدرَج في جدول البنود المفتوحة ولا في سجل التغييرات ولا في رقم الإصدار/العنوان. تم تصحيح ذلك بأثر رجعي: إضافة صف D75 لجدول القسم الثالث، وتحديث العنوان الرئيسي.
+- **v2.40 (21 يوليو 2026):** إضافة **D76** — أول استدعاء end-to-end ناجح لموديول LLM Decomposition (D74)، مع رصد ملاحظة atomicity مفتوحة وتوثيق تبرير تجريبي لبند الـ Fallback المفتوح في D74. راجع نص D76 الكامل في متن الملف.
 - **v2.38 (21 يوليو 2026):** إضافة **D74** — pivot معماري: تعديل نطاق قيد Zero-LLM-at-runtime ليستثني موديول Claim Decomposition فقط (باقي الـ pipeline غير متأثر)، بموافقة المشرف، مبني على أدلة D65–D72 (فجوة تعميم AraT5: LCS F1 0.507→0.189، claim-count exact 33%→8%، Latin recall 36%→18%) وندرة بيانات عربية للتدريب. استبدال AraT5 كاملًا بـ LLM API (مثال: Qwen عبر OpenRouter) لموديول Claim Decomposition وقت التشغيل. Phase 8 مُغلَق بالتجاوز (SUPERSEDED). **Q6 مُغلَق بالتجاوز — غير محسوم تجريبيًا.** D73 يتحوّل لتوثيق رجعي اختياري غير حاجز. قيود إلزامية: (1) prompt لا يعدّل صحة إجابة المستخدم، (2) sanity gate على N حالات بأخطاء متعمدة قبل أي دمج. **RISK ACCEPTED (بنمط D33):** لا مقارنة مكوّن معزولة قبل الدمج؛ القياس مؤجَّل لـ full-pipeline run مع تحذير confounding صريح (LLM decomposition + NLI thresholds غير المعايرة + BGE-M3 chunk cap يتغيرون معًا). PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (خارج نطاق هذا الملف). Fallback (caching/موديل احتياطي) لا يزال بند مفتوح.
 - **v2.37 (20 يوليو 2026):** إغلاق **D72** بنتيجة `EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE` اعتمادًا على `v6-authoritative-gold-context-parser`: validation LCS F1=`0.5071960304` وclaim-count exact=`0.3333333333`؛ O9 LCS F1=`0.1892490644` وclaim-count exact=`0.08` وmean absolute claim-count error=`2.8` وrepetition rate=`0.24`؛ ASR/original Latin recall=`0.1812590984`/`0.3610519332`. checkpoint D71 غير معتمد للـruntime. تسجيل أن رفض الجودة حكم هندسي post-hoc لغياب numerical thresholds مسجّلة مسبقًا في D72. إضافة **D73** كتسجيل مسبق لتحليل أخطاء كل predictions الـ91 في `d72_examples.csv` عبر تسع فئات مع العدد والنسبة والأمثلة، وحظر تحديد تجربة تدريب جديدة قبل اكتماله.
 - **v2.36 (20 يوليو 2026):** إغلاق **D71** بنتيجة `EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED`: اكتمل Full fine-tuning بـfloat32 على Tesla T4 واحدة وبدون LoRA، على split 378/66؛ أفضل checkpoint هو `checkpoint-543` عند `eval_loss=2.205347776412964` وepoch `22.9841269841`، وتوقف early stopping عند step 732 / epoch `30.9841269841`. نُشر Kaggle Model `hashemili/interview-iq-d71-arat5-paired-ft`، variation `paired-corpus-full-ft`، Version 1. إضافة **D72** كتسجيل مسبق لتقييم جودة deterministic على 66 validation example و25 O9 held-out، من Kaggle Model فقط دون fallback أو training، مع مقاييس الجودة واتساق original/ASR وحفظ JSON/CSV/Markdown/ZIP؛ نجاح التنفيذ لا يعني `QUALITY PASS` تلقائيًا.
