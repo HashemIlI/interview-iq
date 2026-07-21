@@ -1,0 +1,88 @@
+{
+  "_meta": {
+    "purpose": "D74 mandatory sanity gate fixtures — verifies the LLM decomposition module (src/interview_iq/decomposition_llm/client.py) does NOT correct wrong/incomplete candidate answers and does NOT add unauthorized information.",
+    "decision_ref": "D77 (decisions.md)",
+    "source": "Manually authored for this gate only. NOT drawn from O9, the training corpus, or any tracked dataset — contamination-avoidance, same principle as D76.",
+    "verdict_columns_to_fill_by_human_reviewer": [
+      "error_preserved (YES/NO)",
+      "no_unauthorized_addition (YES/NO)",
+      "atomicity_verdict (ATOMIC/NON_ATOMIC/AMBIGUOUS)"
+    ],
+    "gate_pass_rule": "PASS only if ALL cases have error_preserved=YES AND no_unauthorized_addition=YES. atomicity_verdict is logged/tracked, non-blocking (per D77).",
+    "created": "2026-07-21"
+  },
+  "cases": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": ["heap", "LIFO", "function calls", "recursion"],
+      "latin_terms_note": "مكتوبة هنا بحروف عربية (هيب، لايفو) في الإدخال — بتختبر التحويل الفعلي لحروف لاتينية، مش بس الحفاظ."
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": ["process", "thread", "memory"],
+      "latin_terms_note": "مكتوبة بحروف عربية (بروسيس، ثريد، ميموري) في الإدخال — تختبر التحويل."
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": ["overfitting", "patterns"],
+      "latin_terms_note": "overfitting مكتوبة عربي (أوفرفيتينج) في الإدخال — تختبر التحويل؛ patterns مكتوبة عربي (patterns بالانجليزي فعلا موجودة جزئيا هنا للتنويع)."
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": ["classification", "precision", "positive"],
+      "latin_terms_note": "الكلاسيفيكيشن/البريسيجن/بوزيتيف مكتوبة عربي في الإدخال — تختبر التحويل. recall غير موجود في الإدخال أصلًا ولازم يفضل غير موجود في الإخراج."
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": ["Normalization", "Standardization"],
+      "latin_terms_note": "مكتوبة لاتيني في الإدخال أصلًا — تختبر الحفاظ (مش التحويل) على المصطلحات الصحيحة شكليًا رغم إن المحتوى الدلالي غلط."
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": ["SQL", "INNER JOIN", "Orders", "Customers"],
+      "latin_terms_note": "INNER JOIN/SQL/Orders/Customers لاتيني في الإدخال أصلًا؛ الجوين/كستمر مكتوبة عربي — مزيج مقصود لاختبار الحفاظ والتحويل مع بعض."
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": ["Git", "merge", "rebase", "branches", "commit history", "conflicts"],
+      "latin_terms_note": "كل المصطلحات مكتوبة بحروف عربية (الميرج، الريبيز، الجيت، البرانشز، الكوميت هيستوري، الكونفليكتس) — اختبار تحويل مكثف على حالة واحدة."
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": ["HTTP", "HTTPS"],
+      "latin_terms_note": "HTTP/HTTPS لاتيني في الإدخال أصلًا؛ 'ثمانين' مكتوبة كلمة عربية للرقم — تختبر إن الموديل هيحطها كرقم (80) في الـ claim ولا هيسيبها نص، وده مش اختبار hard constraint من D74 بس ملاحظة جانبية مفيدة."
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "run_timestamp_utc": "20260721T092636Z",
+    "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+    "git_commit": "ea34b36c4f5a18ff4d43d89fe13eef7e7823793f",
+    "n_cases": 8,
+    "n_success": 7,
+    "n_error": 1
+  },
+  "records": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": [
+        "heap",
+        "LIFO",
+        "function calls",
+        "recursion"
+      ],
+      "input_answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:26:36.569131+00:00",
+      "execution_status": "UNEXPECTED_ERROR",
+      "claims": null,
+      "error_message": "JSONDecodeError: Expecting value: line 1587 column 1 (char 8723)",
+      "elapsed_seconds": 333.907,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": [
+        "process",
+        "thread",
+        "memory"
+      ],
+      "input_answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:32:10.475924+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الفرق بين process والخيط هو أن كل process لها memory منفصلة عن باقي العمليات"
+      ],
+      "error_message": null,
+      "elapsed_seconds": 16.203,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "overfitting",
+        "patterns"
+      ],
+      "input_answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:32:26.678563+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "overfitting يحدث عندما يكون الموديل بسيطًا جدًا.",
+        "الموديل لا يستطيع أن يمسك الـ patterns اللي في data.",
+        "الـ overfitting يؤدي إلى أداء ضعيف."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 30.375,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": [
+        "classification",
+        "precision",
+        "positive"
+      ],
+      "input_answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:32:57.051028+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "عندما نقيّم classification model نظر إلى الـ precision",
+        "الـ precision هي عدد التنبؤات الصحيحة من إجمالي التنبؤات التي صُنفت إيجابية",
+        "الـ precision هو أهم مقياس لمعرفة ما إذا كان classification model يعمل بشكل جيد أم لا"
+      ],
+      "error_message": null,
+      "elapsed_seconds": 76.797,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "Normalization",
+        "Standardization"
+      ],
+      "input_answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:34:13.859299+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ Normalization تحول البيانات لتصبح المتوسط صفرًا.",
+        "الـ Normalization تحول البيانات لتصبح الانحراف المعياري مساويًا واحدًا.",
+        "الـ Standardization تحول القيم لتتراوح بين صفر وواحد."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 13.984,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": [
+        "SQL",
+        "INNER JOIN",
+        "Orders",
+        "Customers"
+      ],
+      "input_answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:34:27.832572+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "في SQL عندما نستخدم INNER JOIN بين جدولين يُستخرج فقط الصفوف التي تتطابق في العمود المستخدم للجOIN.",
+        "مثال على ذلك إذا كان لدينا جدول Orders وجدول Customers فإن INNER JOIN يُستخرج فقط الطلبات التي لديها عميل موجود بالفعل."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 31.125,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": [
+        "Git",
+        "merge",
+        "rebase",
+        "branches",
+        "commit history",
+        "conflicts"
+      ],
+      "input_answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:34:58.963441+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الفرق بين الميرج والريبيز في الجيت",
+        "الريبيز يدمج الفروع بدون تغيير الكوميت هيستوري خالص",
+        "الريبيز أأمن دايماً من الميرج",
+        "لا يوجد داعي للحديث عن الكونفليكتس",
+        "الجيت يحلها لوحده"
+      ],
+      "error_message": null,
+      "elapsed_seconds": 47.656,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "input_answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "model_used": "nvidia/nemotron-3-nano-30b-a3b:free",
+      "timestamp_utc": "2026-07-21T09:35:46.626655+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "HTTPS هو نسخة أسرع من HTTP.",
+        "HTTPS يستخدم نفس البورت 80.",
+        "HTTPS يعمل بنفس الطريقة تمامًا دون أي تشفير إضافي."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 20.672,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    }
+  ]
+}
