@@ -502,6 +502,8 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 - Read-only diagnostic: does not modify O9, key_points, or any production code.
 - Execution environment: Kaggle T4 thin-runner (standing environment decision as of 21 Jul 2026 — all test/experiment execution moves to Kaggle notebooks, not local cmd.exe, going forward for all future work, not just this experiment).
 
+**Addendum — two-arm protocol (added before execution, same registration):** the decomposition step (`cohere/north-mini-code:free`) runs once per O9 answer. The resulting claims are then run through **both** NLI arms — zero-shot base model and the fine-tuned adapter (`iq-checkpoints-nli-v1`) — same code path, matching the D40/D46/D49 convention of comparing both arms. Coverage scores are logged separately per arm, not merged. This directly tests D42-b/D46-C's prediction (the adapter's Coverage may be worse than zero-shot's due to the learned-neutral shift from HARD_POS twins) on real claims for the first time — previously only tested claim-free in D46/D49.
+
 ---
 
 ## Section 4 — Open Items
