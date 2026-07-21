@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D72)
-**الإصدار:** v2.36 — 20 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D74)
+**الإصدار:** v2.38 — 21 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -3387,7 +3387,7 @@ Later sequence:
 
 ## D72 — Deterministic Quality Evaluation Pre-Registration for D71
 
-**الحالة:** ⛔ مسجّل مسبقًا — `PREREGISTERED / NOT EXECUTED`.
+**الحالة:** ✅ `EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE`.
 
 مصدر الموديل:
 
@@ -3432,6 +3432,120 @@ Later sequence:
 يصدر من نتائج المقاييس الفعلية.
 
 
+النتيجة الفعلية المعتمدة:
+
+- مصدر النتيجة المعتمد: `v6-authoritative-gold-context-parser`.
+- validation LCS F1: `0.5071960304`.
+- validation claim-count exact: `0.3333333333`.
+- O9 LCS F1: `0.1892490644`.
+- O9 claim-count exact: `0.08`.
+- O9 mean absolute claim-count error: `2.8`.
+- O9 repetition rate: `0.24`.
+- ASR Latin recall: `0.1812590984`.
+- original Latin recall: `0.3610519332`.
+- current D71 checkpoint غير معتمد للـruntime.
+
+الحكم:
+
+`EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE`.
+اكتمل التنفيذ وحُسبت المقاييس، لكن جودة checkpoint D71 مرفوضة هندسيًا
+لاستخدام claim decomposition. هذا الحكم `post-hoc` لأن D72 لم تسجّل
+numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه اجتيازًا أو
+فشلًا لعتبات مسجّلة مسبقًا.
+
+
+## D73 — Exhaustive D72 Prediction Error Analysis Pre-Registration
+
+**الحالة:** ⛔ مسجّل مسبقًا — `PREREGISTERED / NOT EXECUTED`.
+
+الهدف:
+
+تحليل أخطاء جميع predictions الـ91 الموجودة في `d72_examples.csv`،
+بدون تدريب أو تعديل للموديل.
+
+تصنيف الأخطاء المطلوب:
+
+- hallucination.
+- semantic substitution.
+- Latin-term corruption.
+- repetition/degeneration.
+- under-decomposition.
+- over-decomposition.
+- invalid numbering.
+- original/ASR divergence.
+- generation-length cap.
+
+المخرجات المطلوبة لكل فئة:
+
+- العدد.
+- النسبة من predictions الـ91.
+- أمثلة ممثلة.
+
+لا يُسمح بتحديد تجربة تدريب جديدة قبل اكتمال D73.
+
+**إضافة لاحقة (21 يوليو 2026 — انظر D74):** الحظر أعلاه كان يخص تحديد **تجربة AraT5 تدريبية جديدة**. بعد D74، لا توجد تجربة AraT5 تدريبية قادمة (استبدال كامل لا تحسين تدريجي)، فالحظر **لم يعد ساريًا بصيغته الأصلية**. تنفيذ D73 نفسه يبقى **مسموحًا وموصى به كتوثيق رجعي** (توثيق سبب التحول لمناقشة التخرج) لكنه أصبح **غير حاجز (non-blocking)** لأي بند لاحق.
+
+## D74 — Pivot: تعديل نطاق قيد Zero-LLM-at-Runtime (Claim Decomposition فقط) + استبدال AraT5 الكامل بـ LLM API
+
+**الحالة:** ✅ التعديل المعماري مُعتمَد من المشرف (الدكتور) — ⛔ التنفيذ لم يبدأ (لا system prompt مُختبَر، لا sanity gate مُنفَّذ، لا full-pipeline run).
+
+**القيد القديم (كان معرَّفًا عبر D55 وPROJECT_EXECUTION_PLAN.md:21):**
+> "يسمح PROJECT_EXECUTION_PLAN.md:21 باستخدام LLM في مرحلة إعداد البيانات (offline data preparation) فقط، مع مراجعة بشرية إلزامية قبل اعتماد أي مثال. ولا يُستخدم LLM أثناء التشغيل (runtime)."
+
+**القيد الجديد:** يُستثنى **موديول Claim Decomposition حصريًا** من حظر الـ runtime. يُسمح له باستدعاء LLM API خارجي (مثال: Qwen عبر OpenRouter، free tier) **كاستبدال كامل** لـ AraT5-base fine-tuning، وقت التشغيل الفعلي.
+
+**النطاق (Scope) — محدود صراحةً:**
+- **متأثر:** Claim Decomposition فقط.
+- **غير متأثر ولا يمس:** NLI Dual-Channel Scoring (mDeBERTa-v3 + LoRA — يبقى محليًا كما هو، مُختبَر ومُقفَل)، BGE-M3 chunk cap، ASR. قيد Zero-LLM-at-runtime **يبقى ساريًا بكامل قوته** على باقي الـ pipeline.
+- **إجراء مطلوب خارج هذا الملف:** PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (هذا الملف لا يُحدِّثه تلقائيًا). النص المقترح للاستبدال:
+  - القديم: "ولا يُستخدم LLM أثناء التشغيل (runtime)."
+  - الجديد: "ولا يُستخدم LLM أثناء التشغيل (runtime)، **باستثناء موديول Claim Decomposition — انظر D74 في decisions.md**."
+
+**الأساس المسجَّل (السبب):**
+1. أدلة تجريبية من D65–D72: فجوة تعميم حادة بين validation وO9 (LCS F1: 0.507→0.189؛ claim-count exact: 33%→8%؛ mean absolute claim-count error على O9 = 2.8؛ Latin recall: 36%→18% على النسخة المحاذاة لـ ASR). محاولتا إصلاح PEFT (D66) لم تنتجا repair candidate لا لـ AraT5 ولا لـ mT5.
+2. ندرة بيانات عربية كافية لـ fine-tuning موثوقة (189 unique question ID فقط، مضاعَفة إلى 378 عبر original/ASR بلا تنوع معرفي حقيقي — موثَّق في نقد خطة D73/GPT).
+3. موافقة صريحة من المشرف على التحول، بناءً على توقّع دقة أعلى من LLM عام الأغراض في وضع شحيح البيانات. **[بند مفتوح: تاريخ/محضر موافقة الدكتور مكتوب — يُضاف هنا لاحقًا لأغراض توثيق المناقشة].**
+
+**أثر على القرارات الأخرى:**
+- **Phase 8 (AraT5 fine-tuning):** ✅ CLOSED — SUPERSEDED (ليست فاشلة بلا قيمة؛ التوثيق الرجعي عبر D73 يُحسب كمجهود موثَّق في رحلة المشروع).
+- **Q6 (AraT5 vs mT5-base):** ✅ CLOSED BY PIVOT. **تنصيص صريح:** هذا **لا يحسم** السؤال الأصلي (أيهما أفضل بين AraT5 وmT5) بأي دليل تجريبي — القرار يتجاوز (supersedes) كلا الخيارين معًا، ولا يُقرأ كإجابة ضمنية عن Q6.
+- **D73:** يتحوّل من gate حاجز إلى توثيق رجعي اختياري (انظر الإضافة أعلاه).
+
+**القيد الإلزامي على الـ prompt (غير قابل للتفاوض):** الـ LLM يُمنع من تعديل أو "تصحيح" صحة إجابة المستخدم. المهام المسموحة حصرًا: (أ) تطبيع عامية→فصحى مبسّطة، (ب) تفكيك إلى claims، (ج) الحفاظ على المصطلحات الإنجليزية بحروف لاتينية دون ترجمة أو تصحيح. أي معلومة غير موجودة في إجابة المستخدم الأصلية لا تُضاف.
+
+**بوابة تحقق إلزامية قبل الدمج (Sanity Gate — ليست دراسة أداء، بل شرط صحة):**
+- عيّنة N (5–10) إجابات فيها أخطاء تقنية متعمدة أو نواقص واضحة.
+- التحقق: الـ claims الناتجة **تحافظ على نفس الخطأ/النقص**، ولا "تصحّحه" الموديل ضمنيًا.
+- **السبب:** لو صحّح الموديل الإجابات الخاطئة، محرك NLI scoring بالكامل يصبح دائريًا وباطلًا (يقيس إجابة مُعدَّلة لا إجابة المستخدم الحقيقية) — هذا يمس صحة "Answer Correctness Evaluation" ذاتها، الهدف الوحيد للمشروع.
+- بلا هذه البوابة، لا اعتماد لأي مخرج LLM في الـ pipeline.
+
+**المخاطرة المقبولة (RISK ACCEPTED — بنمط D33):**
+- **لا مقارنة معزولة على مستوى المكوّن (LLM decomposition مقابل AraT5 baseline على نفس عيّنة O9) قبل الدمج.** القياس مؤجَّل عمدًا إلى تشغيل الـ full pipeline بالكامل.
+- **الحد (Limitation) الواجب توثيقه صراحةً:** عند تشغيل الـ full pipeline، ثلاثة متغيرات غير مُثبَّتة تتغيّر معًا: جودة LLM decomposition (غير مقيسة بمعزل)، عتبات NLI (لا تزال PRE-CALIBRATION DEFAULT غير معايرة — G4 لم يُنفَّذ)، وسلوك BGE-M3 chunk cap. **أي نتيجة نهائية ضعيفة لا يمكن عزو سببها لمكوّن واحد بثقة** دون تجربة تعزل المتغيرات لاحقًا إن لزم.
+
+**بند مفتوح (Fallback):** ⛔ غير محسوم — يحتاج أحمد يحدد: caching للنتائج المستخدمة في التقييم النهائي/الـ demo (بدل live call وقت المناقشة)، أو موديل احتياطي ثانٍ عند فشل الـ API/rate limit. يُقفَل قبل أي demo أو full-pipeline run نهائي.
+
+## D75 — Codex-Assisted AraT5 Training Corpus Attempt (1500-target): Evidence and Closure
+
+**Status:** CLOSED — SUPERSEDED BY D74. Never reached training-approved state.
+
+**Process note (documented, not concealed):** This corpus-generation attempt (results/decomposition_corpus_v2_codex_1500/, scripts/generate_decomposition_corpus_v2_codex_1500.py, and related decomposition/corpus_v2_codex.py, decomposition/pilot_v2.py) was run without prior D## pre-registration and was never committed to git (git log and git ls-files both empty for these paths). This is a pre-registration discipline violation, logged explicitly per project convention rather than silently absorbed.
+
+**Timeline:** Supervisor approval for the D74 LLM-API pivot was obtained BEFORE this attempt. Ahmed ran this corpus attempt afterward as a final independent effort to see if a larger synthetic corpus could rescue the AraT5 approach, before proceeding with the already-approved pivot. It did not cause or precede the supervisor's approval.
+
+**Evidence (from corpus_v2_codex_1500_manifest.json and corpus_v2_codex_1500_rejected.jsonl):**
+- status: INCOMPLETE_RESUMABLE; review_status: DRAFT_UNREVIEWED; provenance: SYNTHETIC; training_approval: NOT TRAINING-APPROVED.
+- target 1500 records (222 eligible question_ids × 6 base cases + 168 bonus long_noisy_multi_claim cases); completed_record_count 1050 (70%) across shards 1–7; shard 8 never assembled.
+- rejected.jsonl: 229 total rejections. Reason distribution: NON_ATOMIC_CLAIM 76 + NON_ATOMIC_CLAIMS 43 = 119 (~52%, dominant failure mode); NON_SELF_CONTAINED_CLAIM 12; MISSING_PROPOSITION 11; CASE_MISMATCH 11; UNSUPPORTED_PROPOSITION 7; remaining term_corruption_* entries are mostly a punctuation mark fused to a Latin token (a normalization artifact, not a semantic content defect).
+
+**Interpretation:** The dominant failure mode was claim-atomicity, a structural/format difficulty in the decomposition task itself — not primarily semantic incompetence or Arabic-language incapability. This generalizes beyond AraT5/Codex specifically.
+
+**Forward-looking implication for D74:** The mandatory sanity gate in D74 (verifying the runtime LLM does not alter answer correctness) should be extended to also spot-check claim atomicity on a small sample, since this is a demonstrated structural risk independent of which model performs the decomposition.
+
+**Disposition:** Superseded by D74. Retained as archived historical evidence, not deleted — see archive/phase8_arat5_superseded/.
+
+**Addendum — O9 integrity check (21 Jul 2026):** An uncommitted, unexplained working-tree modification to results/o9_decomposition_exercises.md (affecting the SE-007 answer text) was found during this session's git status review. Per the O9 immutability principle (D51/D52, same standard as P48 for the NLI Gold Set), it was NOT silently kept or applied — the diff was preserved at archive/phase8_arat5_superseded/o9_uncommitted_change_2026-07-21.patch for reference, and the file was reverted to its last committed (HEAD) state via git checkout. Origin of the modification is unknown (possibly Codex). If a genuine data issue in SE-007 is confirmed later, it must go through a registered decision, not a silent edit.
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -3449,7 +3563,7 @@ Later sequence:
 | **D46 — نتيجة الفحص التشخيصي** | القاعدة مسجَّلة ومُلتزَمة. **التشغيل تم والنتيجة صدرت — انظر D49.** | ✅ (مُقفَلة) |
 | **Q8 — هشاشة قناة الـ Coverage** | أُعيدت صياغتها في D42. الرقم 0.002 مسحوب. **القياس على claims حقيقية مؤجَّل لما بعد Phase 8 (D44).** الفحص التشخيصي مسموح (D46). **لا نقاش علاج قبل رقم مقيس.** | ⛔ (نشطة) |
 | **Q2 — توثيق مراجعة الـ 250 مستندًا** | metadata "AI-generated, pending expert review" مُبقاة عمدًا. **مطلوب تثبيته كقرار مرقّم قبل التسليم.** يشمل فحص **SE-006** والمستندات الثلاثة ذات 5 key points (D42). | ⛔ |
-| **Q6 — AraT5 vs mT5-base** | فشل ذراعا D66 في بوابات الإصلاح؛ لا يوجد repair candidate، ويبقى الاختيار مفتوحًا حتى إصلاح corpus وعقد training-serving وإصدارهما. | ⛔ (OPEN — D66 NO REPAIR CANDIDATE) |
+| **Q6 — AraT5 vs mT5-base** | فشل ذراعا D66 في بوابات الإصلاح. **مُغلَق بالتجاوز (D74):** الاستبدال الكامل بـ LLM API يتجاوز كلا الخيارين — **لا يحسم** أيهما كان أفضل بدليل تجريبي. | ✅ (CLOSED BY PIVOT — D74، ليس محسومًا تجريبيًا) |
 | **D63 — Five-Example Trainer-Path Diagnostic** | نجح mini-corpus في `5/5` exact token match عند step 400؛ padding audit PASS. | ✅ (مُغلقة) |
 | **D64 — Sanitized Full-Corpus Retraining** | اكتمل التدريب، best checkpoint عند step 617 وeval loss 1.750646؛ التنفيذ PASS والجودة غير معتمدة. | ✅ (EXECUTION PASS) |
 | **D65 — Validation/O9 Generation Audit** | اكتمل تقييم 58 حالة؛ التنفيذ PASS والجودة FAIL مع إطلاق CONTENT/FORMAT/LENGTH/REPETITION. | ✅ (EXECUTION PASS / QUALITY FAIL) |
@@ -3459,7 +3573,9 @@ Later sequence:
 | **D69 — Gold Corpus v2 Target Repair** | إنشاء Gold v2 منفصل بإصلاح targets فقط: unsupported additions الثلاثة، atomicity keys الـ24، وself-containment flags الـ273 عبر passين منفصلين، مع إبقاء source answers المصرية الـ222 byte-for-byte دون تغيير. | ⛔ (PREREGISTERED / NOT EXECUTED) |
 | **D70 — Paired Original/ASR-Aligned Corpus Variants** | تجهيز 444 example من 222 question ID كنسختين paired، مع split على `question_id` وclaims-match guard ونجاح tokenizer smoke test. | ✅ (DATASET PIPELINE PASS) |
 | **D71 — Paired-Corpus AraT5 Full Fine-Tuning** | اكتمل Full fine-tuning بـfloat32 على Tesla T4 واحدة؛ أفضل checkpoint هو `checkpoint-543` عند `eval_loss=2.205347776412964`، ونُشر كـKaggle Model Version 1. | ✅ (EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED) |
-| **D72 — Deterministic D71 Quality Evaluation** | تقييم حتمي لـ66 validation example و25 O9 held-out من Kaggle Model المنشور فقط، مع قياس الجودة واتساق original/ASR وحفظ JSON/CSV/Markdown/ZIP. | ⛔ (PREREGISTERED / NOT EXECUTED) |
+| **D72 — Deterministic D71 Quality Evaluation** | اكتمل تقييم 66 validation example و25 O9 held-out؛ المقاييس صالحة، لكن جودة checkpoint D71 مرفوضة هندسيًا لاستخدام claim decomposition، مع عدم وجود numerical thresholds مسجّلة مسبقًا. | ✅ (EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE) |
+| **D73 — Exhaustive D72 Prediction Error Analysis** | تحليل جميع predictions الـ91 في `d72_examples.csv` وتصنيف تسع فئات أخطاء مع العدد والنسبة والأمثلة، دون تدريب أو تعديل للموديل. **بعد D74: توثيق رجعي اختياري، لم يعد يحجب تجربة تدريب جديدة (لا توجد).** | ⛔ (PREREGISTERED / NOT EXECUTED — NON-BLOCKING) |
+| **D74 — Pivot: LLM API يستبدل AraT5 لموديول Claim Decomposition** | تعديل نطاق قيد Zero-LLM-at-runtime (Claim Decomposition فقط)، بموافقة المشرف. Phase 8 (AraT5) مُغلَق بالتجاوز. يتطلب: system prompt + sanity gate ضد "تصحيح" الإجابات + full-pipeline evaluation. PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا. | ✅ التعديل مُعتمَد — ⛔ التنفيذ لم يبدأ |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -3469,6 +3585,8 @@ Later sequence:
 ---
 
 ## سجل التغييرات 
+- **v2.38 (21 يوليو 2026):** إضافة **D74** — pivot معماري: تعديل نطاق قيد Zero-LLM-at-runtime ليستثني موديول Claim Decomposition فقط (باقي الـ pipeline غير متأثر)، بموافقة المشرف، مبني على أدلة D65–D72 (فجوة تعميم AraT5: LCS F1 0.507→0.189، claim-count exact 33%→8%، Latin recall 36%→18%) وندرة بيانات عربية للتدريب. استبدال AraT5 كاملًا بـ LLM API (مثال: Qwen عبر OpenRouter) لموديول Claim Decomposition وقت التشغيل. Phase 8 مُغلَق بالتجاوز (SUPERSEDED). **Q6 مُغلَق بالتجاوز — غير محسوم تجريبيًا.** D73 يتحوّل لتوثيق رجعي اختياري غير حاجز. قيود إلزامية: (1) prompt لا يعدّل صحة إجابة المستخدم، (2) sanity gate على N حالات بأخطاء متعمدة قبل أي دمج. **RISK ACCEPTED (بنمط D33):** لا مقارنة مكوّن معزولة قبل الدمج؛ القياس مؤجَّل لـ full-pipeline run مع تحذير confounding صريح (LLM decomposition + NLI thresholds غير المعايرة + BGE-M3 chunk cap يتغيرون معًا). PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (خارج نطاق هذا الملف). Fallback (caching/موديل احتياطي) لا يزال بند مفتوح.
+- **v2.37 (20 يوليو 2026):** إغلاق **D72** بنتيجة `EXECUTION/METRICS PASS — QUALITY REJECTED FOR CLAIM DECOMPOSITION USE` اعتمادًا على `v6-authoritative-gold-context-parser`: validation LCS F1=`0.5071960304` وclaim-count exact=`0.3333333333`؛ O9 LCS F1=`0.1892490644` وclaim-count exact=`0.08` وmean absolute claim-count error=`2.8` وrepetition rate=`0.24`؛ ASR/original Latin recall=`0.1812590984`/`0.3610519332`. checkpoint D71 غير معتمد للـruntime. تسجيل أن رفض الجودة حكم هندسي post-hoc لغياب numerical thresholds مسجّلة مسبقًا في D72. إضافة **D73** كتسجيل مسبق لتحليل أخطاء كل predictions الـ91 في `d72_examples.csv` عبر تسع فئات مع العدد والنسبة والأمثلة، وحظر تحديد تجربة تدريب جديدة قبل اكتماله.
 - **v2.36 (20 يوليو 2026):** إغلاق **D71** بنتيجة `EXECUTION/CHECKPOINT PASS — QUALITY NOT YET EVALUATED`: اكتمل Full fine-tuning بـfloat32 على Tesla T4 واحدة وبدون LoRA، على split 378/66؛ أفضل checkpoint هو `checkpoint-543` عند `eval_loss=2.205347776412964` وepoch `22.9841269841`، وتوقف early stopping عند step 732 / epoch `30.9841269841`. نُشر Kaggle Model `hashemili/interview-iq-d71-arat5-paired-ft`، variation `paired-corpus-full-ft`، Version 1. إضافة **D72** كتسجيل مسبق لتقييم جودة deterministic على 66 validation example و25 O9 held-out، من Kaggle Model فقط دون fallback أو training، مع مقاييس الجودة واتساق original/ASR وحفظ JSON/CSV/Markdown/ZIP؛ نجاح التنفيذ لا يعني `QUALITY PASS` تلقائيًا.
 - **v2.35 (20 يوليو 2026):** إضافة **D71** كتسجيل مسبق لـfull fine-tuning من base `UBC-NLP/AraT5-base` جديد على paired corpus الخاص بـD70 عند Git baseline `5c5b1e6`: 444 example و222 `question_id`، split مجمّع 378/66 بـ`seed=42`، مع فصل O9 واستبعاد `GN-050` من النسختين، وبدون LoRA أو checkpoint قديم وعلى GPU واحد فقط. تثبيت أن نجاح التشغيل وحفظ checkpoint يعنيان `EXECUTION/CHECKPOINT PASS` لا `QUALITY PASS`، مع اشتراط checkpoint وJSON يسجل environment وGit HEAD والأعداد وtraining/eval history وbest checkpoint.
 - **v2.34 (20 يوليو 2026):** إضافة **D70** لتوثيق إدخال نسختي `original` و`asr_aligned` معًا كـpaired input variants: 444 example من 222 `question_id`، و`example_id` بلاحقتي `__original`/`__asr`، وتقسيم مجمّع على `question_id` نتج عنه 378 train و66 validation وصفر overlap. تثبيت تطابق الـClaims حرفيًا مع guard يرفع `ValueError` عند الاختلاف، واستبعاد `GN-050` من النسختين، ونجاح tokenizer الحقيقي لـ`UBC-NLP/AraT5-base` في إنتاج `input_ids` و`attention_mask` و`labels` للنسختين. نجحت اختبارات المشروع كاملة (149 passed). القرار خاص بتجهيز corpus ولا يثبت جودة الموديل بعد التدريب.
