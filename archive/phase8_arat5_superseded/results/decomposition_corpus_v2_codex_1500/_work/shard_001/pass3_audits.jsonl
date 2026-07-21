@@ -1,0 +1,150 @@
+{"answer_case_id":"CS-001-A01","verdict":"PASS","issue_codes":[],"notes":"الإجابة والادعاءات مكتملة ومتطابقة مع الحالة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-001-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-001-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-001-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-001-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-001-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-001-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تغطي الإجابة المطولة دون تغيير جوهري للمعنى.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-002-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-002-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-002-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-002-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-002-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-002-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-003-A07","verdict":"PASS","issue_codes":[],"notes":"الأنواع والخصائص الواردة في الإجابة ممثلة بصورة سليمة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-004-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-004-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A01","verdict":"PASS","issue_codes":[],"notes":"الإجابة والادعاءات متسقتان وتغطيان الفرق والاستخدام الهجين.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-005-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-005-A07","verdict":"PASS","issue_codes":[],"notes":"لا يوجد فقد أو تحريف جوهري بين الإجابة والادعاءات.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-006-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-006-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-006-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-006-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-006-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-006-A06","verdict":"PASS","issue_codes":[],"notes":"الصياغة المنطوقة ونسخة ASR والادعاءات متوافقة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-006-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تمثل تفاصيل الإجابة المطولة تمثيلًا مناسبًا.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-007-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-007-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-007-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-007-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-007-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-007-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-008-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-009-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-010-A07","verdict":"PASS","issue_codes":[],"notes":"تسلسل المصافحة ومكوناتها محفوظان دون تغيير في المعنى.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-011-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-011-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-012-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-012-A02","verdict":"PASS","issue_codes":[],"notes":"الإجابة والـASR والمطالبات متسقة، وتغطي تعريف التصيد وأشكاله المذكورة دون تغيير في المعنى.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":4}
+{"answer_case_id":"CS-012-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-012-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-012-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-012-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-014-A07","verdict":"PASS","issue_codes":[],"notes":"الأنواع والآثار والدفاعات ممثلة ومتطابقة مع الإجابة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-015-A01","verdict":"PASS","issue_codes":[],"notes":"آلية CSRF ومثالها ودفاعاتها مغطاة بوضوح.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-015-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-015-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-015-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-015-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-015-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-015-A07","verdict":"PASS","issue_codes":[],"notes":"جميع المطالبات مدعومة وذاتية الاكتفاء، والـASR يحافظ على المعنى، والإجابة ملائمة لحالة long_noisy_multi_claim.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":4}
+{"answer_case_id":"CS-016-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-016-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-017-A01","verdict":"PASS","issue_codes":[],"notes":"التعريف ووسائل التنفيذ والحماية ممثلة بصورة متسقة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-017-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-017-A03","verdict":"PASS","issue_codes":[],"notes":"الإجابة الجزئية صحيحة ومتوافقة مع case_type.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-017-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-017-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ مقصود ومعقول ومطابق للحالة."}
+{"answer_case_id":"CS-017-A06","verdict":"PASS","issue_codes":[],"notes":"تعريف طبيعي ومتسق، والادعاءات تغطي مضمون الإجابة دون تحريف.","pipeline_repair_attempts":2}
+{"answer_case_id":"CS-017-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تغطي آلية الهجوم ووسائله ودفاعاته، وتتطابق مع الإجابة.","pipeline_repair_attempts":2}
+{"answer_case_id":"CS-018-A01","verdict":"PASS","issue_codes":[],"notes":"أنواع التخمين ووسائل المواجهة ممثلة دون نقص جوهري.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-018-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-018-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-018-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ المقصود في CAPTCHA محفوظ بوضوح."}
+{"answer_case_id":"CS-018-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ المقصود معقول ومطابق للإجابة."}
+{"answer_case_id":"CS-018-A06","verdict":"PASS","issue_codes":[],"notes":"الإجابة المنطوقة والادعاءات متطابقة دلاليًا.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-018-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تغطي الإجابة المطولة وتظل واضحة ومستقلة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-019-A01","verdict":"PASS","issue_codes":[],"notes":"التعريف والابتزاز المزدوج والوقاية والتعافي ممثلة بصورة سليمة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-019-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-019-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-019-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ المقصود محفوظ بوضوح، وبقية الادعاءات متطابقة مع الإجابة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-019-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ المقصود واضح ومعقول."}
+{"answer_case_id":"CS-019-A06","verdict":"PASS","issue_codes":[],"notes":"الادعاءات مكتملة، مستقلة، ومتطابقة مع الإجابة المنطوقة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-019-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات ذاتية الاكتفاء ومتوافقة مع الإجابة، ومحاكاة ASR حافظت على المعنى.","pipeline_repair_attempts":2}
+{"answer_case_id":"CS-020-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-020-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-020-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-020-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ المقصود حول الانتشار اليدوي للدودة محفوظ."}
+{"answer_case_id":"CS-020-A05","verdict":"PASS","issue_codes":[],"notes":"الخلط المقصود بين Worm وBackdoor معقول ومطابق للحالة."}
+{"answer_case_id":"CS-020-A06","verdict":"PASS","issue_codes":[],"notes":"الفروق بين Virus وWorm وTrojan مستخرجة بدقة دون تغيير المعنى.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-020-A07","verdict":"PASS","issue_codes":[],"notes":"الفروق بين Virus وWorm وTrojan ممثلة بدقة، ولا توجد فجوات أو تكرارات جوهرية.","pipeline_repair_attempts":2}
+{"answer_case_id":"CS-021-A01","verdict":"PASS","issue_codes":[],"notes":"تغطية صحيحة ومتكاملة للتعريف والخطورة ووسائل الحد من الأثر.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-021-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-021-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-021-A04","verdict":"PASS","issue_codes":[],"notes":"التفسير الحرفي الخاطئ للاسم مقصود وواضح."}
+{"answer_case_id":"CS-021-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ المقصود معقول ومطابق للإجابة."}
+{"answer_case_id":"CS-021-A06","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تطابق الإجابة وتحافظ على صياغتها الطبيعية ومعناها.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-021-A07","verdict":"PASS","issue_codes":[],"notes":"جميع التفاصيل الجوهرية ممثلة دون تكرار أو تحريف واضح.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-022-A01","verdict":"PASS","issue_codes":[],"notes":"التعريف والأمثلة وإجراءات المواجهة ممثلة بصورة مكتملة ومتطابقة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-022-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-022-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-022-A04","verdict":"PASS","issue_codes":[],"notes":"تعريف Tailgating الخاطئ مقصود ومطابق للحالة."}
+{"answer_case_id":"CS-022-A05","verdict":"PASS","issue_codes":[],"notes":"اشتراط Malware مفهوم خاطئ معقول ومقصود."}
+{"answer_case_id":"CS-022-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-022-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تغطي أساليب التلاعب والأمثلة والإجراءات دون تغيير المعنى.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-023-A01","verdict":"PASS","issue_codes":[],"notes":"المراحل والتصريح والتقرير النهائي مستخرجة بصورة سليمة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-023-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-023-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"CS-023-A04","verdict":"PASS","issue_codes":[],"notes":"الترتيب الخاطئ للتقرير مقصود وواضح."}
+{"answer_case_id":"CS-023-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ حول الاستغناء عن التصريح معقول ومطابق للحالة."}
+{"answer_case_id":"CS-023-A06","verdict":"PASS","issue_codes":[],"notes":"الادعاءات مكتملة ومتسقة مع الإجابة واللهجة المطلوبة.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-023-A07","verdict":"PASS","issue_codes":[],"notes":"التفاصيل الإضافية في الإجابة ممثلة، ولا يوجد فقد أو تحريف جوهري.","pipeline_repair_attempts":1}
+{"answer_case_id":"CS-025-A01","verdict":"PASS","issue_codes":[],"notes":"التعريف والمنهج والأدوات والأولوية والدورية ممثلة بدقة.","pipeline_repair_attempts":1}

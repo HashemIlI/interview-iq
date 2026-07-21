@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "properties": {
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "answer_case_id": {
+            "type": "string"
+          },
+          "answer_original": {
+            "type": "string"
+          },
+          "intended_errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "answer_case_id",
+          "answer_original",
+          "intended_errors"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "cases"
+  ],
+  "additionalProperties": false
+}

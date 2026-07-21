@@ -1,0 +1,150 @@
+{"answer_case_id":"DA-050-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-050-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-050-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-050-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-050-A07","verdict":"PASS","issue_codes":[],"notes":"All core data-quality dimensions are accurately represented; claims match the answer and ASR preserves meaning.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-001-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-001-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-002-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-003-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-004-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-005-A01","verdict":"PASS","issue_codes":[],"notes":"Complete, accurate explanation with aligned, self-contained claims and faithful ASR.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-005-A02","verdict":"PASS","issue_codes":[],"notes":"Concise answer correctly explains the classification rationale; claim and ASR are aligned.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-005-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-005-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-005-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-005-A06","verdict":"PASS","issue_codes":[],"notes":"Natural spoken formulation remains accurate, and the claims faithfully capture the answer.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-005-A07","verdict":"PASS","issue_codes":[],"notes":"All propositions are plausible and supported; claims are distinct and ASR preserves meaning.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-006-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-006-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-007-A07","verdict":"PASS","issue_codes":[],"notes":"Accurate multi-claim description of Random Forest with complete answer-claim-ASR alignment.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-009-A01","verdict":"PASS","issue_codes":[],"notes":"Correct and complete K-Means explanation; claims are supported and well aligned.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-009-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-009-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-009-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-009-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-009-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-012-A07","verdict":"PASS","issue_codes":[],"notes":"Accurate explanation of Naive Bayes, its variants, applications, and smoothing; no substantive mismatch.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-013-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-013-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A01","verdict":"PASS","issue_codes":[],"notes":"Correct comparison of Batch, Stochastic, and Mini-batch Gradient Descent with faithful claims and ASR.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-015-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-015-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-016-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-017-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-018-A07","verdict":"PASS","issue_codes":[],"notes":"Accurate L1/L2 comparison and related propositions; claims match the answer without duplication.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-019-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-019-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-019-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-019-A04","verdict":"PASS","issue_codes":[],"notes":"الأخطاء المقصودة محفوظة ومتوافقة مع mixed_correctness."}
+{"answer_case_id":"DS-019-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ معقول ومطابق للحالة."}
+{"answer_case_id":"DS-019-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-019-A07","verdict":"PASS","issue_codes":[],"notes":"Feature Engineering is accurately described; the final two claims are related but substantively distinct, and all fields align.","pipeline_repair_attempts":1}
+{"answer_case_id":"DS-020-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-020-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-020-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-020-A04","verdict":"PASS","issue_codes":[],"notes":"الأخطاء المقصودة ممثلة بدقة."}
+{"answer_case_id":"DS-020-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ معقول ومطابق للحالة."}
+{"answer_case_id":"DS-020-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-020-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-021-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-021-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-021-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-021-A04","verdict":"PASS","issue_codes":[],"notes":"خطأ توقيت SMOTE محفوظ ومتوافق مع mixed_correctness."}
+{"answer_case_id":"DS-021-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ معقول ومطابق للحالة."}
+{"answer_case_id":"DS-021-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-021-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-022-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-022-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-022-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-022-A04","verdict":"PASS","issue_codes":[],"notes":"خطأ تطبيق SMOTE قبل التقسيم محفوظ كما هو مقصود."}
+{"answer_case_id":"DS-022-A05","verdict":"PASS","issue_codes":[],"notes":"اختيار جار من الفئة الغالبة مفهوم خاطئ معقول ومطابق للحالة."}
+{"answer_case_id":"DS-022-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-023-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-023-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-023-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-023-A04","verdict":"PASS","issue_codes":[],"notes":"تعريف FN المعكوس محفوظ ومتوافق مع mixed_correctness."}
+{"answer_case_id":"DS-023-A05","verdict":"PASS","issue_codes":[],"notes":"تفسير الرموز الخاطئ مفهوم شائع ومعقول."}
+{"answer_case_id":"DS-023-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-024-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-024-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-024-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-024-A04","verdict":"PASS","issue_codes":[],"notes":"خطأ أثر رفع العتبة محفوظ ومتوافق مع mixed_correctness."}
+{"answer_case_id":"DS-024-A05","verdict":"PASS","issue_codes":[],"notes":"تبديل Precision وRecall مفهوم خاطئ معقول ومطابق للحالة."}
+{"answer_case_id":"DS-024-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-024-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-025-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-025-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-025-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-025-A04","verdict":"PASS","issue_codes":[],"notes":"خطأ تجاوز F1 للقيمة 1 محفوظ كما هو مقصود."}
+{"answer_case_id":"DS-025-A05","verdict":"PASS","issue_codes":[],"notes":"اعتبار F1 مساويًا للحد الأدنى مفهوم خاطئ معقول."}
+{"answer_case_id":"DS-025-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-025-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-026-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DS-026-A02","verdict":"PASS","issue_codes":[],"notes":""}

@@ -1,0 +1,1 @@
+{"audits":[{"answer_case_id":"DS-028-A01","verdict":"PASS","issue_codes":[],"notes":"Complete, supported, atomic claims; answer and ASR are consistent."},{"answer_case_id":"DS-047-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian spoken style with a plausible self-correction; claims are supported and ASR preserves meaning."}]}

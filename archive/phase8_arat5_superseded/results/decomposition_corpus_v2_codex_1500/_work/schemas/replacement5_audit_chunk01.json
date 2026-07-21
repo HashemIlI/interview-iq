@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "audits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "answer_case_id": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "PASS",
+              "FAIL"
+            ]
+          },
+          "issue_codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "answer_case_id",
+          "verdict",
+          "issue_codes",
+          "notes"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "audits"
+  ],
+  "additionalProperties": false
+}

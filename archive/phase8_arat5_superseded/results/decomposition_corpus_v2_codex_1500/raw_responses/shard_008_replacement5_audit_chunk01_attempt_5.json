@@ -1,0 +1,1 @@
+{"audits":[{"answer_case_id":"GN-036-A02","verdict":"FAIL","issue_codes":["MISSING_PROPOSITION","NON_SELF_CONTAINED_CLAIM"],"notes":"الإجابة تسرد خصائص الـ Vs لكنها لا تعرّف Big Data رغم أن السؤال يطلب تعريفها. كذلك الادعاء «هذه المصطلحات تصف Big Data» غير قائم بذاته لاعتماده على ادعاءات سابقة."}]}

@@ -1,0 +1,617 @@
+{
+  "status": "DRAFT_UNREVIEWED",
+  "training_approved": false,
+  "schema_version": "decomposition_corpus_v2_pilot/1.0",
+  "seed": 42,
+  "selection_algorithm": "single random.Random(seed), sorted eligible IDs, sequential TRACKS order, sample 4 per track",
+  "provider": {
+    "name": "local_deterministic",
+    "model": "reference_grounded_case_builder_v1",
+    "api_key_environment_variable": "GEMINI_API_KEY"
+  },
+  "source_files": {
+    "data/questions/questions_250.json": "3c0eceee789e49328829a6f67ffe7b5d8b82bccae4bce297f266061b711928f1",
+    "data/refdocs/reference_docs_250_FINAL_v1.json": "ba062768eb02c6dbe16d90024c30b075af98f85d08b9e946bb26862aab250f07"
+  },
+  "o9_policy": {
+    "held_out_at_question_id": true,
+    "question_ids": [
+      "CS-013",
+      "CS-024",
+      "CS-039",
+      "CS-047",
+      "CS-048",
+      "DA-001",
+      "DA-002",
+      "DA-029",
+      "DA-036",
+      "DA-046",
+      "DS-008",
+      "DS-010",
+      "DS-011",
+      "DS-030",
+      "DS-033",
+      "GN-004",
+      "GN-012",
+      "GN-042",
+      "GN-045",
+      "GN-047",
+      "SE-007",
+      "SE-013",
+      "SE-027",
+      "SE-037",
+      "SE-041"
+    ],
+    "used": false
+  },
+  "excluded_question_ids": [
+    "GN-050"
+  ],
+  "selected_questions": [
+    {
+      "question_id": "DA-004",
+      "track": "DA",
+      "question_text": "ما هو الـ Data Cleaning ولماذا يعد خطوة أساسية؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DA004-C01",
+        "DA004-C02",
+        "DA004-C03",
+        "DA004-C04",
+        "DA004-C05",
+        "DA004-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Data",
+        "Cleaning",
+        "Missing",
+        "Values",
+        "Duplicates",
+        "Outliers",
+        "Garbage",
+        "In",
+        "Out",
+        "Pandas",
+        "Python",
+        "Power",
+        "Query"
+      ]
+    },
+    {
+      "question_id": "DA-010",
+      "track": "DA",
+      "question_text": "ما هو معامل ارتباط Pearson وماذا تعني قيمه؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DA010-C01",
+        "DA010-C02",
+        "DA010-C03",
+        "DA010-C04",
+        "DA010-C05",
+        "DA010-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Pearson",
+        "Spearman",
+        "Ranks"
+      ]
+    },
+    {
+      "question_id": "DA-020",
+      "track": "DA",
+      "question_text": "ما الفرق بين DELETE و TRUNCATE و DROP؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DA020-C01",
+        "DA020-C02",
+        "DA020-C03",
+        "DA020-C04",
+        "DA020-C05",
+        "DA020-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "DELETE",
+        "TRUNCATE",
+        "DROP",
+        "WHERE",
+        "DML",
+        "Transaction",
+        "DDL",
+        "Identity"
+      ]
+    },
+    {
+      "question_id": "DA-045",
+      "track": "DA",
+      "question_text": "ما هو تحليل RFM وفيمَ يستخدم؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DA045-C01",
+        "DA045-C02",
+        "DA045-C03",
+        "DA045-C04",
+        "DA045-C05",
+        "DA045-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "RFM",
+        "Recency",
+        "Frequency",
+        "Monetary",
+        "Champions",
+        "At",
+        "Risk"
+      ]
+    },
+    {
+      "question_id": "DS-007",
+      "track": "DS",
+      "question_text": "ما هو Random Forest ولماذا يتفوق على شجرة واحدة؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DS007-C01",
+        "DS007-C02",
+        "DS007-C03",
+        "DS007-C04",
+        "DS007-C05",
+        "DS007-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Random",
+        "Forest",
+        "Ensemble",
+        "Bootstrap",
+        "Bagging",
+        "Features",
+        "Correlation",
+        "Majority",
+        "Voting",
+        "Variance",
+        "Overfitting",
+        "Out-of-Bag"
+      ]
+    },
+    {
+      "question_id": "DS-012",
+      "track": "DS",
+      "question_text": "ما هو Naive Bayes ولماذا يوصف بالـ Naive؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DS012-C01",
+        "DS012-C02",
+        "DS012-C03",
+        "DS012-C04",
+        "DS012-C05",
+        "DS012-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Naive",
+        "Bayes",
+        "Features",
+        "Spam",
+        "Filtering",
+        "Sentiment",
+        "Analysis",
+        "Gaussian",
+        "Multinomial",
+        "Bernoulli",
+        "Laplace",
+        "Smoothing"
+      ]
+    },
+    {
+      "question_id": "DS-018",
+      "track": "DS",
+      "question_text": "ما الفرق بين L1 و L2 Regularization؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DS018-C01",
+        "DS018-C02",
+        "DS018-C03",
+        "DS018-C04",
+        "DS018-C05",
+        "DS018-C06",
+        "DS018-C07"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "L1",
+        "L2",
+        "Regularization",
+        "Sparse",
+        "Feature",
+        "Selection",
+        "Features",
+        "Lasso",
+        "Ridge",
+        "Elastic",
+        "Net",
+        "Lambda",
+        "Alpha",
+        "Hyperparameter"
+      ]
+    },
+    {
+      "question_id": "DS-019",
+      "track": "DS",
+      "question_text": "ما هو الـ Feature Engineering ولماذا يعد مؤثرًا في الأداء؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "DS019-C01",
+        "DS019-C02",
+        "DS019-C03",
+        "DS019-C04",
+        "DS019-C05",
+        "DS019-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Feature",
+        "Engineering",
+        "One-Hot",
+        "Encoding",
+        "Label",
+        "Log",
+        "Transformation",
+        "Scaling",
+        "Features",
+        "Domain",
+        "Knowledge"
+      ]
+    },
+    {
+      "question_id": "CS-006",
+      "track": "CS",
+      "question_text": "ما هي خوارزمية AES وما أطوال مفاتيحها؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "CS006-C01",
+        "CS006-C02",
+        "CS006-C03",
+        "CS006-C04",
+        "CS006-C05",
+        "CS006-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "AES",
+        "Advanced",
+        "Encryption",
+        "Standard",
+        "NIST",
+        "Block",
+        "Cipher",
+        "bit",
+        "Rounds",
+        "DES",
+        "Brute",
+        "Force",
+        "TLS",
+        "Wi-Fi",
+        "WPA2"
+      ]
+    },
+    {
+      "question_id": "CS-037",
+      "track": "CS",
+      "question_text": "ما هو DNS Spoofing/Poisoning؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "CS037-C01",
+        "CS037-C02",
+        "CS037-C03",
+        "CS037-C04",
+        "CS037-C05",
+        "CS037-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "DNS",
+        "Spoofing/Poisoning",
+        "Spoofing",
+        "Poisoning",
+        "IP",
+        "Cache",
+        "DNSSEC",
+        "over",
+        "HTTPS",
+        "TLS"
+      ]
+    },
+    {
+      "question_id": "CS-041",
+      "track": "CS",
+      "question_text": "ما هي الشهادات الرقمية Digital Certificates ومنظومة PKI؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "CS041-C01",
+        "CS041-C02",
+        "CS041-C03",
+        "CS041-C04",
+        "CS041-C05",
+        "CS041-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Digital",
+        "Certificates",
+        "PKI",
+        "Certificate",
+        "Authority",
+        "Chain",
+        "of",
+        "Trust",
+        "Root",
+        "CA",
+        "X.509",
+        "CRL",
+        "OCSP",
+        "HTTPS"
+      ]
+    },
+    {
+      "question_id": "CS-049",
+      "track": "CS",
+      "question_text": "ما الفرق بين Vulnerability Scanning و Penetration Testing؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "CS049-C01",
+        "CS049-C02",
+        "CS049-C03",
+        "CS049-C04",
+        "CS049-C05",
+        "CS049-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Vulnerability",
+        "Scanning",
+        "Penetration",
+        "Testing"
+      ]
+    },
+    {
+      "question_id": "SE-002",
+      "track": "SE",
+      "question_text": "اشرح مبدأ التغليف Encapsulation مع مثال.",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "SE002-C01",
+        "SE002-C02",
+        "SE002-C03",
+        "SE002-C04",
+        "SE002-C05",
+        "SE002-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Encapsulation",
+        "Class",
+        "Access",
+        "Modifiers",
+        "private",
+        "protected",
+        "public",
+        "Getters",
+        "Setters",
+        "Setter",
+        "BankAccount",
+        "Balance",
+        "deposit",
+        "withdraw"
+      ]
+    },
+    {
+      "question_id": "SE-003",
+      "track": "SE",
+      "question_text": "اشرح الوراثة Inheritance وأنواعها.",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "SE003-C01",
+        "SE003-C02",
+        "SE003-C03",
+        "SE003-C04",
+        "SE003-C05",
+        "SE003-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Inheritance",
+        "Child",
+        "Class",
+        "Parent",
+        "is-a",
+        "Dog",
+        "Animal",
+        "Single",
+        "Classes",
+        "Java",
+        "C#",
+        "Multiple",
+        "C++",
+        "Python",
+        "Diamond",
+        "Problem",
+        "Multilevel",
+        "Hierarchical",
+        "Method",
+        "Overriding"
+      ]
+    },
+    {
+      "question_id": "SE-006",
+      "track": "SE",
+      "question_text": "ما هي مبادئ SOLID؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "SE006-C01",
+        "SE006-C02",
+        "SE006-C03",
+        "SE006-C04",
+        "SE006-C05",
+        "SE006-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "SOLID",
+        "Single",
+        "Responsibility",
+        "Open/Closed",
+        "Liskov",
+        "Substitution",
+        "Interface",
+        "Segregation",
+        "Dependency",
+        "Inversion",
+        "Abstractions"
+      ]
+    },
+    {
+      "question_id": "SE-031",
+      "track": "SE",
+      "question_text": "ما هو الـ Refactoring ومتى تلجأ إليه؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "SE031-C01",
+        "SE031-C02",
+        "SE031-C03",
+        "SE031-C04",
+        "SE031-C05",
+        "SE031-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Refactoring",
+        "Extract",
+        "Method",
+        "Code",
+        "Smells"
+      ]
+    },
+    {
+      "question_id": "GN-016",
+      "track": "GN",
+      "question_text": "ما هو JSON وما الفرق بينه وبين XML؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "GN016-C01",
+        "GN016-C02",
+        "GN016-C03",
+        "GN016-C04",
+        "GN016-C05",
+        "GN016-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "JSON",
+        "XML",
+        "JavaScript",
+        "Object",
+        "Notation",
+        "Arrays",
+        "Objects",
+        "Tags",
+        "Attributes",
+        "REST",
+        "XSD",
+        "Namespaces",
+        "SOAP"
+      ]
+    },
+    {
+      "question_id": "GN-017",
+      "track": "GN",
+      "question_text": "ما هي لغة Python ولماذا انتشرت؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "GN017-C01",
+        "GN017-C02",
+        "GN017-C03",
+        "GN017-C04",
+        "GN017-C05",
+        "GN017-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Python",
+        "Interpreted",
+        "Prototyping",
+        "NumPy",
+        "Pandas",
+        "Django",
+        "Flask",
+        "scikit-learn",
+        "TensorFlow",
+        "PyTorch",
+        "Dynamically",
+        "Typed",
+        "C++"
+      ]
+    },
+    {
+      "question_id": "GN-035",
+      "track": "GN",
+      "question_text": "ما هو الذكاء الاصطناعي AI وما الفرق بينه وبين ML؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "GN035-C01",
+        "GN035-C02",
+        "GN035-C03",
+        "GN035-C04",
+        "GN035-C05",
+        "GN035-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "AI",
+        "ML",
+        "Machine",
+        "Learning",
+        "Deep"
+      ]
+    },
+    {
+      "question_id": "GN-041",
+      "track": "GN",
+      "question_text": "ما هو الـ Recursion وما شرطه الأساسي؟",
+      "reference_source": "data/refdocs/reference_docs_250_FINAL_v1.json",
+      "reference_chunk_ids": [
+        "GN041-C01",
+        "GN041-C02",
+        "GN041-C03",
+        "GN041-C04",
+        "GN041-C05",
+        "GN041-C06"
+      ],
+      "latin_terms_supplied_to_answer_generator": [
+        "Recursion",
+        "Base",
+        "Case",
+        "Stack",
+        "Overflow",
+        "Factorial",
+        "n",
+        "n-1",
+        "Divide",
+        "and",
+        "Conquer",
+        "Iterative"
+      ]
+    }
+  ],
+  "case_types": [
+    "complete_correct",
+    "short_partial",
+    "mixed_correctness",
+    "plausible_misconception",
+    "natural_egyptian_spoken"
+  ],
+  "canonical_answer_cases": 100,
+  "asr_variant_policy": "paired fields in one canonical case; answer_asr_simulated is text-only",
+  "target_rendering_decision": "OPEN_FOR_THIS_PILOT; claims JSON list is authoritative; parser/trainer unchanged",
+  "automatic_splits_created": false,
+  "similarity": {
+    "metric": "character_trigram_jaccard",
+    "distribution_before_threshold": {
+      "count": 200,
+      "min": 0.010204,
+      "p25": 0.11833,
+      "median": 0.277482,
+      "p75": 0.42686,
+      "p95": 0.521714,
+      "max": 0.633333,
+      "mad": 0.151786
+    },
+    "threshold_method": "median_plus_3_MAD_clipped_at_1.0",
+    "threshold": 0.732839
+  },
+  "known_source_warning": "SE-006 was selected deterministically; Q2 flags its key_points count as a reference-document anomaly. The source was not modified.",
+  "protected_existing_results_snapshot_count": 29
+}

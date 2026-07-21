@@ -1,0 +1,150 @@
+{"answer_case_id":"DA-025-A01","verdict":"PASS","issue_codes":[],"notes":"الإجابة والـ ASR والادعاءات متسقة مع الحالة والمراجع.","pipeline_repair_attempts":2}
+{"answer_case_id":"DA-025-A02","verdict":"PASS","issue_codes":[],"notes":"متسق وموجز ومطابق للحالة."}
+{"answer_case_id":"DA-025-A03","verdict":"PASS","issue_codes":[],"notes":"إجابة جزئية صحيحة والادعاءات مدعومة."}
+{"answer_case_id":"DA-025-A04","verdict":"PASS","issue_codes":[],"notes":"يمزج معلومات صحيحة بالخطأ المقصود بصورة سليمة."}
+{"answer_case_id":"DA-025-A05","verdict":"PASS","issue_codes":[],"notes":"تصور خاطئ معقول ومحفوظ بدقة في الادعاءات."}
+{"answer_case_id":"DA-025-A06","verdict":"PASS","issue_codes":[],"notes":"صياغة مصرية طبيعية والمعنى محفوظ."}
+{"answer_case_id":"DA-026-A01","verdict":"PASS","issue_codes":[],"notes":"الإجابة والادعاءات تغطي المرجع بدقة، ولا يوجد تغير في المعنى في نص ASR.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":2}
+{"answer_case_id":"DA-026-A02","verdict":"PASS","issue_codes":[],"notes":"الادعاء السببي متماسك ومدعوم بالإجابة."}
+{"answer_case_id":"DA-026-A03","verdict":"PASS","issue_codes":[],"notes":"تعريف جزئي صحيح مع مثال ملائم."}
+{"answer_case_id":"DA-026-A04","verdict":"PASS","issue_codes":[],"notes":"الأخطاء المتعلقة بـLeading ممثلة ومقصودة."}
+{"answer_case_id":"DA-026-A05","verdict":"PASS","issue_codes":[],"notes":"المفهوم الخاطئ معقول ومتطابق مع الخطأ المقصود."}
+{"answer_case_id":"DA-026-A06","verdict":"PASS","issue_codes":[],"notes":"طبيعي، ذاتي الاكتفاء، ومطابق للإجابة."}
+{"answer_case_id":"DA-026-A07","verdict":"PASS","issue_codes":[],"notes":"الادعاءات تغطي الإجابة الطويلة دون فقد جوهري."}
+{"answer_case_id":"DA-027-A01","verdict":"PASS","issue_codes":[],"notes":"تغطية كاملة ومتسقة لكل خطوات الاختيار."}
+{"answer_case_id":"DA-027-A02","verdict":"PASS","issue_codes":[],"notes":"إجابة موجزة صحيحة تركز على قابلية التصرف."}
+{"answer_case_id":"DA-027-A03","verdict":"PASS","issue_codes":[],"notes":"جزئية صحيحة ومدعومة مباشرة."}
+{"answer_case_id":"DA-027-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ المقصود حول Baseline وtarget محفوظ بوضوح."}
+{"answer_case_id":"DA-027-A05","verdict":"PASS","issue_codes":[],"notes":"Vanity-metric misconception معقول ومتسق."}
+{"answer_case_id":"DA-027-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian spoken answer, ASR text, and claims are aligned, supported, and sufficiently atomic.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":1}
+{"answer_case_id":"DA-027-A07","verdict":"PASS","issue_codes":[],"notes":"التوصية الخاطئة بتكثير المؤشرات ممثلة كخطأ مقصود."}
+{"answer_case_id":"DA-028-A01","verdict":"PASS","issue_codes":[],"notes":"الإجابة متسقة مع الحالة والمرجع، والادعاءات مدعومة ومطابقة لنص الإجابة.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":2}
+{"answer_case_id":"DA-028-A02","verdict":"PASS","issue_codes":[],"notes":"موجز وصحيح ويشرح دور العشوائية."}
+{"answer_case_id":"DA-028-A03","verdict":"PASS","issue_codes":[],"notes":"تعريف جزئي صحيح مع مثال واضح."}
+{"answer_case_id":"DA-028-A04","verdict":"PASS","issue_codes":[],"notes":"خطأ الإيقاف المبكر واضح ومتطابق مع الحالة."}
+{"answer_case_id":"DA-028-A05","verdict":"PASS","issue_codes":[],"notes":"التقسيم غير العشوائي تصور خاطئ معقول ومحفوظ."}
+{"answer_case_id":"DA-028-A06","verdict":"PASS","issue_codes":[],"notes":"الصياغة طبيعية للحالة، والـ ASR حافظ على المعنى، والادعاءات متسقة.","pipeline_repair_attempts":2}
+{"answer_case_id":"DA-030-A01","verdict":"PASS","issue_codes":[],"notes":"تغطية صحيحة وكاملة لتفسير فترة الثقة."}
+{"answer_case_id":"DA-030-A02","verdict":"PASS","issue_codes":[],"notes":"موجز وصحيح ومدعوم."}
+{"answer_case_id":"DA-030-A03","verdict":"PASS","issue_codes":[],"notes":"إجابة جزئية صحيحة وذاتية الاكتفاء."}
+{"answer_case_id":"DA-030-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ حول رفع مستوى الثقة ممثل كما ينبغي."}
+{"answer_case_id":"DA-030-A05","verdict":"PASS","issue_codes":[],"notes":"التفسير التكراري الخاطئ الشائع معقول ومقصود."}
+{"answer_case_id":"DA-030-A06","verdict":"PASS","issue_codes":[],"notes":"صياغة محكية طبيعية مع تصحيح ذاتي واضح."}
+{"answer_case_id":"DA-031-A01","verdict":"PASS","issue_codes":[],"notes":"The four analytics types are correctly distinguished, and the claims match the answer and ASR.","pipeline_repair_attempts":1}
+{"answer_case_id":"DA-031-A02","verdict":"PASS","issue_codes":[],"notes":"فروق الأنواع الأربعة مفصولة بوضوح."}
+{"answer_case_id":"DA-031-A03","verdict":"PASS","issue_codes":[],"notes":"جزئية صحيحة تخص التحليل التنبؤي."}
+{"answer_case_id":"DA-031-A04","verdict":"PASS","issue_codes":[],"notes":"عكس Predictive وPrescriptive ممثل كخطأ مقصود."}
+{"answer_case_id":"DA-031-A05","verdict":"PASS","issue_codes":[],"notes":"المساواة الخاطئة بين التشخيصي والتنبؤي معقولة ومطابقة."}
+{"answer_case_id":"DA-031-A06","verdict":"PASS","issue_codes":[],"notes":"أمثلة طبيعية ومتسقة مع الأنواع الأربعة."}
+{"answer_case_id":"DA-031-A07","verdict":"PASS","issue_codes":[],"notes":"The longer answer remains coherent and case-appropriate; all substantive propositions are represented without ASR meaning change.","pipeline_repair_attempts":1}
+{"answer_case_id":"DA-032-A01","verdict":"PASS","issue_codes":[],"notes":"تعريف وأنواع المعاينة ممثلة بدقة."}
+{"answer_case_id":"DA-032-A02","verdict":"PASS","issue_codes":[],"notes":"وصف صحيح وموجز للمعاينة الطبقية."}
+{"answer_case_id":"DA-032-A03","verdict":"PASS","issue_codes":[],"notes":"ادعاء جزئي صحيح ومستقل."}
+{"answer_case_id":"DA-032-A04","verdict":"PASS","issue_codes":[],"notes":"The two deliberate Cluster Sampling errors are preserved and explicitly listed in intended_errors; remaining fields align.","pipeline_repair_attempts":1}
+{"answer_case_id":"DA-032-A05","verdict":"PASS","issue_codes":[],"notes":"الخلط بين Stratified وCluster معقول ومقصود."}
+{"answer_case_id":"DA-032-A06","verdict":"PASS","issue_codes":[],"notes":"صياغة مصرية طبيعية والأنواع ممثلة بصورة صحيحة."}
+{"answer_case_id":"DA-032-A07","verdict":"PASS","issue_codes":[],"notes":"الطول والعبارات الحوارية ملائمان لحالة long_noisy_multi_claim، مع صحة التغطية واتساق ASR والادعاءات.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":2}
+{"answer_case_id":"DA-033-A01","verdict":"PASS","issue_codes":[],"notes":"جميع أنواع التحيز ووسائل الحد منه مدعومة، ولا توجد مخالفة جوهرية أو تغير في معنى ASR.","pipeline_repair_attempts":2,"pipeline_replacement_attempts":2}
+{"answer_case_id":"DA-033-A02","verdict":"PASS","issue_codes":[],"notes":"وسيلتا التجنب مفصولتان ومدعومتان."}
+{"answer_case_id":"DA-033-A03","verdict":"PASS","issue_codes":[],"notes":"وصف جزئي صحيح لتحيز عدم الاستجابة."}
+{"answer_case_id":"DA-033-A04","verdict":"PASS","issue_codes":[],"notes":"الخطأ حول إزالة التحيز بزيادة الحجم محفوظ ومقصود."}
+{"answer_case_id":"DA-033-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-033-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-033-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-034-A07","verdict":"PASS","issue_codes":[],"notes":"The answer, ASR, and claims consistently explain the paradox, Berkeley example, aggregation risk, and causal-variable selection.","pipeline_repair_attempts":1}
+{"answer_case_id":"DA-035-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-035-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-037-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-038-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-039-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A06","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-040-A07","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A01","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A02","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A03","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A04","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A05","verdict":"PASS","issue_codes":[],"notes":""}
+{"answer_case_id":"DA-041-A06","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-041-A07","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-042-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-042-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-042-A03","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-042-A04","verdict":"PASS","issue_codes":[],"notes":"Intended error is plausible, preserved, and represented in the claims."}
+{"answer_case_id":"DA-042-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-042-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-042-A07","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-043-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-043-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-043-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-043-A04","verdict":"PASS","issue_codes":[],"notes":"Both intended errors are preserved and captured by the claims."}
+{"answer_case_id":"DA-043-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-043-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-043-A07","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-044-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-044-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-044-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-044-A04","verdict":"PASS","issue_codes":[],"notes":"Intended session constraint error is preserved and claimed."}
+{"answer_case_id":"DA-044-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-044-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-044-A07","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-045-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-045-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-045-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-045-A04","verdict":"PASS","issue_codes":[],"notes":"Both related intended RFM errors are preserved and represented."}
+{"answer_case_id":"DA-045-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-045-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-045-A07","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-047-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-047-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-047-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-047-A04","verdict":"PASS","issue_codes":[],"notes":"Intended EMA weighting error is preserved and represented."}
+{"answer_case_id":"DA-047-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception and its three errors are consistently represented."}
+{"answer_case_id":"DA-047-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-048-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-048-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-048-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-048-A04","verdict":"PASS","issue_codes":[],"notes":"Intended role-reversal errors are preserved and represented."}
+{"answer_case_id":"DA-048-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-048-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-049-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-049-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-049-A03","verdict":"PASS","issue_codes":[],"notes":"Appropriately partial and internally aligned."}
+{"answer_case_id":"DA-049-A04","verdict":"PASS","issue_codes":[],"notes":"Intended Snowflake performance error is preserved and represented."}
+{"answer_case_id":"DA-049-A05","verdict":"PASS","issue_codes":[],"notes":"Plausible misconception is consistently represented."}
+{"answer_case_id":"DA-049-A06","verdict":"PASS","issue_codes":[],"notes":"Natural Egyptian speech and claims are aligned."}
+{"answer_case_id":"DA-050-A01","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}
+{"answer_case_id":"DA-050-A02","verdict":"PASS","issue_codes":[],"notes":"No clear substantive violation."}

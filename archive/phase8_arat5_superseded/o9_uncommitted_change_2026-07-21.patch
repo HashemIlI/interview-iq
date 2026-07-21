@@ -1,0 +1,13 @@
+diff --git a/results/o9_decomposition_exercises.md b/results/o9_decomposition_exercises.md
+index 8350a5d..00dc197 100644
+--- a/results/o9_decomposition_exercises.md
++++ b/results/o9_decomposition_exercises.md
+@@ -270,7 +270,7 @@ Privilege Escalation… يعني إنت دخلت النظام بس بصلاحي
+ ### SE-007: الـ Design Patterns وفئاتها الرئيسية
+ 
+ **إجابة:**
+-الـ Design Patterns هي حلول جاهزة لمشاكل بتتكرر في التصميم. يعني مش أول واحد يقابل المشكلة دي، فناس قبلك حلّوها ووثّقوا الحل، وانت بتستخدمه. أشهر حاجة فيهم الـ Singleton، وده إنك تضمن إن الـ class ده يبقى ليه instance واحدة بس في البرنامج كله، بستخدمه كتير في الـ database connection مثلًا. وفيه الـ Factory، بيبني objects من غير ما تحدد الـ class بتاعها بالظبط. التقسيم بتاعهم… فيه Creational، ودي بتاعت الإنشاء زي اللي قلتهم، وفيه Structural، ودي بتاعت التركيب، زي الـ Adapter والـ Observer… وفيه نوع تالت مش جاي في دماغي… آه، Behavioral، ودي بتاعت السلوك والتواصل بين الـ objects.
++الـ Design Patterns هي حلول جاهزة لمشاكل بتتكرر في التصميم. يعني مش أول واحد يقابل المشكلة دي، فناس قبلك حلّوها ووثّقوا الحل، وانت بتستخدمه. أشهر حاجة فيهم الـ Singleton، وده إنك تضمن إن الـ class ده يبقى ليه instance واحدة بس في البرنامج كله، بستخدمه كتير في الـ داتا بيس connection مثلًا. وفيه الـ Factory، بيبني objects من غير ما تحدد الـ class بتاعها بالظبط. التقسيم بتاعهم… فيه Creational، ودي بتاعت الإنشاء زي اللي قلتهم، وفيه Structural، ودي بتاعت التركيب، زي الـ Adapter والـ Observer… وفيه نوع تالت مش جاي في دماغي… آه، Behavioral، ودي بتاعت السلوك والتواصل بين الـ objects.
+ 
+ **الـ Claims:**
+ 1. الـ Design Patterns حلول جاهزة لمشاكل متكررة في التصميم، وثّقها من واجهها من قبل.

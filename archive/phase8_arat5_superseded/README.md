@@ -1,0 +1,1 @@
+This directory holds AraT5-based Claim Decomposition work (Phase 8) and a Codex-assisted training-corpus expansion attempt, both superseded by decisions.md D74/D75 (replaced by an LLM-API-based approach). Retained for thesis documentation, not in the active runtime path.

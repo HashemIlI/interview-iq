@@ -1,0 +1,1 @@
+{"audits":[{"answer_case_id":"CS-012-A02","verdict":"PASS","issue_codes":[],"notes":"الإجابة والـASR والمطالبات متسقة، وتغطي تعريف التصيد وأشكاله المذكورة دون تغيير في المعنى."},{"answer_case_id":"CS-015-A07","verdict":"PASS","issue_codes":[],"notes":"جميع المطالبات مدعومة وذاتية الاكتفاء، والـASR يحافظ على المعنى، والإجابة ملائمة لحالة long_noisy_multi_claim."}]}

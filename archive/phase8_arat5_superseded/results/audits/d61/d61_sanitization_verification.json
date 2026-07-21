@@ -1,0 +1,128 @@
+{
+  "timestamp_utc": "2026-07-18T08:59:55.559767+00:00",
+  "environment": {
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "transformers": "4.40.2",
+    "tokenizer_class": "T5TokenizerFast",
+    "model_name": "UBC-NLP/AraT5-base",
+    "unk_token": "<unk>",
+    "unk_token_id": 2
+  },
+  "raw_metadata_scan": {
+    "all_metadata_question_ids": [
+      "CS-008",
+      "CS-016",
+      "CS-023",
+      "CS-046",
+      "CS-050",
+      "DA-009",
+      "DA-016",
+      "DA-025",
+      "DA-048",
+      "DA-050",
+      "DS-007",
+      "DS-018",
+      "DS-045",
+      "DS-050",
+      "GN-008",
+      "GN-016",
+      "GN-025",
+      "GN-048",
+      "GN-050",
+      "SE-008",
+      "SE-017",
+      "SE-045",
+      "SE-050"
+    ],
+    "training_metadata_question_ids": [
+      "CS-008",
+      "CS-016",
+      "CS-023",
+      "CS-046",
+      "CS-050",
+      "DA-009",
+      "DA-016",
+      "DA-025",
+      "DA-048",
+      "DA-050",
+      "DS-007",
+      "DS-018",
+      "DS-045",
+      "DS-050",
+      "GN-008",
+      "GN-016",
+      "GN-025",
+      "GN-048",
+      "SE-008",
+      "SE-017",
+      "SE-045",
+      "SE-050"
+    ],
+    "excluded_metadata_question_ids": [
+      "GN-050"
+    ],
+    "metadata_line_counts": {
+      "DA-009": 1,
+      "DA-050": 1,
+      "DS-007": 1,
+      "DS-050": 1,
+      "CS-008": 1,
+      "CS-050": 1,
+      "SE-008": 1,
+      "SE-050": 1,
+      "GN-008": 1,
+      "GN-050": 1,
+      "DA-016": 1,
+      "DA-025": 1,
+      "DA-048": 1,
+      "DS-018": 1,
+      "DS-045": 1,
+      "CS-016": 1,
+      "CS-023": 1,
+      "CS-046": 1,
+      "SE-017": 1,
+      "SE-045": 1,
+      "GN-016": 1,
+      "GN-025": 1,
+      "GN-048": 1
+    }
+  },
+  "corpus": {
+    "training_questions": 222,
+    "training_claims": 1836,
+    "gold_questions": 25,
+    "gold_claims": 177,
+    "train_gold_overlap": []
+  },
+  "sanitization": {
+    "remaining_training_metadata_ids": [],
+    "false_positive_answers_unchanged": {
+      "CS-010": true,
+      "DS-037": true,
+      "SE-047": true
+    }
+  },
+  "limits": {
+    "max_source_length": 320,
+    "max_target_length": 320
+  },
+  "training_tokenizer_audit": {
+    "source_unk_total": 0,
+    "target_unk_total": 0,
+    "source_over_limit": [],
+    "target_over_limit": [],
+    "max_source_tokens": 277,
+    "max_target_tokens": 250,
+    "residual_candidate_marks": []
+  },
+  "gold_tokenizer_observation": {
+    "source_unk_total": 0,
+    "target_unk_total": 0,
+    "source_over_limit": [],
+    "target_over_limit": [],
+    "max_source_tokens": 243,
+    "max_target_tokens": 181,
+    "residual_candidate_marks": []
+  },
+  "d61_acceptance": "PASS"
+}

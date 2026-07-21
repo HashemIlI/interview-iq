@@ -1,0 +1,2 @@
+# automated_same_model_audit — corpus_v2_codex_1500_v1
+This is separate automated audit, not human review. Audit every record. PASS unless a clear substantive violation exists. FAIL unsupported/missing propositions, non-atomic/non-self-contained claims, term corruption, duplicate claims/answers, case mismatch, implausible misconception, answer/claims mismatch, ASR meaning change, malformed fields, or stock templating. Preserve candidate factual errors; reference is only for case compliance. Concise notes.

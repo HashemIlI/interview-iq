@@ -1,0 +1,72 @@
+{
+  "status": "DRAFT_UNREVIEWED",
+  "verdict": "DATASET GENERATION PIPELINE PASS",
+  "not_training_approved": true,
+  "record_count": 100,
+  "question_id_count": 20,
+  "counts_by_track": {
+    "CS": 20,
+    "DA": 20,
+    "DS": 20,
+    "GN": 20,
+    "SE": 20
+  },
+  "counts_by_case_type": {
+    "complete_correct": 20,
+    "mixed_correctness": 20,
+    "natural_egyptian_spoken": 20,
+    "plausible_misconception": 20,
+    "short_partial": 20
+  },
+  "claims": {
+    "total": 261,
+    "min": 1,
+    "max": 8,
+    "mean": 2.61,
+    "distribution": {
+      "1": 35,
+      "2": 25,
+      "3": 12,
+      "4": 12,
+      "5": 8,
+      "6": 5,
+      "7": 2,
+      "8": 1
+    }
+  },
+  "latin_terms": {
+    "answer_unique_per_case_occurrences": 317,
+    "claim_unique_per_case_occurrences": 318
+  },
+  "term_corruption_count": 0,
+  "exact_duplicate_answer_count": 0,
+  "near_duplicate_pair_count": 0,
+  "near_duplicate_pairs": [],
+  "similarity": {
+    "metric": "character_trigram_jaccard",
+    "distribution_before_threshold": {
+      "count": 200,
+      "min": 0.010204,
+      "p25": 0.11833,
+      "median": 0.277482,
+      "p75": 0.42686,
+      "p95": 0.521714,
+      "max": 0.633333,
+      "mad": 0.151786
+    },
+    "threshold_method": "median_plus_3_MAD_clipped_at_1.0",
+    "threshold": 0.732839
+  },
+  "independent_audit_failed_cases": [],
+  "claims_variant_contract": "one canonical JSON claims list shared by answer_original and answer_asr_simulated",
+  "secret_scan_hits": [],
+  "automatic_splits_created": false,
+  "existing_results_unchanged": true,
+  "limitations": [
+    "All records remain DRAFT_UNREVIEWED and have not received human review.",
+    "The local provider creates synthetic candidate-answer cases; they are not human answers.",
+    "answer_asr_simulated is text corruption without audio or transcript alignment.",
+    "The rule audit is not an independent human annotation study.",
+    "Target rendering remains open; claims lists are authoritative."
+  ]
+}
