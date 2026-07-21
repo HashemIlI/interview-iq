@@ -1,5 +1,5 @@
-# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D76)
-**الإصدار:** v2.40 — 21 يوليو 2026
+# decisions.md — Interview IQ / السجل الموحّد للقرارات (D1–D77)
+**الإصدار:** v2.41 — 21 يوليو 2026
 **الحالة:** السجل القانوني الوحيد بعد حسم Q1 (يدمج decisions.md القديم + DECISIONS_RECONCILIATION_v1.1 ويُلغيهما كملفين منفصلين)
 **القاعدة الحاكمة:** أرقام D1–D25 ثابتة كما في الوثيقة الرئيسية `InterviewIQ_Pipeline_Docs_v2.0.md`. قرارات جلسة الـ pipeline أُعيد ترقيمها D26–D34. أي قرار جديد يأخذ الرقم التالي (D48+).
 
@@ -3568,6 +3568,26 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 
 **المطلوب قبل أي اعتماد إنتاجي:** (أ) تشغيل عدة أمثلة اختبار متنوعة أكتر (إجابات خاطئة عمدًا، مصطلحات لاتينية أكتر، إجابات أطول) عبر الموديلات المرشحة قبل حسم الاختيار؛ (ب) تنفيذ وتشغيل sanity gate الإلزامية بتاعة D74 (`scripts/llm_decomposition_sanity_gate.py`) قبل أي استخدام قريب من O9 أو تقييم حقيقي.
 
+## D77 — Sanity Gate Design Pre-Registration (Claim Decomposition, D74 Mandatory Check)
+
+**الحالة:** ⛔ PREREGISTERED / NOT EXECUTED — تصميم فقط، السكريبت لسه ماتكتبش.
+
+**اكتشاف بيئي مسجَّل أثناء التحضير (لا يُمرَّر بصمت):** `git status` أظهر `src/interview_iq/decomposition_llm/` (client.py + system_prompt.md) و`.env.example` **untracked بالكامل**، و`requirements.txt` معدَّل وغير staged. نفس نمط مخالفة D75 (كود غير مُسجَّل في git قبل الاعتماد عليه). **التوصية:** commit منفصل بسيط (بعد مراجعة الـ diff كملفات مرفوعة) قبل أو بالتوازي مع كتابة الـ gate — التوقيت قرار أحمد.
+
+**واجهة الاستدعاء المؤكدة من الكود الفعلي (لا افتراض):**
+- Import: `from interview_iq.decomposition_llm.client import decompose_via_llm, LLMDecompositionError`
+- `decompose_via_llm(asr_text: str) -> DecompositionResult`؛ `DecompositionResult` مستوردة من `interview_iq.decomposition.types` (الموديول القديم AraT5-era) — نوع مشترك، مش نوع جديد.
+- **تصحيح لفهم سابق (D74/D76):** لا يوجد fallback تلقائي متعدد الموديلات في الكود. `OPENROUTER_MODEL` قيمة واحدة تُقرأ من `.env` مرة واحدة. التبديل بين gemma وnemotron في D76 كان **يدويًا من أحمد**، مش سلوك برمجي. بند الـ Fallback في D74 يبقى **بلا أي تنفيذ برمجي حتى الآن**.
+- طبقة تحقق شكلي موجودة بالفعل جوه `client.py` (`_parse_numbered_claims` بترفض أي سطر output مش بصيغة `"N. claim"`). الـ gate تضيف طبقة تحقق **دلالية** فوقها، مش تكررها.
+
+**الـ fixtures:** ملف منفصل خارج أي corpus مُتتبَّع أو O9. 8 حالات: CS×2 / DS×2 / DA×2 / SE×1 / GN×1 (SG-01 إلى SG-08، النص الكامل موثّق في المحادثة، هيُنقَل لملف JSON عند التنفيذ). كل حالة: `case_id`, `track`, `injected_error_type`, `answer_text` (بصيغة ASR خام)، `injected_error_anchor`، `latin_terms_expected`.
+
+**تنفيذ السكريبت:** استدعاء مباشر لـ `decompose_via_llm` (نفس مسار الإنتاج). موديل واحد لكل run كامل (يُسجَّل صراحة). لكل حالة: raw input/response، `DecompositionResult`، الموديل الفعلي، timestamp، retries، أي error بنصه الكامل. المخرج: `results/llm_decomposition_sanity_gate/` — JSON خام + تقرير بثلاثة أعمدة حكم بشري فاضية: `error_preserved` (YES/NO)، `no_unauthorized_addition` (YES/NO)، `atomicity_verdict` (ATOMIC/NON_ATOMIC/AMBIGUOUS).
+
+**قاعدة القرار (مسجَّلة مسبقًا):** الحكم بشري بالكامل — لا auto-grading (تجنبًا للدائرية). **Blocking:** أي حالة `error_preserved=NO` أو `no_unauthorized_addition=NO` ⇒ gate FAILS بالكامل (صفر تسامح، الاتنين بنفس الخطورة). **غير حاجزة:** `atomicity_verdict=NON_ATOMIC` ⇒ تُسجَّل وتُتابع (بنمط Q8)، لا توقف الاعتماد. نتيجة الـ PASS/FAIL الفعلية تُسجَّل لاحقًا كتحديث على D77 أو كـ D78 جديدة.
+
+**المرجع:** D74 (الشرط الأصلي)، D75 (توسيع فحص atomicity)، D76 (نمط الاختبار الأول، ومصدر ملاحظة غياب fallback حقيقي).
+
 ## القسم الثالث — بنود مفتوحة تُرقَّم فور حسمها
 
 | البند | الوصف | الحالة |
@@ -3600,6 +3620,7 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 | **D74 — Pivot: LLM API يستبدل AraT5 لموديول Claim Decomposition** | تعديل نطاق قيد Zero-LLM-at-runtime (Claim Decomposition فقط)، بموافقة المشرف. Phase 8 (AraT5) مُغلَق بالتجاوز. يتطلب: system prompt + sanity gate ضد "تصحيح" الإجابات + full-pipeline evaluation. PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا. | ✅ التعديل مُعتمَد — ⛔ التنفيذ لم يبدأ |
 | **D75 — Codex-Assisted AraT5 Training Corpus Attempt** | محاولة توليد corpus بمساعدة Codex (1500 هدف)، توقفت عند 1050/1500، لم تصل لحالة معتمدة للتدريب؛ اتضح إن سبب الرفض الأساسي (52%) كان atomicity البنيوي في المهمة نفسها. مُغلقة بالتجاوز (D74)، موثّقة كدليل تاريخي في الأرشيف. | ✅ CLOSED — SUPERSEDED, EVIDENCE ARCHIVED |
 | **D76 — First End-to-End LLM Decomposition Call** | أول استدعاء فعلي لسلسلة .env → client.py → OpenRouter → DecompositionResult تحقّق منه بنجاح على مثال اختباري واحد؛ الجودة غير مُعتمَدة بعد، sanity gate لسه لم يُنفَّذ. | ✅ EXECUTION PASS — ⛔ QUALITY NOT YET VALIDATED |
+| **D77 — Sanity Gate Design Pre-Registration** | تصميم مُسجَّل مسبقًا لـ `scripts/llm_decomposition_sanity_gate.py`: 8 حالات اختبار (SG-01–08)، حكم بشري بالكامل، atomicity غير حاجزة، اكتشاف `decomposition_llm/` untracked في git. | ⛔ PREREGISTERED / NOT EXECUTED |
 | **Q7 / O11 — تطبيق التسجيل** | Tech Stack + Session Spec + اعتماد الفريق. **يحجب G3** وحسم الـ ASR في Phase 7. | ⛔ |
 | **Q10 — عرض Demo #1** | هل عُرض الـ Baseline Demo (D24) على المشرف؟ | ⛔ |
 | **G3** | تسجيل الـ pilot videos — يحجب اختيار الـ ASR (مرتبط بـ Q7). | ⛔ |
@@ -3609,6 +3630,7 @@ numerical quality thresholds مسبقًا؛ لذلك لا يُعرض بوصفه 
 ---
 
 ## سجل التغييرات 
+- **v2.41 (21 يوليو 2026):** إضافة **D77** — تصميم مُسجَّل مسبقًا لـ sanity gate الإلزامية بتاعة D74 (correctness-preservation blocking، atomicity غير حاجزة زي Q8)، مع توثيق اكتشاف إن `src/interview_iq/decomposition_llm/` (client.py + system_prompt.md) و`.env.example` untracked في git. السكريبت لسه لم يُكتَب.
 - **v2.39 (21 يوليو 2026):** تصحيح فجوة توثيقية: قسم D75 (Codex-Assisted AraT5 Training Corpus Attempt) كان موجودًا بالفعل في محتوى الملف من جلسة سابقة، لكنه لم يُدرَج في جدول البنود المفتوحة ولا في سجل التغييرات ولا في رقم الإصدار/العنوان. تم تصحيح ذلك بأثر رجعي: إضافة صف D75 لجدول القسم الثالث، وتحديث العنوان الرئيسي.
 - **v2.40 (21 يوليو 2026):** إضافة **D76** — أول استدعاء end-to-end ناجح لموديول LLM Decomposition (D74)، مع رصد ملاحظة atomicity مفتوحة وتوثيق تبرير تجريبي لبند الـ Fallback المفتوح في D74. راجع نص D76 الكامل في متن الملف.
 - **v2.38 (21 يوليو 2026):** إضافة **D74** — pivot معماري: تعديل نطاق قيد Zero-LLM-at-runtime ليستثني موديول Claim Decomposition فقط (باقي الـ pipeline غير متأثر)، بموافقة المشرف، مبني على أدلة D65–D72 (فجوة تعميم AraT5: LCS F1 0.507→0.189، claim-count exact 33%→8%، Latin recall 36%→18%) وندرة بيانات عربية للتدريب. استبدال AraT5 كاملًا بـ LLM API (مثال: Qwen عبر OpenRouter) لموديول Claim Decomposition وقت التشغيل. Phase 8 مُغلَق بالتجاوز (SUPERSEDED). **Q6 مُغلَق بالتجاوز — غير محسوم تجريبيًا.** D73 يتحوّل لتوثيق رجعي اختياري غير حاجز. قيود إلزامية: (1) prompt لا يعدّل صحة إجابة المستخدم، (2) sanity gate على N حالات بأخطاء متعمدة قبل أي دمج. **RISK ACCEPTED (بنمط D33):** لا مقارنة مكوّن معزولة قبل الدمج؛ القياس مؤجَّل لـ full-pipeline run مع تحذير confounding صريح (LLM decomposition + NLI thresholds غير المعايرة + BGE-M3 chunk cap يتغيرون معًا). PROJECT_EXECUTION_PLAN.md:21 يحتاج تعديلًا يدويًا مطابقًا (خارج نطاق هذا الملف). Fallback (caching/موديل احتياطي) لا يزال بند مفتوح.
