@@ -479,6 +479,29 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 - **Archival:** the pre-D81 Arabic original is preserved (not overwritten silently) at `archive/decisions_arabic_pre_D81_2026-07-21.md`, per the project principle that corrections are documented rather than silently overwritten. This entry is that documentation.
 - **Not in scope:** this migration changes presentation only; it makes no architectural or empirical change to any decision D1–D80.
 
+### D82 — Coverage Channel Real-Claims Experiment: Pre-Registration (⛔ PREREGISTERED / NOT EXECUTED)
+
+**Goal:** the first actual measurement of the Coverage channel on real claims (deferred since D44, unblocked now that a decomposition module exists and passed its sanity gate — D80).
+
+**Source:** the 25 O9 raw answers (`results/o9_decomposition_exercises.md`, D51), 5 per track.
+
+**Procedure:**
+1. For each of the 25 questions, run the raw answer through `decompose_via_llm` (same production path, single model logged explicitly per run — `cohere/north-mini-code:free`).
+2. Compare the resulting claims against the question's official `key_points` field (from `reference_docs_250_FINAL_v1.json`) — **not** the O9 manual reference claims, to avoid D44's "measures data consistency with itself" problem.
+3. Run the existing Phase 6 Coverage channel (NLI engine + aggregation + metrics) on the Claims × key_points matrix for each question.
+4. Log per question: generated claims, per-key-point max entailment probability, final Coverage score, and key_point count (2/3/4+).
+
+**Analytical targets (map directly to the D42 fragility hypotheses):**
+- (a) OOD: does Coverage score correlate with key_point count, as in the D42 table?
+- (b) learned-neutral shift: any unexpected `neutral` calls between a claim and a key point that should plausibly relate?
+- (c) composition error: any key point requiring two claims jointly, uncovered by any single claim?
+
+**Pre-registered constraints:**
+- n=25 ⇒ directional judgment, not statistical. Does not prove the channel is sound, only gives the first real reading.
+- Compound, not isolated (RISK-ACCEPTED style, per D74): decomposition quality itself is still unmeasured in isolation (D74), and thresholds remain PRE-CALIBRATION DEFAULT (G4 not yet run). A weak number here cannot be confidently attributed to one component.
+- Read-only diagnostic: does not modify O9, key_points, or any production code.
+- Execution environment: Kaggle T4 thin-runner (standing environment decision as of 21 Jul 2026 — all test/experiment execution moves to Kaggle notebooks, not local cmd.exe, going forward for all future work, not just this experiment).
+
 ---
 
 ## Section 4 — Open Items
@@ -500,7 +523,7 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 | **Phase 8** | AraT5 fine-tuning — CLOSED, SUPERSEDED by D74. | ✅ |
 | **D77–D80** | Sanity gate designed, executed, PASSED on cohere/north-mini-code:free. | ✅ |
 | **D74 Fallback** | Model caching for demo, or a backup model on API failure/rate-limit. Blocks final demo/full-pipeline run. | ⛔ |
-| **Q8** | Coverage channel measured on real decomposition claims. Unblocks now that decomposition produces output. | ⛔ |
+| **Q8** | Coverage channel measured on real decomposition claims. Experiment designed and pre-registered (D82) — 25 O9 answers through `decompose_via_llm` vs. official `key_points`, pending execution on Kaggle T4. | ⛔ |
 | **G4** | Threshold calibration (τ_E, τ, α, k currently PRE-CALIBRATION DEFAULT). Inputs in D43. | ⛔ |
 | **Q7 / O11** | Recording tech stack + session spec + team adoption. **Blocks G3** and ASR selection (Phase 7). | ⛔ |
 | **G3** | Pilot videos — blocks ASR selection (tied to Q7). | ⛔ |
