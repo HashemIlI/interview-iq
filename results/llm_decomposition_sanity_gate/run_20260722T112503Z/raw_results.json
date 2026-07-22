@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "run_timestamp_utc": "20260722T112503Z",
+    "model_used": "llama-3.3-70b-versatile",
+    "git_commit": "1b1e6c3a9ee5b596297615fdc96157336a61fe8d",
+    "n_cases": 8,
+    "n_success": 8,
+    "n_error": 0
+  },
+  "records": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": [
+        "heap",
+        "LIFO",
+        "function calls",
+        "recursion"
+      ],
+      "input_answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:03.578878+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الهايب هو نوع من الداتا ستركتشر.",
+        "الهايب يشتغل بنظام لايفو.",
+        "آخر حاجة تتحط في الهايب هي أول حاجة تتشال.",
+        "نستخدم الهايب في تخزين الـ function calls.",
+        "نستخدم الهايب في تخزين الـ recursion."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.75,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": [
+        "process",
+        "thread",
+        "memory"
+      ],
+      "input_answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:04.331473+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الفرق بين البروسيس والثريد هو أن كل بروسيس لها ذاكرة منفصلة عن باقي البروسيسز."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.782,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "overfitting",
+        "patterns"
+      ],
+      "input_answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:05.110704+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الأوفرفيتينج يحدث عندما يكون الموديل بسيطًا جدًا.",
+        "الموديل البسيط لا يستطيع مسك الأنماط في الداتا.",
+        "الموديل البسيط يؤدي أداءً ضعيفًا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.828,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": [
+        "classification",
+        "precision",
+        "positive"
+      ],
+      "input_answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:05.925873+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "نقيم موديل الكلاسيفيكيشن بناءً على البريسيجن.",
+        "البريسيجن هو عدد التوقعات الصحيحة من إجمالي التوقعات التي قال فيها الموديل إنها بوزيتيف.",
+        "البريسيجن هو أهم مقياس لي لتحديد ما إذا كان الموديل يعمل جيدًا أم لا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.781,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "Normalization",
+        "Standardization"
+      ],
+      "input_answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:06.710123+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ Normalization هي عملية تحويل البيانات بحيث يصبح المتوسط صفر والانحراف المعياري واحد.",
+        "الـ Standardization هي عملية تحويل القيم إلى مدى بين صفر وواحد."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.766,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": [
+        "SQL",
+        "INNER JOIN",
+        "Orders",
+        "Customers"
+      ],
+      "input_answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:07.476550+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ INNER JOIN في الـ SQL تعيد الصفوف التي لها تطابق على العمود الذي يتم إجراء الجوين عليه.",
+        "عند استخدام الـ INNER JOIN بين جدولين، يتم إرجاع الصفوف التي لها تطابق فقط.",
+        "على سبيل المثال، إذا كان هناك جدول Orders وجدول Customers، فإن الـ INNER JOIN سيعيد الأوردرات التي لها كستمر موجود فعلا في جدول Customers."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 1.047,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": [
+        "Git",
+        "merge",
+        "rebase",
+        "branches",
+        "commit history",
+        "conflicts"
+      ],
+      "input_answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:08.525310+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الريبيز في الجيت يدمج الفروع بدون تغيير تاريخ الكوميت.",
+        "الريبيز أمن أكثر من الميرج دائمًا.",
+        "الجيت يحل النزاعات تلقائيًا عند استخدام الريبيز، لذلك لا يوجد حاجة للنقاش حولها."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.953,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "input_answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-22T11:25:09.475867+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ HTTPS هي نسخة أسرع من الـ HTTP.",
+        "الـ HTTPS تستخدم نفس البورت 80.",
+        "الـ HTTPS تشتغل بنفس الطريقة مثل الـ HTTP.",
+        "لا يوجد تشفير إضافي في الـ HTTPS."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.922,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    }
+  ]
+}
