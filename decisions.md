@@ -519,6 +519,24 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+### D85 — ASR Module (Phase 7) + End-to-End Pipeline Orchestrator (✅ EXECUTION PASS on offline tests / ⛔ NOT YET RUN ON REAL AUDIO)
+
+**Scope:** implements Phase 7 (ASR module: audio extraction + VAD gating + faster-whisper transcription, producing Format Spec v1.1 exactly per configs/asr.yaml) and a new end-to-end orchestrator (pipeline.py's evaluate_answer), requested for local integration by the project's fusion-module team member.
+
+**Files:** src/interview_iq/audio/segmentation.py (extract_audio, run_vad — Silero VAD, lazy/injectable), src/interview_iq/asr/engine.py (transcribe_audio, field order read live from configs/asr.yaml), src/interview_iq/cli/run_asr.py (thin CLI), src/interview_iq/pipeline.py (new — evaluate_answer, wiring ASR → decomposition → chunk cap → NLI Precision/Coverage → compute_scoring_result, reusing every existing function unmodified, same injection convention as evaluation/gold_eval.py and scripts/coverage_channel_real_claims_experiment.py).
+
+**Tests:** 24 new offline tests (zero network, zero real models — faster-whisper and Silero VAD both mocked via injectable backend protocols), full suite 174/174 passing.
+
+**Two judgment calls made under ambiguity, both explicit in code docstrings, neither silently assumed:**
+1. Transcript normalization is an honest no-op in this version (normalized_transcript == raw_transcript, empty log) — normalization is the Claim Decomposition module's registered responsibility per D74, not this module's.
+2. `pre_answer_latency_sec` (undefined beyond its name in configs/asr.yaml / PROJECT_EXECUTION_PLAN.md) is interpreted as "seconds from this answer-segment's audio start to the first VAD-detected speech onset." Confirmed by Ahmed: retained in the output for potential use by the fusion module, but explicitly NOT used in any scoring computation in this codebase (consistent with the Linguistic Confidence Module being out of this project's scope per the 7 Jul 2026 supervisor directive).
+
+**GPU/CPU note:** configs/asr.yaml's registered production baseline stays CPU/int8 (unchanged by this work). transcribe_audio's device_override/compute_type_override parameters allow GPU execution on Kaggle for experimentation only, without modifying the config file.
+
+**Status:** code complete and offline-test-verified. Not yet run against real audio/video — first real-audio run is the next step (Kaggle, per the standing execution-environment decision), needed to close G3 and to empirically verify the FasterWhisperBackend/SileroVad code paths against the real libraries (per §5.13 — "documentation says X" is not "I ran it").
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
