@@ -393,14 +393,14 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 ### D66 — Controlled PEFT repair pilot + Q6 re-open (✅ EXECUTION PASS / NO REPAIR CANDIDATE)
 - Single-seed LoRA comparison of AraT5-base and mT5-base on train/val only, frozen D64 control, explicit repair gates, O9 excluded. AraT5 produced no qualified checkpoint; mT5 failed the quality/structure gates at step 72. **No winner, no production adoption; Q6 stays open.**
 
-### D67 — Gold Corpus v2 repair + ASR→decomposition input-contract freeze (✅ BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION)
+### D67 — Decomposition Training Corpus v2 repair + ASR→decomposition input-contract freeze (✅ BLOCKED AT PHASE 0 / NO CORPUS MODIFICATION)
 - Phase 0 verified 222 examples / 1,836 claims / split 189-33 / 273 self-containment flags and recovered 34 structural atomicity candidates, but found no evidence identifying which four were excluded from a former informal count of 30 — so it stopped before any corpus change.
 
 ### D68 — Canonical atomicity adjudication recovery (✅ EXECUTION PASS / CANONICAL ATOMICITY SET RECOVERED)
 - Two procedurally separate passes over the 34 candidates, 64/64 propositions with literal source support each pass, 30 agreements + 4 disagreements resolved + 0 unresolved. Canonical result: **24 `NON_ATOMIC_REPAIR_REQUIRED` + 10 `INTEGRATED_SINGLE_CLAIM_FALSE_POSITIVE`** (not the provisional 20/14 or former target 30). Constraint logged: both passes are from the same Codex environment, not a human inter-annotator study.
 
-### D69 — Gold Corpus v2 target repair + self-containment adjudication + deterministic build (✅ pre-registered)
-- Pre-registered build of Gold v2 under `results/gold_v2/`, keeping the 222 Egyptian source answers byte-for-byte and repairing 3 unsupported additions + 24 atomicity keys + 273 self-containment flags via a consolidated original-index repair plan — no training, no O9, no ASR augmentation, no production integration.
+### D69 — Decomposition Training Corpus v2 target repair + self-containment adjudication + deterministic build (✅ pre-registered)
+- Pre-registered build of the Decomposition Training Corpus v2 (internally referred to during D67-D69 planning as "Gold v2"; renamed in D84 to avoid confusion with the O9 and DS-014 Gold Sets — see decisions.md's naming note) under `results/gold_v2/`, keeping the 222 Egyptian source answers byte-for-byte and repairing 3 unsupported additions + 24 atomicity keys + 273 self-containment flags via a consolidated original-index repair plan — no training, no O9, no ASR augmentation, no production integration.
 
 ### D70 — Paired original/ASR-aligned corpus input variants (✅ — dataset pipeline + tokenizer smoke test pass)
 - Two paired variants per question (`original`, `asr_aligned`); `example_id` = `question_id + "__original"/"__asr"`; split on `question_id` so both variants stay in the same split; a guard raises `ValueError` on any claim mismatch between variants; GN-050 excluded from both. Result: 444 examples from 222 question_ids, 378 train / 66 val, zero overlap; real AraT5-base tokenizer produced `input_ids`/`attention_mask`/`labels` for both variants; **149 tests pass.** Proves the corpus/tokenization contract only, not model quality.
@@ -506,6 +506,19 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 
 ---
 
+### D84 — Gold Naming Disambiguation (✅ documentation-only, no code or data changes)
+
+**Decision:** the decomposition training corpus specified in D67-D69 (target: `results/gold_v2/`, never executed) is renamed in this file's prose from "Gold Corpus v2" to "Decomposition Training Corpus v2", to resolve the naming collision flagged as an open item (three artifacts previously all called "Gold": the O9 validation set, the DS-014 NLI Gold Set, and this training corpus).
+
+**Scope — documentation only:**
+- Changed: D67 and D69 headings/body text, the "Gold naming" open-item row, and one changelog line, all in this file (`decisions.md`).
+- Not changed: the archived pre-D81 Arabic original (`archive/decisions_arabic_pre_D81_2026-07-21.md`), the already-executed D68 result artifacts (`results/d68_atomicity/d68_atomicity_candidates.md`, `results/d68_atomicity/d68_atomicity_adjudication.json`), the archived source script that produced them (`archive/phase8_arat5_superseded/scripts/d68_atomicity_run.py`), and the literal target path `results/gold_v2/` named in D69's body (D69 was never executed, so this path does not exist on disk and is preserved verbatim as what D69 actually specified).
+- Rationale for the narrow scope: archived snapshots and already-executed result artifacts are historical record: renaming them would misrepresent what was actually planned/produced at the time, contrary to this project's principle that corrections are documented rather than silently overwritten (see D81's own precedent).
+
+The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) are unaffected and keep their existing names.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
@@ -533,7 +546,7 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 | **Q2** | 250-question review documentation + SE-006 anomaly check. | ⛔ |
 | **D73** | Exhaustive D72 error analysis — non-blocking retrospective documentation. | ⛔ |
 | **O1** | Option B justification paragraph — final report. | ⛔ |
-| **Gold naming** | Three artifacts named "Gold" (O9 val set, DS-014 NLI Gold Set, decomposition corpus) — documentation-only rename recommended. | ⛔ |
+| **Gold naming** | RESOLVED (D84): the decomposition training corpus (D67-D69, formerly "Gold Corpus v2") renamed to "Decomposition Training Corpus v2" in decisions.md to disambiguate from the O9 validation set and the DS-014 NLI Gold Set. The archived Arabic original and already-executed result artifacts (results/d68_atomicity/*, the literal results/gold_v2/ path referenced in D69) are left unchanged as historical record. | ✅ |
 
 ---
 
@@ -558,7 +571,7 @@ In the adapter: **zero.** Highest `P(E)` on any contradictory claim = **0.203164
 
 - **v3.0 (21 Jul 2026):** D81 — full English migration + thematic reorganization of the log (D1–D80). All figures carried over verbatim; superseded AraT5 procedural entries (D58–D73) condensed to outcomes; Arabic original archived. Added D78/D79/D80 (sanity gate execution: gemma VOID, llama VOID, cohere PASS).
 - **v2.41–v2.37 (21 Jul 2026):** D74 pivot (AraT5 → runtime LLM API, supervisor-approved); D75 (Codex corpus attempt, closed/superseded); D76 (first end-to-end LLM call, nemotron after gemma 429); D77 (sanity gate design). "Zero LLM at runtime" reframed to "LLM-free correctness core."
-- **v2.36–v2.33 (19–20 Jul 2026):** D70 (paired corpus), D71 (paired FT, checkpoint-543, eval_loss 2.205), D72 (quality REJECTED — O9 LCS F1 0.189), D73 (error-analysis pre-registration); D67/D68 (atomicity adjudication: 24+10), D69 (Gold v2 build pre-registration).
+- **v2.36–v2.33 (19–20 Jul 2026):** D70 (paired corpus), D71 (paired FT, checkpoint-543, eval_loss 2.205), D72 (quality REJECTED — O9 LCS F1 0.189), D73 (error-analysis pre-registration); D67/D68 (atomicity adjudication: 24+10), D69 (Decomposition Training Corpus v2 build pre-registration).
 - **v2.32–v2.27 (18 Jul 2026):** D64 (full retrain, EXECUTION PASS/no quality), D65 (QUALITY FAIL — median edit sim 0.519/0.160, Q6 reopened), D66 (PEFT repair, NO REPAIR CANDIDATE); D62/D63 (single- and five-example overfit diagnostics PASS).
 - **v2.21–v2.16 (13–16 Jul 2026):** D53–D57 (Q6 pilot, AraT5 selected on linguistic grounds, corpus expansion 223/225, prompt format, trainer hyperparameters + save_total_limit fix).
 - **v2.15–v2.12 (12–13 Jul 2026):** D50–D52 (O9 sample pre-registration, O9 closure with organic R1 in 7 questions, G2 closed by consequence).
