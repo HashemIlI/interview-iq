@@ -537,6 +537,22 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+### D86 — Groq Fallback Provider for Claim Decomposition (⛔ PREREGISTERED / NOT EXECUTED)
+
+**Goal:** resolve the long-open "D74 Fallback" item by adding a second, independent LLM API provider (Groq) that the decomposition client automatically falls back to when the primary provider (OpenRouter) returns HTTP 429, without requiring manual `.env` edits between runs.
+
+**Trigger scope (narrow, deliberate):** fallback activates ONLY on OpenRouter HTTP 429 (rate limit exceeded). Any other OpenRouter failure (4xx auth errors, 5xx, malformed response, null content per D82 Issue 1's fix) is NOT retried against Groq — those are real errors that a different provider wouldn't fix, and conflating them would hide genuine bugs behind a provider switch.
+
+**Candidate model:** `llama-3.1-8b-instant` on Groq — chosen for its far larger daily free-tier ceiling (14,400 req/day vs. ~1,000 for larger Groq models) and because it is an instruct model, not a reasoning model (avoiding the D76 nemotron CoT-leak failure mode by construction, same logic as the OpenRouter candidate selection in D78-D80).
+
+**Mandatory gate before production use (same standard as D77, applied independently to this new model):** the Groq candidate must pass its own run of the D77 sanity gate (8 fixtures, human judgment on error_preserved/no_unauthorized_addition/atomicity_verdict) before being trusted as a fallback. A model that has never been quality-checked must not silently receive real decomposition traffic just because the primary provider is rate-limited.
+
+**Transparency requirement:** any downstream consumer of decomposition output (pipeline.py's `models_used`, the sanity-gate script, the Coverage experiment script) must be able to tell which provider and model actually served a given call — never silently reported as "OPENROUTER_MODEL" when Groq actually served the request.
+
+**Explicitly out of scope for this decision:** load-balancing or round-robin across multiple accounts on the same provider (considered and rejected as a separate, ethically distinct proposal on 22 Jul 2026 — risks account suspension across multiple people's accounts for marginal gain, per OpenRouter's own Terms of Service prohibiting "repeatedly creating accounts... to bypass rate limits"). This decision is strictly about adding one additional, independently-paid-for-by-nobody, legitimately-free second provider.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
