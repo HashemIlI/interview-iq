@@ -140,9 +140,16 @@ def _call_openrouter(asr_text: str, system_prompt: str) -> str:
         if response.status_code == 200:
             data = response.json()
             try:
-                return data["choices"][0]["message"]["content"]
+                message = data["choices"][0]["message"]
+                content = message["content"]
             except (KeyError, IndexError, TypeError) as exc:
                 raise LLMDecompositionError(f"Unexpected response shape from OpenRouter: {data!r}") from exc
+            if content is None:
+                finish_reason = data["choices"][0].get("finish_reason")
+                raise LLMDecompositionError(
+                    f"OpenRouter returned null message content (finish_reason={finish_reason!r}): {data!r}"
+                )
+            return content
 
         if response.status_code == 429 or response.status_code >= 500:
             retry_after = response.headers.get("Retry-After")
