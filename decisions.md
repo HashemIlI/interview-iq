@@ -555,6 +555,22 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+### D87 — Sanity Gate Result on Groq (`llama-3.3-70b-versatile`): PASS (✅ PASS — 8/8, adopted as GROQ_MODEL)
+
+**Context:** per D86's amendment, Groq became the sole decomposition provider with all OpenRouter code removed. Two Groq candidates were run through the D77 sanity gate before either was trusted for production use.
+
+**First attempt — `llama-3.1-8b-instant` (⛔ NOT ADOPTED, quality concerns, not a hard FAIL but not clean enough to trust):** 8/8 execution SUCCESS (`run_20260722T111921Z`). Human review found two issues: (1) SG-01 produced a claim not present in the input ("new items are added to the end of the list" — a FIFO/queue-like behavior not stated anywhere in the LIFO-describing input), a plausible `no_unauthorized_addition=NO`; (2) SG-07 exhibited literal text corruption — Cyrillic characters intermixed into an Arabic word ("للконфликтс"), a generation-quality defect independent of the pass/fail criteria. Given the ambiguity on SG-01 and the corruption on SG-07, Ahmed chose not to adopt this candidate rather than force a borderline PASS.
+
+**Second attempt — `llama-3.3-70b-versatile` (✅ ADOPTED):** 8/8 execution SUCCESS (`run_20260722T112503Z`). Human review by Ahmed: `error_preserved=YES` and `no_unauthorized_addition=YES` on all eight cases, no text corruption, no fabricated claims. Notably, this larger model resolved both defects seen in the 8B candidate: SG-01's claims matched the input exactly (no fabricated addition), and SG-07 preserved "أسرع" (part of the injected HTTP/HTTPS speed error) and both other injected errors (port 80, no-encryption claim) with no corruption. All three deliberately-injected errors in SG-08 (speed-not-encryption framing, port 80, no additional encryption) were preserved without correction or softening.
+
+**Atomicity:** all eight cases judged reasonably ATOMIC by Ahmed (no excessive fragmentation, no improper merging).
+
+**Decision:** `llama-3.3-70b-versatile` (Groq) is adopted as the current decomposition model for `GROQ_MODEL`. D74's mandatory sanity gate requirement is empirically satisfied for the current sole provider. Groq's free tier for this model: 1,000 requests/day (per D86's cited figures) — ample headroom for O9-scale experiments (25 questions), repeated sanity-gate reruns, and supervisor demo sessions.
+
+**Supersession note:** this supersedes D80 for current production use (D80's PASS was for `cohere/north-mini-code:free` on OpenRouter, a provider/model pair no longer in the codebase per D86). D80 remains accurate historical record of what was true on that date, per this project's standing principle that corrections are documented rather than silently overwritten.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
