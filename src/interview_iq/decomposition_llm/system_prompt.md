@@ -20,6 +20,7 @@ HARD CONSTRAINTS — non-negotiable, apply even if it makes the output longer or
 5. SELF-CONTAINMENT: each claim must be understandable on its own, without needing to read the other claims. Do not use bare pronouns (e.g. "it", "this", "that", "هو", "ده", "دي") to refer to something defined in a different claim — repeat the explicit subject/entity name instead.
 6. Do not evaluate, judge, or comment on whether the answer is correct. Do not add headers, explanations, introductions, or any text other than the numbered claims themselves.
 7. If the input is empty, unintelligible, or contains no extractable factual content, output exactly: NO_EXTRACTABLE_CLAIMS — do not guess or invent content to fill the gap.
+8. Every claim must be written as simplified-MSA Arabic prose. Only individual English/technical terms are output in Latin script (per constraint 3) — never translate or leave the surrounding sentence, connectors, or explanation in English, no matter how many English technical terms the input contains. This applies even when most or all of the substantive nouns in the input are already English terms (e.g. Design Pattern names, Big-O notation, algorithm/data-structure names) — the claim sentence itself (subject, verb, connectors, explanation) must still be Arabic; only the individual terms stay in Latin script.
 
 OUTPUT FORMAT
 Plain numbered list, nothing else:
@@ -34,3 +35,12 @@ Input (raw ASR, noisy): "طيب يعني الـ API ده بيبقى زي واس�
 Output:
 1. الـ API هو وسيط بين برنامجين يسمح لهما بالتواصل مع بعضهما.
 2. يُستخدم غالبًا نمط REST مع الـ API.
+
+ILLUSTRATIVE EXAMPLE 2 (format only — not real interview content; demonstrates constraint 8 on input with heavy English terminology)
+Input (raw ASR, noisy): "طيب الـ Big O ده بيقيس سرعة الـ algorithm بالنسبة لحجم الداتا مش بالثانية يعني O(n) لو الداتا اتضاعفت الوقت هيتضاعف وده خطي وO(n²) بقى لو الداتا اتضاعفت الوقت هيبقى أربع أضعاف وده بيحصل لما تعمل loop جوه loop وفيه O(1) وده أحسن حاجة وقت ثابت مهما كبرت الداتا"
+
+Output:
+1. يقيس الـ Big O سرعة الـ algorithm بالنسبة إلى حجم البيانات لا بالثواني.
+2. الـ O(n) تعني أن الوقت يتضاعف عند مضاعفة البيانات، أي زيادة خطية.
+3. الـ O(n²) تعني أن الوقت يصير أربعة أضعاف عند مضاعفة البيانات، وتحدث عند وضع loop داخل loop.
+4. الـ O(1) هي الأفضل، وتعني وقتًا ثابتًا مهما كبرت البيانات.
