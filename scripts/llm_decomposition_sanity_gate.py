@@ -18,7 +18,7 @@ side-by-side report so that human review is fast and complete.
 KNOWN LIMITATION (documented per §5.13, not silently worked around):
 decompose_via_llm() is the only public entry point in client.py. It does
 not expose per-request retry counts or raw HTTP response bodies -- those
-live inside the private _call_openrouter() helper. Reaching into a
+live inside the private _call_groq() helper. Reaching into a
 private function to extract them would mean this gate no longer runs the
 exact same call path as production. So this script logs what the public
 interface actually returns (success/failure, claims, timing) and leaves
@@ -58,7 +58,7 @@ _OUTPUT_ROOT = _REPO_ROOT / "results" / "llm_decomposition_sanity_gate"
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from interview_iq.decomposition_llm.client import (  # noqa: E402
-    OPENROUTER_MODEL,
+    GROQ_MODEL,
     LLMDecompositionError,
     decompose_via_llm,
 )
@@ -104,7 +104,7 @@ def _run_case(case: dict) -> dict:
         "injected_error_anchor": case.get("injected_error_anchor"),
         "latin_terms_expected": case.get("latin_terms_expected", []),
         "input_answer_text": answer_text,
-        "model_used": OPENROUTER_MODEL,
+        "model_used": GROQ_MODEL,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "execution_status": None,
         "claims": None,
@@ -217,15 +217,15 @@ def main() -> int:
     run_dir = _OUTPUT_ROOT / f"run_{run_timestamp}"
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    if not OPENROUTER_MODEL:
+    if not GROQ_MODEL:
         print(
-            "ERROR: OPENROUTER_MODEL is not set in .env. Per client.py, this must be "
-            "verified manually against https://openrouter.ai/models before running.",
+            "ERROR: GROQ_MODEL is not set in .env. Per client.py, this must be "
+            "verified manually against https://console.groq.com/docs/models before running.",
             file=sys.stderr,
         )
         return 1
 
-    print(f"Running D74 sanity gate: {len(cases)} cases, model={OPENROUTER_MODEL!r}, "
+    print(f"Running D74 sanity gate: {len(cases)} cases, model={GROQ_MODEL!r}, "
           f"git commit={git_commit}")
 
     records = []
@@ -240,7 +240,7 @@ def main() -> int:
 
     meta = {
         "run_timestamp_utc": run_timestamp,
-        "model_used": OPENROUTER_MODEL,
+        "model_used": GROQ_MODEL,
         "git_commit": git_commit,
         "n_cases": len(records),
         "n_success": n_success,

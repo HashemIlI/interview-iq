@@ -38,7 +38,7 @@ _REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from interview_iq.decomposition_llm.client import (  # noqa: E402
-    OPENROUTER_MODEL,
+    GROQ_MODEL,
     LLMDecompositionError,
     decompose_via_llm,
 )
@@ -57,7 +57,7 @@ def main() -> int:
     parser.add_argument("--output-json", type=Path, required=True)
     args = parser.parse_args()
 
-    print(f"[demo bridge] model={OPENROUTER_MODEL!r}")
+    print(f"[demo bridge] model={GROQ_MODEL!r}")
     print(f"[demo bridge] Calling LLM decomposition for question_id={args.question_id!r}...")
 
     try:
@@ -75,7 +75,7 @@ def main() -> int:
                 "TEMPORARY DEMO BRIDGE OUTPUT -- LLM decomposition (D74) manually wired into the "
                 "interim Phase 6 claims format for a one-off demo. NOT production pipeline wiring."
             ),
-            "model_used": OPENROUTER_MODEL,
+            "model_used": GROQ_MODEL,
             "question_id": args.question_id,
             "source_text": result.source_text,
         },

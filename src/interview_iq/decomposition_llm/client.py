@@ -1,18 +1,23 @@
 """
 D74 LLM-based Claim Decomposition client.
 
-Calls an external LLM (via OpenRouter, OpenAI-compatible API) to perform
-answer normalization + claim decomposition, per decisions.md D74. This
-REPLACES the archived AraT5 fine-tuning approach (Phase 8, superseded --
-see archive/phase8_arat5_superseded/).
+Calls an external LLM (Groq, OpenAI-compatible chat completions API) to
+perform answer normalization + claim decomposition, per decisions.md D74.
+This REPLACES the archived AraT5 fine-tuning approach (Phase 8, superseded
+-- see archive/phase8_arat5_superseded/).
+
+Per D86's amendment (decisions.md), Groq is the sole decomposition
+provider -- this module previously called OpenRouter; that code has been
+fully removed (not kept dormant), not made a fallback. A fresh D77-style
+sanity gate run against the current GROQ_MODEL is required before this is
+trusted for any real O9/Coverage/pipeline work (see D87).
 
 The hard constraints (no correction of answer correctness, Latin-script
 term preservation, atomicity, self-containment) are enforced by the
 system prompt in system_prompt.md -- this module does NOT itself verify
 that the model honored them. See scripts/llm_decomposition_sanity_gate.py
-(D74 mandatory sanity gate, not yet implemented) for that check. Do not
-trust this module's output in any production path until that gate has
-been run and passed.
+for that check. Do not trust this module's output in any production path
+until that gate has been run and passed for the current GROQ_MODEL.
 
 NOT wired into configs/decomposition.yaml or any production pipeline yet.
 """
@@ -35,11 +40,11 @@ _REPO_ROOT_ENV = _MODULE_DIR.parents[3] / ".env"
 
 load_dotenv(_REPO_ROOT_ENV if _REPO_ROOT_ENV.exists() else None)
 
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY")
-# Verify the current free-tier Qwen model id at https://openrouter.ai/models
-# before setting this -- the free lineup rotates and is NOT hardcoded here.
-OPENROUTER_MODEL = os.environ.get("OPENROUTER_MODEL")
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+# Verify the current model id at https://console.groq.com/docs/models
+# before setting this -- do not assume a stale id still works.
+GROQ_MODEL = os.environ.get("GROQ_MODEL")
 
 _MAX_RETRIES = 5
 _BASE_BACKOFF_SECONDS = 2.0
@@ -98,25 +103,25 @@ def _sleep_before_retry(attempt: int, retry_after: str | None) -> None:
     time.sleep(delay)
 
 
-def _call_openrouter(asr_text: str, system_prompt: str) -> str:
-    if not OPENROUTER_API_KEY:
+def _call_groq(asr_text: str, system_prompt: str) -> str:
+    if not GROQ_API_KEY:
         raise LLMDecompositionError(
-            "OPENROUTER_API_KEY is not set. Add it to a .env file at the "
+            "GROQ_API_KEY is not set. Add it to a .env file at the "
             "repo root (see .env.example)."
         )
-    if not OPENROUTER_MODEL:
+    if not GROQ_MODEL:
         raise LLMDecompositionError(
-            "OPENROUTER_MODEL is not set. Verify the current free-tier "
-            "model id at https://openrouter.ai/models and add it to .env "
-            "-- the free lineup rotates, do not assume a stale id works."
+            "GROQ_MODEL is not set. Verify the current model id at "
+            "https://console.groq.com/docs/models and add it to .env "
+            "-- do not assume a stale id still works."
         )
 
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json",
     }
     payload = {
-        "model": OPENROUTER_MODEL,
+        "model": GROQ_MODEL,
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": asr_text},
@@ -127,14 +132,14 @@ def _call_openrouter(asr_text: str, system_prompt: str) -> str:
     last_error: Exception | None = None
     for attempt in range(1, _MAX_RETRIES + 1):
         try:
-            response = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=60)
+            response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=60)
         except requests.RequestException as exc:
             last_error = exc
             if attempt < _MAX_RETRIES:
                 _sleep_before_retry(attempt, retry_after=None)
                 continue
             raise LLMDecompositionError(
-                f"OpenRouter call failed after {_MAX_RETRIES} attempts (connection error): {exc}"
+                f"Groq call failed after {_MAX_RETRIES} attempts (connection error): {exc}"
             ) from exc
 
         if response.status_code == 200:
@@ -143,27 +148,32 @@ def _call_openrouter(asr_text: str, system_prompt: str) -> str:
                 message = data["choices"][0]["message"]
                 content = message["content"]
             except (KeyError, IndexError, TypeError) as exc:
-                raise LLMDecompositionError(f"Unexpected response shape from OpenRouter: {data!r}") from exc
+                raise LLMDecompositionError(f"Unexpected response shape from Groq: {data!r}") from exc
             if content is None:
                 finish_reason = data["choices"][0].get("finish_reason")
                 raise LLMDecompositionError(
-                    f"OpenRouter returned null message content (finish_reason={finish_reason!r}): {data!r}"
+                    f"Groq returned null message content (finish_reason={finish_reason!r}): {data!r}"
                 )
             return content
 
+        # 429 is confirmed retryable per Groq's docs (console.groq.com/docs/rate-limits).
+        # The >=500 half of this condition is a carried-over assumption from the
+        # former OpenRouter code, NOT independently confirmed in Groq's docs --
+        # standard REST convention makes it a reasonable default, but it is not
+        # verified the way the 429 case is (see d86_groq_migration_scope.md).
         if response.status_code == 429 or response.status_code >= 500:
             retry_after = response.headers.get("Retry-After")
             last_error = LLMDecompositionError(
-                f"OpenRouter returned {response.status_code}: {response.text[:500]}"
+                f"Groq returned {response.status_code}: {response.text[:500]}"
             )
             if attempt < _MAX_RETRIES:
                 _sleep_before_retry(attempt, retry_after=retry_after)
                 continue
             raise last_error
 
-        raise LLMDecompositionError(f"OpenRouter returned {response.status_code}: {response.text[:500]}")
+        raise LLMDecompositionError(f"Groq returned {response.status_code}: {response.text[:500]}")
 
-    raise LLMDecompositionError(f"OpenRouter call failed after {_MAX_RETRIES} attempts: {last_error}")
+    raise LLMDecompositionError(f"Groq call failed after {_MAX_RETRIES} attempts: {last_error}")
 
 
 def decompose_via_llm(asr_text: str) -> DecompositionResult:
@@ -180,7 +190,7 @@ def decompose_via_llm(asr_text: str) -> DecompositionResult:
         raise LLMDecompositionError("asr_text is empty -- nothing to decompose.")
 
     system_prompt = _load_system_prompt()
-    raw_output = _call_openrouter(asr_text, system_prompt)
+    raw_output = _call_groq(asr_text, system_prompt)
     claims = _parse_numbered_claims(raw_output)
 
     return DecompositionResult(source_text=asr_text, claims=claims)

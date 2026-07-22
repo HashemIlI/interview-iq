@@ -67,7 +67,7 @@ sys.path.insert(0, str(_REPO_ROOT / "src"))
 
 from interview_iq.config import Config  # noqa: E402
 from interview_iq.decomposition_llm.client import (  # noqa: E402
-    OPENROUTER_MODEL,
+    GROQ_MODEL,
     LLMDecompositionError,
     decompose_via_llm,
 )
@@ -166,7 +166,7 @@ def run_one_question(
         "question_id": question.question_id,
         "track": None,
         "raw_answer_text": question.raw_answer_text,
-        "model_used": OPENROUTER_MODEL,
+        "model_used": GROQ_MODEL,
         "decomposition_status": None,
         "decomposition_error": None,
         "claims": None,
@@ -392,10 +392,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, default=_DEFAULT_OUTPUT_ROOT)
     args = parser.parse_args(argv)
 
-    if not OPENROUTER_MODEL:
+    if not GROQ_MODEL:
         print(
-            "ERROR: OPENROUTER_MODEL is not set in .env. Verify manually against "
-            "https://openrouter.ai/models before running (client.py).",
+            "ERROR: GROQ_MODEL is not set in .env. Verify manually against "
+            "https://console.groq.com/docs/models before running (client.py).",
             file=sys.stderr,
         )
         return 1
@@ -441,7 +441,7 @@ def main(argv: list[str] | None = None) -> int:
     meta = {
         "run_timestamp_utc": run_timestamp,
         "git_commit": git_commit,
-        "model_used": OPENROUTER_MODEL,
+        "model_used": GROQ_MODEL,
         "nli_base_model": cfg.nli_model,
         "adapter_path": str(args.adapter_path),
         "o9_path": str(args.o9_path),

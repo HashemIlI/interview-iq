@@ -133,7 +133,7 @@ def _fake_decompose_ok(asr_text: str) -> DecompositionResult:
 
 
 def _fake_decompose_raises(asr_text: str) -> DecompositionResult:
-    raise LLMDecompositionError("simulated OpenRouter failure for smoke test")
+    raise LLMDecompositionError("simulated Groq failure for smoke test")
 
 
 def _exploding_decompose(asr_text: str) -> DecompositionResult:
@@ -290,7 +290,7 @@ def test_evaluate_answer_decomposition_failed(cfg: Config, document) -> None:
         decompose_fn=_fake_decompose_raises,
     )
     assert result["status"] == "DECOMPOSITION_FAILED"
-    assert "simulated OpenRouter failure" in result["decomposition_error"]
+    assert "simulated Groq failure" in result["decomposition_error"]
     assert "LLMDecompositionError" in result["error"]
     assert result["claims"] is None
     assert result["precision"] is None

@@ -1,7 +1,7 @@
 """
 scripts/run_pipeline_demo.py — Thin CLI: real end-to-end pipeline.evaluate_answer()
 run for the pilot recording (D85's ASR module + orchestrator), against real
-audio, real faster-whisper, real OpenRouter decomposition, and real NLI
+audio, real faster-whisper, real Groq decomposition, and real NLI
 models (zero-shot base + LoRA adapter).
 
 Usage:
@@ -22,7 +22,7 @@ logic lives in the package; this script just wires it, matching the
 project's thin-runner convention (see cli/run_scoring.py,
 scripts/coverage_channel_real_claims_experiment.py).
 
-OPENROUTER_API_KEY is read from `.env` only, via decomposition_llm.client's
+GROQ_API_KEY is read from `.env` only, via decomposition_llm.client's
 existing contract — this script never touches it directly.
 """
 

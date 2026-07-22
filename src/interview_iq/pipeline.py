@@ -46,7 +46,7 @@ silently presented as SUCCESS:
                               fourth, narrower status this first version does not
                               need).
 
-No hardcoded paths anywhere. OPENROUTER_API_KEY is read from `.env` only, via
+No hardcoded paths anywhere. GROQ_API_KEY is read from `.env` only, via
 decomposition_llm.client's existing contract (this module never touches it
 directly).
 """
@@ -63,7 +63,7 @@ from interview_iq.audio.segmentation import AudioSegmentationError
 from interview_iq.config import Config
 from interview_iq.decomposition.types import DecompositionResult
 from interview_iq.decomposition_llm.client import (
-    OPENROUTER_MODEL,
+    GROQ_MODEL,
     LLMDecompositionError,
     decompose_via_llm,
 )
@@ -152,7 +152,7 @@ def evaluate_answer(
         "asr_checkpoint": cfg.asr_model,
         "asr_device": device_override or cfg.asr["model"]["device"],
         "asr_compute_type": compute_type_override or cfg.asr["model"]["compute_type"],
-        "decomposition_model": OPENROUTER_MODEL,
+        "decomposition_model": GROQ_MODEL,
         "nli_base_model": cfg.nli_model,
         "nli_adapter_path": str(adapter_path) if adapter_path is not None else None,
     }

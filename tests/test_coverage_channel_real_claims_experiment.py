@@ -186,7 +186,7 @@ def test_run_one_question_decomposition_failure_skips_both_arms_without_crashing
     adapter_model = zero_shot_model  # arms are never reached on this path -- reuse is fine here
 
     def _mock_decompose_raises(asr_text: str) -> DecompositionResult:
-        raise LLMDecompositionError("simulated OpenRouter failure for smoke test")
+        raise LLMDecompositionError("simulated Groq failure for smoke test")
 
     record = run_one_question(
         question,
