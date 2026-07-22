@@ -551,6 +551,8 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 **Explicitly out of scope for this decision:** load-balancing or round-robin across multiple accounts on the same provider (considered and rejected as a separate, ethically distinct proposal on 22 Jul 2026 — risks account suspension across multiple people's accounts for marginal gain, per OpenRouter's own Terms of Service prohibiting "repeatedly creating accounts... to bypass rate limits"). This decision is strictly about adding one additional, independently-paid-for-by-nobody, legitimately-free second provider.
 
+**Amendment (22 Jul 2026, before any code was written):** Ahmed decided to replace this fallback design with a full provider switch instead: Groq becomes the sole decomposition provider, and all OpenRouter-specific code is deleted from client.py (not kept dormant). Rationale given: simplicity over dual-provider complexity. This supersedes the "fallback" framing above — everything else in this decision (candidate model, mandatory D77-style sanity gate before production use, transparency requirement) still applies unchanged, now to Groq as the sole provider rather than as a fallback. Consequence: D80's sanity-gate PASS (for `cohere/north-mini-code:free` on OpenRouter) no longer covers the model actually in use — it is historical record for that now-retired provider/model pair, not evidence for Groq. A fresh sanity-gate run on Groq's `llama-3.1-8b-instant` is required (see D87) before this is trusted for any real O9/Coverage/pipeline work.
+
 ---
 
 ## Section 4 — Open Items
