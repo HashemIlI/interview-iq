@@ -571,6 +571,25 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+## D88 — First real end-to-end run: three verified failure modes (2026-07-23)
+
+**Context:** First real `evaluate_answer()` runs (SE-028 correct answer, GN-040 deliberately-wrong answer) produced inverted scores: SE-028 = -12.02, GN-040 = +4.57. A pre-registered two-arm diagnostic (frozen claims, full Precision matrices, zero-shot vs adapter, production functions reused unmodified) isolated three causes:
+
+**F1 — LLM constraint-8 violation (GN-040):** transcript said "16 bits per Byte" (deliberate error); the decomposition claim said "8 bits, not 16" — the LLM corrected the candidate's factual error, violating system_prompt.md constraint 8. The D77 sanity gate (8/8 PASS, D87) did not catch this error type (numeric fact inside otherwise-correct sentence). Gate fixture coverage is therefore incomplete.
+
+**F2 — Adapter degrades Precision channel on real claims (SE-028):** near-verbatim claim↔chunk pairs: zero-shot E=0.985/0.786 collapsed to 0.191/0.041 under the adapter. Derived Precision (v2 rule, pre-calibration thresholds): zero-shot +0.501 vs adapter -0.120. Extends D82/D83's Coverage finding into the Precision channel; consistent with D42-b (HARD_POS-induced drift). Directional, n=1 question.
+
+**F3 — Base-model failures independent of the adapter:** claim0↔SE028-C01 (near-verbatim, both arms E≤0.232), claim4↔SE028-C05 (refactor claim vs refactor chunk, both arms C≥0.97), GN-040 claim2↔GN040-C02 ("8 bits" vs "8 bits", both arms N≈0.99). Zero-shot's +0.501 also includes one false-entailment VERIFIED (claim4↔C04, E=0.908 against the wrong chunk).
+
+**Evidence:** results/pipeline_demo/{SE-028.json, GN-040.json, precision_matrix_two_arms.json}; diagnostic script committed as scripts/diag_precision_two_arms.py.
+
+**Consequences (registered, resolution deferred to a dedicated decision):**
+- Adapter role in the runtime path is now an open question for BOTH channels (supersedes open item "D82/D83 consequences" — merged here).
+- D77 gate needs a numeric-fact-preservation fixture class before any further reliance on it.
+- No calibration (G4) may proceed on top of an unresolved NLI-arm choice.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
