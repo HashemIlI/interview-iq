@@ -1,0 +1,354 @@
+{
+  "meta": {
+    "run_timestamp_utc": "20260723T144150Z",
+    "model_used": "llama-3.3-70b-versatile",
+    "git_commit": "94597fe7a2d0dfa4ceed462a9464bd2d96979c9e",
+    "n_cases": 13,
+    "n_success": 13,
+    "n_error": 0
+  },
+  "records": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": [
+        "heap",
+        "LIFO",
+        "function calls",
+        "recursion"
+      ],
+      "input_answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:50.382874+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الهايب هو نوع من الداتا ستركتشر.",
+        "الهايب يعمل بنظام لايفو.",
+        "آخر حاجة تتحط في الهايب هي أول حاجة تتشال.",
+        "نستخدم الهايب في تخزين الـ function calls.",
+        "نستخدم الهايب في تخزين الـ recursion."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.656,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": [
+        "process",
+        "thread",
+        "memory"
+      ],
+      "input_answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:51.038849+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الفرق بين البروسيس والثريد هو أن كل بروسيس لها ذاكرة منفصلة عن باقي البروسيسز."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.486,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "overfitting",
+        "patterns"
+      ],
+      "input_answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:51.525188+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الأوفرفيتينج يحدث عندما يكون الموديل بسيطًا جدًا.",
+        "الموديل البسيط لا يستطيع مسك الأنماط في الداتا.",
+        "الموديل البسيط يؤدي أداءً ضعيفًا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.724,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": [
+        "classification",
+        "precision",
+        "positive"
+      ],
+      "input_answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:52.248842+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "نقيم موديل الكلاسيفيكيشن بناءً على البريسيجن.",
+        "البريسيجن هو عدد التوقعات الصحيحة من إجمالي التوقعات التي قال فيها الموديل إنها بوزيتيف.",
+        "البريسيجن هو أهم مقياس لي لتحديد ما إذا كان الموديل يعمل جيدًا أم لا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.719,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "Normalization",
+        "Standardization"
+      ],
+      "input_answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:52.967523+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ Normalization هي عملية تحويل البيانات بحيث يصبح المتوسط صفر والانحراف المعياري واحد.",
+        "الـ Standardization هي عملية تحويل القيم إلى مدى بين صفر وواحد."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.607,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": [
+        "SQL",
+        "INNER JOIN",
+        "Orders",
+        "Customers"
+      ],
+      "input_answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:53.574441+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ INNER JOIN في SQL تعيد الصفوف التي لها تطابق على العمود الذي يتم إجراء الجوين عليه.",
+        "عند استخدام INNER JOIN بين جدولين، تعيد فقط الصفوف التي لها تطابق على العمود المشترك.",
+        "على سبيل المثال، إذا كان هناك جدول Orders وجدول Customers، فإن INNER JOIN سيعيد فقط الأوردرات التي لها كستمر موجود فعلا في جدول Customers."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.701,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": [
+        "Git",
+        "merge",
+        "rebase",
+        "branches",
+        "commit history",
+        "conflicts"
+      ],
+      "input_answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:54.275081+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الريبيز في الجيت يدمج الفرعين بدون تغيير تاريخ الكوميت.",
+        "الريبيز أمان أكثر من الميرج دائمًا.",
+        "الجيت يحل النزاعات تلقائيًا عند استخدام الريبيز."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.691,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "input_answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:41:54.965790+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ HTTPS هي نسخة أسرع من الـ HTTP.",
+        "الـ HTTPS تستخدم نفس البورت 80.",
+        "الـ HTTPS تشتغل بنفس الطريقة بالظبط مثل الـ HTTP.",
+        "لا يوجد تشفير إضافي في الـ HTTPS."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 9.595,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-09",
+      "track": "DA",
+      "injected_error_type": "NUMERIC_FACT",
+      "injected_error_anchor": "قيمة alpha القياسية في A/B testing هي 0.05 مش 0.5 (خطأ فاصلة عشرية واقعي في ASR للعامية). الغلطة لازم تفضل زي ما هي (0.5) في الـ claims — القيمة الصحيحة 0.05 ما ينفعش تظهر في الإخراج. حالة D90 (نسخة مُستبدلة بعد مراجعة): رقم عشري في سياق إحصائي، بعيد تمامًا عن فئتي bit-width (GN-040, illustrative example 3) وport numbers (SG-08) لتجنب أي تداخل فئوي.",
+      "latin_terms_expected": [
+        "A/B testing",
+        "alpha",
+        "p-value",
+        "null hypothesis"
+      ],
+      "input_answer_text": "يعني بص لما بعمل A/B testing عادة بحدد significance level يعني alpha بقيمة 0.5 يعني لو الـ p-value طلع أقل من كده بارفض الـ null hypothesis وأقول في فرق حقيقي بين النسختين",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:42:04.560475+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "عند إجراء اختبار A/B، يتم تحديد مستوى الدلالة (significance level) عادةً بقيمة 0.5.",
+        "إذا كانت قيمة p-value أقل من 0.5، يتم رفض الفرضية الصفرية (null hypothesis).",
+        "عند رفض الفرضية الصفرية، يتم القول بوجود فرق حقيقي بين النسختين."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 8.21,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-10",
+      "track": "SE",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "TDD (Test-Driven Development) بالتعريف الفعلي: التست بيتكتب الأول قبل الكود عشان يوجه التطوير (دورة red-green-refactor). الإجابة عكست الترتيب (الكود الأول وبعدين التست) — دي غلطة واقعية لازم تفضل زي ما هي في الـ claims، من غير ما الموديل يصلحها للترتيب الصحيح أو يعلّق عليها.",
+      "latin_terms_expected": [
+        "TDD",
+        "code",
+        "test",
+        "database"
+      ],
+      "input_answer_text": "طيب يعني بص لو عايز تعمل TDD الأول المفروض تكتب الكود بتاعك الأول وبعدين تيجي تكتب التست عليه عشان تتأكد إنه شغال والداتا بيز بتاعتك المفروض تتوصل بيها من جوه التست",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:42:12.770078+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "عند عمل TDD، المفروض تكتب التست قبل كتابة الكود.",
+        "التست يُكتب ليتأكد من أن الكود شغال بشكل صحيح.",
+        "الداتا بيز المفروض تتوصل بيها من جوه التست."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 9.535,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-11",
+      "track": "GN",
+      "injected_error_type": "NUMERIC_FACT",
+      "injected_error_anchor": "الـ Byte الفعلي بيتكون من 8 bits مش 16. كلمة 'بيت' هنا استخدمت بشكل غامض للدلالة على كل من bit (الوحدة الصغيرة) و byte (الوحدة الأكبر المكوّنة من 16 منها) — تطابق شبه-حرفي حقيقي في الـ ASR المصري، تكرار متعمد لحالة GN-040 الميدانية (D94 C1 FAIL). المتحدث نفسه ذكر المقارنة بـ 8 كجزء من كلامه (مش إضافة من الموديل) — الـ claims لازم تحافظ على الرقم 16 والمقارنة بـ 8 بالظبط زي ما اتقالوا، من غير أي تعليق تفسيري أو تصحيحي إضافي من عند الموديل زي 'وليس 8 كما ذكر في الأصل' (ده بالضبط فشل D94 المزدوج: عدم حفظ + إضافة غير مصرح بها).",
+      "latin_terms_expected": [
+        "bit",
+        "byte"
+      ],
+      "input_answer_text": "طب يعني بص الـ بيت هو أصغر وحدة تخزين في الكمبيوتر وبعدين لما تجمع 16 من الـ بيت دول مع بعض بيبقى عندك وحدة أكبر اسمها برضو بيت وعشان كده بنقول إن البيت الكبير ده بيتكون من 16 بيت مش من 8",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:42:22.305024+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ بيت هو أصغر وحدة تخزين في الكمبيوتر.",
+        "يُشكل جمع 16 بيت معًا وحدة أكبر تسمى بيت.",
+        "البيت الكبير يتكون من 16 بيت، وليس من 8."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 9.493,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-12",
+      "track": "SE",
+      "injected_error_type": "NONE",
+      "injected_error_anchor": "لا توجد غلطة واقعية متعمدة في هذه الحالة — الغرض الأساسي اختبار تحويل الاختصار المهجأ حرفيًا (تي دي دي) دون أي إضافة أو حذف. error_preserved يُسجَّل N/A (لا توجد غلطة لتُحفظ)؛ no_unauthorized_addition يبقى قابلاً للتطبيق كاملاً.",
+      "latin_terms_expected": [
+        "TDD",
+        "test",
+        "code"
+      ],
+      "input_answer_text": "طب يعني بص أسلوب الـ تي دي دي ده معناه إنك تكتب التست الأول قبل ما تكتب أي كود يعني بتحدد الحاجة اللي عايز تتأكد منها الأول وبعدين تيجي تكتب أقل كود ممكن عشان يعديها",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:42:31.798225+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "أسلوب التي دي دي (TDD) يعني كتابة التست قبل كتابة أي كود.",
+        "يتم تحديد الحاجة التي يجب التأكد منها أولاً.",
+        "ثم يتم كتابة أقل كود ممكن لتحقيق ذلك."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 9.101,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-13",
+      "track": "SE",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST (نوع جديد، P5): المتحدث بدأ يسمي الدورة ('اسمها يعني') وتوقف من غير ما يكمل الاسم أبدًا. هذه إعادة إنتاج مباشرة لـ D94 O-b (SE-028 claim 2 اخترع الموديل اسم 'دورة التطوير' من عنده رغم إن المتحدث ما سماهاش). الـ claims لازم تصف الخطوات (كتابة كود، عمل تست، تعديل، تكرار) من غير أي اسم يُنسب للدورة من عند الموديل — حتى لو الاسم بديهي أو شائع في الصناعة (زي 'Development Cycle' أو 'دورة التطوير').",
+      "latin_terms_expected": [
+        "code",
+        "test"
+      ],
+      "input_answer_text": "طيب يعني في التطوير فيه خطوات بتتكرر يعني بتكتب كود وبعدين تعمل تست وبعدين تعدل وترجع تاني للخطوة الأولى اسمها يعني",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T14:42:40.898886+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "في التطوير، هناك خطوات متكررة.",
+        "الخطوات المتكررة تتضمن كتابة الكود.",
+        "بعد كتابة الكود، تعمل التست.",
+        "بعد عمل التست، يتم تعديل الكود.",
+        "بعد التعديل، يعود إلى الخطوة الأولى."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 7.985,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "reviewer_notes": ""
+    }
+  ]
+}

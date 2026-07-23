@@ -742,6 +742,34 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ---
 
+## D96 — D95 gate v2 outcome: FAIL — new silent-correction class + transliteration constraint ineffective (2026-07-23)
+
+**Run:** Kaggle sanity-gate thin-runner, commit 94597fe7a2d0dfa4ceed462a9464bd2d96979c9e (post-D95), Groq llama-3.3-70b-versatile, 13/13 executed, 0 API errors. Evidence: results/llm_decomposition_sanity_gate/run_20260723T144150Z/raw_results.json. Human judgment: Ahmed, on the full uploaded output.
+
+**VOID run recorded (non-evidentiary, D78/D79 precedent):** first attempt run_20260723T143137Z executed on commit f1e3f49 (pre-D95: old prompt, 9 fixtures) because the D95 push had not yet reached origin. Detected by the pre-download commit/n_cases check; no judgment was performed on it.
+
+**Verdicts (human):**
+- SG-01..09: error_preserved=YES, no_unauthorized_addition=YES for all nine (original criteria; unchanged behavior from D92).
+- SG-10: error_preserved=NO — the injected inverted TDD order ("code first, then test") was silently reversed to the correct definition ("test before code") in claim 1. This is a THIRD silent-correction class: ordering/logical facts, after numeric facts (D88-F1) and editorialized corrections (D94-C1). Each targeted hardening closed its seen class and the model leaked through the next unseen one. transliteration_correct=NO (التست/الكود/الداتا بيز all left in Arabic despite prompt-v2 inline examples naming these exact words).
+- SG-11: error_preserved=YES, no_unauthorized_addition=YES — the 16-bit error and the speaker's own "not 8" comparison were carried verbatim with zero model commentary: the exact D94-C1 double-failure pattern did NOT recur (P1 effective). transliteration_correct=NO ("بيت" left in Arabic in all occurrences; no bit/byte resolution attempted).
+- SG-12: no_unauthorized_addition=YES on content; transliteration_correct=NO — hybrid output "التي دي دي (TDD)": the acronym appeared but the letter-name spelling was retained alongside a parenthetical gloss, violating the pre-registered "as a whole, not separate letters" criterion; ruling YES would be post-hoc criterion softening. error_preserved=N/A (per D95 designation).
+- SG-13: no_unauthorized_addition=YES — five descriptive claims, no invented name for the trailed-off cycle: D94 O-b did NOT recur (P5 effective). transliteration_correct=NO (الكود/التست left in Arabic). error_preserved=N/A (per D95 designation).
+
+**Gate verdict: FAIL** — SG-10 error_preserved=NO triggers zero-tolerance; independently, transliteration_correct=0/4 on the gating cases.
+
+**Diagnosis registered:**
+- P1 (claim purity) and P5 (no invented labels) are field-effective: both D94 failure classes were reproduced in fixtures and did not recur.
+- The transliteration constraint (P2/P3) is behaviorally ineffective in this model regardless of prompt strength: two successive hardenings, including inline examples of the exact failing words, produced no change (the model transliterates only what is already Latin in the input; SG-01..09 show the same pattern non-gatingly). Conclusion: transliteration is a deterministic mapping task and is a candidate for removal from the LLM entirely (post-processing glossary; closed-domain 250-question vocabulary makes this tractable). Near-homographs (بيت→bit/byte) remain the hard residual for that design.
+- Error preservation fails by category, not by instance: numeric (D88) → editorial (D94) → ordering (D96). Remedy must be a generalized anti-knowledge-injection constraint, not another per-class patch; if a generalized constraint also fails the gate, model replacement re-enters via this same gate (D77–D87 precedent).
+
+**Consequences:**
+- D89-b remains HARD-GATED on a future full gate PASS (unchanged; corpus generation with a failing prompt is prohibited).
+- Next session opens with D97: (a) deterministic transliteration post-processing layer design + (b) generalized preservation constraint (prompt v3) + gate rerun. Neither is executed under D96.
+- Known infra issue (non-blocking, fix alongside D97): the sanity-gate notebook's verification cell hard-codes n_cases != 9 and raised a spurious RuntimeError on the valid 13-case run; it must read the expected count dynamically from sg_cases.json. The raw_results.json write completes before that cell and was unaffected.
+- Documentation correction (old value named per convention): D95's evidence line reads "results/sanity_gate/"; the script's actual output root is "results/llm_decomposition_sanity_gate/". The actual path governs; D95's text stands corrected by this entry.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
