@@ -590,6 +590,25 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+## D89 — Runtime NLI arm: zero-shot for both channels; adapter demoted to documented negative result (2026-07-23)
+
+**Decision:** Effective immediately, the runtime default NLI arm for BOTH channels (Precision and Coverage) is the zero-shot base model (MoritzLaurer/mDeBERTa-v3-base-mnli-xnli, no adapter). The fine-tuned LoRA adapter (checkpoint27, D41) is removed from the runtime path and reclassified as a documented negative result / ablation for the dissertation.
+
+**Basis (accumulated, all pre-registered measurements):**
+- D82/D83: adapter worse than zero-shot on Coverage in 19/19 successful cases (mean 0.180 vs 0.395).
+- D88-F2: adapter collapses Precision-channel entailment on real LLM-decomposed claims (near-verbatim pairs 0.985→0.191, 0.786→0.041); derived Precision zero-shot +0.501 vs adapter -0.120 (directional, n=1 question).
+- Diagnosis: distribution mismatch — the adapter was trained on synthetic pairs and does not generalize to real pipeline-decomposed claims (consistent with D42-b HARD_POS-induced drift).
+
+**Known cost (registered, not hidden):** the adapter's subject-blindness fix (Gold Set 48/48, Phase 5) and its demonstrated contradiction-detection advantage (bridge demo: wrong Stack answer scored -44.73 by adapter vs +4.08 by zero-shot) are given up at runtime. This is a documented limitation of the zero-shot default, an input to threshold calibration (G4), and a discussion point for the supervisor at the next demo.
+
+**Reopening condition (binding):** this decision is reopenable if and only if a pre-registered experiment produces an adapter that outperforms zero-shot on BOTH channels, evaluated on the D88 diagnostic set plus an O9 sample, with acceptance criteria written and committed BEFORE the training run. The first such experiment (retraining on structurally-labeled pairs generated from real pipeline decompositions) is planned and will be registered as its own decision; it is gated on the F1 fix (D88 consequence: the generating LLM must first pass an extended sanity gate including a numeric-fact-preservation fixture) because corpus generation depends on the same model.
+
+**Consequences:**
+- Any runtime default, demo, or fusion-teammate deliverable produced from this point uses the zero-shot arm.
+- In Section 4 (Open Items): mark the "D82/D83 consequences" item as RESOLVED by D88+D89, and add two new open items: (a) "F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9" and (b) "Fine-tuning repair experiment (structural-label corpus): register acceptance criteria, generate, train, evaluate vs zero-shot — gated on (a)".
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
@@ -609,7 +628,7 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 | **Phase 8** | AraT5 fine-tuning — CLOSED, SUPERSEDED by D74. | ✅ |
 | **D77–D80** | Sanity gate designed, executed, PASSED on cohere/north-mini-code:free. | ✅ |
 | **D74 Fallback** | Model caching for demo, or a backup model on API failure/rate-limit. Blocks final demo/full-pipeline run. | ⛔ |
-| **Q8** | Coverage channel measured on real decomposition claims. Experiment designed and pre-registered (D82) — 25 O9 answers through `decompose_via_llm` vs. official `key_points`, pending execution on Kaggle T4. | ⛔ |
+| **Q8 / D82-D83 consequences** | RESOLVED (D88+D89): Coverage channel measured on real decomposition claims (D82/D83 execution — 19/19 successful cases, adapter mean 0.180 vs zero-shot mean 0.395). Combined with D88's Precision-channel finding, this basis drove D89's decision to run both channels zero-shot at runtime. | ✅ |
 | **G4** | Threshold calibration (τ_E, τ, α, k currently PRE-CALIBRATION DEFAULT). Inputs in D43. | ⛔ |
 | **Q7 / O11** | Recording tech stack + session spec + team adoption. **Blocks G3** and ASR selection (Phase 7). | ⛔ |
 | **G3** | Pilot videos — blocks ASR selection (tied to Q7). | ⛔ |
@@ -618,6 +637,8 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 | **D73** | Exhaustive D72 error analysis — non-blocking retrospective documentation. | ⛔ |
 | **O1** | Option B justification paragraph — final report. | ⛔ |
 | **Gold naming** | RESOLVED (D84): the decomposition training corpus (D67-D69, formerly "Gold Corpus v2") renamed to "Decomposition Training Corpus v2" in decisions.md to disambiguate from the O9 validation set and the DS-014 NLI Gold Set. The archived Arabic original and already-executed result artifacts (results/d68_atomicity/*, the literal results/gold_v2/ path referenced in D69) are left unchanged as historical record. | ✅ |
+| **D89-a** | F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9. | ⛔ |
+| **D89-b** | Fine-tuning repair experiment (structural-label corpus): register acceptance criteria, generate, train, evaluate vs zero-shot — gated on D89-a. | ⛔ |
 
 ---
 
