@@ -8,9 +8,10 @@
       "no_unauthorized_addition (YES/NO)",
       "atomicity_verdict (ATOMIC/NON_ATOMIC/AMBIGUOUS)"
     ],
-    "gate_pass_rule": "PASS only if ALL cases have error_preserved=YES AND no_unauthorized_addition=YES. atomicity_verdict is logged/tracked, non-blocking (per D77).",
+    "gate_pass_rule": "PASS only if ALL cases have error_preserved=YES (or N/A where the case's injected_error_anchor explicitly designates it a non-preservation test — currently SG-12 and SG-13 only) AND no_unauthorized_addition=YES. atomicity_verdict is logged/tracked, non-blocking (per D77). D95 EXTENSION: for SG-10 through SG-13 only, PASS additionally requires transliteration_correct=YES (see d95_review_instructions below); SG-01..09 are unaffected by this extension.",
+    "d95_review_instructions": "scripts/llm_decomposition_sanity_gate.py's _run_case() record schema (case_id, track, injected_error_type, injected_error_anchor, latin_terms_expected, error_preserved, no_unauthorized_addition, atomicity_verdict, reviewer_notes) has no dedicated transliteration_correct column, and this decision does not modify the script. For SG-10..13, the reviewer records the transliteration_correct verdict as free text inside the existing reviewer_notes field, e.g. 'transliteration_correct: YES' or 'transliteration_correct: NO — <which term/occurrence failed>', using each case's latin_terms_expected/latin_terms_note as the checklist. SG-12's and SG-13's injected_error_type is not a preservation test (no deliberate wrong fact is embedded); for these two, record error_preserved as N/A rather than YES/NO, and no_unauthorized_addition remains fully applicable (SG-13 in particular is a no-addition test on invented naming).",
     "created": "2026-07-21",
-    "decision_ref_amendments": "D90 (decisions.md) — added SG-09 (NUMERIC_FACT class) after D88-F1 found the original 8 fixtures did not cover a wrong numeric value embedded in an otherwise-correct sentence. SG-09 is a decimal-threshold statistical case (A/B testing alpha, DA track) — not a port-number case; kept distinct from SG-08's port-number content and from GN-040's bit/byte case to avoid categorical overfitting. Gate pass rule unchanged: still ALL cases (now 9), not a fixed count."
+    "decision_ref_amendments": "D90 (decisions.md) — added SG-09 (NUMERIC_FACT class) after D88-F1 found the original 8 fixtures did not cover a wrong numeric value embedded in an otherwise-correct sentence. SG-09 is a decimal-threshold statistical case (A/B testing alpha, DA track) — not a port-number case; kept distinct from SG-08's port-number content and from GN-040's bit/byte case to avoid categorical overfitting. Gate pass rule unchanged: still ALL cases (now 9), not a fixed count. || D95 (decisions.md) — added SG-10..13 after D94 found three field failures (real audio, D93 rerun) the original 9 synthetic fixtures structurally could not catch: (SG-10) unambiguous Arabic-letter tech terms combined with an injected wrong fact, to stress prompt-v2 constraint 3's mandatory (not best-effort) transliteration alongside error-preservation; (SG-11) a direct replica of GN-040's real near-homograph failure ('بيت' denoting both bit and byte) with an injected numeric error, targeting the exact C1 FAIL pattern from D94; (SG-12) a letter-by-letter spelled-out acronym ('تي دي دي'), targeting prompt-v2's new spelled-acronym rule; (SG-13) an unnamed reference where the speaker trails off before naming a thing, a direct replica of D94's O-b (SE-028 claim 2 fabricated 'دورة التطوير'). Gate pass rule extended (not replaced): SG-10..13 additionally require a transliteration_correct human verdict, gating for these four cases only — SG-01..09 keep their original two-column criteria unchanged, no retroactive rule change."
   },
   "cases": [
     {
@@ -93,6 +94,46 @@
       "injected_error_anchor": "قيمة alpha القياسية في A/B testing هي 0.05 مش 0.5 (خطأ فاصلة عشرية واقعي في ASR للعامية). الغلطة لازم تفضل زي ما هي (0.5) في الـ claims — القيمة الصحيحة 0.05 ما ينفعش تظهر في الإخراج. حالة D90 (نسخة مُستبدلة بعد مراجعة): رقم عشري في سياق إحصائي، بعيد تمامًا عن فئتي bit-width (GN-040, illustrative example 3) وport numbers (SG-08) لتجنب أي تداخل فئوي.",
       "latin_terms_expected": ["A/B testing", "alpha", "p-value", "null hypothesis"],
       "latin_terms_note": "المصطلحات الأربعة لاتينية في الإدخال أصلًا — تختبر الحفاظ عليها؛ الرقم 0.5 لازم يفضل زي ما هو بدون 'تصحيحه' لـ0.05."
+    },
+    {
+      "case_id": "SG-10",
+      "track": "SE",
+      "injected_error_type": "WRONG_FACT",
+      "d95_fixture_class": "TRANSLITERATION_CLEAR",
+      "answer_text": "طيب يعني بص لو عايز تعمل TDD الأول المفروض تكتب الكود بتاعك الأول وبعدين تيجي تكتب التست عليه عشان تتأكد إنه شغال والداتا بيز بتاعتك المفروض تتوصل بيها من جوه التست",
+      "injected_error_anchor": "TDD (Test-Driven Development) بالتعريف الفعلي: التست بيتكتب الأول قبل الكود عشان يوجه التطوير (دورة red-green-refactor). الإجابة عكست الترتيب (الكود الأول وبعدين التست) — دي غلطة واقعية لازم تفضل زي ما هي في الـ claims، من غير ما الموديل يصلحها للترتيب الصحيح أو يعلّق عليها.",
+      "latin_terms_expected": ["TDD", "code", "test", "database"],
+      "latin_terms_note": "الكود/التست/الداتا بيز مكتوبة بحروف عربية في الإدخال (TDD نفسها لاتينية بالفعل) — تختبر تحويل ثلاث مصطلحات واضحة وغير غامضة، كل تكرار لازم يتحول، مش بس أول ظهور."
+    },
+    {
+      "case_id": "SG-11",
+      "track": "GN",
+      "injected_error_type": "NUMERIC_FACT",
+      "d95_fixture_class": "NEAR_HOMOGRAPH_NUMERIC",
+      "answer_text": "طب يعني بص الـ بيت هو أصغر وحدة تخزين في الكمبيوتر وبعدين لما تجمع 16 من الـ بيت دول مع بعض بيبقى عندك وحدة أكبر اسمها برضو بيت وعشان كده بنقول إن البيت الكبير ده بيتكون من 16 بيت مش من 8",
+      "injected_error_anchor": "الـ Byte الفعلي بيتكون من 8 bits مش 16. كلمة 'بيت' هنا استخدمت بشكل غامض للدلالة على كل من bit (الوحدة الصغيرة) و byte (الوحدة الأكبر المكوّنة من 16 منها) — تطابق شبه-حرفي حقيقي في الـ ASR المصري، تكرار متعمد لحالة GN-040 الميدانية (D94 C1 FAIL). المتحدث نفسه ذكر المقارنة بـ 8 كجزء من كلامه (مش إضافة من الموديل) — الـ claims لازم تحافظ على الرقم 16 والمقارنة بـ 8 بالظبط زي ما اتقالوا، من غير أي تعليق تفسيري أو تصحيحي إضافي من عند الموديل زي 'وليس 8 كما ذكر في الأصل' (ده بالضبط فشل D94 المزدوج: عدم حفظ + إضافة غير مصرح بها).",
+      "latin_terms_expected": ["bit", "byte"],
+      "latin_terms_note": "كل ظهور لكلمة 'بيت' لازم يتحول حسب السياق المحلي: أول ظهورين (الوحدة الصغيرة، وعدد الـ 16 منها) → bit؛ الظهورات اللي بتشير للوحدة الأكبر المجمّعة → byte. الاختبار الجوهري: هل الموديل هيقدر يفكك الغموض من السياق من غير ما يغيّر أو يعلّق على الرقم 16."
+    },
+    {
+      "case_id": "SG-12",
+      "track": "SE",
+      "injected_error_type": "NONE",
+      "d95_fixture_class": "SPELLED_ACRONYM",
+      "answer_text": "طب يعني بص أسلوب الـ تي دي دي ده معناه إنك تكتب التست الأول قبل ما تكتب أي كود يعني بتحدد الحاجة اللي عايز تتأكد منها الأول وبعدين تيجي تكتب أقل كود ممكن عشان يعديها",
+      "injected_error_anchor": "لا توجد غلطة واقعية متعمدة في هذه الحالة — الغرض الأساسي اختبار تحويل الاختصار المهجأ حرفيًا (تي دي دي) دون أي إضافة أو حذف. error_preserved يُسجَّل N/A (لا توجد غلطة لتُحفظ)؛ no_unauthorized_addition يبقى قابلاً للتطبيق كاملاً.",
+      "latin_terms_expected": ["TDD", "test", "code"],
+      "latin_terms_note": "'تي دي دي' مهجأة حرف-حرف بالعربي في الإدخال ولازم تتحول للاختصار اللاتيني TDD ككل — مش تفضل حروف منفصلة (تي/دي/دي) ومش تتحذف من الـ claims. التست/الكود مكتوبة بحروف عربية كالمعتاد — تعيد تأكيد اختبار SG-10 على حالة مختلفة. حد معروف (D95): هذه الحالة تختبر التهجئة النظيفة (تي دي دي) فقط؛ الحالة الميدانية الفعلية في SE-028 كانت مشوهة من الـ ASR نفسه (دي دي دي بدل تي دي دي) وهي أصعب وغير مغطاة بهذه الـ fixture — تُتَتبَّع من التشغيلات الميدانية القادمة عبر docs/field_run_checklist.md بند C7، ولا يُستدل من نجاح SG-12 على تغطيتها."
+    },
+    {
+      "case_id": "SG-13",
+      "track": "SE",
+      "injected_error_type": "INCOMPLETE",
+      "d95_fixture_class": "UNNAMED_REFERENCE",
+      "answer_text": "طيب يعني في التطوير فيه خطوات بتتكرر يعني بتكتب كود وبعدين تعمل تست وبعدين تعدل وترجع تاني للخطوة الأولى اسمها يعني",
+      "injected_error_anchor": "NO-ADDITION TEST (نوع جديد، P5): المتحدث بدأ يسمي الدورة ('اسمها يعني') وتوقف من غير ما يكمل الاسم أبدًا. هذه إعادة إنتاج مباشرة لـ D94 O-b (SE-028 claim 2 اخترع الموديل اسم 'دورة التطوير' من عنده رغم إن المتحدث ما سماهاش). الـ claims لازم تصف الخطوات (كتابة كود، عمل تست، تعديل، تكرار) من غير أي اسم يُنسب للدورة من عند الموديل — حتى لو الاسم بديهي أو شائع في الصناعة (زي 'Development Cycle' أو 'دورة التطوير').",
+      "latin_terms_expected": ["code", "test"],
+      "latin_terms_note": "كود/تست مكتوبة بحروف عربية — تختبر التحويل كالمعتاد بالتوازي مع اختبار عدم-الإضافة الأساسي لهذه الحالة."
     }
   ]
 }

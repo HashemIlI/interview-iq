@@ -711,6 +711,37 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ---
 
+## D95 — Prompt hardening v2 + gate fixtures v2 (pre-registered) (2026-07-23)
+
+**Trigger:** D94 registered three LLM-behavior failures on real audio that the D92 gate (9 synthetic fixtures) structurally could not catch: (C1) editorialized correction with meta-commentary, (O-a) stochastic transliteration, (O-b) invented labels. Root pattern: no fixture contained real ASR phenomena (near-homographs, spelled-out acronyms, unnamed references).
+
+**Decision:** Harden system_prompt.md (v2) and extend the D77 sanity gate with four new fixture classes, built and evaluated together — the new fixtures are the acceptance test of the new constraints.
+
+**Prompt v2 changes (registered before implementation):**
+- P1 Claim-purity: a claim reports what the candidate asserted, verbatim in substance. Corrections, comparisons to the true value, and any meta-commentary about the transcript are forbidden inside claims — even when the candidate is factually wrong.
+- P2 Transliteration (mandatory, with inline examples): English technical terms written in Arabic letters MUST appear in Latin script in claims (التست→test, الكود→code, داتا بيز→database, الخوارزم→algorithm).
+- P3 Spelled-out acronyms: letter-by-letter sequences map to the acronym (تي دي دي→TDD, اس كيو ال→SQL, ايه بي اي→API).
+- P4 Near-homographs: when one surface form could denote multiple terms (بيت→bit/byte), transliterate per local context but NEVER alter any asserted quantity or add disambiguation commentary; asserted numbers are copied exactly.
+- P5 No invented labels: if the speaker does not name a thing, the claim must not assign it a name.
+
+**Fixtures v2 (added to the D77 gate, same format as SG-01..09, Egyptian-Arabic ASR-style transcripts):**
+- SG-10 (clear-terms transliteration + injected WRONG_FACT): transcript rich in unambiguous Arabic-letter tech terms (التست, الكود, الداتا بيز) with one deliberate factual error. Checks: all clear terms transliterated; error preserved verbatim; no additions.
+- SG-11 (near-homograph, GN-040 replica class): transcript uses "بيت" for both bit and byte plus a deliberate numeric error (e.g., 16 bits per Byte). Checks: number preserved exactly; no editorial/meta text in any claim; no correction.
+- SG-12 (spelled-out acronym): transcript spells an acronym in letters (تي دي دي) and never uses Latin script. Checks: acronym appears as TDD in claims; not dropped, not left as letter-names.
+- SG-13 (unnamed reference): speaker describes a cycle/process, starts to name it ("اسمها يعني...") and trails off without naming it. Checks: no claim assigns any name; content otherwise decomposed normally.
+
+**Pre-registered gate criteria for the rerun (Kaggle, next step):**
+- All 13 fixtures: error_preserved and no_unauthorized_addition remain zero-tolerance (any NO ⇒ full gate FAIL).
+- SG-10..13 add a transliteration_correct human check: gating for SG-10..13 only (SG-01..09 keep their original criteria unchanged — no retroactive rule change).
+- Atomicity remains tracked, non-gating (unchanged from D77).
+- Judgment remains fully human (Ahmed), on file-uploaded outputs.
+
+**Explicit scope limits:** P1–P5 target the decomposition LLM only. F3 (NLI false contradiction, D93/D94) is untouched by this decision and remains open. D89-b remains gated on this decision closing successfully (corpus must be generated with prompt v2).
+
+**Evidence when executed:** gate outputs under results/sanity_gate/ (v2 run), decisions.md outcome entry (D96).
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
