@@ -630,6 +630,18 @@ D88's text ("violating system_prompt.md constraint 8") mis-identified the violat
 
 ---
 
+## D91 — Sanity-gate Kaggle thin-runner notebook: missing infrastructure (2026-07-23)
+
+**Trigger:** D90's acceptance criterion assumed an existing Kaggle runner for the sanity gate. Verification found none exists in kaggle/runners/ or the archived Phase-8 directory. Per repo evidence, D77/D78/D79/D80/D87 were all invoked locally (`python scripts/llm_decomposition_sanity_gate.py`, local .env). This is inconsistent with the Kaggle-only experiment-execution policy (D82, 2026-07-21) for D87 (2026-07-22); no evidence confirms D87's actual execution environment.
+
+**Action (pre-registered):** build kaggle/runners/run-sanity-gate.ipynb following the exact structural pattern of the four existing runner notebooks (fresh clone → pip install → CLI invocation of scripts/llm_decomposition_sanity_gate.py; zero logic in notebook cells). GROQ_API_KEY supplied via Kaggle Secrets (not .env — inaccessible on Kaggle). Output downloaded and reviewed locally per the D80/D87 human-judgment protocol.
+
+**Non-blocking retrospective note:** D87's execution environment (Kaggle vs. local) cannot be confirmed from repo evidence. Logged as a gap; D87 remains closed/PASSED and is not re-litigated. Separately: the token-scrubbing safety practice in this notebook's Cell 1 traces to a real prior incident (GitHub PAT leaked in a Kaggle traceback, ~2026-07-21) that was acted on at the time but was never given its own decisions.md entry — flagged here as a documentation gap, not a new decision.
+
+**Scope:** infrastructure required to execute D90's already-approved acceptance criterion — not a new phase.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
