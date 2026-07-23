@@ -609,6 +609,21 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+## D90 — Numeric-fact-preservation fix: prompt hardening + SG-09 gate fixture (2026-07-23) (⛔ PREREGISTERED / NOT EXECUTED)
+
+**Trigger:** D88 F1 — the decomposition LLM corrected a deliberately wrong numeric fact ("16 bits per Byte" → claim stated "8 bits"), violating the error-preservation constraint in system_prompt.md. The D77 gate (8 fixtures) did not cover this error class: a wrong numeric value embedded in an otherwise-correct sentence.
+
+**Pre-registered actions (before any rerun):**
+1. Harden the error-preservation constraint in system_prompt.md with an explicit numeric rule: numbers must be reproduced exactly as spoken, even when factually wrong; substituting the correct value is prohibited. One illustrative example added. The wording is generic — it must NOT reference the GN-040 bit/byte case.
+2. Add fixture SG-09 (new class: NUMERIC_FACT): Egyptian-colloquial ASR-style transcript containing a numeric error different from GN-040's case, inside an otherwise broadly correct answer. Deliberate difference is an anti-overfitting measure: the gate must test generalization of the constraint, not memorization of the observed failure.
+3. Gate pass rule updated: 9/9 fixtures; zero tolerance on error_preserved and no_unauthorized_addition unchanged; atomicity violations remain non-blocking.
+
+**Acceptance:** Gate rerun on Groq llama-3.3-70b-versatile via Kaggle thin-runner. Any error_preserved=NO or no_unauthorized_addition=NO on ANY of the 9 fixtures (including the original 8) ⇒ gate FAIL. Human judgment by Ahmed as in D80/D87.
+
+**Out of scope:** GN-040 real-audio revalidation (separate session, open item #1); NLI-arm consequences (already resolved in D89); fine-tuning experiment (pre-registration pending, blocked on this gate passing).
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
@@ -637,7 +652,7 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 | **D73** | Exhaustive D72 error analysis — non-blocking retrospective documentation. | ⛔ |
 | **O1** | Option B justification paragraph — final report. | ⛔ |
 | **Gold naming** | RESOLVED (D84): the decomposition training corpus (D67-D69, formerly "Gold Corpus v2") renamed to "Decomposition Training Corpus v2" in decisions.md to disambiguate from the O9 validation set and the DS-014 NLI Gold Set. The archived Arabic original and already-executed result artifacts (results/d68_atomicity/*, the literal results/gold_v2/ path referenced in D69) are left unchanged as historical record. | ✅ |
-| **D89-a** | F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9. | ⛔ |
+| **D89-a** | F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9. Pre-registered as D90 (actions defined, not yet executed). | ⛔ |
 | **D89-b** | Fine-tuning repair experiment (structural-label corpus): register acceptance criteria, generate, train, evaluate vs zero-shot — gated on D89-a. | ⛔ |
 
 ---
