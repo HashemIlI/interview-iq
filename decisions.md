@@ -688,6 +688,29 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ---
 
+## D94 — D93 outcome: C1 FAIL (new violation class), C2 PASS-fragile, F3 field-confirmed (2026-07-23)
+
+**Run:** kaggle/runners/run-pipeline-demo.ipynb, zero-shot NLI (D89), Groq llama-3.3-70b-versatile, pre-calibration thresholds. Evidence: results/pipeline_demo/{SE-028_v2.json, GN-040_v2.json}.
+
+**C1 — FAIL (human ruling by Ahmed):** GN-040 claim 3 reads "الـ Byte يتكون من 8 بت، وليس 16 بت كما ذكر، ولكن في النص الأصلي ذكر 16 بيت" — an editorialized correction embedded in the claim plus meta-commentary about the source text. This is a NEW violation class distinct from D88's silent correction: error preservation failed AND unauthorized addition occurred. The D92 gate (9/9 PASS on synthetic fixtures) did not predict this: no fixture contains real ASR transliteration ambiguity ("بت"/"بايت" both rendered near-identically as "بيت" in the transcript), which is the suspected trigger — the model was forced to disambiguate and injected its knowledge.
+
+**C2 — PASS, numerically (50.83 > 3.28) but mechanistically fragile:** the direction is carried entirely by Coverage (0.516 vs 0.017). Precision is INVERTED: wrong answer 0.8 vs correct answer 0.501, because (a) the poisoned GN-040 claim scored NEUTRAL (max_e=0.002), never penalized, and (b) SE-028 claim 0 ("تكتب التست الأول قبل كتابة الكود" — the essence of TDD) was judged CONTRADICTED with max_c=0.994 against the reference: a stark false contradiction. (b) is direct field confirmation of F3 (base-model failure, adapter-independent, registered open in D93).
+
+**C3 — soft:** both scores positive; GN-040 near zero (3.28).
+
+**Additional field observations (registered, not criteria):**
+- O-a Transliteration under-application: SE-028 shows zero Latin-script conversions (TDD itself absent from all claims; "التست"/"الكود" kept in Arabic); GN-040 is internally inconsistent (claims 0–1 keep "البيت" Arabic, claims 2–4 convert to "الـ Byte"). The constraint is applied stochastically on real audio.
+- O-b Fabricated naming: SE-028 claim 2 names the cycle "دورة التطوير" — the speaker never named the cycle in the transcript ("اسمها يعني" then trailed off). Unauthorized addition of a different class (invented labels, not numeric facts).
+- O-c asr_device resolved to "cpu"/int8 on a T4 Kaggle session — config review pending, correctness unaffected.
+
+**Consequences (resolution deferred to a dedicated session — none executed today):**
+- New open item: gate fixture class with REAL ASR ambiguity (بت/بايت-style near-homograph transliteration), plus fixtures probing invented labels (O-b) and transliteration consistency (O-a).
+- Prompt hardening v2 candidate: forbid meta-commentary/editorial corrections inside claims; strengthen transliteration constraint.
+- F3 follow-up remains open (D93), now with a concrete field case: SE028 claim 0 vs SE028-C01, max_c=0.994.
+- G4 calibration remains blocked until the above are resolved (extends D88's consequence).
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
