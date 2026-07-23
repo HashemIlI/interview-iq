@@ -609,7 +609,7 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
-## D90 — Numeric-fact-preservation fix: prompt hardening + SG-09 gate fixture (2026-07-23) (⛔ PREREGISTERED / NOT EXECUTED)
+## D90 — Numeric-fact-preservation fix: prompt hardening + SG-09 gate fixture (2026-07-23) (✅ EXECUTED — D92)
 
 **Trigger:** D88 F1 — the decomposition LLM corrected a deliberately wrong numeric fact ("16 bits per Byte" → claim stated "8 bits"), violating the error-preservation constraint in system_prompt.md. The D77 gate (8 fixtures) did not cover this error class: a wrong numeric value embedded in an otherwise-correct sentence.
 
@@ -642,6 +642,24 @@ D88's text ("violating system_prompt.md constraint 8") mis-identified the violat
 
 ---
 
+## D92 — Sanity gate rerun: 9/9 PASS (2026-07-23)
+
+**Context:** Following D90 (numeric-fact-preservation constraint hardening + SG-09 fixture) and D91 (Kaggle thin-runner notebook build + syntax fix), the D77 sanity gate was rerun on Kaggle. Run metadata: git_commit 29318ddd8da9000f42eb8edb0df6fc7bed02982f, model llama-3.3-70b-versatile, timestamp 2026-07-23T09:51:53Z. All 9 fixtures executed successfully (n_success=9, n_error=0).
+
+**Human judgment (Ahmed, per D80/D87 protocol):** error_preserved=YES and no_unauthorized_addition=YES on all 9 cases (SG-01 through SG-09) — zero tolerance criteria met in full. atomicity_verdict: ATOMIC on 7/9 (SG-01,02,03,04,05,07,09); AMBIGUOUS on 2/9 (SG-06, SG-08) — non-blocking per D77's atomicity handling, logged/tracked as open items, not gate failures.
+
+**Result: GATE PASS (9/9).** This closes D90's acceptance criterion. The numeric-fact-preservation fix is verified as generalizing beyond the originally observed GN-040 bit/byte case (SG-09 uses a distinct decimal-threshold statistical error and was preserved correctly), and SG-08's pre-existing embedded port-number error was independently re-confirmed preserved under the hardened constraint.
+
+**Consequences:**
+- D90 and D91 both close as fully executed (were previously tagged PREREGISTERED/NOT EXECUTED).
+- GN-040 real-audio revalidation (open item, from D88) may now proceed — the prompt-level fix is gate-verified before the field retest.
+- SG-06/SG-08 atomicity AMBIGUOUS status tracked as a non-blocking open item, not required to resolve before proceeding.
+- Fine-tuning repair experiment (D89-b) remains blocked on its own separate pre-registration (acceptance criteria), independent of this gate result.
+
+**Evidence:** results/llm_decomposition_sanity_gate/run_20260723T095153Z/{raw_results.json, report.md, report.csv}.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
@@ -670,7 +688,7 @@ D88's text ("violating system_prompt.md constraint 8") mis-identified the violat
 | **D73** | Exhaustive D72 error analysis — non-blocking retrospective documentation. | ⛔ |
 | **O1** | Option B justification paragraph — final report. | ⛔ |
 | **Gold naming** | RESOLVED (D84): the decomposition training corpus (D67-D69, formerly "Gold Corpus v2") renamed to "Decomposition Training Corpus v2" in decisions.md to disambiguate from the O9 validation set and the DS-014 NLI Gold Set. The archived Arabic original and already-executed result artifacts (results/d68_atomicity/*, the literal results/gold_v2/ path referenced in D69) are left unchanged as historical record. | ✅ |
-| **D89-a** | F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9. Pre-registered as D90 (actions defined, not yet executed). | ⛔ |
+| **D89-a** | F1 fix: strengthen system_prompt.md constraint 8 + add SG-09 numeric-fact fixture + re-run D77 gate at 9/9. Pre-registered as D90 (actions defined, not yet executed). Gate PASSED 9/9 (D92). | ✅ |
 | **D89-b** | Fine-tuning repair experiment (structural-label corpus): register acceptance criteria, generate, train, evaluate vs zero-shot — gated on D89-a. | ⛔ |
 
 ---

@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "run_timestamp_utc": "20260723T095153Z",
+    "model_used": "llama-3.3-70b-versatile",
+    "git_commit": "29318ddd8da9000f42eb8edb0df6fc7bed02982f",
+    "n_cases": 9,
+    "n_success": 9,
+    "n_error": 0
+  },
+  "records": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": [
+        "heap",
+        "LIFO",
+        "function calls",
+        "recursion"
+      ],
+      "input_answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:53.535380+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الهايب هو نوع من الداتا ستركتشر.",
+        "الهايب يعمل بنظام لايفو.",
+        "آخر حاجة تتحط في الهايب هي أول حاجة تتشال.",
+        "نستخدم الهايب في تخزين الـ function calls.",
+        "نستخدم الهايب في تخزين الـ recursion."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.699,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": [
+        "process",
+        "thread",
+        "memory"
+      ],
+      "input_answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:54.234177+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الفرق بين البروسيس والثريد هو أن كل بروسيس لها ذاكرة منفصلة عن باقي البروسيسز."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.556,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "overfitting",
+        "patterns"
+      ],
+      "input_answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:54.789877+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الأوفرفيتينج يحدث عندما يكون الموديل بسيطًا جدًا.",
+        "الموديل البسيط جدًا لا يستطيع مسك الأنماط في البيانات.",
+        "الموديل البسيط جدًا يؤدي أداءً ضعيفًا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.626,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": [
+        "classification",
+        "precision",
+        "positive"
+      ],
+      "input_answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:55.415566+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "نقيم موديل الكلاسيفيكيشن بناءً على البريسيجن.",
+        "البريسيجن هو عدد التوقعات الصحيحة من إجمالي التوقعات التي قال فيها الموديل إنها بوزيتيف.",
+        "البريسيجن هو أهم مقياس لي لتحديد ما إذا كان الموديل يعمل جيدًا أم لا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.694,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "Normalization",
+        "Standardization"
+      ],
+      "input_answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:56.109517+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ Normalization هي عملية تحويل البيانات بحيث يصبح المتوسط صفر والانحراف المعياري واحد.",
+        "الـ Standardization هي عملية تحويل القيم إلى مدى بين صفر وواحد."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.911,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": [
+        "SQL",
+        "INNER JOIN",
+        "Orders",
+        "Customers"
+      ],
+      "input_answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:57.021005+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "عند استخدام INNER JOIN بين جدولين في SQL، يتم إرجاع الصفوف التي لها تطابق على العمود الذي يتم إجراء الجوين عليه.",
+        "على سبيل المثال، إذا كان هناك جدول Orders وجدول Customers، فإن INNER JOIN سيعيد فقط الأوردرات التي لها كستمر موجود فعلا."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.733,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "AMBIGUOUS",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": [
+        "Git",
+        "merge",
+        "rebase",
+        "branches",
+        "commit history",
+        "conflicts"
+      ],
+      "input_answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:57.753905+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الريبيز في الجيت يدمج الفروع بدون تغيير تاريخ الكوميت.",
+        "الريبيز أمان دائمًا أكثر من الميرج.",
+        "الجيت يحل النزاعات تلقائيًا عند استخدام الريبيز."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.726,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "input_answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:58.479975+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "الـ HTTPS هي نسخة أسرع من الـ HTTP.",
+        "الـ HTTPS تستخدم نفس البورت 80.",
+        "الـ HTTPS تشتغل بنفس الطريقة بالظبط مثل الـ HTTP.",
+        "لا يوجد تشفير إضافي في الـ HTTPS."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 0.403,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "AMBIGUOUS",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-09",
+      "track": "DA",
+      "injected_error_type": "NUMERIC_FACT",
+      "injected_error_anchor": "قيمة alpha القياسية في A/B testing هي 0.05 مش 0.5 (خطأ فاصلة عشرية واقعي في ASR للعامية). الغلطة لازم تفضل زي ما هي (0.5) في الـ claims — القيمة الصحيحة 0.05 ما ينفعش تظهر في الإخراج. حالة D90 (نسخة مُستبدلة بعد مراجعة): رقم عشري في سياق إحصائي، بعيد تمامًا عن فئتي bit-width (GN-040, illustrative example 3) وport numbers (SG-08) لتجنب أي تداخل فئوي.",
+      "latin_terms_expected": [
+        "A/B testing",
+        "alpha",
+        "p-value",
+        "null hypothesis"
+      ],
+      "input_answer_text": "يعني بص لما بعمل A/B testing عادة بحدد significance level يعني alpha بقيمة 0.5 يعني لو الـ p-value طلع أقل من كده بارفض الـ null hypothesis وأقول في فرق حقيقي بين النسختين",
+      "model_used": "llama-3.3-70b-versatile",
+      "timestamp_utc": "2026-07-23T09:51:58.882886+00:00",
+      "execution_status": "SUCCESS",
+      "claims": [
+        "عند إجراء اختبار A/B، يتم تحديد مستوى الدلالة (significance level) عادةً بقيمة alpha تساوي 0.5.",
+        "إذا كانت قيمة p-value أقل من 0.5، يتم رفض الفرضية الصفرية (null hypothesis).",
+        "عند رفض الفرضية الصفرية، يتم الاستنتاج بوجود فرق حقيقي بين النسختين."
+      ],
+      "error_message": null,
+      "elapsed_seconds": 2.63,
+      "error_preserved": "YES",
+      "no_unauthorized_addition": "YES",
+      "atomicity_verdict": "ATOMIC",
+      "reviewer_notes": ""
+    }
+  ]
+}
