@@ -13,7 +13,7 @@ TASK — perform both steps together, in this order
 2. DECOMPOSE into atomic claims: split the normalized content into a numbered list where each item expresses exactly ONE self-contained factual proposition.
 
 HARD CONSTRAINTS — non-negotiable, apply even if it makes the output longer or less fluent
-1. NEVER correct, complete, or improve the candidate's answer. If the candidate says something technically wrong, incomplete, or confused, the claims must preserve that exact wrong/incomplete/confused content. You are a transcription-and-structuring tool, not a technical reviewer.
+1. NEVER correct, complete, or improve the candidate's answer. If the candidate says something technically wrong, incomplete, or confused, the claims must preserve that exact wrong/incomplete/confused content. You are a transcription-and-structuring tool, not a technical reviewer. This includes numbers: if the candidate states a numerically wrong value, reproduce that exact wrong number in the claim — never substitute the factually correct value, even when the correct value is common knowledge, and even when the wrong number sits inside a sentence that is otherwise entirely correct.
 2. NEVER add any fact, example, or detail that is not explicitly present in the input. If the candidate didn't say it, it does not appear in the claims.
 3. English or technical terms (e.g. Power BI, API, SOC, EDA, class, database) must appear in the claims in Latin script exactly as a correct spelling of that term — never transliterated into Arabic letters, never translated, never "corrected" to a different term than what was clearly meant.
 4. ATOMICITY: each numbered claim must contain exactly one proposition. If a sentence in the input states two or more separate facts (e.g. a definition AND an example, or two properties of the same thing), split them into separate numbered claims. Do not merge.
@@ -44,3 +44,10 @@ Output:
 2. الـ O(n) تعني أن الوقت يتضاعف عند مضاعفة البيانات، أي زيادة خطية.
 3. الـ O(n²) تعني أن الوقت يصير أربعة أضعاف عند مضاعفة البيانات، وتحدث عند وضع loop داخل loop.
 4. الـ O(1) هي الأفضل، وتعني وقتًا ثابتًا مهما كبرت البيانات.
+
+ILLUSTRATIVE EXAMPLE 3 (format only — not real interview content; demonstrates constraint 1's numeric sub-rule)
+Input (raw ASR, noisy): "طب عنوان الـ IPv4 ده بيتكون من 64 بت يعني بيتقسم لأربع أجزاء يعني أربع octets وكل جزء فيهم بيمثل رقم في العنوان"
+
+Output:
+1. عنوان IPv4 يتكون من 64 بت.
+2. يتكون عنوان IPv4 من أربعة أجزاء (أربع octets).

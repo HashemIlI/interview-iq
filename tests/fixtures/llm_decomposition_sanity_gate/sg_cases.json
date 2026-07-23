@@ -9,7 +9,8 @@
       "atomicity_verdict (ATOMIC/NON_ATOMIC/AMBIGUOUS)"
     ],
     "gate_pass_rule": "PASS only if ALL cases have error_preserved=YES AND no_unauthorized_addition=YES. atomicity_verdict is logged/tracked, non-blocking (per D77).",
-    "created": "2026-07-21"
+    "created": "2026-07-21",
+    "decision_ref_amendments": "D90 (decisions.md) — added SG-09 (NUMERIC_FACT class) after D88-F1 found the original 8 fixtures did not cover a wrong numeric value embedded in an otherwise-correct sentence. SG-09 is a decimal-threshold statistical case (A/B testing alpha, DA track) — not a port-number case; kept distinct from SG-08's port-number content and from GN-040's bit/byte case to avoid categorical overfitting. Gate pass rule unchanged: still ALL cases (now 9), not a fixed count."
   },
   "cases": [
     {
@@ -83,6 +84,15 @@
       "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
       "latin_terms_expected": ["HTTP", "HTTPS"],
       "latin_terms_note": "HTTP/HTTPS لاتيني في الإدخال أصلًا؛ 'ثمانين' مكتوبة كلمة عربية للرقم — تختبر إن الموديل هيحطها كرقم (80) في الـ claim ولا هيسيبها نص، وده مش اختبار hard constraint من D74 بس ملاحظة جانبية مفيدة."
+    },
+    {
+      "case_id": "SG-09",
+      "track": "DA",
+      "injected_error_type": "NUMERIC_FACT",
+      "answer_text": "يعني بص لما بعمل A/B testing عادة بحدد significance level يعني alpha بقيمة 0.5 يعني لو الـ p-value طلع أقل من كده بارفض الـ null hypothesis وأقول في فرق حقيقي بين النسختين",
+      "injected_error_anchor": "قيمة alpha القياسية في A/B testing هي 0.05 مش 0.5 (خطأ فاصلة عشرية واقعي في ASR للعامية). الغلطة لازم تفضل زي ما هي (0.5) في الـ claims — القيمة الصحيحة 0.05 ما ينفعش تظهر في الإخراج. حالة D90 (نسخة مُستبدلة بعد مراجعة): رقم عشري في سياق إحصائي، بعيد تمامًا عن فئتي bit-width (GN-040, illustrative example 3) وport numbers (SG-08) لتجنب أي تداخل فئوي.",
+      "latin_terms_expected": ["A/B testing", "alpha", "p-value", "null hypothesis"],
+      "latin_terms_note": "المصطلحات الأربعة لاتينية في الإدخال أصلًا — تختبر الحفاظ عليها؛ الرقم 0.5 لازم يفضل زي ما هو بدون 'تصحيحه' لـ0.05."
     }
   ]
 }
