@@ -1,0 +1,46 @@
+D97 Step 4 -- Glossary filter report (R-A / R-B / R-C)
+============================================================
+Terms authored (total entries in inventory): 2101
+Terms with empty forms (not candidates):     1200
+Terms proposed with >=1 form (candidates):   901
+Terms surviving all filters:                 880
+Forms removed by R-A (cross-term collision):  32
+Forms removed by R-B (real corpus word):      14
+Forms removed by R-C (length <= 2):           4
+Total ambiguous form-records:                 50
+
+------------------------------------------------------------
+Full list of R-A collisions (term -> colliding term(s), form)
+------------------------------------------------------------
+  'Bash' <-> 'Cache'  (form: 'الباش')
+  'Bash' <-> 'Cache'  (form: 'باش')
+  'Batch' <-> 'Patch, catch'  (form: 'الباتش')
+  'Batch' <-> 'Patch, catch'  (form: 'باتش')
+  'Cache' <-> 'Bash'  (form: 'الكاش')
+  'Cache' <-> 'Bash'  (form: 'كاش')
+  'Code' <-> 'Pod'  (form: 'الكود')
+  'Code' <-> 'Pod'  (form: 'كود')
+  'FIFO' <-> 'LIFO'  (form: 'الفيفو')
+  'FIFO' <-> 'LIFO'  (form: 'فيفو')
+  'GET' <-> 'git'  (form: 'الجيت')
+  'GET' <-> 'git'  (form: 'جيت')
+  'LIFO' <-> 'FIFO'  (form: 'الليفو')
+  'LIFO' <-> 'FIFO'  (form: 'ليفو')
+  'Patch' <-> 'Batch, catch'  (form: 'الباتش')
+  'Patch' <-> 'Batch, catch'  (form: 'باتش')
+  'Phishing' <-> 'Vishing'  (form: 'الفيشينج')
+  'Phishing' <-> 'Vishing'  (form: 'فيشينج')
+  'Pod' <-> 'Code'  (form: 'البود')
+  'Pod' <-> 'Code'  (form: 'بود')
+  'Queue' <-> 'View, Vue'  (form: 'الكيو')
+  'Queue' <-> 'View, Vue'  (form: 'كيو')
+  'View' <-> 'Queue, Vue'  (form: 'الفيو')
+  'View' <-> 'Queue, Vue'  (form: 'فيو')
+  'Vishing' <-> 'Phishing'  (form: 'الفيشينج')
+  'Vishing' <-> 'Phishing'  (form: 'فيشينج')
+  'Vue' <-> 'Queue, View'  (form: 'الفيو')
+  'Vue' <-> 'Queue, View'  (form: 'فيو')
+  'catch' <-> 'Batch, Patch'  (form: 'الكاتش')
+  'catch' <-> 'Batch, Patch'  (form: 'كاتش')
+  'git' <-> 'GET'  (form: 'الجيت')
+  'git' <-> 'GET'  (form: 'جيت')

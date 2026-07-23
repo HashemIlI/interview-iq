@@ -1,0 +1,47 @@
+D97 Step 4 (revised) -- Glossary filter report (R-A / R-B / R-D / R-C)
+========================================================================
+Terms authored (total entries in inventory): 2101
+Terms with empty forms (not candidates):     1200
+Terms proposed with >=1 form (candidates):   901
+Terms surviving all filters:                 757
+Forms removed by R-A (cross-term collision, raw-normalized): 16
+Forms removed by R-B (real corpus word):                     10
+Forms removed by R-D (general Arabic wordlist):              352
+Forms removed by R-C (length <= 4):                            1
+Total ambiguous form-records:                                379
+
+------------------------------------------------------------------------
+Full list of R-A collisions (term <-> colliding term(s), form)
+------------------------------------------------------------------------
+  'Batch' <-> 'Patch'  (form: 'الباتش')
+  'Batch' <-> 'Patch'  (form: 'باتش')
+  'GET' <-> 'git'  (form: 'الجيت')
+  'GET' <-> 'git'  (form: 'جيت')
+  'Patch' <-> 'Batch'  (form: 'الباتش')
+  'Patch' <-> 'Batch'  (form: 'باتش')
+  'Phishing' <-> 'Vishing'  (form: 'الفيشينج')
+  'Phishing' <-> 'Vishing'  (form: 'فيشينج')
+  'View' <-> 'Vue'  (form: 'الفيو')
+  'View' <-> 'Vue'  (form: 'فيو')
+  'Vishing' <-> 'Phishing'  (form: 'الفيشينج')
+  'Vishing' <-> 'Phishing'  (form: 'فيشينج')
+  'Vue' <-> 'View'  (form: 'الفيو')
+  'Vue' <-> 'View'  (form: 'فيو')
+  'git' <-> 'GET'  (form: 'الجيت')
+  'git' <-> 'GET'  (form: 'جيت')
+
+------------------------------------------------------------------------
+Final status of specific terms of interest
+------------------------------------------------------------------------
+  bit: REMOVED entirely (rule(s) ['R-D']) -- 'البت' removed by R-D; 'بت' removed by R-D; 'بيت' removed by R-D
+  Byte: REMOVED entirely (rule(s) ['R-B']) -- 'البايت' removed by R-B; 'بايت' removed by R-B
+  Test: REMOVED entirely (rule(s) ['R-D']) -- 'التست' removed by R-D; 'تست' removed by R-D
+  Code: REMOVED entirely (rule(s) ['R-B']) -- 'الكود' removed by R-B; 'كود' removed by R-B
+  Database: SURVIVES with forms ['الداتا بيز', 'داتا بيز']
+  Stack: SURVIVES with forms ['الستاك']
+  Queue: REMOVED entirely (rule(s) ['R-D']) -- 'الكيو' removed by R-D; 'كيو' removed by R-D
+  FIFO: SURVIVES with forms ['الفيفو', 'الفايفو', 'فايفو']
+  LIFO: SURVIVES with forms ['الليفو', 'اللايفو', 'لايفو']
+  Worm: REMOVED entirely (rule(s) ['R-D']) -- 'الورم' removed by R-D; 'ورم' removed by R-D
+  Scan: REMOVED entirely (rule(s) ['R-D']) -- 'السكان' removed by R-D; 'سكان' removed by R-D
+  RAM: REMOVED entirely (rule(s) ['R-D']) -- 'الرام' removed by R-D; 'رام' removed by R-D

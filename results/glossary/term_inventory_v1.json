@@ -1,0 +1,7257 @@
+[
+  {
+    "term": "Structured",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Unstructured",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Data",
+    "total_occurrences": 53,
+    "n_documents": 20
+  },
+  {
+    "term": "Relational",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Databases",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Semi-structured",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "JSON",
+    "total_occurrences": 10,
+    "n_documents": 6
+  },
+  {
+    "term": "XML",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "SQL",
+    "total_occurrences": 21,
+    "n_documents": 11
+  },
+  {
+    "term": "Schema",
+    "total_occurrences": 7,
+    "n_documents": 4
+  },
+  {
+    "term": "NLP",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Computer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vision",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Lakes",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NoSQL",
+    "total_occurrences": 7,
+    "n_documents": 2
+  },
+  {
+    "term": "Business",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Question",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Collection",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "APIs",
+    "total_occurrences": 8,
+    "n_documents": 7
+  },
+  {
+    "term": "Cleaning",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Exploratory",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Analysis",
+    "total_occurrences": 9,
+    "n_documents": 6
+  },
+  {
+    "term": "Machine",
+    "total_occurrences": 8,
+    "n_documents": 7
+  },
+  {
+    "term": "Learning",
+    "total_occurrences": 20,
+    "n_documents": 12
+  },
+  {
+    "term": "Dashboards",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Iterative",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Analyst",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Scientist",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Excel",
+    "total_occurrences": 7,
+    "n_documents": 6
+  },
+  {
+    "term": "Visualization",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Power",
+    "total_occurrences": 9,
+    "n_documents": 5
+  },
+  {
+    "term": "BI",
+    "total_occurrences": 7,
+    "n_documents": 4
+  },
+  {
+    "term": "Tableau",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Python",
+    "total_occurrences": 12,
+    "n_documents": 10
+  },
+  {
+    "term": "Context",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Missing",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Values",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Duplicates",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Outliers",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Garbage",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "in",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Out",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Pandas",
+    "total_occurrences": 8,
+    "n_documents": 6
+  },
+  {
+    "term": "Query",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Deletion",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Imputation",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Mean",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Median",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Mode",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Categorical",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "KNN",
+    "total_occurrences": 7,
+    "n_documents": 5
+  },
+  {
+    "term": "Indicator",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Supervised",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Unsupervised",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Labeled",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Classification",
+    "total_occurrences": 7,
+    "n_documents": 4
+  },
+  {
+    "term": "Regression",
+    "total_occurrences": 10,
+    "n_documents": 5
+  },
+  {
+    "term": "Clustering",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dimensionality",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Reduction",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Target",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Variable",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Reinforcement",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Agent",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Environment",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Reward",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Action",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "State",
+    "total_occurrences": 6,
+    "n_documents": 6
+  },
+  {
+    "term": "Policy",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Exploration",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exploitation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "AlphaGo",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Discrete",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Spam",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Continuous",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Accuracy",
+    "total_occurrences": 6,
+    "n_documents": 5
+  },
+  {
+    "term": "Precision",
+    "total_occurrences": 12,
+    "n_documents": 5
+  },
+  {
+    "term": "Recall",
+    "total_occurrences": 13,
+    "n_documents": 5
+  },
+  {
+    "term": "MSE",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "MAE",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Decision",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Trees",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Random",
+    "total_occurrences": 7,
+    "n_documents": 6
+  },
+  {
+    "term": "Forest",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "SVM",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Binary",
+    "total_occurrences": 8,
+    "n_documents": 5
+  },
+  {
+    "term": "Multi-class",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Linear",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "wx",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Weight",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bias",
+    "total_occurrences": 12,
+    "n_documents": 5
+  },
+  {
+    "term": "Squared",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Error",
+    "total_occurrences": 9,
+    "n_documents": 4
+  },
+  {
+    "term": "Normal",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Equation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gradient",
+    "total_occurrences": 19,
+    "n_documents": 9
+  },
+  {
+    "term": "Descent",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "Homoscedasticity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "R-squared",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Overfitting",
+    "total_occurrences": 19,
+    "n_documents": 10
+  },
+  {
+    "term": "Training",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Test",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Loss",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Validation",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Cross-Validation",
+    "total_occurrences": 6,
+    "n_documents": 4
+  },
+  {
+    "term": "Folds",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Regularization",
+    "total_occurrences": 9,
+    "n_documents": 5
+  },
+  {
+    "term": "Penalty",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Term",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Function",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "L1",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Lasso",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Feature",
+    "total_occurrences": 11,
+    "n_documents": 9
+  },
+  {
+    "term": "Selection",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "L2",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Ridge",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Dropout",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Neural",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Networks",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Early",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stopping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Set",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Epochs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Augmentation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Layers",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Parameters",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Underfitting",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "CIA",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Triad",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Confidentiality",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Integrity",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Availability",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Encryption",
+    "total_occurrences": 7,
+    "n_documents": 3
+  },
+  {
+    "term": "Access",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Controls",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hashing",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Digital",
+    "total_occurrences": 7,
+    "n_documents": 5
+  },
+  {
+    "term": "Signatures",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "DDoS",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Threat",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Vulnerability",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Risk",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Malware",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Asset",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Management",
+    "total_occurrences": 6,
+    "n_documents": 4
+  },
+  {
+    "term": "Firewall",
+    "total_occurrences": 8,
+    "n_documents": 2
+  },
+  {
+    "term": "Packet",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Filtering",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "IP",
+    "total_occurrences": 13,
+    "n_documents": 11
+  },
+  {
+    "term": "Ports",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stateful",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Inspection",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Session",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "Application",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Layer",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Proxy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "HTTP",
+    "total_occurrences": 29,
+    "n_documents": 14
+  },
+  {
+    "term": "Next-Generation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NGFW",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DPI",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hardware",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Software",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Cloud-based",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IDS",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "IPS",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Passive",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Inline",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Signature-based",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Anomaly-based",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Zero-Day",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "False",
+    "total_occurrences": 6,
+    "n_documents": 5
+  },
+  {
+    "term": "Positives",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Latency",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OOP",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Objects",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Object",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Instance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Class",
+    "total_occurrences": 10,
+    "n_documents": 5
+  },
+  {
+    "term": "Attributes",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Methods",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Encapsulation",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Inheritance",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Polymorphism",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Abstraction",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Modifiers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Private",
+    "total_occurrences": 8,
+    "n_documents": 6
+  },
+  {
+    "term": "protected",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Public",
+    "total_occurrences": 5,
+    "n_documents": 5
+  },
+  {
+    "term": "Getters",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Setters",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Setter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "BankAccount",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Balance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "deposit",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "withdraw",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Child",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Parent",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "is-a",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Dog",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Animal",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Single",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Classes",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Java",
+    "total_occurrences": 6,
+    "n_documents": 5
+  },
+  {
+    "term": "C#",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Multiple",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "C++",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Diamond",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Problem",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Multilevel",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hierarchical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Method",
+    "total_occurrences": 6,
+    "n_documents": 5
+  },
+  {
+    "term": "Overriding",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Compile-time",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Overloading",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Runtime",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Reference",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "makeSound",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cat",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Compiler",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Interpreter",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Source",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Code",
+    "total_occurrences": 8,
+    "n_documents": 6
+  },
+  {
+    "term": "Compiled",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Interpreted",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "JavaScript",
+    "total_occurrences": 8,
+    "n_documents": 7
+  },
+  {
+    "term": "Bytecode",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "JVM",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Operating",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "System",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Process",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Memory",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "Virtual",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "File",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Device",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Drivers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GUI",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CLI",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Windows",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Linux",
+    "total_occurrences": 9,
+    "n_documents": 4
+  },
+  {
+    "term": "macOS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Android",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "RAM",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "ROM",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Volatile",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Non-volatile",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Firmware",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "BIOS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Booting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CPU",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "ALU",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Control",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Unit",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Registers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Fetch-Decode-Execute",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Clock",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Speed",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GHz",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cores",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cache",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "IQR",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Q1",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "xIQR",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Q3",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Interquartile",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Range",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Z-Score",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Box",
+    "total_occurrences": 10,
+    "n_documents": 3
+  },
+  {
+    "term": "Plot",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Scatter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Capping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "log",
+    "total_occurrences": 9,
+    "n_documents": 7
+  },
+  {
+    "term": "Transformation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Fraud",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Detection",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Skewed",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Standard",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Deviation",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Variance",
+    "total_occurrences": 7,
+    "n_documents": 5
+  },
+  {
+    "term": "Distribution",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Empirical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rule",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Correlation",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Causation",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "does",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "not",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "imply",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Confounding",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Randomized",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Controlled",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Trials",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Causal",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Inference",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pearson",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Spearman",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Ranks",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Logistic",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Sigmoid",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Threshold",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cross-Entropy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "One-vs-Rest",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Softmax",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Multinomial",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Tree",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Features",
+    "total_occurrences": 11,
+    "n_documents": 8
+  },
+  {
+    "term": "Root",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Node",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Leaves",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gini",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Impurity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Entropy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Information",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Gain",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Interpretability",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pruning",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Max",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Depth",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Ensemble",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Bootstrap",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Bagging",
+    "total_occurrences": 7,
+    "n_documents": 3
+  },
+  {
+    "term": "Majority",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Voting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Out-of-Bag",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "K-Nearest",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Neighbors",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Euclidean",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Distance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Manhattan",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Lazy",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Scaling",
+    "total_occurrences": 13,
+    "n_documents": 6
+  },
+  {
+    "term": "K-Means",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Clusters",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Centroids",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Inertia",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "WCSS",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "K-Means++",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Symmetric",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Asymmetric",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Plaintext",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Ciphertext",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Key",
+    "total_occurrences": 8,
+    "n_documents": 3
+  },
+  {
+    "term": "AES",
+    "total_occurrences": 7,
+    "n_documents": 2
+  },
+  {
+    "term": "DES",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "RSA",
+    "total_occurrences": 8,
+    "n_documents": 2
+  },
+  {
+    "term": "ECC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TLS",
+    "total_occurrences": 13,
+    "n_documents": 9
+  },
+  {
+    "term": "Hybrid",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Advanced",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NIST",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Block",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cipher",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "bit",
+    "total_occurrences": 25,
+    "n_documents": 6
+  },
+  {
+    "term": "Rounds",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Brute",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Force",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Wi-Fi",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "WPA2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rivest",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Shamir",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Adleman",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Prime",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Factorization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SSL",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Hash",
+    "total_occurrences": 14,
+    "n_documents": 9
+  },
+  {
+    "term": "Digest",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "One-way",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Avalanche",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Effect",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "SHA-2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SHA-256",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "MD5",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SHA-1",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Salt",
+    "total_occurrences": 7,
+    "n_documents": 1
+  },
+  {
+    "term": "Rainbow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tables",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "bcrypt",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "scrypt",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Argon2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pepper",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Abstract",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Interface",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "Contract",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Fields",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Constructors",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Interfaces",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "can-do",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "default",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SOLID",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Responsibility",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Open",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Closed",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Liskov",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Substitution",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Segregation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dependency",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Inversion",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Abstractions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Design",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Patterns",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Gang",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "of",
+    "total_occurrences": 10,
+    "n_documents": 9
+  },
+  {
+    "term": "Four",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Creational",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Structural",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Behavioral",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Singleton",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Factory",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Builder",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Adapter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Decorator",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Facade",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Observer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Strategy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Command",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Constructor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Static",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Initialization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Multithreaded",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Double-Checked",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Locking",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Configuration",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Logger",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Connection",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pools",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Global",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MVC",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Model",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "View",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Controller",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Separation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Concerns",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Logic",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "ASP.NET",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Ruby",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "on",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rails",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Django",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "MTV",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GB",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Pointers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Address",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IPv4",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "IPv6",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Hexadecimal",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NAT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DNS",
+    "total_occurrences": 16,
+    "n_documents": 5
+  },
+  {
+    "term": "example.com",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Resolver",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Servers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TLD",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "com",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Authoritative",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Caching",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "TTL",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "AAAA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CNAME",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MX",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TCP",
+    "total_occurrences": 10,
+    "n_documents": 5
+  },
+  {
+    "term": "UDP",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Connection-oriented",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Three-way",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Handshake",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Acknowledgment",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Connectionless",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OSI",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Physical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Link",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MAC",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Network",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Routing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Transport",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "End-to-End",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Presentation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "EDA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Matplotlib",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Seaborn",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Bar",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Chart",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Histogram",
+    "total_occurrences": 6,
+    "n_documents": 1
+  },
+  {
+    "term": "Bins",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Box-and-Whisker",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Five-Number",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Summary",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Whiskers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Skewness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pivot",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Table",
+    "total_occurrences": 9,
+    "n_documents": 6
+  },
+  {
+    "term": "Rows",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Columns",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Filters",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Aggregation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "SUM",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "COUNT",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Average",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Google",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Sheets",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "pivot_table",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "groupby",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "VLOOKUP",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "lookup_value",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "table_array",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "col_index_num",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "range_lookup",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exact",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Match",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "XLOOKUP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Elbow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Silhouette",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Score",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Gap",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Statistic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Domain",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Knowledge",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Kernel",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Trick",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Support",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Vector",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hyperplane",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Margin",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Vectors",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Soft",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Polynomial",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RBF",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Naive",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Bayes",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Sentiment",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gaussian",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bernoulli",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Laplace",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Smoothing",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Rate",
+    "total_occurrences": 9,
+    "n_documents": 6
+  },
+  {
+    "term": "Iterations",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Non-convex",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Local",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Minima",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Saddle",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Points",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Batch",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Stochastic",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Mini-batch",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "SGD",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "GPUs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ClientHello",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Suites",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ServerHello",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Certificate",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Authority",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Diffie-Hellman",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Round",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Trip",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "VPN",
+    "total_occurrences": 9,
+    "n_documents": 2
+  },
+  {
+    "term": "Encrypted",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tunnel",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Remote",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OpenVPN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IPsec",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IKEv2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "WireGuard",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Phishing",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Spear",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Whaling",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Smishing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SMS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vishing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MFA",
+    "total_occurrences": 6,
+    "n_documents": 4
+  },
+  {
+    "term": "Injection",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "OR",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Prepared",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Statements",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Parameterized",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Queries",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "WAF",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "XSS",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Cross-Site",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Scripting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stored",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Reflected",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DOM",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Cookies",
+    "total_occurrences": 7,
+    "n_documents": 4
+  },
+  {
+    "term": "Output",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Encoding",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Content",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Security",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "HttpOnly",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "REST",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "API",
+    "total_occurrences": 8,
+    "n_documents": 3
+  },
+  {
+    "term": "Representational",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Transfer",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Resources",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "URLs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GET",
+    "total_occurrences": 7,
+    "n_documents": 2
+  },
+  {
+    "term": "POST",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "PUT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Patch",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "DELETE",
+    "total_occurrences": 7,
+    "n_documents": 3
+  },
+  {
+    "term": "Statelessness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Client-Server",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Uniform",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cacheability",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "URL",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "String",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Request",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Body",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Safe",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Idempotent",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Status",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Codes",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "xx",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "OK",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Created",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "No",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Modified",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Too",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Many",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Requests",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Limiting",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Bad",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gateway",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Document",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Key-Value",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Column-family",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Graph",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ACID",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "BASE",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Vertical",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Horizontal",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "MySQL",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "PostgreSQL",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "MongoDB",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Redis",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cassandra",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Transactions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Atomicity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rollback",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Consistency",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Isolation",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Levels",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Durability",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Committed",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Enter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "HTTPS",
+    "total_occurrences": 15,
+    "n_documents": 8
+  },
+  {
+    "term": "Headers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Response",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "HTML",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "CSS",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Rendering",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CA",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Cookie",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "ID",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Secure",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SameSite",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "CSRF",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Cloud",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Computing",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Pay-as-you-go",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Elasticity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IaaS",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "PaaS",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "SaaS",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "AWS",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Microsoft",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Azure",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Platform",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Infrastructure",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "as",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Service",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Amazon",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "EC2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Compute",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Engine",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Heroku",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "App",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gmail",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "WHERE",
+    "total_occurrences": 9,
+    "n_documents": 3
+  },
+  {
+    "term": "HAVING",
+    "total_occurrences": 6,
+    "n_documents": 1
+  },
+  {
+    "term": "GROUP",
+    "total_occurrences": 9,
+    "n_documents": 3
+  },
+  {
+    "term": "BY",
+    "total_occurrences": 16,
+    "n_documents": 3
+  },
+  {
+    "term": "SELECT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ORDER",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "JOIN",
+    "total_occurrences": 9,
+    "n_documents": 2
+  },
+  {
+    "term": "INNER",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LEFT",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "NULL",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "RIGHT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Full",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "OUTER",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CROSS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cartesian",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Product",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "SELF",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ASC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DESC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "AVG",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Window",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Functions",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "over",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "PARTITION",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ROW_NUMBER",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RANK",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DENSE_RANK",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LAG",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LEAD",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Running",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Totals",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TRUNCATE",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "DROP",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "DML",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Transaction",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DDL",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Identity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bias-Variance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tradeoff",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Irreducible",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "K-Fold",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Stratified",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Hyperparameters",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Sparse",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Elastic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Net",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Lambda",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Alpha",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Hyperparameter",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Engineering",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "One-Hot",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Label",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Normalization",
+    "total_occurrences": 8,
+    "n_documents": 4
+  },
+  {
+    "term": "Standardization",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Min-Max",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Leakage",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Forgery",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tokens",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Distributed",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Denial",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Botnets",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Volumetric",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bandwidth",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Flood",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "SYN",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "CDN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Man-in-the-Middle",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "ARP",
+    "total_occurrences": 8,
+    "n_documents": 2
+  },
+  {
+    "term": "Spoofing",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "Stripping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "HSTS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dictionary",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Attack",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Credential",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stuffing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CAPTCHA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Offline",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Ransomware",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Double",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Extortion",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RDP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Backups",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Segmentation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "EDR",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Indexing",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Index",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Scan",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "B-Tree",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Unique",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Primary",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "INSERT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "UPDATE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Composite",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "git",
+    "total_occurrences": 22,
+    "n_documents": 6
+  },
+  {
+    "term": "Repository",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "clone",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "add",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Commit",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Staging",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "push",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Pull",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "branch",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "checkout",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "switch",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Commits",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Merge",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Rebase",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Branching",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Flow",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "main",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "develop",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Releases",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hotfixes",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GitHub",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Trunk-Based",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Development",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "CI",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Flags",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CD",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Integration",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Delivery",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Deployment",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pipeline",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Build",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Deploy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Jenkins",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Actions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GitLab",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Programming",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Endpoint",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GraphQL",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "gRPC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Notation",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Arrays",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tags",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "XSD",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Namespaces",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SOAP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Prototyping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NumPy",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Flask",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "scikit-learn",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TensorFlow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "PyTorch",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dynamically",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Typed",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "JIT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rust",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Go",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "PHP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Algorithm",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Correctness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Finiteness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Time",
+    "total_occurrences": 5,
+    "n_documents": 4
+  },
+  {
+    "term": "Complexity",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Space",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Big",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Pseudocode",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Foreign",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Referential",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "customer_id",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Orders",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Customers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Redundancy",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Anomalies",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NF",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Atomic",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Transitive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dependencies",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Denormalization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ETL",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Extract",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Transform",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Load",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Warehouse",
+    "total_occurrences": 6,
+    "n_documents": 3
+  },
+  {
+    "term": "ELT",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Apache",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Airflow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SSIS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Talend",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Database",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "OLTP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OLAP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dimensional",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Star",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Mart",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Top-Down",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Marts",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Bottom-Up",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Silos",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Imbalanced",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Dataset",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "F1",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Oversampling",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "SMOTE",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Undersampling",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Weights",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Synthetic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Minority",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Technique",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Borderline-SMOTE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ADASYN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Confusion",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Matrix",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "TP",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "TN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "FP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "FN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "True",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Positive",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Negative",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "F1-Score",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "TP+FP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TP+FN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Harmonic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "F-beta",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "beta",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "F2",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Macro",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Micro",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Weighted",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Virus",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Worm",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Trojan",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Backdoor",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "WannaCry",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exploit",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "APT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Social",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Pretexting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Baiting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "USB",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tailgating",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Penetration",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Testing",
+    "total_occurrences": 13,
+    "n_documents": 8
+  },
+  {
+    "term": "Scope",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Reconnaissance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Active",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Scanning",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Nmap",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Black",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "White",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Gray",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Docker",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Container",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "Containers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Image",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Dockerfile",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Registry",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hub",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Compose",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "VM",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hypervisor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Kubernetes",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Orchestration",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Nodes",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pod",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Desired",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "YAML",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Self-Healing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rolling",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Updates",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Agile",
+    "total_occurrences": 9,
+    "n_documents": 3
+  },
+  {
+    "term": "Manifesto",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Scrum",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Kanban",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sprints",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Owner",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Backlog",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Master",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Team",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sprint",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Planning",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Daily",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Standup",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Review",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Retrospective",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IF",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ELSE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "WHILE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "FOR",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Syntax",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Flowchart",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Start",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "End",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Input",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Bug",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Exception",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Logical",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "try",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "catch",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "except",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Debugging",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Print",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Debugger",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Breakpoints",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stack",
+    "total_occurrences": 16,
+    "n_documents": 7
+  },
+  {
+    "term": "Trace",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Logging",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Version",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Messages",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Branches",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SVN",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "KPIs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "KPI",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Metric",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SMART",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Lagging",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Leading",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Actionable",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vanity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Metrics",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Counter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Baseline",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Randomization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hypothesis",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "p-value",
+    "total_occurrences": 7,
+    "n_documents": 2
+  },
+  {
+    "term": "Statistical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Significance",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Size",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Confidence",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Interval",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "ROC",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Curve",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "AUC",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Precision-Recall",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "PCA",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Principal",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Component",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Curse",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Boosting",
+    "total_occurrences": 10,
+    "n_documents": 3
+  },
+  {
+    "term": "AdaBoost",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "XGBoost",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Extreme",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Residuals",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Kaggle",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LightGBM",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CatBoost",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Assessment",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Scanners",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CVSS",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Remediation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OWASP",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Top",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Broken",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cryptographic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Failures",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Guide",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ASVS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Port",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "NSE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "FA",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "TOTP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SIM",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Swapping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Waterfall",
+    "total_occurrences": 5,
+    "n_documents": 1
+  },
+  {
+    "term": "Mocks",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Stubs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Deterministic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Arrange-Act-Assert",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pyramid",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Flaky",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TDD",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Red-Green-Refactor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Red",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Green",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Refactor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vendor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Lock-in",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MIT",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Copyleft",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "GPL",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Linus",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Torvalds",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Ubuntu",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Debian",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Fedora",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CentOS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Arch",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ls",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "pwd",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "mkdir",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "cp",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "mv",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "rm",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "grep",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "chmod",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "chown",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ps",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "kill",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "man",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Terminal",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Line",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Shell",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bash",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Zsh",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Scripts",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pipes",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "SSH",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Localhost",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Descriptive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Analytics",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Diagnostic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Predictive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Prescriptive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sampling",
+    "total_occurrences": 8,
+    "n_documents": 2
+  },
+  {
+    "term": "Simple",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cluster",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Systematic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Convenience",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Non-response",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Survivorship",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Self-selection",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Weighting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Simpson",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Paradox",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Berkeley",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "DataFrame",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Series",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "CSV",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "read_csv",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "dropna",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "fillna",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "drop_duplicates",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "concat",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Neurons",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hidden",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Neuron",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Activation",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Forward",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Propagation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Backpropagation",
+    "total_occurrences": 4,
+    "n_documents": 3
+  },
+  {
+    "term": "Tanh",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ReLU",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Dying",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Leaky",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pass",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Chain",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Adam",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Divergence",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Schedules",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CNN",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Convolution",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Maps",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Fully",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Connected",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pooling",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Least",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Privilege",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Lateral",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Movement",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Admin",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Just-in-Time",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Duties",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RBAC",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Defense",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Authentication",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Authorization",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Biometrics",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ABAC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ACL",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Unauthorized",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Forbidden",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SIEM",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "and",
+    "total_occurrences": 4,
+    "n_documents": 4
+  },
+  {
+    "term": "Event",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Splunk",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IBM",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "QRadar",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sentinel",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Wazuh",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SOC",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Triage",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Intelligence",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Hunting",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MSSP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Technical",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Debt",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Refactoring",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Smells",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Structures",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Array",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Linked",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "List",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "LIFO",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Queue",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "FIFO",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "BST",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Graphs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Server",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "Client",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Request-Response",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Web",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Peer-to-Peer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Frontend",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Backend",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "React",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vue",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Angular",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Node.js",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Spring",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Developer",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "RDBMS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Oracle",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "loc",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "iloc",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Labels",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Integer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Positions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Slice",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Boolean",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "duplicated",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "subset",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "keep",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Constraints",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Governance",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Dashboard",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Drill-down",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "DAX",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "RNN",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Vanishing",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Through",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exploding",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LSTM",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "GRU",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Clipping",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Long",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Short-Term",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cell",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Forget",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Transformer",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "Attention",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Self-Attention",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Positional",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "BERT",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "GPT",
+    "total_occurrences": 2,
+    "n_documents": 2
+  },
+  {
+    "term": "Extraction",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Fine-tuning",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Text",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "NER",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Translation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Summarization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Incident",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Preparation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Identification",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Containment",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Eradication",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Recovery",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Lessons",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Learned",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Forensics",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Forensic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Custody",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Honeypot",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Poisoning",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "DNSSEC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "pop",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "peek",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "enqueue",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "dequeue",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Call",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Undo",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "BFS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Collision",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Chaining",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Addressing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Rehashing",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Factor",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Search",
+    "total_occurrences": 5,
+    "n_documents": 3
+  },
+  {
+    "term": "In-order",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "AVL",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Red-Black",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Asymptotic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Recursive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "AI",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "ML",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Deep",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Vs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Volume",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Velocity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Variety",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Veracity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Value",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hadoop",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Spark",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IoT",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "IIoT",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Blockchain",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Consensus",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bitcoin",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Contracts",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Expressions",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Services",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Calculated",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Measures",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Row",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Filter",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CALCULATE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TOTALYTD",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Storytelling",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Cohort",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Retention",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LTV",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Funnel",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Conversion",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Drop-off",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RFM",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Recency",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Frequency",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Monetary",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Champions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "At",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tokenization",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Word-level",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Out-of-Vocabulary",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Character-level",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Subword",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "BPE",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "WordPiece",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Word",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Embedding",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Cosine",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Similarity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Word2Vec",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "GloVe",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TF-IDF",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Corpus",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "TF",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IDF",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Inverse",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Embeddings",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Parametric",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Non-parametric",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Stacking",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Meta-Model",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Routers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dynamic",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sandbox",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "IOCs",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Certificates",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "PKI",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Trust",
+    "total_occurrences": 4,
+    "n_documents": 2
+  },
+  {
+    "term": "X.509",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "CRL",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "OCSP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Policies",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "AUP",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Standards",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Procedures",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Guidelines",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Thread",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "IPC",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Race",
+    "total_occurrences": 3,
+    "n_documents": 2
+  },
+  {
+    "term": "Conditions",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Deadlock",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Mutual",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exclusion",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Hold",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Wait",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Preemption",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Circular",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Multithreading",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Condition",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Critical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Sections",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Mutex",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Semaphore",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Leak",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "malloc",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "free",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Listeners",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Profilers",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Heap",
+    "total_occurrences": 6,
+    "n_documents": 2
+  },
+  {
+    "term": "Dumps",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Overflow",
+    "total_occurrences": 3,
+    "n_documents": 3
+  },
+  {
+    "term": "Roots",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Generational",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pauses",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Ownership",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Gates",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Byte",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "ASCII",
+    "total_occurrences": 5,
+    "n_documents": 2
+  },
+  {
+    "term": "bps",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Recursion",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Case",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Factorial",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "n-1",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Divide",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Conquer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Off-by-one",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IDE",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Visual",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Studio",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IntelliJ",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "IDEA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "PyCharm",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Eclipse",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Framework",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Library",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Lodash",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Trend",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Seasonality",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cyclical",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Noise",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "ARIMA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Exponential",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Moving",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "SMA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "EMA",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Steward",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Snowflake",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Fact",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Dimension",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Quality",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Completeness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Timeliness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Uniqueness",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Validity",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Tuning",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Grid",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Bayesian",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Optimization",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Biases",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Pipelines",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MLOps",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "DevOps",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Drift",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Reproducibility",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "MLflow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Kubeflow",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RMSE",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Adjusted",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Assets",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Mitigate",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Accept",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Avoid",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Keylogger",
+    "total_occurrences": 4,
+    "n_documents": 1
+  },
+  {
+    "term": "Escalation",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Administrator",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Zero",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Never",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Always",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Verify",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Micro-segmentation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Microservices",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Monolith",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "Balancer",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Robin",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Connections",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Health",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Checks",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Cache-Aside",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Miss",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Write-Through",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Write-Back",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Invalidation",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "LRU",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Message",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Producer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Consumer",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Decoupling",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "RabbitMQ",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Kafka",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SQS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Scalability",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Stateless",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Clean",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "DRY",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "KISS",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "SDK",
+    "total_occurrences": 6,
+    "n_documents": 1
+  },
+  {
+    "term": "Emulators",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Unicode",
+    "total_occurrences": 3,
+    "n_documents": 1
+  },
+  {
+    "term": "UTF-8",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Regular",
+    "total_occurrences": 2,
+    "n_documents": 1
+  },
+  {
+    "term": "Metacharacters",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Licenses",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "License",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Permissive",
+    "total_occurrences": 1,
+    "n_documents": 1
+  },
+  {
+    "term": "Proprietary",
+    "total_occurrences": 1,
+    "n_documents": 1
+  }
+]

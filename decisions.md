@@ -832,3 +832,77 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 - **v2.8–v2.3 (9–10 Jul 2026):** D42–D44 (Q8 reframed, 0.002 withdrawn, V4 deferred — O9 to critical path), D43 (V2 closed, 48/48 deterministic, two zero-shot false verifications), D39–D41 (Phase 5 pre-registration + PASSED result).
 - **v2.2–v2.0 (9 Jul 2026):** merged the two logs (Q1 closed); D37/D38 (Kaggle staging, first fine-tuning run); D33 (G1 closed by risk acceptance); D35 rewritten; D31 expanded.
 - **v1.x:** pipeline-session log (old D21–D26 numbering) — implicitly archived.
+
+---
+
+## D97 — Deterministic transliteration layer + generalized anti-knowledge-injection prompt (v3) + gate verification fix (2026-07-23)
+
+**Status:** PRE-REGISTERED. Outcome registered as D98 after the v3 gate rerun on Kaggle. Component (a) implemented in this entry's commit; components (b) and (c) follow in the same session before the gate rerun.
+
+**Motivation:** three documented silent-correction classes (numeric D88-F1, editorialized D94-C1, ordering D96/SG-10), each closed by a targeted hardening and followed by leakage through the next unseen class; and transliteration_correct=0/4 on SG-10..13 under prompt v2 despite inline examples naming the exact words that failed. Conclusion: transliteration is a deterministic task wrongly assigned to a probabilistic component, and error-preservation requires a generalized principle rather than per-class patches.
+
+### Model input scope — VERIFIED (not assumed)
+Audited from the repository this session. decompose_via_llm(asr_text: str) takes exactly one argument (src/interview_iq/decomposition_llm/client.py). The Groq payload contains exactly two messages: system = system_prompt.md loaded verbatim with no interpolation, user = the raw transcript. pipeline.py passes only asr_record["normalized_transcript"]; question text and reference chunks are first used after decomposition returns. Therefore the decomposition LLM receives NO question text, NO reference content, NO track or question ID. This property is required and must not regress.
+
+**Path correction:** src/interview_iq/decomposition/ is a legacy stub package (NotImplementedError). The production module is src/interview_iq/decomposition_llm/. All D97 code goes in the latter.
+
+### (a) Deterministic transliteration layer
+New module src/interview_iq/decomposition_llm/transliteration.py, pure function apply_glossary(claims) -> (claims_out, audit). Runs AFTER decompose_via_llm and BEFORE the ReferenceDocument construction in pipeline.py. No LLM, no randomness, no network at runtime.
+
+Term source (closed-domain): Latin-script terms extracted programmatically from data/refdocs/reference_docs_250_FINAL_v1.json (250 documents, 1,515 chunks, verified this session). Extraction covers single tokens and multi-token Latin sequences.
+
+**Build-time LLM disclosure:** the Arabic transliteration surface forms are authored at BUILD TIME by an LLM (Claude Code) and committed as a static reviewed artifact, data/glossary/transliteration_glossary.json. Runtime remains fully deterministic: a file read plus literal substitution. This does not affect the "LLM-free scoring core" property, since no correctness judgement is involved, but it is recorded explicitly rather than left implicit. The artifact is human-reviewed in the commit diff.
+
+**Deterministic safety filters, applied after authoring (revised — see revision note at the end of this entry):**
+- R-A collision: if two distinct Latin terms RAW-normalize (diacritics stripped, alef variants unified — no proclitic stripping) to the same Arabic form, BOTH are removed to AMBIGUOUS. Proclitic stripping is deliberately excluded from this comparison; see the revision note (point 3) for why.
+- R-B lexical collision: if an Arabic form occurs as a standalone token anywhere in the Arabic prose of the 250 documents (question text and chunk text), it is removed to AMBIGUOUS — it is a real Arabic word.
+- R-D lexicon collision (added in the revision): if an Arabic form occurs in the general Arabic wordlist committed at data/glossary/arabic_wordlist.txt (MIT-licensed, ~3.49M entries, source: github.com/MustafaLinux/arabic-words-list), it is removed to AMBIGUOUS. See the revision note (point 2) for why this was escalated into D97 rather than left deferred.
+- R-C length: any Arabic form of 4 characters or fewer (raised from 2 in the revision) is removed to AMBIGUOUS. The lexicon (R-D) is predominantly Modern Standard Arabic and will not catch Egyptian colloquial homographs of short technical loanwords; the length rule is the deterministic backstop for that gap. 4, not 5, so that article-carrying forms (e.g. the definite-article spellings of "test" and "code", 5 characters) survive while their bare 2–3 character stems do not.
+Filter order: R-A, then R-B, then R-D, then R-C. A term with no surviving forms is dropped from the glossary entirely.
+
+**Phonetic-only rule:** the glossary contains phonetic transliterations only — Arabic spellings that represent the ENGLISH pronunciation. Semantic Arabic translations are forbidden. Example of the distinction: an Arabic spelling pronounced "el-test" mapping to "test" is valid; the Arabic word meaning "examination" mapping to "test" is a translation and is forbidden, because substituting it would alter propositional content.
+
+**Independence rule (pre-registered):** no term may enter the glossary because it was observed in sanity-gate outputs. A term enters only if it occurs independently in the 250-document corpus. Verified counts for the terms that failed the D96 gate, measured from the corpus this session: test = 2 documents, code = 6, database = 2, bit = 6, byte = 1. All five qualify independently. This intersection is reported again in D98.
+
+**Retracted:** an earlier proposal in this session to select glossary terms by a document-frequency threshold is withdrawn. Measurement showed frequency does not track importance: test and database occur in 2 documents each and would be excluded by any threshold of 3 or more, while the English function words "of" and "and" occur in 9 and 4 documents respectively. Selection is by term shape and phonetic plausibility, not by count. Recorded as a correction, not silently replaced.
+
+**Matching at runtime:** normalization (diacritics stripped, أ/إ/آ unified to ا), optional Arabic proclitics (ال، و، ب، ك، ل، ف), longest-match-first, word-boundary aware. Deterministic and order-independent for a fixed glossary.
+
+**Lexical collision beyond the 250-document corpus (revised — see revision note point 2):** R-B only detects collisions with Arabic words that appear in the 250 documents. Measurement in the same session's review showed this is the DOMINANT failure mode, not a residual one: ورم (Worm), سكان (Scan), رام (RAM), روم (ROM), دوم (DOM), روز (Rows) and البت (bit) all survived the first filter pass despite being real, common Arabic words absent from the technical-prose corpus. The registered escalation — a frozen Arabic lexicon committed as a dependency — is therefore invoked now, as R-D, rather than deferred. Mitigation retained regardless: the gate records both raw and post-glossary claims, and every substitution performed in a run is logged, so any wrong substitution is visible and attributable.
+
+**Not measured (§5.13):** the effect of leaving a term in Arabic on Precision/Coverage has never been measured. The assumption that it hurts is an assumption, not a result. A before/after glossary ablation on O9 is a candidate for a later session and is OUT OF SCOPE for D97.
+
+### (b) prompt v3 — generalized anti-knowledge-injection constraint
+Replaces per-class patches with a single principle plus an operational test. Retains P1 (no meta-commentary) and P5 (no invented names), both empirically effective in D96.
+Principle: the model is a text normalizer, not a domain expert. Domain knowledge must never alter propositional content. Every proposition uttered by the speaker — value, order, comparison direction, polarity, scope, completeness — is carried into the claims exactly as uttered, including when the model is certain it is wrong.
+Operational test, applied before emitting each claim: could a person with zero domain knowledge produce this claim from the transcript alone? If not, the claim is contaminated.
+The three documented classes are retained as illustrations of the principle, not as separate rules.
+The transliteration constraint in the prompt is explicitly downgraded to best-effort and non-gating, since the glossary now owns that task.
+
+### (c) New unseen-class fixtures SG-14, SG-15, and gate notebook fix
+SG-10..13 outcomes have been observed; a v3 PASS on them alone cannot distinguish generalization from a fourth patch. Two fixtures of a fourth, never-tested class:
+- SG-14 — polarity inversion: the speaker negates a true property or asserts a false one.
+- SG-15 — causal direction reversal: the speaker states A causes B where the fact is the reverse.
+Interpretation rule (pre-registered): PASS on SG-14/15 is evidence of generalization. PASS on SG-10..13 with FAIL on SG-14/15 is recorded as a fourth patch, not a fix, and triggers the registered escalation path (model replacement evaluated under the same gate, D77–D87 precedent).
+kaggle/runners/run-sanity-gate.ipynb hard-codes an expected n_cases == 9, raising a spurious RuntimeError. The expected count is read dynamically from the fixtures file. The git_commit check is unchanged — it caught VOID run 143137Z.
+
+### Pre-registered success criteria (outcome → D98)
+1. error_preserved = YES on 15/15. Any NO fails the entire gate (zero tolerance, per D77).
+2. no_unauthorized_addition = YES on 15/15.
+3. transliteration_correct judged on POST-glossary output, gating for SG-10..15 only; SG-01..09 keep their original criteria (no retroactive rule change). YES iff every in-glossary term was converted, no out-of-glossary term was converted incorrectly, and every AMBIGUOUS term was left unchanged.
+4. residual_ambiguous_count recorded, non-gating.
+5. Atomicity tracked, non-gating (unchanged from D77).
+6. The gate records BOTH raw LLM claims and post-glossary claims, so any failure is attributable to its component.
+7. Judgment is fully human (Ahmed) on file-uploaded outputs.
+
+### Data recovery incident (recorded)
+The gitignored data files (reference_docs_250_FINAL_v1.json, questions_250.json, gold_set_48.json, the two pairs_pilot_150_v2 files) were absent from the P:\interview-iq working tree: they are excluded from git by .gitignore and the machine transfer policy is git-only, so they were never transferred. A complete copy was found to already exist as the Kaggle dataset iq-nli-finetune-data (5 files). gold_set_48.json was verified identical by SHA-256 against the pre-move copy: 73faf09e05f452122f996649affddc273e8bbbe01c1843d88415fbc9bb06e485. reference_docs_250_FINAL_v1.json was verified as 250 documents / 1,515 chunks. Recommendation (documentation-only, separate session): record the Kaggle dataset as the designated backup location in decisions.md, and revisit whether these files should remain gitignored in a private repository.
+
+**Revision note (same session, after first implementation review):**
+Three claims in the first draft of this entry were falsified by the implementation and are corrected here rather than silently rewritten.
+1. The draft asserted that R-A is the mechanism that catches bit/byte automatically. This was false. The build-time authoring produced البت for bit and البايت for Byte, which do not collide, so R-A never fired; the form actually at issue, بيت, was never authored at all. The claim is withdrawn. bit/byte is now handled by R-D (lexicon) plus R-C (length), and the outcome is reported empirically in the filter report rather than asserted in advance.
+2. The draft described lexical collision with Arabic words absent from the 250-document corpus as a residual risk. Measurement showed it is the dominant case, not a residual one: ورم, سكان, رام, روم, دوم, روز and البت all survived the first filter pass. R-B alone is insufficient because it checks technical prose while the collisions are with general Arabic vocabulary. The registered escalation path (a frozen Arabic lexicon committed as a dependency) is therefore invoked now, within D97, rather than deferred.
+3. The draft specified proclitic stripping for collision comparison. This produced eight false-positive removals (Bash, Cache, Code, Pod, FIFO, LIFO, Queue, catch), including Code, which is one of the terms that failed the D96 gate. Collision detection now compares raw normalized forms; proclitic stripping is retained for runtime matching only.
+4. The lexicon path invoked in item 2 above was itself falsified on execution. The retrieved wordlist (3,488,449 entries) is a token dump, not a curated lexicon: it contains malformed entries (فنسور, باكاستان, الراآن, البواعجا) and it contains the transliterations themselves (تست, كود, بايت, سيرفر, كلاس, ستاك), so R-D cannot distinguish an Arabic word from a transliteration — survival became incidental (ستاك removed, الستاك retained). Separately, R-B was shown to be logically inverted: Code and Byte were removed because الكود and بايت occur in the Arabic prose of the 250 documents as transliterations used by the reference documents themselves, which is evidence that the term IS transliterated, not evidence that it is a native Arabic word. Both filters are therefore rejected and the wordlist file is not committed. Empirical outcome of this pass, recorded rather than discarded: Test, Code, Queue, RAM, Worm and Scan were all removed from the glossary, so this configuration would not have addressed the D96 transliteration failure at all. R-A is retained as verified correct after the raw-form fix, yielding exactly four genuine collisions: GET/git, Phishing/Vishing, Batch/Patch, View/Vue. R-C is retained. D97 component (a) is NOT closed. Successor design under review for the next session: delete R-B entirely; replace R-D with a frequency-ranked Arabic list truncated at a pre-registered N, looked up after proclitic stripping, with N fixed before execution and not retuned after seeing which terms survive.
+
+**Environment finding (recorded, not acted on):** during implementation the editable install of this package was found to point at the superseded path C:\Users\Admin\Desktop\Interview IQ. It was reinstalled from P:\interview-iq and pytest 8.2.0 (already a declared dependency) was installed to run the new tests. This environment change was not part of the reviewed diff and is recorded here for completeness.

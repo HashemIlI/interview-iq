@@ -67,6 +67,7 @@ from interview_iq.decomposition_llm.client import (
     LLMDecompositionError,
     decompose_via_llm,
 )
+from interview_iq.decomposition_llm.transliteration import apply_glossary
 from interview_iq.evaluation.gold_eval import build_pretrained_model_and_tokenizer, load_adapter
 from interview_iq.nli.engine import build_claims_chunks_matrix, build_coverage_matrix
 from interview_iq.refdocs.loader import Chunk, ReferenceDocument
@@ -81,7 +82,9 @@ def _empty_result(question: str, question_id: str | None, models_used: dict[str,
         "status": None,
         "error": None,
         "asr": None,
+        "claims_raw": None,
         "claims": None,
+        "transliteration_audit": None,
         "decomposition_error": None,
         "models_used": models_used,
         "key_point_chunk_ids": None,
@@ -191,7 +194,10 @@ def evaluate_answer(
         return result
 
     claims = decomposition.claims
+    claims, transliteration_audit = apply_glossary(claims)
+    result["claims_raw"] = decomposition.claims
     result["claims"] = claims
+    result["transliteration_audit"] = transliteration_audit
     # An empty claims list (NO_EXTRACTABLE_CLAIMS) is a genuine decomposition
     # result, not a pipeline error (same convention as
     # coverage_channel_real_claims_experiment.py) -- it flows through the

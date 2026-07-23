@@ -1,0 +1,651 @@
+term	total_occurrences	n_documents
+GROUP BY	9	3
+Gradient Descent	8	4
+Power BI	7	4
+Data Warehouse	6	3
+ORDER BY	6	3
+Abstract Class	5	1
+Bar Chart	5	1
+Machine Learning	5	4
+Box Plot	4	2
+Data Analyst	4	1
+Data Scientist	4	1
+Gradient Boosting	4	2
+Learning Rate	4	2
+Penetration Testing	4	2
+Random Forest	4	3
+Window Functions	4	1
+ARP Spoofing	3	2
+Binary Search	3	2
+Brute Force	3	2
+DNS Spoofing	3	2
+Data Cleaning	3	2
+Data Governance	3	2
+Data Leakage	3	2
+Data Mart	3	1
+Feature Scaling	3	2
+Feature Selection	3	3
+Garbage Collection	3	2
+Hash Table	3	2
+Horizontal Scaling	3	2
+L2 Regularization	3	2
+Linked List	3	2
+Logical Error	3	2
+Logistic Regression	3	1
+Naive Bayes	3	2
+Pivot Table	3	1
+Primary Key	3	2
+Rate Limiting	3	3
+SQL Injection	3	2
+Stack Overflow	3	3
+Star Schema	3	2
+Vanishing Gradient	3	2
+Activation Function	2	2
+Asymmetric Encryption	2	1
+Big Data	2	1
+Black Box	2	1
+CIA Triad	2	1
+Certificate Authority	2	2
+Chain of	2	2
+Clean Code	2	1
+Cloud Computing	2	1
+Code Review	2	1
+Cohort Analysis	2	1
+Confidence Interval	2	1
+Confounding Variable	2	2
+Confusion Matrix	2	1
+Curse of	2	1
+Curse of Dimensionality	2	1
+DNS over	2	1
+Data Analysis	2	2
+Data Dictionary	2	1
+Data Marts	2	1
+Data Storytelling	2	1
+Data Structures	2	1
+Data Visualization	2	1
+Decision Tree	2	1
+Defense in	2	1
+Defense in Depth	2	1
+Design Patterns	2	1
+Digital Certificate	2	2
+Digital Forensics	2	1
+Digital Signatures	2	2
+Domain Knowledge	2	2
+Ensemble Learning	2	1
+False Positive	2	2
+False Positives	2	2
+Feature Engineering	2	1
+Foreign Key	2	1
+Full Stack	2	1
+Full Stack Developer	2	1
+Funnel Analysis	2	1
+Git Flow	2	1
+Git Merge	2	1
+Git Rebase	2	1
+Gray Box	2	1
+Hyperparameter Tuning	2	1
+Imbalanced Dataset	2	1
+Incident Response	2	1
+Kernel Trick	2	1
+L1 Regularization	2	2
+LEFT JOIN	2	1
+Least Privilege	2	1
+Linear Regression	2	1
+Load Balancer	2	1
+Log Transformation	2	2
+Memory Leak	2	1
+Message Queue	2	1
+Method Overriding	2	2
+Mini-batch Gradient	2	1
+Mini-batch Gradient Descent	2	1
+Missing Values	2	2
+Moving Average	2	1
+Neural Network	2	1
+OWASP Top	2	1
+Open Source	2	1
+Patch Management	2	1
+Port Scanning	2	1
+Positive Rate	2	1
+Privilege Escalation	2	1
+Pull Requests	2	2
+Race Condition	2	1
+Regular Expressions	2	1
+Reinforcement Learning	2	1
+Relational Databases	2	2
+Risk Assessment	2	1
+Runtime Polymorphism	2	1
+Sampling Bias	2	1
+Security Policies	2	1
+Separation of	2	2
+Silhouette Score	2	1
+Snowflake Schema	2	1
+Social Engineering	2	1
+Stack Developer	2	1
+Standard Deviation	2	1
+Supervised Learning	2	2
+Syntax Error	2	1
+Technical Debt	2	1
+Three-way Handshake	2	2
+Time Series	2	1
+Training Loss	2	1
+Transfer Learning	2	1
+True Positive	2	2
+Unit Testing	2	1
+Validation Loss	2	1
+Version Control	2	1
+Vertical Scaling	2	2
+Vulnerability Assessment	2	1
+Vulnerability Scanning	2	1
+White Box	2	1
+Word Embedding	2	1
+Zero Trust	2	1
+in Depth	2	1
+of Dimensionality	2	1
+ARP Inspection	1	1
+ASP.NET MVC	1	1
+AWS SDK	1	1
+Access Control	1	1
+Access Controls	1	1
+Access Modifiers	1	1
+Activation Functions	1	1
+Adjusted R-squared	1	1
+Advanced Encryption	1	1
+Advanced Encryption Standard	1	1
+Agile Manifesto	1	1
+Always Verify	1	1
+Amazon EC2	1	1
+Amazon SQS	1	1
+Analysis Expressions	1	1
+Analysis Services	1	1
+Android SDK	1	1
+Apache Airflow	1	1
+Apache Kafka	1	1
+Apache Spark	1	1
+App Engine	1	1
+Application Layer	1	1
+Application Layer Firewall	1	1
+Application Programming	1	1
+Application Programming Interface	1	1
+Arch Linux	1	1
+At Risk	1	1
+Avalanche Effect	1	1
+Backpropagation Through	1	1
+Backpropagation Through Time	1	1
+Bad Gateway	1	1
+Base Case	1	1
+Batch Gradient	1	1
+Batch Gradient Descent	1	1
+Bayesian Optimization	1	1
+Behavioral Detection	1	1
+Bias-Variance Tradeoff	1	1
+Binary Classification	1	1
+Binary Cross-Entropy	1	1
+Binary Search Tree	1	1
+Block Cipher	1	1
+Boolean Indexing	1	1
+Box Testing	1	1
+Box-and-Whisker Plot	1	1
+Broken Access	1	1
+Broken Access Control	1	1
+Business Context	1	1
+Business Logic	1	1
+Business Question	1	1
+CROSS JOIN	1	1
+CSRF Tokens	1	1
+Cache Invalidation	1	1
+Cache Miss	1	1
+Calculated Columns	1	1
+Call Stack	1	1
+Cartesian Product	1	1
+Causal Inference	1	1
+Cell State	1	1
+Chain Rule	1	1
+Chain of Custody	1	1
+Chain of Trust	1	1
+Child Class	1	1
+Cipher Suites	1	1
+Circular Wait	1	1
+Class Weights	1	1
+Clock Speed	1	1
+Cloud Platform	1	1
+Cluster Sampling	1	1
+Code Points	1	1
+Code Smells	1	1
+Cohort Table	1	1
+Command Line	1	1
+Commit Messages	1	1
+Compile-time Polymorphism	1	1
+Component Analysis	1	1
+Composite Index	1	1
+Compute Engine	1	1
+Computer Vision	1	1
+Connection Pools	1	1
+Container Orchestration	1	1
+Content Security	1	1
+Content Security Policy	1	1
+Context Switch	1	1
+Continuous Delivery	1	1
+Continuous Deployment	1	1
+Continuous Integration	1	1
+Control Unit	1	1
+Controlled Trials	1	1
+Correlation does	1	1
+Correlation does not	1	1
+Correlation does not imply	1	1
+Cosine Similarity	1	1
+Counter Metrics	1	1
+Credential Stuffing	1	1
+Critical Sections	1	1
+Cross-Site Request	1	1
+Cross-Site Request Forgery	1	1
+Cross-Site Scripting	1	1
+Cryptographic Failures	1	1
+DNS over HTTPS	1	1
+DNS over TLS	1	1
+Daily Standup	1	1
+Data Analysis Expressions	1	1
+Data Augmentation	1	1
+Data Collection	1	1
+Data Lakes	1	1
+Data Link	1	1
+Data Owner	1	1
+Data Quality	1	1
+Data Steward	1	1
+Decision Trees	1	1
+Deep Learning	1	1
+Denial of	1	1
+Denial of Service	1	1
+Dependency Inversion	1	1
+Descent SGD	1	1
+Descriptive Analytics	1	1
+Desired State	1	1
+Development Team	1	1
+Device Drivers	1	1
+Diagnostic Analytics	1	1
+Diamond Problem	1	1
+Dictionary Attack	1	1
+Digital Certificates	1	1
+Dimension Tables	1	1
+Dimensionality Reduction	1	1
+Distributed Denial	1	1
+Distributed Denial of	1	1
+Distributed Denial of Service	1	1
+Divide and	1	1
+Divide and Conquer	1	1
+Docker Compose	1	1
+Docker Hub	1	1
+Document Frequency	1	1
+Double Extortion	1	1
+Double-Checked Locking	1	1
+Dying ReLU	1	1
+Dynamic ARP	1	1
+Dynamic ARP Inspection	1	1
+Dynamically Typed	1	1
+Early Stopping	1	1
+Effect Size	1	1
+Elastic Net	1	1
+Elbow Method	1	1
+Empirical Rule	1	1
+Encrypted Tunnel	1	1
+Encryption Standard	1	1
+End-to-End Testing	1	1
+Euclidean Distance	1	1
+Event Listeners	1	1
+Event Management	1	1
+Exact Match	1	1
+Exploding Gradient	1	1
+Exploratory Data	1	1
+Exploratory Data Analysis	1	1
+Exponential Smoothing	1	1
+Extract Method	1	1
+Extreme Gradient	1	1
+Extreme Gradient Boosting	1	1
+FULL OUTER	1	1
+FULL OUTER JOIN	1	1
+Fact Table	1	1
+Factory Method	1	1
+False Negative	1	1
+False Positive Rate	1	1
+Feature Extraction	1	1
+Feature Flags	1	1
+Feature Maps	1	1
+Features Feature	1	1
+Features Feature Selection	1	1
+File System	1	1
+Filter Context	1	1
+Filtering Firewall	1	1
+Firewall NGFW	1	1
+Five-Number Summary	1	1
+Forensic Image	1	1
+Forward Pass	1	1
+Forward Propagation	1	1
+Fraud Detection	1	1
+Full Table	1	1
+Full Table Scan	1	1
+Fully Connected	1	1
+Gang of	1	1
+Gang of Four	1	1
+Gap Statistic	1	1
+Garbage In	1	1
+Garbage In Garbage	1	1
+Garbage In Garbage Out	1	1
+Garbage Out	1	1
+Gini Impurity	1	1
+GitHub Actions	1	1
+GitHub Flow	1	1
+GitLab CI	1	1
+Global State	1	1
+Google App	1	1
+Google App Engine	1	1
+Google Cloud	1	1
+Google Cloud Platform	1	1
+Google Compute	1	1
+Google Compute Engine	1	1
+Google Sheets	1	1
+Gradient Clipping	1	1
+Gradient Descent SGD	1	1
+Gray Box Testing	1	1
+Grid Search	1	1
+HTTP Flood	1	1
+HTTP Request	1	1
+HTTP Response	1	1
+HTTP Status	1	1
+HTTP Status Codes	1	1
+Hardware Keylogger	1	1
+Harmonic Mean	1	1
+Hash Function	1	1
+Health Checks	1	1
+Heap Dumps	1	1
+Heap Memory	1	1
+Hidden Layers	1	1
+Hidden State	1	1
+Hold and	1	1
+Hold and Wait	1	1
+Hybrid Encryption	1	1
+IBM QRadar	1	1
+INNER JOIN	1	1
+IP Address	1	1
+IP Hash	1	1
+In Garbage	1	1
+In Garbage Out	1	1
+Information Gain	1	1
+Information and	1	1
+Information and Event	1	1
+Information and Event Management	1	1
+Infrastructure as	1	1
+Input Layer	1	1
+Inspection Firewall	1	1
+Integer Positions	1	1
+IntelliJ IDEA	1	1
+Interface Segregation	1	1
+Interquartile Range	1	1
+Inverse Document	1	1
+Inverse Document Frequency	1	1
+Inversion of	1	1
+Inversion of Control	1	1
+Irreducible Error	1	1
+Isolation Levels	1	1
+JavaScript Object	1	1
+JavaScript Object Notation	1	1
+K-Nearest Neighbors	1	1
+KNN Imputation	1	1
+Label Encoding	1	1
+Labeled Data	1	1
+Laplace Smoothing	1	1
+Lateral Movement	1	1
+Layer Firewall	1	1
+Lazy Initialization	1	1
+Lazy Learning	1	1
+Leaky ReLU	1	1
+Learning Rate Schedules	1	1
+Least Connections	1	1
+Lessons Learned	1	1
+Linus Torvalds	1	1
+Liskov Substitution	1	1
+Load Factor	1	1
+Local Minima	1	1
+Log Loss	1	1
+Logic Gates	1	1
+Long Short-Term	1	1
+Long Short-Term Memory	1	1
+Loss Function	1	1
+Machine Translation	1	1
+Majority Voting	1	1
+Many Requests	1	1
+Max Depth	1	1
+Max Pooling	1	1
+Mean Squared	1	1
+Mean Squared Error	1	1
+Memory Management	1	1
+Merge Commit	1	1
+Method Overloading	1	1
+Microsoft Azure	1	1
+Microsoft Sentinel	1	1
+Min-Max Scaling	1	1
+Minority Oversampling	1	1
+Minority Oversampling Technique	1	1
+Model Drift	1	1
+Model Parameters	1	1
+Multinomial Logistic	1	1
+Multinomial Logistic Regression	1	1
+Multiple Inheritance	1	1
+Mutual Exclusion	1	1
+Neural Networks	1	1
+Never Trust	1	1
+Never Trust Always	1	1
+Never Trust Always Verify	1	1
+Next-Generation Firewall	1	1
+Next-Generation Firewall NGFW	1	1
+No Content	1	1
+No Preemption	1	1
+Non-response Bias	1	1
+Normal Distribution	1	1
+Normal Equation	1	1
+Not Modified	1	1
+Null Hypothesis	1	1
+OUTER JOIN	1	1
+Object Notation	1	1
+Offline Backups	1	1
+One-Hot Encoding	1	1
+Open Addressing	1	1
+Operating System	1	1
+Out of	1	1
+Out of Memory	1	1
+Output Encoding	1	1
+Output Layer	1	1
+Oversampling Technique	1	1
+PARTITION BY	1	1
+Packet Filtering	1	1
+Packet Filtering Firewall	1	1
+Parameterized Queries	1	1
+Parent Class	1	1
+Penalty Term	1	1
+Pivot Tables	1	1
+Platform as	1	1
+Positional Encoding	1	1
+Power Pivot	1	1
+Power Query	1	1
+Predictive Analytics	1	1
+Prepared Statements	1	1
+Prescriptive Analytics	1	1
+Prime Factorization	1	1
+Principal Component	1	1
+Principal Component Analysis	1	1
+Print Debugging	1	1
+Private Key	1	1
+Process Management	1	1
+Product Backlog	1	1
+Product Owner	1	1
+Programming Interface	1	1
+Proxy Firewall	1	1
+Public Key	1	1
+Query String	1	1
+REST API	1	1
+REST APIs	1	1
+RIGHT JOIN	1	1
+ROC Curve	1	1
+Race Conditions	1	1
+Rainbow Tables	1	1
+Random Oversampling	1	1
+Random Sampling	1	1
+Random Search	1	1
+Randomized Controlled	1	1
+Randomized Controlled Trials	1	1
+Rate Schedules	1	1
+Red-Black Trees	1	1
+Referential Integrity	1	1
+Reflected XSS	1	1
+Relational Database	1	1
+Remote Access	1	1
+Representational State	1	1
+Representational State Transfer	1	1
+Request Body	1	1
+Request Forgery	1	1
+Risk Management	1	1
+Rolling Updates	1	1
+Root CA	1	1
+Root Node	1	1
+Root Servers	1	1
+Round Robin	1	1
+Round Trip	1	1
+Row Context	1	1
+Ruby on	1	1
+Ruby on Rails	1	1
+Running Totals	1	1
+SELF JOIN	1	1
+SIM Swapping	1	1
+SQL Server	1	1
+SSL Stripping	1	1
+SYN Flood	1	1
+SYN Scan	1	1
+Saddle Points	1	1
+Scatter Plot	1	1
+Scrum Master	1	1
+Search Tree	1	1
+Security Information	1	1
+Security Information and	1	1
+Security Information and Event	1	1
+Security Policy	1	1
+Selection Bias	1	1
+Self-selection Bias	1	1
+Semi-structured Data	1	1
+Sentiment Analysis	1	1
+Separation of Concerns	1	1
+Separation of Duties	1	1
+Session Cookies	1	1
+Session ID	1	1
+Short-Term Memory	1	1
+Simple Random	1	1
+Simple Random Sampling	1	1
+Single Inheritance	1	1
+Single Responsibility	1	1
+Smart Contracts	1	1
+Soft Margin	1	1
+Software Keylogger	1	1
+Software License	1	1
+Software Licenses	1	1
+Software as	1	1
+Source Code	1	1
+Space Complexity	1	1
+Spam Filtering	1	1
+Spear Phishing	1	1
+Sprint Backlog	1	1
+Sprint Planning	1	1
+Sprint Review	1	1
+Squared Error	1	1
+Stack Memory	1	1
+Stack Trace	1	1
+State Transfer	1	1
+Stateful Inspection	1	1
+Stateful Inspection Firewall	1	1
+Statistical Significance	1	1
+Status Codes	1	1
+Stochastic Gradient	1	1
+Stochastic Gradient Descent	1	1
+Stochastic Gradient Descent SGD	1	1
+Stored XSS	1	1
+Stratified K-Fold	1	1
+Stratified Sampling	1	1
+Structured Data	1	1
+Studio Code	1	1
+Support Vector	1	1
+Support Vector Machine	1	1
+Support Vectors	1	1
+Survivorship Bias	1	1
+Symmetric Encryption	1	1
+Synthetic Minority	1	1
+Synthetic Minority Oversampling	1	1
+Synthetic Minority Oversampling Technique	1	1
+Systematic Sampling	1	1
+TCP SYN	1	1
+TCP SYN Scan	1	1
+Table Scan	1	1
+Target Variable	1	1
+Term Frequency	1	1
+Test Data	1	1
+Testing Guide	1	1
+Testing Pyramid	1	1
+Text Classification	1	1
+Threat Hunting	1	1
+Threat Intelligence	1	1
+Through Time	1	1
+Time Complexity	1	1
+Time Intelligence	1	1
+Too Many	1	1
+Too Many Requests	1	1
+Training Data	1	1
+Transitive Dependencies	1	1
+True Negative	1	1
+True Positive Rate	1	1
+Trunk-Based Development	1	1
+Trust Always	1	1
+Trust Always Verify	1	1
+UDP Flood	1	1
+Uniform Interface	1	1
+Unique Constraints	1	1
+Unique Index	1	1
+Unstructured Data	1	1
+Unsupervised Learning	1	1
+Validation Set	1	1
+Vanity Metrics	1	1
+Vector Machine	1	1
+Vendor Lock-in	1	1
+Virtual Machine	1	1
+Virtual Memory	1	1
+Visual Studio	1	1
+Visual Studio Code	1	1
+Web Server	1	1
+Z-score Scaling	1	1
+Zero-Day Exploit	1	1
+and Conquer	1	1
+and Event	1	1
+and Event Management	1	1
+and Wait	1	1
+default methods	1	1
+does not	1	1
+does not imply	1	1
+does not imply Causation	1	1
+git add	1	1
+git branch	1	1
+git checkout	1	1
+git clone	1	1
+git commit	1	1
+git log	1	1
+git pull	1	1
+git push	1	1
+git status	1	1
+git switch	1	1
+imply Causation	1	1
+not imply	1	1
+not imply Causation	1	1
+of Concerns	1	1
+of Control	1	1
+of Custody	1	1
+of Duties	1	1
+of Four	1	1
+of Memory	1	1
+of Service	1	1
+of Trust	1	1
+on Rails	1	1
+over HTTPS	1	1
+over TLS	1	1
