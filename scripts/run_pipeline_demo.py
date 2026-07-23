@@ -2,24 +2,34 @@
 scripts/run_pipeline_demo.py — Thin CLI: real end-to-end pipeline.evaluate_answer()
 run for the pilot recording (D85's ASR module + orchestrator), against real
 audio, real faster-whisper, real Groq decomposition, and real NLI
-models (zero-shot base + LoRA adapter).
+models (zero-shot base, optionally + LoRA adapter).
 
 Usage:
+    python scripts/run_pipeline_demo.py \\
+        --audio-path recordings/SE-028.wav \\
+        --question-id SE-028 \\
+        --output-path results/pipeline_demo/SE-028.json
+
+    # with the LoRA adapter (non-default, ablation/comparison use only):
     python scripts/run_pipeline_demo.py \\
         --audio-path recordings/SE-028.wav \\
         --question-id SE-028 \\
         --adapter-path /path/to/iq-checkpoints-nli-v1 \\
         --output-path results/pipeline_demo/SE-028.json
 
+Per D89, zero-shot (no adapter) is the runtime default for both the
+Precision and Coverage channels — --adapter-path is optional and omitted
+by default, matching cli/run_scoring.py's convention.
+
 This is a thin CLI only — it resolves one question's data from the
 reference-docs JSON (reusing refdocs.loader.load_reference_docs /
 ReferenceDocs.get_document, never reimplementing that parsing) and calls
 pipeline.evaluate_answer() with no injected mocks: the real production path
-(build_pretrained_model_and_tokenizer + load_adapter, transcribe_audio,
-decompose_via_llm) runs exactly as evaluate_answer's own docstring
-describes when its injection points are left at their defaults. All real
-logic lives in the package; this script just wires it, matching the
-project's thin-runner convention (see cli/run_scoring.py,
+(build_pretrained_model_and_tokenizer + optional load_adapter,
+transcribe_audio, decompose_via_llm) runs exactly as evaluate_answer's own
+docstring describes when its injection points are left at their defaults.
+All real logic lives in the package; this script just wires it, matching
+the project's thin-runner convention (see cli/run_scoring.py,
 scripts/coverage_channel_real_claims_experiment.py).
 
 GROQ_API_KEY is read from `.env` only, via decomposition_llm.client's
@@ -76,7 +86,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--audio-path", type=Path, required=True)
     parser.add_argument("--question-id", type=str, required=True, help="e.g. SE-028 or GN-040.")
     parser.add_argument("--reference-docs-path", type=Path, default=_DEFAULT_REFERENCE_DOCS_PATH)
-    parser.add_argument("--adapter-path", type=Path, required=True, help="LoRA adapter checkpoint directory.")
+    parser.add_argument(
+        "--adapter-path", type=Path, default=None, help="Optional LoRA adapter. Omit for zero-shot base model (D89 runtime default)."
+    )
     parser.add_argument("--device", type=str, default=None, help="Override configs/asr.yaml's device for this call only.")
     parser.add_argument("--compute-type", type=str, default=None, help="Override configs/asr.yaml's compute_type for this call only.")
     parser.add_argument("--output-path", type=Path, required=True, help="Where to write the full evaluate_answer() result JSON.")

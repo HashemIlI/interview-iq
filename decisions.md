@@ -660,6 +660,34 @@ D88's text ("violating system_prompt.md constraint 8") mis-identified the violat
 
 ---
 
+## D93 — F1-fix field validation: rerun evaluate_answer() zero-shot on real pilot audio (2026-07-23)
+
+**Trigger:** D92 gate PASS (9/9) verified the hardened error-preservation constraint on synthetic fixtures. Field validation on the real D88 audio is still required.
+
+**Investigation findings (basis for this decision):**
+- evaluate_answer() already supports zero-shot natively (adapter_path defaults to None, guarded correctly). No pipeline-logic change required.
+- scripts/run_pipeline_demo.py's argparse forced --adapter-path required=True (line 79) — a CLI-layer bug inconsistent with D89. Fix follows the existing, already-correct pattern in cli/run_scoring.py (optional --adapter-path, default=None, gated). Zero reimplementation.
+- No notebook in kaggle/runners/ referenced run_pipeline_demo.py — built this session (D91 pattern).
+
+**F3 status — explicitly unresolved, not closed by this decision:**
+D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIFIED against the wrong chunk, E=0.908) was never addressed in D89–D92. This session's C2 criterion below is necessary but NOT sufficient evidence of correct reasoning. F3 remains an open follow-up item, out of scope for this session.
+
+**D89-b status update:** D92's gate PASS satisfies the D89-a gate; the fine-tuning repair experiment (D89-b: adapter retraining on structurally-labeled pairs from real pipeline decompositions) is now UNGATED. It will be registered as its own pre-registered decision in a dedicated session. This session's rerun additionally serves as the first field evidence that the fixed prompt is a sound corpus source for D89-b.
+
+**Pre-registered procedure:**
+1. Fix run_pipeline_demo.py: --adapter-path → optional, default=None (cli/run_scoring.py pattern). No adapter passed this run (D89: zero-shot is the runtime arm).
+2. Build kaggle/runners/run-pipeline-demo.ipynb (thin CLI cells; ast.parse() + nbformat.validate() verified before approval).
+3. Rerun on D88's two audio inputs (SE-028, GN-040), Groq llama-3.3-70b-versatile, PRE-CALIBRATION DEFAULT thresholds (τ_E=0.9, τ=0.5, α=0, k=10).
+
+**Pre-registered success criteria (directional, n=2, not statistical):**
+- C1 (F1 check, human judgment): GN-040 claims preserve "16" (not corrected to "8"). FAIL if corrected.
+- C2 (direction): score(SE-028) > score(GN-040). Passing C2 validates F1's fix only — it does NOT resolve or supersede F3.
+- C3 (soft, reported not gating): sign consistency under pre-calibration thresholds.
+
+**Evidence:** results/pipeline_demo/{SE-028_v2.json, GN-040_v2.json}; kaggle/runners/run-pipeline-demo.ipynb committed. D88 originals retained.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
