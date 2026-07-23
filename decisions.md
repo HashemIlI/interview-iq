@@ -624,6 +624,12 @@ The two other "Gold"-named artifacts (O9 validation set, DS-014 NLI Gold Set) ar
 
 ---
 
+## D90-correction — D88 constraint numbering fix (2026-07-23)
+
+D88's text ("violating system_prompt.md constraint 8") mis-identified the violated rule. Verified by direct read of system_prompt.md during D90 execution: constraint 8 is the Arabic-output rule; the error-preservation rule that GN-040 actually violated is constraint 1. D88's prose is left unmodified as historical record; this entry is the authoritative correction.
+
+---
+
 ## Section 4 — Open Items
 
 | Item | Description | Status |
