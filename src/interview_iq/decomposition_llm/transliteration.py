@@ -50,20 +50,20 @@ def normalize_arabic(text: str) -> str:
     return text.strip()
 
 
-def strip_proclitic(word: str) -> str:
-    for prefix in _PROCLITICS:
-        if word.startswith(prefix) and len(word) - len(prefix) >= 2:
-            return word[len(prefix):]
-    return word
-
-
 class _Glossary:
-    __slots__ = ("form_to_term", "pattern", "ambiguous_pattern")
+    __slots__ = ("form_to_term", "pattern", "ambiguous_pattern", "normalized_to_raw_form")
 
-    def __init__(self, form_to_term: dict[str, str], pattern: re.Pattern, ambiguous_pattern: re.Pattern | None):
+    def __init__(
+        self,
+        form_to_term: dict[str, str],
+        pattern: re.Pattern,
+        ambiguous_pattern: re.Pattern | None,
+        normalized_to_raw_form: dict[str, str],
+    ):
         self.form_to_term = form_to_term
         self.pattern = pattern
         self.ambiguous_pattern = ambiguous_pattern
+        self.normalized_to_raw_form = normalized_to_raw_form
 
 
 def _proclitic_prefixed_pattern(forms: list[str]) -> re.Pattern | None:
@@ -83,13 +83,16 @@ def _load_glossary() -> _Glossary:
         data = json.load(fh)
 
     form_to_term: dict[str, str] = {}
+    normalized_to_raw_form: dict[str, str] = {}
     all_forms: list[str] = []
     for entry in data["entries"]:
         for form in entry["forms"]:
-            form_to_term[form] = entry["term"]
-            all_forms.append(form)
+            normalized_form = normalize_arabic(form)
+            form_to_term[normalized_form] = entry["term"]
+            normalized_to_raw_form[normalized_form] = form
+            all_forms.append(normalized_form)
 
-    ambiguous_forms = [item["form"] for item in data.get("ambiguous", [])]
+    ambiguous_forms = [normalize_arabic(item["form"]) for item in data.get("ambiguous", [])]
 
     pattern = _proclitic_prefixed_pattern(all_forms)
     ambiguous_pattern = _proclitic_prefixed_pattern(ambiguous_forms)
@@ -98,7 +101,12 @@ def _load_glossary() -> _Glossary:
         # No usable glossary entries -- match nothing.
         pattern = re.compile(r"(?!x)x")
 
-    return _Glossary(form_to_term=form_to_term, pattern=pattern, ambiguous_pattern=ambiguous_pattern)
+    return _Glossary(
+        form_to_term=form_to_term,
+        pattern=pattern,
+        ambiguous_pattern=ambiguous_pattern,
+        normalized_to_raw_form=normalized_to_raw_form,
+    )
 
 
 def _term_for_match(matched_text: str, form_to_term: dict[str, str]) -> str:

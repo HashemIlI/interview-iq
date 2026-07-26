@@ -110,3 +110,32 @@ def test_spaced_multiword_form_substitutes_correctly() -> None:
     out, audit = apply_glossary(claims)
     assert "Database" in out[0]
     assert any(s["replacement_term"] == "Database" for s in audit["substitutions"])
+
+
+def test_r1_alef_variant_form_abstraction_substitutes() -> None:
+    # D98 Finding G / Required repair R-1. normalize_arabic() rewrites the
+    # alef-hamza variant أ to ا, but only on the input-claim side; the
+    # compiled glossary pattern is built from the raw authored form
+    # "الأبستراكشن" (with أ), so before the repair this can never match a
+    # normalized claim and this test must FAIL. After the repair (glossary
+    # forms normalized identically at load time) it must substitute.
+    claims = ["بستخدم مبدأ الأبستراكشن في التصميم"]
+    out, audit = apply_glossary(claims)
+    assert "Abstraction" in out[0]
+    assert any(s["replacement_term"] == "Abstraction" for s in audit["substitutions"])
+
+
+def test_r1_diacritic_bearing_form_full_stack_substitutes() -> None:
+    # D98 Finding G / Required repair R-1. Diacritic-bearing form chosen:
+    # "فُل ستاك" (term "Full Stack") -- one of the 14 surviving forms in
+    # transliteration_glossary.json carrying a diacritic (damma on ف).
+    # Chosen deliberately because it contains no alef-hamza variant, so it
+    # isolates the diacritic-stripping half of Finding G from the
+    # alef-unification half tested above. Before the repair,
+    # normalize_arabic() strips the damma from the input claim only, so
+    # the raw diacritic-bearing compiled pattern can never match and this
+    # test must FAIL. After the repair it must substitute.
+    claims = ["هو مبرمج فُل ستاك قوي جدا"]
+    out, audit = apply_glossary(claims)
+    assert "Full Stack" in out[0]
+    assert any(s["replacement_term"] == "Full Stack" for s in audit["substitutions"])

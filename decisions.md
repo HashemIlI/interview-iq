@@ -1062,6 +1062,33 @@ than inventing content. The failure was in the task authoring, not the execution
 decision text is supplied to Claude Code as a file in the working tree to be appended verbatim,
 never as prose to be pasted into a prompt.
 
+**R-1 execution note (2026-07-26).** R-1 is complete and demonstrated by execution. The two
+regression tests were written first and failed against the unmodified source (2 failed, 9 passed),
+confirming Finding G empirically before any repair. After the repair all 11 transliteration tests
+pass. Two failures elsewhere in the suite (tests/test_finetune_smoke.py, a transformers
+TrainingArguments API mismatch) were confirmed pre-existing and unrelated by stashing the repair
+and reproducing them identically against the unmodified tree. Measured matchability using the
+actual matcher: before the repair 355 of 1,434 forms and 185 of 757 terms were not correctly
+matched, in exact agreement with Finding G; after the repair, 0 and 0.
+
+**Finding H — silent wrong-term substitution (discovered during R-1, now closed).** A first,
+naive measurement counting "did any substitution fire" returned 298 broken forms, disagreeing
+with the 355 figure. The discrepancy was investigated rather than reconciled by adjustment. Of
+the 355, 298 produced no match at all and 57 produced a substitution for the WRONG term: in
+multi-word entries whose first word carries an alef variant or diacritic (e.g. Activation
+Function -> الأكتيفيشن فانكشن), the full-phrase pattern failed under the asymmetry bug while the
+second word alone, an independent surviving form of a different term, matched instead — rewriting
+the claim to "الاكتيفيشن Function" and leaving the intended term unrecognised. This is a false
+substitution, the failure class the governing asymmetry principle of this entry exists to
+prevent, and it was operating silently. All 57 are resolved by R-1 (0 wrong-term substitutions
+after the repair). Recorded because it was measured, not because it was anticipated: it was not
+predicted by Finding G.
+
+**Collision check on the repair (executed).** Normalising the glossary keys could have caused two
+forms of different terms to collapse onto one key and silently overwrite each other. Verified:
+the 1,434 surviving forms yield 1,434 distinct normalised keys, 0 keys map to more than one term,
+and 0 normalised AMBIGUOUS keys collide with a surviving key. The repair introduces no collision.
+
 **Out of scope for D98:** prompt v3 (D97 b), fixtures SG-14/SG-15 (D97 c), the sanity-gate
 notebook n_cases fix, and the gate rerun. These are registered together as D99.
 
