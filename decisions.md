@@ -906,3 +906,163 @@ Three claims in the first draft of this entry were falsified by the implementati
 4. The lexicon path invoked in item 2 above was itself falsified on execution. The retrieved wordlist (3,488,449 entries) is a token dump, not a curated lexicon: it contains malformed entries (فنسور, باكاستان, الراآن, البواعجا) and it contains the transliterations themselves (تست, كود, بايت, سيرفر, كلاس, ستاك), so R-D cannot distinguish an Arabic word from a transliteration — survival became incidental (ستاك removed, الستاك retained). Separately, R-B was shown to be logically inverted: Code and Byte were removed because الكود and بايت occur in the Arabic prose of the 250 documents as transliterations used by the reference documents themselves, which is evidence that the term IS transliterated, not evidence that it is a native Arabic word. Both filters are therefore rejected and the wordlist file is not committed. Empirical outcome of this pass, recorded rather than discarded: Test, Code, Queue, RAM, Worm and Scan were all removed from the glossary, so this configuration would not have addressed the D96 transliteration failure at all. R-A is retained as verified correct after the raw-form fix, yielding exactly four genuine collisions: GET/git, Phishing/Vishing, Batch/Patch, View/Vue. R-C is retained. D97 component (a) is NOT closed. Successor design under review for the next session: delete R-B entirely; replace R-D with a frequency-ranked Arabic list truncated at a pre-registered N, looked up after proclitic stripping, with N fixed before execution and not retuned after seeing which terms survive.
 
 **Environment finding (recorded, not acted on):** during implementation the editable install of this package was found to point at the superseded path C:\Users\Admin\Desktop\Interview IQ. It was reinstalled from P:\interview-iq and pytest 8.2.0 (already a declared dependency) was installed to run the new tests. This environment change was not part of the reviewed diff and is recorded here for completeness.
+
+---
+
+## D98 — Component (a) closure: glossary adjudicated by human judgment; R-B and R-D deleted; matcher normalisation asymmetry repaired (2026-07-26)
+
+**Supersedes:** the automated-filter design registered in D97 component (a). D97 (a) was
+explicitly left NOT closed; this entry closes it. D97 (b) and (c) are untouched and remain open,
+and are registered together as D99.
+
+**Measurement driving this decision.** Computed on data/glossary/transliteration_glossary.json
+as committed at ccafc91, and on results/glossary/filter_report_v2.txt. All figures below were
+independently recomputed at registration time and matched exactly:
+- inventory 2,101 terms; 901 with >=1 authored form; 757 surviving all filters
+  (1,434 forms, zero form shared by two terms — R-A verified clean)
+- 379 ambiguous form-records across 250 terms:
+  R-A 16 records / 8 terms · R-B 10 / 8 · R-D 352 / 239 · R-C 1 / 1
+- Adjudication set (R-B union R-D) = 242 terms / 362 form-records. Intersection of R-A with the
+  adjudication set = 0. No single (term, form) record fired both R-B and R-D.
+- Of those 242 terms: 106 still have a surviving form (partial removal), 136 were removed entirely.
+- Among surviving forms, 114 have length <= 5 after stripping a leading ال; 1,320 do not.
+
+**Correction of a figure stated earlier in the session.** The adjudication set was first stated
+as 248 terms. That figure double-counted six terms hit by more than one rule (Android, Pull,
+Shell, Virus, Web under both R-B and R-D; Scrum under both R-C and R-D). The correct figure is
+242 terms / 362 form-records and is the one used throughout this entry.
+
+**Finding F — R-D is arbitrary within a single term.** R-D assigned opposite verdicts to the
+bare form and the article-prefixed form of the same word, and the direction is not consistent.
+Observed: Agile (الأجايل survives, أجايل removed), and the same pattern for Attack, Cloud,
+Cipher, Binary, Boolean, Backdoor; Branches is the reverse (برانشز survives, البرانشز removed).
+This has no linguistic explanation and is an artifact of the wordlist's tokenisation. It is a
+third independent falsification of R-D, after (i) the source being a token dump containing the
+transliterations themselves and (ii) R-B being logically inverted.
+
+**Finding G — matcher normalisation asymmetry (measured, not inferred).**
+src/interview_iq/decomposition_llm/transliteration.py was read in full (151 lines) as a blocking
+check before this entry was written. Verdict: **INPUT ONLY**. normalize_arabic() (diacritic
+stripping and alef-variant unification) is defined at lines 47–50 and applied to the incoming
+claim text at line 125, but is never applied to any glossary form: _load_glossary() (lines
+80–101) stores entry["forms"] verbatim, and _proclitic_prefixed_pattern() (lines 69–77) compiles
+those raw strings directly via re.escape(form). Additionally, strip_proclitic() (lines 53–57) is
+defined but never called anywhere in the file — dead code applying to neither side; proclitic
+handling is instead done inside the regex as an optional prefix group.
+
+Consequence, measured on the committed glossary: any form containing a character that
+normalize_arabic rewrites can never match a normalised claim. **355 of 1,434 surviving forms
+(24.8%) are in this state, rendering 185 of 757 terms (24.4%) completely unmatchable** — every
+form of those terms is affected. Breakdown of the affected forms: 343 contain an alef variant
+(أ / إ / آ), 14 contain a diacritic or tatweel. Worked example: the claim text "الأبستراكشن" is
+normalised to "الابستراكشن" at line 125, while the compiled pattern still contains the raw
+"الأبستراكشن", so the substitution never fires. The same applies to Access Control, Accuracy,
+Activation Function, Agent, Agile, Algorithm, Analytics, Arrays, and 177 further terms.
+
+This is a silent failure: the layer executes without error, reports success, and skips a quarter
+of the glossary. It was never observed because the layer has not been run on real decomposition
+output since the glossary was built. It is registered here as a measured fact, not a suspicion,
+and its repair is made a precondition for closing component (a).
+
+**Rationale for abandoning the automated-filter path entirely.** The successor design under
+consideration (a frequency-ranked Arabic list truncated at a pre-registered N) would introduce an
+external dependency requiring provenance verification, plus a threshold N that trades false
+removals against false substitutions with no principled basis for its value, in order to decide a
+set of 242 terms that a human can decide directly. The measured size of the problem does not
+justify the machinery. Machine filters are retained as triage only, never as the authority.
+
+**Governing asymmetry principle.** A missed transliteration costs NLI recall: graceful,
+measurable, recoverable. A false transliteration rewrites the candidate's utterance and is the
+silent-correction failure class (D88 numeric, D94 editorial, D96 ordering) reintroduced by our own
+deterministic component. The two errors are not equal in cost and the design must not treat them
+as such. Therefore: no substitution without positive human approval; ties resolve to AMBIGUOUS.
+
+**Rule set after this entry:**
+- **R-A — RETAINED, permanent, NOT adjudicable.** The 4 collision pairs (GET/git,
+  Phishing/Vishing, Batch/Patch, View/Vue = 16 records / 8 terms) remain AMBIGUOUS by
+  construction: they are undecidable without context, and context-based disambiguation is
+  prohibited under D97's near-homograph ruling (option A).
+- **R-B — DELETED.** Logically inverted (D97 revision note, item 2).
+- **R-C — RETAINED as a hard veto:** any form of raw authored length <= 4 is never substituted,
+  regardless of adjudication. Currently 1 record (Scrum). Retained as a cheap backstop for future
+  glossary additions.
+- **R-D — DELETED.** Non-evidentiary source (D97 revision note, item 1) plus Finding F.
+- **H-1 — NEW.** Human adjudication is the sole authority for the 242-term set.
+
+**H-1 procedure.** results/glossary/adjudication_H1_v1.tsv lists the 242 terms / 362 form-records
+(columns: idx, term, form, rule, other_forms_surviving, verdict) and is reviewed by Ahmed as an
+uploaded file, not via terminal (RTL corruption rule). Each record receives KEEP or AMBIGUOUS
+under this decision rule, fixed before the file was seen:
+
+> "In the context of a spoken answer to a technical interview question within the five tracks
+> (DA/DS/CS/SE/GN): is there a plausible reading of this Arabic form as an ordinary Arabic word?
+> If yes -> AMBIGUOUS. If no -> KEEP. Ties -> AMBIGUOUS."
+
+**Independence rule (restated from D97, still binding).** No glossary entry may be kept, removed,
+or added because it was observed in sanity-gate outputs. Neither the review-file generation nor
+the adjudication may consult results/llm_decomposition_sanity_gate/, any sanity-gate fixture,
+scripts/llm_decomposition_sanity_gate.py fixture definitions, or
+results/o9_decomposition_exercises.md. The generating run asserted compliance explicitly. The
+intersection count between final glossary terms and gate-fixture terms is reported in the closing
+note.
+
+**V-1 survivor verification, pre-registered before any result is seen.** The 757 surviving terms
+are not assumed safe: their Arabic forms were authored by a build-time LLM
+(meta.authored_by = "build-time LLM (Claude Code)") and have never been human-reviewed.
+- **Stratum A:** all 114 surviving forms (85 terms) whose length after stripping a leading ال is
+  <= 5 characters. Fully adjudicated under the H-1 rule. This is the high-risk stratum.
+- **Stratum B:** 50 forms drawn uniformly at random, without replacement, from the remaining
+  1,320 surviving forms, RNG seed 20260726, recorded in results/glossary/verification_V1_v1.tsv.
+- **Escalation threshold, fixed now:** if Stratum B yields >= 1 AMBIGUOUS verdict, all 1,320
+  remaining forms go to full adjudication before (a) may be closed. The threshold is not revisited
+  after the result is seen.
+
+**Disclosure on generation order.** adjudication_H1_v1.tsv and verification_V1_v1.tsv were
+generated before this entry was committed, under the text as approved in session. The sampling
+seed, strata definitions and column schema in the generated files are identical to those
+registered above; no parameter was chosen or altered after any verdict was seen. Recorded here
+rather than left implicit.
+
+**Required repair R-1 (consequence of Finding G).** Before component (a) may be closed:
+1. Glossary forms must be passed through the same normalize_arabic() used on the input, at load
+   time in _load_glossary(), so both sides are normalised identically.
+2. strip_proclitic() must be either wired in deliberately or deleted; dead code in a
+   safety-relevant module is not acceptable.
+3. A regression test must be added asserting that a claim containing "الأبستراكشن" yields the
+   substitution "Abstraction", and that at least one diacritic-bearing form also matches. The
+   test must fail against the current code and pass after the repair — this is to be demonstrated
+   by running it in both states, not asserted.
+4. The count of forms rendered matchable by the repair is reported and compared against the 355
+   figure measured above.
+
+**Deterministic completion step.** After adjudication, every term with at least one KEEP form
+receives both the ال-prefixed and the bare variant of each KEEP form, eliminating the R-D
+tokenisation artifact documented in Finding F.
+
+**Not measured (§5.13, carried forward from D97 unchanged).** The effect of leaving a term in
+Arabic on Precision and Coverage has never been measured. The assumption that it harms scoring is
+an assumption, not a result. A before/after glossary ablation on O9 remains a candidate for a
+later session and is OUT OF SCOPE here.
+
+**Acceptance criteria for closing component (a) — all five required:**
+1. All 362 adjudication records carry a KEEP or AMBIGUOUS verdict.
+2. Stratum A (114 forms) fully adjudicated; Stratum B (50 forms) adjudicated and the escalation
+   threshold either not triggered or satisfied by full adjudication.
+3. Repair R-1 completed, with the before/after test states demonstrated by execution.
+4. Rebuilt glossary committed, with a regenerated report stating: final KEEP terms, final KEEP
+   forms, AMBIGUOUS records by origin (R-A / R-C / H-1 / V-1), and the gate-fixture intersection
+   count.
+5. No claim in this entry left in the form of an expectation rather than a measurement.
+
+**Process failure recorded (§5.13, procedural).** The first Claude Code task issued for this
+entry contained a literal placeholder line instructing that the D98 text be pasted in, in direct
+violation of the standing rule that pre-registered decision text is supplied inline and never as
+a placeholder. Claude Code correctly refused to fabricate the entry and halted at STEP 2 rather
+than inventing content. The failure was in the task authoring, not the execution. Remedy adopted:
+decision text is supplied to Claude Code as a file in the working tree to be appended verbatim,
+never as prose to be pasted into a prompt.
+
+**Out of scope for D98:** prompt v3 (D97 b), fixtures SG-14/SG-15 (D97 c), the sanity-gate
+notebook n_cases fix, and the gate rerun. These are registered together as D99.
+
+**Unchanged:** D89-b remains HARD-GATED on a full gate PASS.
