@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / Unified Decision Log (D1–D81)
-**Version:** v3.0 — 21 July 2026 (English migration + reorganization, see D81)
+**Version:** v3.1 — 27 July 2026 (D99 — prompt v3, fixtures SG-14/SG-15, gate-notebook hardening, glossary-scope correction)
 **Status:** The sole legal project record. This file supersedes and merges the former Arabic `decisions.md` and `DECISIONS_RECONCILIATION_v1.1`. The pre-D81 Arabic original is archived (see D81), not deleted.
 
 **Governing numbering rule:** D1–D25 are fixed as in the master document `InterviewIQ_Pipeline_Docs_v2.0.md`. The pipeline-session decisions were renumbered D26–D34. Every new decision takes the next free number.
@@ -822,6 +822,7 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ## Changelog (condensed)
 
+- **v3.1 (27 Jul 2026):** D99 — prompt v3 (generalized anti-knowledge-injection constraint) applied; fixtures SG-14 (POLARITY) / SG-15 (CAUSAL_DIRECTION) added; sanity-gate notebook hardened (dynamic n_cases + EXPECTED_COMMIT guard); two §5.13 violations recorded (D97's false git_commit-check claim; a withdrawn per-class-patch prompt draft); criterion-3 scope corrected to SG-10..15 with SG-14 registered non-gating. Outcome registered as D100.
 - **v3.0 (21 Jul 2026):** D81 — full English migration + thematic reorganization of the log (D1–D80). All figures carried over verbatim; superseded AraT5 procedural entries (D58–D73) condensed to outcomes; Arabic original archived. Added D78/D79/D80 (sanity gate execution: gemma VOID, llama VOID, cohere PASS).
 - **v2.41–v2.37 (21 Jul 2026):** D74 pivot (AraT5 → runtime LLM API, supervisor-approved); D75 (Codex corpus attempt, closed/superseded); D76 (first end-to-end LLM call, nemotron after gemma 429); D77 (sanity gate design). "Zero LLM at runtime" reframed to "LLM-free correctness core."
 - **v2.36–v2.33 (19–20 Jul 2026):** D70 (paired corpus), D71 (paired FT, checkpoint-543, eval_loss 2.205), D72 (quality REJECTED — O9 LCS F1 0.189), D73 (error-analysis pre-registration); D67/D68 (atomicity adjudication: 24+10), D69 (Decomposition Training Corpus v2 build pre-registration).
@@ -1282,3 +1283,122 @@ before/after ablation on O9 is a candidate for a later session. The 109 active f
 notebook n_cases fix, and the gate rerun. These are registered together as D99.
 
 **Unchanged:** D89-b remains HARD-GATED on a full gate PASS.
+
+---
+
+## D99 — Prompt v3 (generalized constraint), fixtures SG-14/SG-15, gate-notebook hardening; pre-registered rerun of the D77 sanity gate (2026-07-27)
+
+**Status:** PRE-REGISTERED. No gate run has taken place under this entry. The rerun outcome is registered as D100.
+
+### 0 — Relation to D97
+
+D97 pre-registered four components. Status: (a) glossary layer — CLOSED in D98, commit ae9940e. (b) prompt v3 — applied here. (c) fixtures SG-14/SG-15 — applied in commit dfaff6a. (d) notebook `n_cases` fix — applied in commit dfaff6a, with a scope extension recorded in section 5.
+
+Success criteria 1–7 of D97 are unchanged by this entry, with two corrections of fact recorded in sections 4 and 6.
+
+### 1 — §5.13 violations — two, both by Claude, both recorded
+
+**V-1. D97 asserted a check that does not exist.** D97 (c) states verbatim: "The git_commit check is unchanged — it caught VOID run 143137Z." This is false. `kaggle/runners/run-sanity-gate.ipynb` contained no git-commit verification of any kind. Established 2026-07-27 by grepping the notebook for `commit`, `rev-parse`, `HEAD`: the only occurrence of "commit" was inside the prose of an unrelated error message. The claim was written without reading the notebook. VOID run 143137Z was caught by a human reading output, not by any automated check; the protection D97 asserted never existed. Remedy in section 5.
+
+**V-2. The first draft of prompt v3 in this session was a per-class patch.** It added a numbered constraint specific to ordering, plus a worked ordering example. D96 states verbatim that the remedy "must be a generalized anti-knowledge-injection constraint, not another per-class patch", and D97 (b) registers a single principle plus an operational test. The draft was written from a summary rather than from the text of D96 and D97, and contradicted both. It was withdrawn before commit. Recorded because the draft would have produced a gate that could pass without testing anything, and because it is the same failure mode as V-1.
+
+### 2 — Ordering discipline
+
+Approved 2026-07-27: SG-14 and SG-15 were authored and committed before any text of prompt v3 was written, so the fixtures cannot have been shaped to suit what v3 handles. Verifiable in `git log`, not merely asserted: `dfaff6a` contains fixtures and notebook changes only, no prompt change.
+
+### 3 — Component (c) — fixtures SG-14 and SG-15
+
+- **SG-14** (DS, `WRONG_FACT`, error_class POLARITY). The speaker negates a true property — that an overfitting model memorises training noise — and reinforces the inversion by asserting the model learns only the general pattern. The final clause (poor test-set performance) is deliberately correct, so error preservation is distinguishable from wholesale paraphrase failure.
+- **SG-15** (SE, `WRONG_FACT`, error_class CAUSAL_DIRECTION). An explicit causal marker makes deadlock the cause of the hold-and-wait condition, reversing the true direction. The direction is stated rather than implied by sequence; otherwise the case would overlap the D96 ordering class and test nothing new.
+
+Both injected errors are ones the model demonstrably knows to be wrong. `error_class` is recorded inside the existing `injected_error_anchor` field; no schema field was added, and SG-01..SG-13 were not modified (fixtures diff: 18 insertions, 0 deletions).
+
+**Correction to D97 (c), affecting how SG-14 may be read.** D97 (c) designates SG-14 and SG-15 a "fourth, never-tested class". For SG-15 this holds. For SG-14 it does not: the principle registered in D97 (b), and applied verbatim in section 6, enumerates **polarity** among the properties to be carried unchanged. SG-14 is therefore an instructed case, not an unseen one, and a PASS on it is weaker evidence of generalization than D97 (c) assumed. This is an internal inconsistency in D97 between components (b) and (c), discovered while applying it.
+
+The resolution is recorded explicitly: **the principle is applied as registered, including the word "polarity", and the inference from SG-14 is downgraded instead.** The alternative — deleting "polarity" from the principle to protect the test — would weaken the production system in order to flatter an experiment, and is rejected. **SG-15 is therefore the primary unseen-class evidence in this run**; "causal direction" is not among the enumerated properties, and "comparison direction" does not cover it.
+
+### 4 — Criterion 3 — scope correction and one registered exception
+
+**Scope correction.** The `_meta.gate_pass_rule` and `_meta.d95_review_instructions` in `sg_cases.json` still restrict the transliteration verdict to SG-10..SG-13, per D95. D97 criterion 3 extended it to SG-10..SG-15. The fixtures file is corrected in this entry's commit to match; only `_meta` bookkeeping fields are touched, no fixture content. Recorded because the human reviewer works from `_meta`, and it was stale.
+
+**Glossary check performed before the fixtures were written.** All 11 Arabic-script Latin-origin forms in SG-14/SG-15 were looked up in `data/glossary/transliteration_glossary.json` v2 (1,791 forms) using the pipeline's own normalisation and word-boundary matching. Result: 3 IN_GLOSSARY, 1 PARTIAL, 7 ABSENT.
+
+| Fixture | Form | Status |
+|---|---|---|
+| SG-15 | الديدلوك | IN_GLOSSARY → Deadlock |
+| SG-15 | السيستم | IN_GLOSSARY → System |
+| SG-15 | الابليكيشن | IN_GLOSSARY → Application (after alef normalisation) |
+| SG-14 | الداتا سيت | PARTIAL — only the embedded الداتا resolves |
+| SG-14 | الاوفرفيتينج · التريننج · التيست | ABSENT — glossary forms use one fewer ي |
+| SG-14 | النويز | ABSENT — no Noise entry exists |
+| SG-14 | الباترن | ABSENT — only the plural الباترنز exists |
+| SG-15 | التريدز | ABSENT — glossary spells Thread with ث not ت; no plural entry |
+| SG-15 | الريسورسيز | ABSENT — no Resource/Resources entry exists |
+
+**Registered exception.** Criterion 3 is **non-gating for SG-14**: zero of its terms are IN_GLOSSARY, so the criterion has no reference against which to be judged. The result is recorded descriptively and excluded from that case's PASS/FAIL. Criterion 3 remains gating for SG-10..SG-13 and SG-15. This exception is registered because the pre-registered STOP RULE for the glossary check fired and the decision to proceed was taken verbally during execution; recording it is what makes that decision auditable.
+
+**Pre-registered expectation.** The glossary holds `الداتا` and a fused `داتاسيت` with no spaced variant, so the word-boundary matcher is expected to convert the first word and leave the second, emitting `Data سيت`. If this occurs, it is a confirmed multi-word defect in the glossary, registered here so it is not read as a post-hoc finding.
+
+**Pre-registered interaction between the two changes in (b).** SG-12 carries no injected error; its `latin_terms_expected` is `["TDD", "test", "code"]` and its sole gating criterion is criterion 3, driven by a letter-by-letter spelled acronym. Constraint 3 is downgraded to best-effort in the same run. The downgraded text retains the acronym instruction and names `تي دي دي→TDD` explicitly, so the anti-invention clause is not expected to fire on it — but this is reasoning, not measurement, and SG-12 is the case most exposed if it is wrong.
+
+**Open item — glossary coverage gap.** Component (a) was closed in D98 on the H-1/V-1 adjudication, but the table above shows glossary v2 carries roughly one spelling variant per term while real ASR produces several: 7 of the 11 absences are spelling-variant mismatches, not missing concepts. This is not demonstrated — the 11 forms were authored from an assumption about ASR output, not sampled from it. Recorded as an open item to be measured against real transcripts from `data/audio_pilot/`. It does not reopen D98.
+
+### 5 — Component (d) — notebook hardening
+
+1. **As registered in D97:** the hard-coded `n_cases != 9` check now reads the expected count dynamically from `sg_cases.json` on the cloned commit.
+2. **Scope extension, not in D97:** an `EXPECTED_COMMIT` guard, remedying V-1. `scripts/llm_decomposition_sanity_gate.py` already records `meta["git_commit"]` (verified: a full 40-character SHA) but nothing compared it to anything. Cell `sg05verify` now compares it against a constant set by hand before the run and raises on divergence, converting the human check that caught VOID run 143137Z into an automated one.
+
+`EXPECTED_COMMIT` defaults to empty, which disables the guard. This is unavoidable: the SHA does not exist until the commit is made, and the notebook is inside that commit. It is filled in the Kaggle editor before running.
+
+**Run procedure, binding from this entry forward:** `EXPECTED_COMMIT` must be set to the pushed SHA before execution. Any run whose log shows `commit guard is DISABLED` is non-evidentiary as to which commit produced it and must be labelled as such rather than cited.
+
+Verification executed on the final notebook state, not asserted: `ast.parse()` on all 5 code cells — OK; `nbformat.validate()` — VALID.
+
+### 6 — Component (b) — prompt v3
+
+Applied as registered in D97 (b).
+
+- Former constraints 1 and 2 (never correct; never add) are replaced by **constraint 1, THE PRINCIPLE**, in D97's registered wording: the model is a text normalizer, not a domain expert; domain knowledge must never alter propositional content; every proposition uttered — value, order, comparison direction, polarity, scope, completeness — is carried into the claims exactly as uttered, including when the model is certain it is wrong; and a proposition not uttered does not appear at all.
+- **Constraint 2 is THE OPERATIONAL TEST**, verbatim from D97: could a person with zero domain knowledge, holding only this transcript, produce this claim? If not, the claim is contaminated.
+- The documented classes (numeric D88, ordering D96, editorial/P1 D94, invented names/P5) are retained **as illustrations under the principle, not as separate rules**, and are explicitly marked non-exhaustive. No new worked example was added: D96 recorded transliteration failing 0/4 under prompt v2 *despite* inline examples naming the exact failing words, which is direct evidence that adding examples is not the effective lever.
+- **Constraint 3 downgraded to best-effort and non-gating in the prompt**, since the glossary now owns transliteration. An anti-invention rule replaces the mandatory wording: where the correct Latin spelling is not known with confidence, the Arabic form is left as uttered. Rationale is asymmetry of repair — an unconverted Arabic form can be fixed later by extending the glossary; an invented Latin spelling can neither be detected nor fixed. The instruction never to drop an unfamiliar term is retained explicitly.
+- Constraints 3 through 8 keep their numbers, so no cross-reference elsewhere in the prompt is invalidated.
+
+### 7 — Failure attribution — registered before the run
+
+Two things change at once: prompt v3, and glossary v2, which no gate has yet exercised. Attribution is fixed in advance:
+
+| Criterion | Attributed to |
+|---|---|
+| 1 — `error_preserved` | prompt v3 |
+| 2 — `no_unauthorized_addition` | prompt v3 |
+| 3 — `transliteration_correct` (SG-10..13, SG-15) | glossary v2 |
+
+Failure on 1 or 2 means the generalized constraint did not generalize. Failure on 3 alone means the glossary is incomplete and carries no implication about the prompt.
+
+### 8 — Execution plan
+
+15 fixtures (SG-01..SG-15), model `llama-3.3-70b-versatile` on Groq, run through the Kaggle thin-runner against the pushed commit with `EXPECTED_COMMIT` set. Adjudication is fully human on file-uploaded outputs (D77, D97 criterion 7).
+
+Interpretation rule is D97's, unchanged, with the section 3 correction applied: a PASS on SG-10..SG-13 combined with a FAIL on SG-14 or SG-15 is recorded as a fourth patch rather than a fix, and triggers the registered escalation path (model replacement evaluated under the same gate, D77–D87 precedent). Given section 3, SG-15 carries the weight of the generalization claim.
+
+Outcome registered as D100.
+
+### 9 — Open item discovered while executing this entry: NLI fine-tune path broken by dependency drift
+
+`python -m pytest tests` on 2026-07-27 returned 188 passed, 2 failed. Both failures are in
+`tests/test_finetune_smoke.py` and share one cause: `src/interview_iq/nli/finetune.py:299` passes
+`evaluation_strategy` to `TrainingArguments`, a keyword removed in the installed transformers
+(4.57.6). Not caused by this entry's commits, which touch decisions.md, system_prompt.md and
+sg_cases.json — none of which is imported by the NLI path. Not gate-relevant: the sanity gate
+performs no training. It is recorded because the NLI module is declared closed and verified
+(D41, eval_f1_macro=0.861) and the reproducibility gate is declared closed in Phase 6, yet the
+retraining path does not currently execute on this environment. Deliberately NOT fixed here: an
+unregistered change to the training path immediately before a gate run is the failure mode this
+log exists to prevent. Also recorded: the project record's "142/142 tests green" figure is stale;
+the suite now collects 190.
+
+Separately, `python -m pytest` from the repository root has been broken since the D74 pivot —
+`archive/phase8_arat5_superseded/tests/` imports modules deleted by the pivot, so collection is
+interrupted and zero tests run. Verification in this entry used `python -m pytest tests`. A
+pytest-config fix (`--ignore=archive`) is deferred to a separate session.
