@@ -134,6 +134,24 @@
       "injected_error_anchor": "NO-ADDITION TEST (نوع جديد، P5): المتحدث بدأ يسمي الدورة ('اسمها يعني') وتوقف من غير ما يكمل الاسم أبدًا. هذه إعادة إنتاج مباشرة لـ D94 O-b (SE-028 claim 2 اخترع الموديل اسم 'دورة التطوير' من عنده رغم إن المتحدث ما سماهاش). الـ claims لازم تصف الخطوات (كتابة كود، عمل تست، تعديل، تكرار) من غير أي اسم يُنسب للدورة من عند الموديل — حتى لو الاسم بديهي أو شائع في الصناعة (زي 'Development Cycle' أو 'دورة التطوير').",
       "latin_terms_expected": ["code", "test"],
       "latin_terms_note": "كود/تست مكتوبة بحروف عربية — تختبر التحويل كالمعتاد بالتوازي مع اختبار عدم-الإضافة الأساسي لهذه الحالة."
+    },
+    {
+      "case_id": "SG-14",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "answer_text": "يعني الاوفرفيتينج ده بيحصل لما الموديل يتدرب على الداتا سيت بتاعة التريننج ومايحفظش النويز اللي جواها هو بيتعلم الباترن العام بس وعشان كده لما نجربه على التيست سيت بيطلع اداؤه وحش قوي",
+      "injected_error_anchor": "error_class: POLARITY. Polarity inversion on a true property: the speaker negates that the model memorises the training noise, and reinforces the inversion by asserting the model learns only the general pattern. The final clause (poor performance on the test set) is deliberately correct. Preservation requirement: the negation must survive into the claims exactly as uttered. Any claim asserting that the model memorises the noise is a silent correction and fails the gate.",
+      "latin_terms_expected": ["overfitting", "training", "noise", "pattern", "test set", "data set"],
+      "latin_terms_note": "D99 STEP 1 review against transliteration_glossary.json v2 (normalize_arabic + substring lookup, as used by transliteration.py): only \"Data\" resolves, as a fragment of \"الداتا سيت\" (the fused \"Dataset\" glossary form has no space variant, so the two-word phrase itself is not a full hit). الاوفرفيتينج, التريننج, and التيست سيت are absent from the glossary as spelled here — the glossary's forms (الأوفرفيتنج, الترينينج, التست) each use one fewer ي. النويز and singular الباترن (only the plural الباترنز exists) have no glossary entry at all. This is a known glossary gap, not a defect in this fixture; RAW_TEXT written verbatim per sg14_sg15_source.md, byte-for-byte, not normalised."
+    },
+    {
+      "case_id": "SG-15",
+      "track": "SE",
+      "injected_error_type": "WRONG_FACT",
+      "answer_text": "الديدلوك لما بيحصل في السيستم هو اللي بيسبب ان التريدز تمسك الريسورسيز وتستنى بعضها وكل واحد فيهم مستني التاني يسيب اللي معاه وعشان كده الابليكيشن بيقف مش بيرد",
+      "injected_error_anchor": "error_class: CAUSAL_DIRECTION. Causal direction reversal with an explicit causal marker: the speaker makes deadlock the cause of the hold-and-wait condition, whereas hold-and-wait plus circular wait produce deadlock. The final clause (the application stops responding) is deliberately correct. Preservation requirement: the stated causal direction must survive into the claims exactly as uttered. Any claim that reverses it to the correct direction is a silent correction and fails the gate. Adding the Coffman conditions, or any domain knowledge not uttered, fails criterion 2.",
+      "latin_terms_expected": ["deadlock", "system", "thread", "resource", "application"],
+      "latin_terms_note": "D99 STEP 1 review against transliteration_glossary.json v2: الديدلوك (Deadlock), السيستم (System), and الابليكيشن (Application, after أ→ا alef normalisation) are clean IN_GLOSSARY matches. التريدز (uses ت where the glossary's Thread entry uses ث, and is plural with no plural entry) and الريسورسيز (no Resource/Resources entry exists at all) are absent. RAW_TEXT written verbatim per sg14_sg15_source.md, byte-for-byte, not normalised."
     }
   ]
 }
