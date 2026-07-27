@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / Unified Decision Log (D1–D81)
-**Version:** v3.1 — 27 July 2026 (D99 — prompt v3, fixtures SG-14/SG-15, gate-notebook hardening, glossary-scope correction)
+**Version:** v3.2 — 27 July 2026 (D100 — D77 sanity gate rerun under prompt v3: FAIL)
 **Status:** The sole legal project record. This file supersedes and merges the former Arabic `decisions.md` and `DECISIONS_RECONCILIATION_v1.1`. The pre-D81 Arabic original is archived (see D81), not deleted.
 
 **Governing numbering rule:** D1–D25 are fixed as in the master document `InterviewIQ_Pipeline_Docs_v2.0.md`. The pipeline-session decisions were renumbered D26–D34. Every new decision takes the next free number.
@@ -822,6 +822,7 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ## Changelog (condensed)
 
+- **v3.2 (27 Jul 2026):** D100 — D77 sanity gate rerun under prompt v3: FAIL (4/15 cases failed error_preserved: SG-01, SG-09, SG-10, SG-15). Regression on the D88 numeric class (SG-09) previously held by a targeted patch. Structural defect found: the gate never calls apply_glossary, so criterion 3 (transliteration_correct) is VOID for SG-10/12/15, not measured. New gate-design gap recorded (unforced distortion of an uninjected proposition, SG-14). Escalation path open but not exercised; remedy sequence deferred to gate-wiring fix + controlled comparison (D101).
 - **v3.1 (27 Jul 2026):** D99 — prompt v3 (generalized anti-knowledge-injection constraint) applied; fixtures SG-14 (POLARITY) / SG-15 (CAUSAL_DIRECTION) added; sanity-gate notebook hardened (dynamic n_cases + EXPECTED_COMMIT guard); two §5.13 violations recorded (D97's false git_commit-check claim; a withdrawn per-class-patch prompt draft); criterion-3 scope corrected to SG-10..15 with SG-14 registered non-gating. Outcome registered as D100.
 - **v3.0 (21 Jul 2026):** D81 — full English migration + thematic reorganization of the log (D1–D80). All figures carried over verbatim; superseded AraT5 procedural entries (D58–D73) condensed to outcomes; Arabic original archived. Added D78/D79/D80 (sanity gate execution: gemma VOID, llama VOID, cohere PASS).
 - **v2.41–v2.37 (21 Jul 2026):** D74 pivot (AraT5 → runtime LLM API, supervisor-approved); D75 (Codex corpus attempt, closed/superseded); D76 (first end-to-end LLM call, nemotron after gemma 429); D77 (sanity gate design). "Zero LLM at runtime" reframed to "LLM-free correctness core."
@@ -1402,3 +1403,71 @@ Separately, `python -m pytest` from the repository root has been broken since th
 `archive/phase8_arat5_superseded/tests/` imports modules deleted by the pivot, so collection is
 interrupted and zero tests run. Verification in this entry used `python -m pytest tests`. A
 pytest-config fix (`--ignore=archive`) is deferred to a separate session.
+
+---
+
+## D100 — D77 sanity gate rerun under prompt v3: FAIL, with regression on a previously closed class and a structural defect in the gate itself (2026-07-27)
+
+**Status:** OUTCOME. Registered against the pre-registration in D99. No remedy is applied under this entry.
+
+### 1 — Run validity
+
+Run `20260727T125204Z`, model `llama-3.3-70b-versatile`, `git_commit = 02a016a649399f4ceb3daaf916ff99404d4fe391`, matching the pushed commit. `n_cases = 15`, 15 executed successfully, 0 execution errors. The `EXPECTED_COMMIT` guard introduced in D99 §5 was armed and did not fire. The run is evidentiary as to which commit produced it.
+
+Sampling: `client.py:129` sets `"temperature": 0`. Decoding is greedy, so differences between this run and D92 are attributable to the changed prompt rather than to sampling noise. This strengthens the comparison but does not make it a controlled one — D92 and this run differ in prompt version and were not run as paired arms. The controlled comparison is pre-registered separately as D101.
+
+### 2 — Verdict: FAIL
+
+Four cases fail `error_preserved`. Under the D77 zero-tolerance rule a single NO fails the whole gate.
+
+| Case | error_preserved | Note |
+|---|---|---|
+| SG-01 | **NO** | Entity substituted: input `الهيب` (Heap) emitted as `الهاش` (Hash) in all five claims. The injected error concerned Heap and no longer appears. |
+| SG-02..SG-08 | YES | Including SG-05 (swapped Normalization/Standardization) and SG-07 (three-part rebase error), both preserved intact. |
+| SG-09 | **NO** | `alpha بقيمة 0.5` and `أقل من كده` emitted as `0.05`. A silent numeric correction. |
+| SG-10 | **NO** | Input states code-before-test; claims 1–2 emit test-before-code. The stated order was reversed to the correct one. |
+| SG-11 | YES | 16-vs-8 preserved verbatim, no added commentary. P1 holds. |
+| SG-12, SG-13 | N/A | Non-preservation tests per `_meta`. SG-13 invented no name; P5 holds. |
+| SG-14 | YES (see §4) | The injected polarity survived. A different proposition did not. |
+| SG-15 | **NO** | `هو اللي بيسبب` (deadlock causes hold-and-wait) emitted as `يحدث عندما` (deadlock happens when hold-and-wait). The stated causal direction was reversed to the correct one. |
+
+`no_unauthorized_addition` = YES on all cases.
+
+### 3 — The decisive finding: the generalized constraint lost a class that a per-class patch held
+
+SG-09 is the D88 numeric class. It was closed by the targeted patch in D90 and passed 9/9 in D92 under prompt v2. Under prompt v3 it fails. The difference between the two prompts on this point is that D90's explicit numeric rule was demoted, per D97 (b), to one bullet in a non-exhaustive list of illustrations under the principle.
+
+SG-10 (ordering, D96) and SG-15 (causal direction, previously untested) also fail. So the generalized principle neither held the classes the patches held, nor covered the classes they did not.
+
+This satisfies the escalation condition registered verbatim in D96: *"if a generalized constraint also fails the gate, model replacement re-enters via this same gate (D77–D87 precedent)."* The escalation path is open. It is **not** exercised in this entry, because §5 below shows the gate was not measuring what it was specified to measure.
+
+Recorded against the D99 §3 reading: SG-15 was designated the primary unseen-class evidence, and it failed. SG-14's partial pass carries little weight, as registered.
+
+### 4 — A failure mode neither gate column captures
+
+SG-14's injected polarity inversion was preserved correctly. However the clause that was deliberately left correct — `بيطلع اداؤه وحش قوي` (its performance comes out very bad) — was emitted as `يظهر أداءه قويًا` (its performance appears strong). The model inverted a proposition it was not asked about, in the direction of neither truth nor the input.
+
+This is neither a failure to preserve an injected error nor an unauthorized addition, so both gate columns record YES and the case passes. The gate cannot currently detect unforced distortion of a proposition that carries no injected error. Registered as a gate design gap, not as a case verdict.
+
+Separately, SG-15 claim 3 contains the CJK character `释` embedded in Arabic text (`أن ي释ع الريسورس`). Character corruption of this kind was the stated basis for rejecting `llama-3.1-8b-instant` in D87 (Cyrillic characters in SG-07). It is recorded here as a first occurrence in the approved model, not yet as a pattern.
+
+### 5 — Structural defect: the glossary was never in the gate path
+
+`scripts/llm_decomposition_sanity_gate.py` calls `decompose_via_llm` and records its output directly. It does not call `apply_glossary`. Evidence: `raw_results.json` records exactly one `claims` field per case; `report.md` contains no reference to the glossary or to transliteration; and `الديدلوك`, `السيستم`, `الابليكيشن` — all three verified IN_GLOSSARY during D99 §4 — appear unconverted in the SG-15 output.
+
+Consequences, recorded rather than worked around:
+
+- **D97 criterion 3 was not measured.** It specifies a verdict on POST-glossary output. No post-glossary output exists in this run. All transliteration verdicts for SG-10, SG-12 and SG-15 are therefore **VOID, not FAIL**.
+- **D97 criterion 6 is unmet.** It requires the gate to record both raw and post-glossary claims so that failures are attributable to a component.
+- **Component (a), closed in D98, has never been exercised by a gate.** The D99 §4 registered expectation about `Data سيت` was not tested.
+- **The D99 §7 attribution rule is inapplicable as written**, since its third row has no measurement behind it.
+
+The raw-claims observation stands independently of this defect and is recorded as an observation, not a criterion verdict: under v3's downgraded constraint 3 the model **translated** technical terms into Arabic words rather than leaving them transliterated — `النويز`→`الضوضاء`, `الباترن`→`النمط`, `الداتا سيت`→`مجموعة بيانات`, and in SG-03 `patterns`→`الأنماط` from Latin script in the input. Translation destroys the term and, unlike an unconverted transliteration, cannot be repaired by extending the glossary. Whether this survives the glossary layer is unknown and unmeasurable until §5's defect is fixed.
+
+### 6 — What is deliberately not decided here
+
+No prompt v4. No re-instatement of the numeric rule. No model replacement. Each would be a change decided on a single uncontrolled run against a gate that was not measuring one of its three criteria. The remedy sequence is: fix the gate wiring first, then run the controlled comparison pre-registered as D101, then decide.
+
+### 7 — Correction to D99
+
+D99 §1 recorded two §5.13 violations. A third belongs with them: during adjudication of this run Claude asserted a regression relative to D92 before establishing that decoding was greedy. The claim later held once `temperature: 0` was verified at `client.py:129`, but it was made ahead of its evidence.
