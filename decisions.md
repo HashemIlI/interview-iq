@@ -1089,6 +1089,101 @@ forms of different terms to collapse onto one key and silently overwrite each ot
 the 1,434 surviving forms yield 1,434 distinct normalised keys, 0 keys map to more than one term,
 and 0 normalised AMBIGUOUS keys collide with a surviving key. The repair introduces no collision.
 
+**H-1 adjudication result (2026-07-27).** All 362 form-records were adjudicated by Ahmed under
+the decision rule fixed above. Outcome: 358 KEEP, 4 AMBIGUOUS, 0 blank, 0 invalid values. The
+four AMBIGUOUS records are: idx 2 Address / أدرس, idx 174 List / ليست, idx 203 Node / نود,
+idx 269 Scan / السكان. File integrity was verified programmatically against the source glossary
+before acceptance: the term, form, rule and other_forms_surviving columns matched the generated
+instrument in 362 of 362 rows, i.e. only the verdict column was modified.
+
+**Adjudication stance, recorded as a deliberate design position rather than left implicit.** The
+exception rate is 4 of 362 (1.1%). This is not inattention. The adjudicator's stated reasoning is
+that the domain is closed and the context — a spoken answer to a technical interview question in
+one of five tracks — resolves most apparent ambiguity: a candidate saying ورم in a security
+question means Worm, not the medical sense. The rule as registered explicitly conditions judgment
+on that context, so the stance is an application of the rule, not a departure from it. It is
+recorded here so that it can be defended directly if questioned, rather than appearing to be an
+oversight. Residual risk accepted knowingly: forms such as ورم, بيت and بت remain KEEP and will be
+substituted; if a candidate uses one in its ordinary Arabic sense inside a technical answer, that
+claim will be corrupted. This is the cost side of the stance and is not hidden.
+
+**Sub-case recorded: Scan.** السكان (definite) was judged AMBIGUOUS while سكان (bare) was judged
+KEEP. This was queried as a possible oversight and confirmed by the adjudicator as deliberate: the
+definite form is the ordinary Arabic usage (عدد السكان), while the bare form was judged unlikely
+to appear alone. The residual risk — bare سكان in an idafa construction such as سكان المحافظة,
+plausible in a DA-track answer — is accepted knowingly and recorded.
+
+**V-1 verification result (2026-07-27).** All 164 records were adjudicated: Stratum A 114,
+Stratum B 50. Outcome: 163 KEEP, 1 AMBIGUOUS, 0 blank, 0 invalid. The single AMBIGUOUS record is
+idx 52, Stratum A, List / الليست.
+
+**Escalation threshold: NOT triggered.** Stratum B returned 0 AMBIGUOUS verdicts. Under the
+threshold fixed before any result was seen, the remaining 1,270 surviving forms therefore do not
+require full adjudication. This is a measured outcome of a pre-registered test, not an assumption
+that the remainder is safe. Instrument integrity verified before acceptance: Stratum A matched the
+deterministic expected set (all surviving forms of ال-stripped length <= 5) exactly; every Stratum
+B row was drawn from the surviving set, every one had ال-stripped length > 5, there were no
+duplicates within B and no overlap between A and B; the bare_len column was consistent with the
+form column in all 164 rows.
+
+**Consequence: the term List is fully disabled.** Both of its forms are now AMBIGUOUS — ليست via
+H-1 and الليست via V-1. A candidate using either form to mean the data structure will not receive
+the substitution. Accepted: ليست is a core Arabic negation particle, and the model's output
+register is simplified MSA, so a false substitution here would invert the polarity of a claim.
+
+**AMENDMENT — the deterministic completion step registered above is DELETED, not merely
+constrained.** The step was written to undo Finding F, R-D's arbitrary within-term asymmetry. That
+purpose has lapsed: every form R-D removed passed through explicit human adjudication in H-1, so
+the asymmetry has already been repaired by hand and more reliably than an automatic rule could.
+The step was measured before being written into the rebuild rather than after: it would generate
+34 form-records, of which 1 already exists in the authored inventory and 33 have never been
+authored by anyone and never reviewed under H-1 or V-1; 11 of those 33 fall in the short,
+high-risk class. Among them the step would invent البيت for the term bit — البيت being among the
+most common words in Arabic. Running the step would therefore reopen, in the final build stage,
+precisely the unreviewed-form exposure that V-1 exists to measure, in exchange for 34 records
+belonging to terms that already have a working KEEP form. The benefit is null and the risk is
+real, so the step is removed.
+
+**Correction, recorded rather than silently applied.** An earlier remedy proposed in session —
+"run the completion step except where the generated variant was explicitly judged AMBIGUOUS" —
+was insufficient and is rejected. It would have caught the three conflicts with existing verdicts
+(الأدرس→أدرس, النود→نود, سكان→السكان) but would have admitted البيت, because بيت was judged KEEP
+and البيت was never judged at all. The inadequacy was exposed by measuring the step's output
+before adopting the fix. Recorded because the first proposal was wrong, not because the second
+was right.
+
+**Correction to a claim made in session (§5.13).** It was stated during review that the
+adjudicator had distinguished ليست from الليست within H-1. That was false: الليست survived the
+filters and was therefore never in the H-1 instrument; it was reviewed in V-1. The genuine
+instance of that discrimination is أدرس (AMBIGUOUS) against الأدرس (KEEP), both of which were in
+H-1. The false statement is recorded rather than deleted.
+
+**Tooling incident and rule adopted.** The first H-1 pass was completed in Microsoft Excel. On
+save, Excel wrote the file in a non-UTF-8 encoding and replaced every Arabic character with a
+literal '?', destroying the form column irrecoverably in that copy. No data was lost: the
+instrument was restored byte-exact from git (commit cc039e9) and the pass was redone in Google
+Sheets, which round-trips UTF-8 correctly. Rule adopted: Microsoft Excel is never to be used to
+edit UTF-8 TSV files in this project. Separately, that first pass returned KEEP on all 362 rows;
+it was rejected and redone rather than accepted, and the rejection is recorded.
+
+**Machine triage disclosed.** Before the human pass, a machine-produced shortlist of roughly 75 of
+the 362 rows was supplied, flagging forms worth closer attention. It contained no verdicts. The
+adjudicator reviewed all 362 rows, was free to override the shortlist in either direction, and did
+so — three of the four AMBIGUOUS verdicts fall on shortlisted rows and the shortlist's other
+suggestions were declined. Recorded so that the human judgment is not later mistaken for
+unassisted judgment.
+
+**One post-hoc edit recorded.** After the adjudicator reviewed a query on idx 203 (Node / نود) and
+authorised the change in session, that single cell was altered from KEEP to AMBIGUOUS
+programmatically rather than by re-export from Sheets. No other cell was touched. Recorded because
+it is an edit made outside the instrument's normal path.
+
+**Projected final glossary, to be confirmed by the rebuild.** KEEP: 1,791 form-records (1,433
+surviving forms after removing الليست, plus 358 restored by H-1). AMBIGUOUS: 22 form-records
+(R-A 16, R-C 1, H-1 4, V-1 1). Net change against the committed glossary: +357 forms, including
+Test, Code, Queue, RAM and Worm — the terms whose absence motivated this entry. No form in the
+final glossary lacks both an authored origin and a human verdict or a passed verification stratum.
+
 **Out of scope for D98:** prompt v3 (D97 b), fixtures SG-14/SG-15 (D97 c), the sanity-gate
 notebook n_cases fix, and the gate rerun. These are registered together as D99.
 

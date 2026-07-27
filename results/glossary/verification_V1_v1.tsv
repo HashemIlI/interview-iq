@@ -1,165 +1,165 @@
-﻿idx	stratum	term	form	bare_len	verdict
-1	A	Agent	إيجنت	5	
-2	A	Agent	الإيجنت	5	
-3	A	Agile	الأجايل	5	
-4	A	Arrays	أرايز	5	
-5	A	Arrays	الأرايز	5	
-6	A	Attack	الأتاك	4	
-7	A	branch	البرانش	5	
-8	A	Builder	البيلدر	5	
-9	A	Builder	بيلدر	5	
-10	A	catch	الكاتش	4	
-11	A	Cipher	السايفر	5	
-12	A	Cloud	الكلاود	5	
-13	A	Cluster	الكلستر	5	
-14	A	Codes	الكودز	4	
-15	A	Corpus	الكوربس	5	
-16	A	DELETE	الديليت	5	
-17	A	Docker	الدوكر	4	
-18	A	Engine	الإنجن	4	
-19	A	Error	الإيرور	5	
-20	A	Event	إيفنت	5	
-21	A	Event	الإيفنت	5	
-22	A	Facade	الفاساد	5	
-23	A	Feature	الفيتشر	5	
-24	A	FIFO	الفايفو	5	
-25	A	FIFO	الفيفو	4	
-26	A	FIFO	فايفو	5	
-27	A	Flags	الفلاجز	5	
-28	A	Flags	فلاجز	5	
-29	A	Flask	الفلاسك	5	
-30	A	Folds	الفولدز	5	
-31	A	Funnel	الفانل	4	
-32	A	Getters	الجيترز	5	
-33	A	Getters	جيترز	5	
-34	A	Hadoop	الهادوب	5	
-35	A	Hadoop	هادوب	5	
-36	A	Headers	هيدرز	5	
-37	A	Input	الإنبوت	5	
-38	A	Integer	الإنتجر	5	
-39	A	Kafka	الكافكا	5	
-40	A	Kaggle	الكاجل	4	
-41	A	Kernel	الكيرنل	5	
-42	A	Label	الليبل	4	
-43	A	Labels	الليبلز	5	
-44	A	Labels	ليبلز	5	
-45	A	Lambda	اللامدا	5	
-46	A	Lasso	اللاسو	4	
-47	A	Layer	الليير	4	
-48	A	License	الليسنس	5	
-49	A	LIFO	اللايفو	5	
-50	A	LIFO	الليفو	4	
-51	A	LIFO	لايفو	5	
-52	A	List	الليست	4	
-53	A	Lodash	اللوداش	5	
-54	A	Lodash	لوداش	5	
-55	A	Logger	اللوجر	4	
-56	A	Message	الميسدج	5	
-57	A	Message	ميسدج	5	
-58	A	Method	الميثود	5	
-59	A	Method	ميثود	5	
-60	A	Model	المودل	4	
-61	A	Neighbors	النيبرز	5	
-62	A	Neighbors	نيبرز	5	
-63	A	Network	النتورك	5	
-64	A	Nodes	النودز	4	
-65	A	NumPy	النمباي	5	
-66	A	NumPy	نمباي	5	
-67	A	OLAP	الأولاب	5	
-68	A	Pandas	الباندز	5	
-69	A	Pandas	باندز	5	
-70	A	Pivot	البيفوت	5	
-71	A	Ports	البورتس	5	
-72	A	Random	الراندم	5	
-73	A	React	الرياكت	5	
-74	A	React	رياكت	5	
-75	A	Rebase	الريبيز	5	
-76	A	Rebase	ريبيز	5	
-77	A	Recall	الريكول	5	
-78	A	Recall	ريكول	5	
-79	A	Redis	الريدس	4	
-80	A	ReLU	الريلو	4	
-81	A	Ridge	الريدج	4	
-82	A	Rivest	ريفست	5	
-83	A	Routers	الروترز	5	
-84	A	Routers	روترز	5	
-85	A	Scatter	السكاتر	5	
-86	A	Scatter	سكاتر	5	
-87	A	Schema	السكيما	5	
-88	A	Session	السيشن	4	
-89	A	Setters	السيترز	5	
-90	A	Setters	سيترز	5	
-91	A	Spark	سبارك	5	
-92	A	Sprint	السبرنت	5	
-93	A	Stack	الستاك	4	
-94	A	Status	الستاتس	5	
-95	A	Stubs	الستبز	4	
-96	A	Tableau	التابلو	5	
-97	A	Tables	التيبلز	5	
-98	A	Tables	تيبلز	5	
-99	A	Tags	التاجز	4	
-100	A	Talend	تالند	5	
-101	A	Tanh	التانش	4	
-102	A	Tokens	التوكنز	5	
-103	A	Tokens	توكنز	5	
-104	A	Trees	التريز	4	
-105	A	Triage	الترياج	5	
-106	A	Triage	ترياج	5	
-107	A	UPDATE	الأبديت	5	
-108	A	Value	الفاليو	5	
-109	A	Wazuh	الوازوه	5	
-110	A	Wazuh	وازوه	5	
-111	A	Weights	الويتس	4	
-112	A	YAML	اليامل	4	
-113	A	Zsh	الزد شل	5	
-114	A	Zsh	زد شل	5	
-115	B	Asymmetric Encryption	الأسيمتريك إنكريبشن	17	
-116	B	Bar Chart	بار شارت	8	
-117	B	Binary Classification	البايناري كلاسيفيكيشن	19	
-118	B	Bitcoin	بت كوين	7	
-119	B	Boosting	البوستنج	6	
-120	B	Bootstrap	البوتستراب	8	
-121	B	Botnets	البوت نتس	7	
-122	B	Brute Force	البروت فورس	9	
-123	B	Bytecode	البايت كود	8	
-124	B	CAPTCHA	الكابتشا	6	
-125	B	Certificate	سيرتيفيكيت	10	
-126	B	Clock Speed	الكلوك سبيد	9	
-127	B	Commit Messages	الكوميت ميساجيز	13	
-128	B	Commits	الكوميتس	6	
-129	B	CROSS JOIN	كروس جوين	9	
-130	B	Data Augmentation	الداتا أوجمنتيشن	14	
-131	B	Deadlock	الديد لوك	7	
-132	B	Dependency Inversion	الديبندنسي إنفرجن	15	
-133	B	Deployment	ديبلويمنت	9	
-134	B	Device Drivers	ديفايس درايفرز	14	
-135	B	Diagnostic Analytics	الدايجنوستيك أناليتكس	19	
-136	B	Docker Hub	الدوكر هب	7	
-137	B	Dockerfile	دوكرفايل	8	
-138	B	Environment	إنفايرونمنت	11	
-139	B	Feature Flags	فيتشر فلاجز	11	
-140	B	Firewall	الفاير وول	8	
-141	B	git log	الجيت لوج	7	
-142	B	Hidden Layers	هيدن ليرز	9	
-143	B	Hybrid Encryption	هايبرد إنكريبشن	15	
-144	B	Hyperplane	هايبر بلين	10	
-145	B	Incident Response	الإنسيدنت ريسبونس	15	
-146	B	Information Gain	إنفورميشن جين	13	
-147	B	Lazy Learning	الليزي ليرنينج	12	
-148	B	Machine Translation	ماشين ترانسليشن	15	
-149	B	Messages	الميساجيز	7	
-150	B	Microservices	الميكروسيرفيسز	12	
-151	B	Neural Network	النيورال نتورك	12	
-152	B	OUTER JOIN	الأوتر جوين	9	
-153	B	Output Encoding	الآوتبوت إنكودنج	14	
-154	B	PostgreSQL	البوستجرس	7	
-155	B	Prepared Statements	بريبيرد ستيتمنتس	16	
-156	B	Repository	ريبوزيتوري	10	
-157	B	Scripts	سكريبتس	7	
-158	B	Social Engineering	السوشيال إنجينيرينج	17	
-159	B	SQL Server	إسكيوإل سيرفر	13	
-160	B	Table Scan	تيبل سكان	9	
-161	B	Test Data	تست داتا	8	
-162	B	Validation Set	الفاليديشن سيت	12	
-163	B	Version Control	فيرجن كونترول	13	
-164	B	Zero-Day	الزيرو داي	8	
+idx	stratum	term	form	bare_len	verdict
+1	A	Agent	إيجنت	5	KEEP
+2	A	Agent	الإيجنت	5	KEEP
+3	A	Agile	الأجايل	5	KEEP
+4	A	Arrays	أرايز	5	KEEP
+5	A	Arrays	الأرايز	5	KEEP
+6	A	Attack	الأتاك	4	KEEP
+7	A	branch	البرانش	5	KEEP
+8	A	Builder	البيلدر	5	KEEP
+9	A	Builder	بيلدر	5	KEEP
+10	A	catch	الكاتش	4	KEEP
+11	A	Cipher	السايفر	5	KEEP
+12	A	Cloud	الكلاود	5	KEEP
+13	A	Cluster	الكلستر	5	KEEP
+14	A	Codes	الكودز	4	KEEP
+15	A	Corpus	الكوربس	5	KEEP
+16	A	DELETE	الديليت	5	KEEP
+17	A	Docker	الدوكر	4	KEEP
+18	A	Engine	الإنجن	4	KEEP
+19	A	Error	الإيرور	5	KEEP
+20	A	Event	إيفنت	5	KEEP
+21	A	Event	الإيفنت	5	KEEP
+22	A	Facade	الفاساد	5	KEEP
+23	A	Feature	الفيتشر	5	KEEP
+24	A	FIFO	الفايفو	5	KEEP
+25	A	FIFO	الفيفو	4	KEEP
+26	A	FIFO	فايفو	5	KEEP
+27	A	Flags	الفلاجز	5	KEEP
+28	A	Flags	فلاجز	5	KEEP
+29	A	Flask	الفلاسك	5	KEEP
+30	A	Folds	الفولدز	5	KEEP
+31	A	Funnel	الفانل	4	KEEP
+32	A	Getters	الجيترز	5	KEEP
+33	A	Getters	جيترز	5	KEEP
+34	A	Hadoop	الهادوب	5	KEEP
+35	A	Hadoop	هادوب	5	KEEP
+36	A	Headers	هيدرز	5	KEEP
+37	A	Input	الإنبوت	5	KEEP
+38	A	Integer	الإنتجر	5	KEEP
+39	A	Kafka	الكافكا	5	KEEP
+40	A	Kaggle	الكاجل	4	KEEP
+41	A	Kernel	الكيرنل	5	KEEP
+42	A	Label	الليبل	4	KEEP
+43	A	Labels	الليبلز	5	KEEP
+44	A	Labels	ليبلز	5	KEEP
+45	A	Lambda	اللامدا	5	KEEP
+46	A	Lasso	اللاسو	4	KEEP
+47	A	Layer	الليير	4	KEEP
+48	A	License	الليسنس	5	KEEP
+49	A	LIFO	اللايفو	5	KEEP
+50	A	LIFO	الليفو	4	KEEP
+51	A	LIFO	لايفو	5	KEEP
+52	A	List	الليست	4	AMBIGUOUS
+53	A	Lodash	اللوداش	5	KEEP
+54	A	Lodash	لوداش	5	KEEP
+55	A	Logger	اللوجر	4	KEEP
+56	A	Message	الميسدج	5	KEEP
+57	A	Message	ميسدج	5	KEEP
+58	A	Method	الميثود	5	KEEP
+59	A	Method	ميثود	5	KEEP
+60	A	Model	المودل	4	KEEP
+61	A	Neighbors	النيبرز	5	KEEP
+62	A	Neighbors	نيبرز	5	KEEP
+63	A	Network	النتورك	5	KEEP
+64	A	Nodes	النودز	4	KEEP
+65	A	NumPy	النمباي	5	KEEP
+66	A	NumPy	نمباي	5	KEEP
+67	A	OLAP	الأولاب	5	KEEP
+68	A	Pandas	الباندز	5	KEEP
+69	A	Pandas	باندز	5	KEEP
+70	A	Pivot	البيفوت	5	KEEP
+71	A	Ports	البورتس	5	KEEP
+72	A	Random	الراندم	5	KEEP
+73	A	React	الرياكت	5	KEEP
+74	A	React	رياكت	5	KEEP
+75	A	Rebase	الريبيز	5	KEEP
+76	A	Rebase	ريبيز	5	KEEP
+77	A	Recall	الريكول	5	KEEP
+78	A	Recall	ريكول	5	KEEP
+79	A	Redis	الريدس	4	KEEP
+80	A	ReLU	الريلو	4	KEEP
+81	A	Ridge	الريدج	4	KEEP
+82	A	Rivest	ريفست	5	KEEP
+83	A	Routers	الروترز	5	KEEP
+84	A	Routers	روترز	5	KEEP
+85	A	Scatter	السكاتر	5	KEEP
+86	A	Scatter	سكاتر	5	KEEP
+87	A	Schema	السكيما	5	KEEP
+88	A	Session	السيشن	4	KEEP
+89	A	Setters	السيترز	5	KEEP
+90	A	Setters	سيترز	5	KEEP
+91	A	Spark	سبارك	5	KEEP
+92	A	Sprint	السبرنت	5	KEEP
+93	A	Stack	الستاك	4	KEEP
+94	A	Status	الستاتس	5	KEEP
+95	A	Stubs	الستبز	4	KEEP
+96	A	Tableau	التابلو	5	KEEP
+97	A	Tables	التيبلز	5	KEEP
+98	A	Tables	تيبلز	5	KEEP
+99	A	Tags	التاجز	4	KEEP
+100	A	Talend	تالند	5	KEEP
+101	A	Tanh	التانش	4	KEEP
+102	A	Tokens	التوكنز	5	KEEP
+103	A	Tokens	توكنز	5	KEEP
+104	A	Trees	التريز	4	KEEP
+105	A	Triage	الترياج	5	KEEP
+106	A	Triage	ترياج	5	KEEP
+107	A	UPDATE	الأبديت	5	KEEP
+108	A	Value	الفاليو	5	KEEP
+109	A	Wazuh	الوازوه	5	KEEP
+110	A	Wazuh	وازوه	5	KEEP
+111	A	Weights	الويتس	4	KEEP
+112	A	YAML	اليامل	4	KEEP
+113	A	Zsh	الزد شل	5	KEEP
+114	A	Zsh	زد شل	5	KEEP
+115	B	Asymmetric Encryption	الأسيمتريك إنكريبشن	17	KEEP
+116	B	Bar Chart	بار شارت	8	KEEP
+117	B	Binary Classification	البايناري كلاسيفيكيشن	19	KEEP
+118	B	Bitcoin	بت كوين	7	KEEP
+119	B	Boosting	البوستنج	6	KEEP
+120	B	Bootstrap	البوتستراب	8	KEEP
+121	B	Botnets	البوت نتس	7	KEEP
+122	B	Brute Force	البروت فورس	9	KEEP
+123	B	Bytecode	البايت كود	8	KEEP
+124	B	CAPTCHA	الكابتشا	6	KEEP
+125	B	Certificate	سيرتيفيكيت	10	KEEP
+126	B	Clock Speed	الكلوك سبيد	9	KEEP
+127	B	Commit Messages	الكوميت ميساجيز	13	KEEP
+128	B	Commits	الكوميتس	6	KEEP
+129	B	CROSS JOIN	كروس جوين	9	KEEP
+130	B	Data Augmentation	الداتا أوجمنتيشن	14	KEEP
+131	B	Deadlock	الديد لوك	7	KEEP
+132	B	Dependency Inversion	الديبندنسي إنفرجن	15	KEEP
+133	B	Deployment	ديبلويمنت	9	KEEP
+134	B	Device Drivers	ديفايس درايفرز	14	KEEP
+135	B	Diagnostic Analytics	الدايجنوستيك أناليتكس	19	KEEP
+136	B	Docker Hub	الدوكر هب	7	KEEP
+137	B	Dockerfile	دوكرفايل	8	KEEP
+138	B	Environment	إنفايرونمنت	11	KEEP
+139	B	Feature Flags	فيتشر فلاجز	11	KEEP
+140	B	Firewall	الفاير وول	8	KEEP
+141	B	git log	الجيت لوج	7	KEEP
+142	B	Hidden Layers	هيدن ليرز	9	KEEP
+143	B	Hybrid Encryption	هايبرد إنكريبشن	15	KEEP
+144	B	Hyperplane	هايبر بلين	10	KEEP
+145	B	Incident Response	الإنسيدنت ريسبونس	15	KEEP
+146	B	Information Gain	إنفورميشن جين	13	KEEP
+147	B	Lazy Learning	الليزي ليرنينج	12	KEEP
+148	B	Machine Translation	ماشين ترانسليشن	15	KEEP
+149	B	Messages	الميساجيز	7	KEEP
+150	B	Microservices	الميكروسيرفيسز	12	KEEP
+151	B	Neural Network	النيورال نتورك	12	KEEP
+152	B	OUTER JOIN	الأوتر جوين	9	KEEP
+153	B	Output Encoding	الآوتبوت إنكودنج	14	KEEP
+154	B	PostgreSQL	البوستجرس	7	KEEP
+155	B	Prepared Statements	بريبيرد ستيتمنتس	16	KEEP
+156	B	Repository	ريبوزيتوري	10	KEEP
+157	B	Scripts	سكريبتس	7	KEEP
+158	B	Social Engineering	السوشيال إنجينيرينج	17	KEEP
+159	B	SQL Server	إسكيوإل سيرفر	13	KEEP
+160	B	Table Scan	تيبل سكان	9	KEEP
+161	B	Test Data	تست داتا	8	KEEP
+162	B	Validation Set	الفاليديشن سيت	12	KEEP
+163	B	Version Control	فيرجن كونترول	13	KEEP
+164	B	Zero-Day	الزيرو داي	8	KEEP
