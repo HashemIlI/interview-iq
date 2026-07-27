@@ -1,0 +1,62 @@
+D98 rebuilt glossary -- final report (2026-07-27)
+Source: scripts/rebuild_glossary.py, applied to
+data/glossary/transliteration_glossary.json
+
+KEEP terms: 892
+KEEP form-records: 1791
+
+AMBIGUOUS records: 22
+
+  R-A (16):
+    Batch / الباتش [colliding_term: Patch]
+    Batch / باتش [colliding_term: Patch]
+    GET / الجيت [colliding_term: git]
+    GET / جيت [colliding_term: git]
+    Patch / الباتش [colliding_term: Batch]
+    Patch / باتش [colliding_term: Batch]
+    Phishing / الفيشينج [colliding_term: Vishing]
+    Phishing / فيشينج [colliding_term: Vishing]
+    View / الفيو [colliding_term: Vue]
+    View / فيو [colliding_term: Vue]
+    Vishing / الفيشينج [colliding_term: Phishing]
+    Vishing / فيشينج [colliding_term: Phishing]
+    Vue / الفيو [colliding_term: View]
+    Vue / فيو [colliding_term: View]
+    git / الجيت [colliding_term: GET]
+    git / جيت [colliding_term: GET]
+
+  R-C (1):
+    Scrum / سكرم
+
+  H-1 (4):
+    Address / أدرس
+    List / ليست
+    Node / نود
+    Scan / السكان
+
+  V-1 (1):
+    List / الليست
+
+Active forms of raw length <= 4: 109
+
+Gate-fixture intersection count: 6
+
+Test-suite change recorded alongside this glossary rebuild (2026-07-27):
+  Removed tests/test_transliteration.py::test_form_removed_by_r_d_left_untouched
+  (asserted a form removed by R-D stays untouched; R-D was deleted by D98, so the
+  fixture no longer describes the current design).
+  Added tests/test_transliteration.py::test_form_adjudicated_ambiguous_under_h1_left_untouched
+  (Node / نود, H-1 idx 203, adjudicated AMBIGUOUS; asserts the equivalent guarantee
+  under the current H-1/V-1 design).
+  Repointed tests/test_transliteration.py::test_ambiguous_form_left_untouched from
+  Cache/الكاش (adjudicated KEEP at H-1 idx 42/43, no longer ambiguous) to
+  Batch/الباتش (permanent R-A collision with Patch, not adjudicable, so this
+  fixture cannot be invalidated by a future verdict).
+
+Added tests/test_transliteration.py::test_h1_restored_terms_substitute (2026-07-27):
+  asserts التست/الكود/الكيو/الرام substitute to Test/Code/Queue/RAM (H-1 idx
+  324-325, 55-56, 241-242, 243-244). Demonstrated by execution: FAILED against
+  the pre-D98 glossary (git HEAD version, none of the four terms had a
+  surviving form) and PASSED against the rebuilt glossary. This is the first
+  test locking in any of the 358 forms H-1 restored.
+

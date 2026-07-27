@@ -2,13 +2,14 @@
 tests/test_transliteration.py — D97 (a) deterministic transliteration layer.
 
 Covers: a term substituted with the definite article; a term substituted
-without it; an AMBIGUOUS form left untouched; a claim with no glossary
-terms returned unchanged; idempotence; plus, added after the STEP 4
-filter revision (R-A raw-normalization fix, R-D general-lexicon filter,
-R-C threshold raised to 4): a form removed by R-D left untouched, a form
-removed by R-C left untouched, a term wrongly removed by the old buggy
-R-A now substituting correctly, and a spaced multi-word form substituting
-correctly.
+without it; an AMBIGUOUS form left untouched (R-A collision); a claim with
+no glossary terms returned unchanged; idempotence; plus, added after the
+STEP 4 filter revision (R-A raw-normalization fix, R-D general-lexicon
+filter, R-C threshold raised to 4): a form removed by R-C left untouched,
+a term wrongly removed by the old buggy R-A now substituting correctly,
+and a spaced multi-word form substituting correctly. Updated for the D98
+rebuild (2026-07-27, R-B/R-D deleted, H-1/V-1 human adjudication): a form
+adjudicated AMBIGUOUS under H-1 left untouched.
 """
 
 from __future__ import annotations
@@ -38,14 +39,15 @@ def test_substitution_without_definite_article() -> None:
 
 
 def test_ambiguous_form_left_untouched() -> None:
-    # "Bash" and "Cache" no longer collide under R-A (that was the bug fixed
-    # in the STEP 4 revision): both are individually removed to AMBIGUOUS by
-    # R-D instead, because الكاش/الباش occur in the general Arabic wordlist
-    # (data/glossary/arabic_wordlist.txt). Their Arabic forms must NOT be
-    # substituted, and must be counted in residual_ambiguous_count.
-    claims = ["الكاش بيسرع النظام"]
+    # Fixture changed from Cache/الكاش to Batch/الباتش (D98 rebuild, 2026-07-27):
+    # Cache was adjudicated KEEP at H-1 idx 42/43 and no longer collides with
+    # anything, so الكاش now substitutes and can no longer serve as an
+    # AMBIGUOUS fixture. الباتش/Batch collides with Patch under R-A, which is
+    # permanent and not adjudicable (decisions.md D98), so this fixture
+    # cannot be invalidated by any future H-1/V-1 verdict.
+    claims = ["الباتش ده بيصلح المشكلة بسرعة"]
     out, audit = apply_glossary(claims)
-    assert "الكاش" in out[0]
+    assert "الباتش" in out[0]
     assert audit["residual_ambiguous_count"] >= 1
     assert audit["substitutions"] == []
 
@@ -65,14 +67,21 @@ def test_idempotence() -> None:
     assert once == twice
 
 
-def test_form_removed_by_r_d_left_untouched() -> None:
-    # "bit" was re-authored with three candidate forms (البت, بت, بيت) in
-    # the STEP 3b revision; all three collide with real, common entries in
-    # the general Arabic wordlist (data/glossary/arabic_wordlist.txt) and
-    # are removed to AMBIGUOUS by R-D. The claim must be left untouched.
-    claims = ["البت ده جزء من البايت"]
+def test_form_adjudicated_ambiguous_under_h1_left_untouched() -> None:
+    # D98 rebuild (2026-07-27): R-D is deleted, so a fixture asserting an
+    # R-D-removed form stays untouched no longer describes the current
+    # design (the term's forms now carry an H-1/V-1 verdict instead).
+    # Replacement: Node / نود, H-1 idx 203 -- adjudicated AMBIGUOUS by
+    # post-hoc edit (decisions.md D98, "One post-hoc edit recorded").
+    # Node's other form (النود, idx 202) was adjudicated KEEP, so this also
+    # exercises a term with a genuinely mixed H-1 verdict: the bare form
+    # نود must stay untouched even though its sibling substitutes.
+    # Confirmed against the rebuilt glossary before writing this test:
+    # {"term": "Node", "form": "نود", "rule": "H-1"} is present in the
+    # "ambiguous" list of data/glossary/transliteration_glossary.json.
+    claims = ["نود ده بتاع الشبكة الموزعة"]
     out, audit = apply_glossary(claims)
-    assert "البت" in out[0]
+    assert "نود" in out[0]
     assert audit["residual_ambiguous_count"] >= 1
     assert audit["substitutions"] == []
 
@@ -139,3 +148,27 @@ def test_r1_diacritic_bearing_form_full_stack_substitutes() -> None:
     out, audit = apply_glossary(claims)
     assert "Full Stack" in out[0]
     assert any(s["replacement_term"] == "Full Stack" for s in audit["substitutions"])
+
+
+def test_h1_restored_terms_substitute() -> None:
+    # D98 rebuild (2026-07-27). Test/Code/Queue/RAM were removed entirely
+    # by R-B or R-D (rules deleted in D98) and had zero surviving forms in
+    # the pre-D98 glossary -- the absence that caused the D96
+    # transliteration failure. All four are restored via H-1 KEEP verdicts
+    # (adjudication_H1_v1.tsv idx 324/325 Test, 55/56 Code, 241/242 Queue,
+    # 243/244 RAM). This test must FAIL against the pre-D98 glossary (none
+    # of these terms have a surviving form to match) and PASS against the
+    # rebuilt one -- demonstrated by execution, not asserted.
+    claims = [
+        "التست ده بيغطي كل الحالات",
+        "الكود ده بيتفذ بسرعة",
+        "الكيو ده بيتعامل مع الرسايل",
+        "الرام ده بيتاكد من الاداء",
+    ]
+    out, audit = apply_glossary(claims)
+    assert "Test" in out[0]
+    assert "Code" in out[1]
+    assert "Queue" in out[2]
+    assert "RAM" in out[3]
+    replaced_terms = {s["replacement_term"] for s in audit["substitutions"]}
+    assert {"Test", "Code", "Queue", "RAM"} <= replaced_terms

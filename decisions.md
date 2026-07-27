@@ -1184,6 +1184,100 @@ surviving forms after removing الليست, plus 358 restored by H-1). AMBIGUOU
 Test, Code, Queue, RAM and Worm — the terms whose absence motivated this entry. No form in the
 final glossary lacks both an authored origin and a human verdict or a passed verification stratum.
 
+**AMENDMENT — R-C is demoted from a hard veto to a backstop of last resort (2026-07-27).** The
+rule as registered above reads: "any form of raw authored length <= 4 is never substituted,
+regardless of adjudication. Currently 1 record (Scrum)." Both halves of that sentence were true
+of the pre-adjudication state and were measured again before the rebuild rather than assumed.
+The result:
+
+- Surviving forms (pre-adjudication) with raw length <= 4: **0**. R-C had in fact been enforced
+  strictly across the survivor set; its single filed record is an artifact of R-D having removed
+  most short forms earlier in the chain.
+- Forms restored by H-1 with raw length <= 4: **109**, i.e. 30% of the 358 restored records.
+
+Applying R-C literally would therefore veto 109 human KEEP verdicts, and among them تست (Test),
+كود (Code), كيو (Queue), رام (RAM), ورم (Worm) and ويب (Web) — the precise terms whose absence
+from the glossary motivated this entry and whose loss produced the D96 transliteration failure.
+Strict application would return the glossary to the state that made D96 fail and would render the
+entire adjudication exercise inert.
+
+The coupling is structural rather than incidental: a short English technical term transliterates
+to a short Arabic string, and a short Arabic string is more likely to coincide with an ordinary
+Arabic word. R-C's length proxy therefore selects the terms most needed and the forms most
+dangerous by the same measure, and cannot separate them.
+
+**Decision (Ahmed, 2026-07-27): a human verdict supersedes R-C.** R-C is retained solely as a
+backstop for forms carrying no human verdict — future glossary additions, and any record never
+placed before an adjudicator. It no longer overrides an explicit H-1 or V-1 verdict. This is
+consistent with the governing principle of this entry, under which human adjudication is the sole
+authority and machine filters are triage; the clause "regardless of adjudication" contradicted
+that principle and is withdrawn.
+
+**Consequence for Scrum.** سكرم (raw length 4) was never placed before an adjudicator: the H-1
+instrument contained only records ruled by R-B or R-D, and this record is ruled by R-C. It
+therefore carries no human verdict, R-C's backstop applies unchanged, and it remains AMBIGUOUS.
+Its sibling السكرم was adjudicated KEEP at H-1 idx 274 and is restored, so the term remains
+serviceable through that form. The R-C AMBIGUOUS count stays at 1.
+
+**Residual risk accepted, named rather than summarised.** 109 forms of raw length <= 4 are active
+in the rebuilt glossary on the strength of their H-1 verdicts alone. The highest-collision members
+of that set are, at two characters: هب, نل, رو, شل, بت; and at three: باش, باج, كاش, كود, دوم, جوي,
+هاش, هيب, لوس, بود, بُل, كيو, رام, روم, روز, رست, ساس, تست, تري, ويب, ويت, ورم, بيت, لوج, بوش.
+Several are ordinary Arabic words. A focused second review of these thirty was offered before the
+rebuild and was declined in favour of the standing H-1 verdicts; that choice is recorded, not
+implied. If a future field run surfaces a false substitution, this paragraph is where to look
+first, and the remedy is a targeted re-adjudication of this list rather than a re-derivation of
+the whole glossary.
+
+**Final glossary specification, to be produced and confirmed by the rebuild.** KEEP: 1,791
+form-records across 892 terms — the 1,434 surviving forms less الليست, plus the 358 restored by
+H-1. AMBIGUOUS: 22 form-records — R-A 16, R-C 1, H-1 4, V-1 1. No completion step is run. Every
+form in the rebuilt glossary has an authored origin and either an explicit human verdict or
+membership of a verification stratum that passed.
+
+**COMPONENT (a) CLOSED (2026-07-27).** All five acceptance criteria registered in this entry are
+satisfied, each by execution rather than assertion:
+
+1. *All 362 adjudication records carry a verdict.* Satisfied: 358 KEEP, 4 AMBIGUOUS, 0 blank,
+   0 invalid. Instrument integrity verified independently — term, form, rule and
+   other_forms_surviving matched the generated file in 362 of 362 rows.
+2. *Stratum A fully adjudicated; Stratum B adjudicated and the escalation threshold resolved.*
+   Satisfied: 114 + 50 = 164 records, 163 KEEP / 1 AMBIGUOUS. Stratum B returned 0 AMBIGUOUS, so
+   the threshold was not triggered and the remaining 1,270 surviving forms do not require full
+   adjudication. Stratum A was confirmed to match the deterministic expected set exactly.
+3. *Repair R-1 completed with before/after states demonstrated by execution.* Satisfied: the two
+   regression tests failed against the unmodified source (2 failed, 9 passed) and pass after the
+   repair; measured matchability moved from 355 of 1,434 forms and 185 of 757 terms broken, to
+   0 and 0.
+4. *Rebuilt glossary committed with a regenerated report.* Satisfied: glossary v2 contains 1,791
+   KEEP form-records across 892 terms and 22 AMBIGUOUS records (R-A 16, R-C 1, H-1 4, V-1 1);
+   0 raw forms shared by more than one term; 1,791 distinct normalised keys with 0 mapping to
+   more than one term. results/glossary/final_glossary_report_v1.txt records the breakdown, the
+   109 active forms of raw length <= 4, and a gate-fixture intersection count of 6 computed after
+   adjudication was complete.
+5. *No claim left as an expectation rather than a measurement.* Satisfied. Findings G and H, the
+   collision check, the completion-step deletion, the R-C conflict and the regression lock were
+   each measured before being written, and in three cases the measurement contradicted the
+   proposal that preceded it: the naive matchability count (298 vs 355) exposed Finding H, the
+   completion-step measurement exposed البيت and invalidated the first proposed remedy, and the
+   R-C measurement (0 survivors vs 109 restored at length <= 4) forced the amendment above.
+
+**Regression lock (2026-07-27).** A gap was identified after the rebuild: every test then in the
+suite passed against both the old and the rebuilt glossary, so none of the 358 restored forms was
+under test and a silent reversion would not have been caught.
+tests/test_transliteration.py::test_h1_restored_terms_substitute was added, asserting that التست,
+الكود, الكيو and الرام substitute to Test, Code, Queue and RAM. It was demonstrated by execution
+to FAIL against the pre-D98 glossary and PASS against the rebuilt one. Final suite state:
+tests/test_transliteration.py 12 passed; two pre-existing, unrelated failures remain in
+tests/test_finetune_smoke.py (transformers TrainingArguments API mismatch), confirmed unchanged
+by this work.
+
+**Not closed by this entry, carried forward.** The effect of the glossary on Precision and
+Coverage has still never been measured; the layer's benefit remains an assumption, and a
+before/after ablation on O9 is a candidate for a later session. The 109 active forms of raw length
+<= 4 remain the first place to look if a field run surfaces a false substitution. D97 components
+(b) and (c) remain open and are registered as D99.
+
 **Out of scope for D98:** prompt v3 (D97 b), fixtures SG-14/SG-15 (D97 c), the sanity-gate
 notebook n_cases fix, and the gate rerun. These are registered together as D99.
 
