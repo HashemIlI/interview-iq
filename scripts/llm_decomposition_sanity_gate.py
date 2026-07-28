@@ -62,6 +62,7 @@ from interview_iq.decomposition_llm.client import (  # noqa: E402
     LLMDecompositionError,
     decompose_via_llm,
 )
+from interview_iq.decomposition_llm.transliteration import apply_glossary  # noqa: E402
 
 
 def _get_git_commit() -> str:
@@ -107,21 +108,33 @@ def _run_case(case: dict) -> dict:
         "model_used": GROQ_MODEL,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "execution_status": None,
-        "claims": None,
+        "claims_raw": None,
+        "claims_final": None,
+        "transliteration_audit": None,
         "error_message": None,
         "elapsed_seconds": None,
         # Empty verdict columns -- filled in by human reviewer, not by this script.
         "error_preserved": "",
         "no_unauthorized_addition": "",
         "atomicity_verdict": "",
+        "transliteration_correct": "",
         "reviewer_notes": "",
     }
 
     start = time.monotonic()
     try:
         result = decompose_via_llm(answer_text)
-        record["execution_status"] = "SUCCESS"
-        record["claims"] = result.claims
+        claims_raw = result.claims
+        record["claims_raw"] = claims_raw
+        try:
+            claims_final, transliteration_audit = apply_glossary(claims_raw)
+        except Exception as exc:  # noqa: BLE001 -- must not silently fall back to raw claims
+            record["execution_status"] = "ERROR"
+            record["error_message"] = f"apply_glossary failed: {type(exc).__name__}: {exc}"
+        else:
+            record["execution_status"] = "SUCCESS"
+            record["claims_final"] = claims_final
+            record["transliteration_audit"] = transliteration_audit
     except LLMDecompositionError as exc:
         record["execution_status"] = "ERROR"
         record["error_message"] = str(exc)
@@ -143,16 +156,22 @@ def _write_report_md(records: list[dict], run_dir: Path, meta: dict) -> None:
         f"- Git commit at run time: `{meta['git_commit']}`",
         f"- Cases: {meta['n_cases']} ({meta['n_success']} executed successfully, {meta['n_error']} failed execution)",
         "",
-        "**Gate pass rule (D77):** PASS only if every case has `error_preserved=YES` "
-        "AND `no_unauthorized_addition=YES`. Any single NO on either column fails the "
-        "whole gate. `atomicity_verdict=NON_ATOMIC` is logged and tracked separately "
-        "(non-blocking, per Q8-style handling) -- it does NOT fail the gate.",
+        "**Gate pass rule (D77, extended by D101):** PASS only if every case has "
+        "`error_preserved=YES` (or N/A where designated) AND `no_unauthorized_addition=YES`. "
+        "Any single NO on either column fails the whole gate. `atomicity_verdict=NON_ATOMIC` "
+        "is logged and tracked separately (non-blocking, per Q8-style handling) -- it does NOT "
+        "fail the gate. `transliteration_correct` is recorded for all applicable cases per "
+        "D101 but is non-blocking for this run.",
         "",
-        "**Instructions for reviewer:** for each case, compare `input_answer_text` "
-        "against `claims`, using `injected_error_anchor` as the reference for what the "
-        "deliberate flaw was. Fill in the three verdict columns below in "
-        "`report.csv` (or directly in `raw_results.json`), then record the final "
-        "PASS/FAIL result as a D77 update or new D## in decisions.md.",
+        "**Instructions for reviewer (per D101):** `error_preserved`, "
+        "`no_unauthorized_addition` and `atomicity_verdict` are judged on `claims_raw` -- the "
+        "LLM output BEFORE `apply_glossary` -- comparable with D92/D96/D100. "
+        "`transliteration_correct` is judged on `claims_final` -- the output AFTER "
+        "`apply_glossary` -- using `transliteration_audit` and `latin_terms_expected` as the "
+        "checklist. Compare each against `input_answer_text`, using `injected_error_anchor` as "
+        "the reference for what the deliberate flaw was. Fill in the four verdict columns "
+        "below in `report.csv` (or directly in `raw_results.json`), then record the final "
+        "PASS/FAIL result as a D77/D101 update or new D## in decisions.md.",
         "",
     ]
 
@@ -165,16 +184,33 @@ def _write_report_md(records: list[dict], run_dir: Path, meta: dict) -> None:
         lines.append(f"- **Input (ASR-style):** {r['input_answer_text']}")
         lines.append(f"- **Injected error anchor:** {r['injected_error_anchor']}")
         lines.append(f"- **Latin terms expected:** {', '.join(r['latin_terms_expected']) or '(none)'}")
-        lines.append("- **Claims produced:**")
-        if r["claims"]:
-            for i, claim in enumerate(r["claims"], 1):
+        lines.append("- **Claims produced (raw, pre-glossary -- judge error_preserved / no_unauthorized_addition / atomicity_verdict here):**")
+        if r["claims_raw"]:
+            for i, claim in enumerate(r["claims_raw"], 1):
                 lines.append(f"  {i}. {claim}")
         else:
             lines.append("  (none -- execution failed or NO_EXTRACTABLE_CLAIMS)")
+        lines.append("- **Claims produced (final, post-glossary -- judge transliteration_correct here):**")
+        if r["claims_final"]:
+            for i, claim in enumerate(r["claims_final"], 1):
+                lines.append(f"  {i}. {claim}")
+        else:
+            lines.append("  (none -- execution failed or NO_EXTRACTABLE_CLAIMS)")
+        if r["transliteration_audit"]:
+            audit = r["transliteration_audit"]
+            lines.append(
+                f"- **Transliteration audit:** {len(audit['substitutions'])} substitution(s), "
+                f"{audit['residual_ambiguous_count']} residual ambiguous form(s) left untouched."
+            )
+            for sub in audit["substitutions"]:
+                lines.append(
+                    f"  - claim {sub['claim_index']}: `{sub['matched_form']}` → `{sub['replacement_term']}`"
+                )
         lines.append("")
         lines.append(
             "- **Verdict (fill in):** error_preserved = `___` | "
-            "no_unauthorized_addition = `___` | atomicity_verdict = `___`"
+            "no_unauthorized_addition = `___` | atomicity_verdict = `___` | "
+            "transliteration_correct = `___`"
         )
         lines.append("")
 
@@ -193,11 +229,14 @@ def _write_report_csv(records: list[dict], run_dir: Path) -> None:
         "input_answer_text",
         "injected_error_anchor",
         "latin_terms_expected",
-        "claims",
+        "claims_raw",
+        "claims_final",
+        "transliteration_audit",
         "error_message",
         "error_preserved",
         "no_unauthorized_addition",
         "atomicity_verdict",
+        "transliteration_correct",
         "reviewer_notes",
     ]
     with open(run_dir / "report.csv", "w", newline="", encoding="utf-8-sig") as f:
@@ -206,7 +245,11 @@ def _write_report_csv(records: list[dict], run_dir: Path) -> None:
         for r in records:
             row = dict(r)
             row["latin_terms_expected"] = "; ".join(r["latin_terms_expected"])
-            row["claims"] = " | ".join(r["claims"]) if r["claims"] else ""
+            row["claims_raw"] = " | ".join(r["claims_raw"]) if r["claims_raw"] else ""
+            row["claims_final"] = " | ".join(r["claims_final"]) if r["claims_final"] else ""
+            row["transliteration_audit"] = (
+                json.dumps(r["transliteration_audit"], ensure_ascii=False) if r["transliteration_audit"] else ""
+            )
             writer.writerow(row)
 
 
@@ -260,8 +303,9 @@ def main() -> int:
     print(f"Output written to: {run_dir}")
     print()
     print("NEXT STEP (human, not automated): review report.md or report.csv, fill in "
-          "error_preserved / no_unauthorized_addition / atomicity_verdict for each "
-          "case, then record the PASS/FAIL result in decisions.md per D77.")
+          "error_preserved / no_unauthorized_addition / atomicity_verdict / "
+          "transliteration_correct for each case, then record the PASS/FAIL result "
+          "in decisions.md per D77/D101.")
 
     return 0
 

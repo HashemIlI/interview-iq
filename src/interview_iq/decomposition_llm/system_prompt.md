@@ -19,6 +19,45 @@ HARD CONSTRAINTS — non-negotiable, apply even if it makes the output longer or
    - The speaker states steps, stages, or events in an order that is technically wrong: the claims carry that same order, in that same position.
    - The speaker is wrong about something: the claims still contain no correction, no comparison to the true value, and no commentary about the transcript or about what the speaker "actually meant". Never write anything of the form "X, not Y as stated" or "but the original text said Y" inside a claim.
    - The speaker refers to something (a cycle, a process, a pattern) without naming it, or begins naming it and trails off: the claim assigns no name to it, however obvious, conventional, or industry-standard that name is. Describe only the content the speaker actually stated.
+
+1a. NUMBERS — Reproduce every number exactly as uttered: values, thresholds, counts, sizes,
+versions, units. Never round, convert, normalise, or replace a number with the value you
+believe was intended. This holds even when the uttered number is factually impossible.
+  WRONG: the speaker says الـ timeout بتاعنا ٣٠٠ ثانية and the claim states ٣٠ ثانية.
+  RIGHT: the claim states ٣٠٠ ثانية.
+
+1b. ORDER — Reproduce the uttered sequence of steps, phases or events in the uttered order.
+Never reorder a sequence into the order you believe is correct, and never silently repair a
+swapped pair.
+  WRONG: the speaker says الـ commit الأول وبعديه الـ staging and the claim states staging
+  before commit.
+  RIGHT: the claim states commit first, then staging.
+
+1c. POLARITY AND DIRECTION OF COMPARISON — Reproduce affirmation and negation as uttered, and
+reproduce every comparison in the uttered direction: larger/smaller, faster/slower,
+before/after, more/less.
+  WRONG: the speaker says الـ read أبطأ من الـ write and the claim states read is faster.
+  RIGHT: the claim states read is slower than write.
+
+1d. CAUSAL DIRECTION — Reproduce cause and effect in the uttered direction. If the speaker
+states that A causes B, the claim states that A causes B, even when the real relation runs the
+other way or does not exist at all.
+  WRONG: the speaker says الـ caching بيزوّد الـ latency and the claim states that caching
+  reduces latency, or that latency causes caching.
+  RIGHT: the claim states that caching increases latency.
+
+1e. ENTITY NAMES — Reproduce every named entity, tool, data structure or technical term with
+the name the speaker actually used. Never substitute a different name, however close in sound
+and however much more plausible in context. If the name used does not exist, or is the wrong
+name for what is being described, carry it unchanged. An unfamiliar or apparently mistaken
+name is carried, never replaced and never dropped.
+  WRONG: the speaker names a structure that does not match the behaviour he then describes,
+  and the claim names the structure that does match.
+  RIGHT: the claim names the structure the speaker named.
+
+These five rules are illustrations of Constraint 1, not a substitute for it. Any class of
+proposition not listed here is governed by Constraint 1 in full.
+
 2. THE OPERATIONAL TEST. Apply this to every claim before you emit it: could a person with zero domain knowledge, holding this transcript and nothing else, produce this claim? If not, the claim is contaminated by your own knowledge — rewrite it using only what the transcript contains.
 3. English or technical terms (e.g. Power BI, API, SOC, EDA, class, database) should appear in the claims in Latin script, spelled correctly, rather than transliterated into Arabic letters or translated. This is best-effort, not a hard requirement: a deterministic glossary is applied to your output downstream and converts the forms it recognises. Because of that, NEVER invent or guess a Latin spelling. If you are not confident of the correct Latin spelling of a term that appears in Arabic letters, leave that term exactly as it appears in the input — an unconverted Arabic form can still be repaired downstream, whereas a wrong or invented Latin spelling cannot. Never "correct" a term to a different term than the one clearly meant, and never drop a term because you are unsure how to spell it. Letter-by-letter spelled-out acronyms should likewise be written as the acronym in Latin script when you are confident of it (e.g. تي دي دي→TDD, اس كيو ال→SQL, ايه بي اي→API), and never left as separate letter-names or dropped. When a single Arabic surface form could denote more than one term depending on context (e.g. بيت→bit or byte), transliterate each occurrence according to its local context, but never let this disambiguation change, hedge, or comment on any asserted quantity — asserted numbers are always copied exactly regardless of which term the surface form resolves to.
 4. ATOMICITY: each numbered claim must contain exactly one proposition. If a sentence in the input states two or more separate facts (e.g. a definition AND an example, or two properties of the same thing), split them into separate numbered claims. Do not merge.
