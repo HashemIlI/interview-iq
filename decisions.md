@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / Unified Decision Log (D1–D81)
-**Version:** v3.2 — 27 July 2026 (D100 — D77 sanity gate rerun under prompt v3: FAIL)
+**Version:** v3.3 — 28 July 2026 (D102 — first empirical measurement of the deterministic glossary layer on runtime output: pre-registered)
 **Status:** The sole legal project record. This file supersedes and merges the former Arabic `decisions.md` and `DECISIONS_RECONCILIATION_v1.1`. The pre-D81 Arabic original is archived (see D81), not deleted.
 
 **Governing numbering rule:** D1–D25 are fixed as in the master document `InterviewIQ_Pipeline_Docs_v2.0.md`. The pipeline-session decisions were renumbered D26–D34. Every new decision takes the next free number.
@@ -822,6 +822,7 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ## Changelog (condensed)
 
+- **v3.3 (28 Jul 2026):** D102 — first empirical measurement of the deterministic glossary layer on real runtime output (PRE-REGISTERED before execution, NON-GATING -- a measurement, not a pass/fail gate). Instrument: kaggle/runners/run-pipeline-demo.ipynb on SE-028/GN-040 (iq-audio-pilot), zero-shot, writing to _v3.json outputs; the pre-glossary _v2 artifacts are retained unmodified as evidence. Measurement surface is claims_raw vs claims within the same run (isolates the glossary); _v2-vs-_v3 is explicitly excluded as confounded (prompt v4 changed too). Pre-registers expected mixed output, expected ABSENT terms as orthographic variants rather than missing concepts, and an expected multi-word matcher defect (Data سيت pattern); pre-registers defect criteria (claim-count preservation, no meaning drift, no invented Latin forms). Reports a conversion-rate figure from transliteration_audit, n=2 questions, DIRECTIONAL not statistical, raw counts not percentages. Does not supersede D82/D83 (produced by a script with no glossary call site in its history); does not address F3; does not close the sg05verify EXPECTED_COMMIT warning-vs-failure gap. Also recorded: D101 carries no changelog line of its own -- backfilling it is deferred to a separate decision, not part of this entry.
 - **v3.2 (27 Jul 2026):** D100 — D77 sanity gate rerun under prompt v3: FAIL (4/15 cases failed error_preserved: SG-01, SG-09, SG-10, SG-15). Regression on the D88 numeric class (SG-09) previously held by a targeted patch. Structural defect found: the gate never calls apply_glossary, so criterion 3 (transliteration_correct) is VOID for SG-10/12/15, not measured. New gate-design gap recorded (unforced distortion of an uninjected proposition, SG-14). Escalation path open but not exercised; remedy sequence deferred to gate-wiring fix + controlled comparison (D101).
 - **v3.1 (27 Jul 2026):** D99 — prompt v3 (generalized anti-knowledge-injection constraint) applied; fixtures SG-14 (POLARITY) / SG-15 (CAUSAL_DIRECTION) added; sanity-gate notebook hardened (dynamic n_cases + EXPECTED_COMMIT guard); two §5.13 violations recorded (D97's false git_commit-check claim; a withdrawn per-class-patch prompt draft); criterion-3 scope corrected to SG-10..15 with SG-14 registered non-gating. Outcome registered as D100.
 - **v3.0 (21 Jul 2026):** D81 — full English migration + thematic reorganization of the log (D1–D80). All figures carried over verbatim; superseded AraT5 procedural entries (D58–D73) condensed to outcomes; Arabic original archived. Added D78/D79/D80 (sanity gate execution: gemma VOID, llama VOID, cohere PASS).
@@ -1558,3 +1559,48 @@ the commit implementing this decision.
 
 **Out of scope, unchanged:** D89-b remains HARD-GATED on a full gate PASS. F3, G4, Q2, Q7, G3,
 Q10, G1, and the Gold naming collision are untouched by this decision.
+
+---
+
+## D102 — First empirical measurement of the deterministic glossary layer on runtime output (2026-07-28)
+
+**Status:** PRE-REGISTERED before execution. Registered at HEAD `46384b9`. NON-GATING: this is a measurement, not a pass/fail gate, and no architectural decision is conditioned on the resulting figure.
+
+### 1 — Motivation
+
+The GAP-3b provenance audit (conducted at HEAD `46384b9`) established that `apply_glossary` has been called unconditionally in the runtime chain at `src/interview_iq/pipeline.py:197` since `ccafc91` (D97), but that no committed result artifact was produced after that commit. All four existing `results/pipeline_demo/*.json` artifacts predate the glossary's existence in `pipeline.py`. The layer's effect on real runtime output has therefore never been measured, and no figure characterising it exists.
+
+### 2 — Instrument
+
+`kaggle/runners/run-pipeline-demo.ipynb`, executed on Kaggle T4 under the thin-runner pattern. Inputs: Kaggle dataset `iq-audio-pilot` — `answer_correct.mp3` (SE-028) and `answer_wrong.mp3` (GN-040). Zero-shot on both channels (D89 runtime default; no `--adapter-path`). Outputs: `results/pipeline_demo/SE-028_v3.json` and `results/pipeline_demo/GN-040_v3.json`. The `_v2` artifacts are retained unmodified as the sole surviving evidence of pre-glossary behaviour and must not be overwritten.
+
+### 3 — Measurement surface
+
+The comparison is `claims_raw` against `claims` WITHIN each single run. This isolates the glossary: same audio, same ASR output, same prompt, same LLM call — the only transformation between the two fields is `apply_glossary`.
+
+Explicitly excluded: any `_v2` against `_v3` comparison. Two variables changed between those commits (introduction of the glossary AND prompt v4), so that comparison is confounded and will not be used as evidence of glossary effect.
+
+### 4 — Pre-registered expectations
+
+1. Output is expected to be MIXED (partly Latin script, partly Arabic script), not fully converted. A mixed result is the expected outcome, not a failure.
+2. Terms classified ABSENT are expected to be predominantly orthographic variants of registered forms rather than concepts missing from the glossary. This is the pattern already documented for SG-14 (3 IN_GLOSSARY, 1 PARTIAL, 7 ABSENT).
+3. A multi-word matcher defect is expected to surface: compound forms may be partially converted (registered pattern: `الداتا سيت` → `Data سيت`). Its occurrence confirms a known defect and does not invalidate the run.
+
+### 5 — Pre-registered defect criteria
+
+The following indicate a fault in the layer rather than an expected limitation:
+
+- `len(claims_raw) != len(claims)`. The glossary performs substitution only; claim count MUST be preserved. Any divergence is a defect.
+- Any claim whose asserted content changes meaning after substitution.
+- Any Latin form appearing in `claims` that is not a registered glossary form, which would indicate invention rather than lookup.
+
+### 6 — Reported figure
+
+Conversion rate: number of technical terms converted over number of technical-term occurrences detected, derived from `transliteration_audit`, reported per question and pooled across the two questions. With n=2 questions the figure is DIRECTIONAL, NOT STATISTICAL, and is reported as raw counts rather than percentages.
+
+### 7 — Scope limits
+
+- Does not supersede D82/D83. Those Coverage figures were produced by `scripts/coverage_channel_real_claims_experiment.py`, which has never contained a glossary call site at any commit in its history; they remain pre-glossary figures and must be labelled as such in the paper.
+- Does not address F3. F3 was diagnosed on a pre-glossary artifact; whether it persists must be re-checked against `SE-028_v3.json` under a separate entry.
+- Does not close the open item that `kaggle/runners/run-sanity-gate.ipynb` cell `sg05verify` treats an empty `EXPECTED_COMMIT` as a warning rather than a hard failure.
+- Does not close the open item that D101 carries no `## Changelog (condensed)` line.
