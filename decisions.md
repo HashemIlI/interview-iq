@@ -1471,3 +1471,90 @@ No prompt v4. No re-instatement of the numeric rule. No model replacement. Each 
 ### 7 — Correction to D99
 
 D99 §1 recorded two §5.13 violations. A third belongs with them: during adjudication of this run Claude asserted a regression relative to D92 before establishing that decoding was greedy. The claim later held once `temperature: 0` was verified at `client.py:129`, but it was made ahead of its evidence.
+
+---
+
+## D101 — Glossary wiring into the gate path + prompt v4 (principle + five explicit preservation rules) (2026-07-27)
+
+**Status:** PRE-REGISTERED before execution. Registered at HEAD 628b8f0 (D100).
+
+**Source-verified findings (read from disk this session, not asserted):**
+(a) scripts/llm_decomposition_sanity_gate.py calls decompose_via_llm and writes result.claims
+    directly into raw_results.json with no intervening transformation. apply_glossary has zero
+    call sites in that script.
+(b) The production orchestrator evaluate_answer() calls apply_glossary(claims) at
+    src/interview_iq/pipeline.py:197, immediately after decomposition.
+Therefore the sanity gate has never exercised the production path.
+
+**Consequence for prior records:** every transliteration_correct verdict recorded in D96 and
+D100 was measured on an execution path that structurally could not produce the artifact being
+judged. Those transliteration verdicts are marked NON-EVIDENTIARY (D78/D79 VOID precedent).
+The error_preserved and no_unauthorized_addition verdicts in D96 and D100 are unaffected and
+remain valid.
+
+**Constraint 3 is not changed by this decision.** Constraint 3 downgrades transliteration to
+best-effort on the stated rationale that a deterministic glossary is applied downstream. In the
+gate path that premise was false. Wiring (a) makes the stated premise true; the constraint text
+stands.
+
+**Non-conflation clause:** finding (a) explains none of the four D100 error-preservation
+failures (SG-01, SG-09, SG-10, SG-15). The glossary substitutes recognised Arabic forms with
+Latin terms; it cannot restore an altered proposition. Prompt v4 is the sole intervention
+targeting those four.
+
+**Known adverse interaction, registered before the run:** in SG-01 the model emitted الهاش where
+the speaker uttered الهيب. Once the glossary runs, a fabricated-but-recognised form is converted
+to a clean Latin term, making entity substitution LESS visible in the final artifact. Judging
+error preservation on post-glossary claims would be a strictly weaker test than D92/D96/D100
+applied.
+
+**Judgment surface (pre-registered; may not be revised after results are seen — P48):**
+Each gate record shall carry:
+  claims_raw            — LLM output, before apply_glossary
+  claims_final          — after apply_glossary
+  transliteration_audit — the audit dict returned by apply_glossary
+Criteria bind as follows:
+  error_preserved          → judged on claims_raw   (comparable with D92/D96/D100)
+  no_unauthorized_addition → judged on claims_raw
+  atomicity_verdict        → judged on claims_raw   (non-blocking, unchanged)
+  transliteration_correct  → judged on claims_final (first evidentiary measurement in project)
+
+**Schema change:** the record key "claims" is removed and replaced by claims_raw and
+claims_final. Runs recorded before D101 keep the old key and are not migrated. A new empty
+verdict column transliteration_correct is added; it did not previously exist as a column, and
+D96/D100 transliteration verdicts were recorded in prose only.
+
+**Prompt v4:** constraints 1–8 of v3 are retained verbatim. Five explicit hard preservation
+rules are added as named sub-rules of constraint 1, covering the classes with observed or
+anticipated failures: numeric (1a), order (1b), polarity and comparison direction (1c), causal
+direction (1d), entity name (1e), each closing with a statement that they illustrate the
+Principle and do not replace it, and that unlisted classes remain governed by constraint 1 in
+full.
+
+**Relation to D96:** D96 prohibited REPLACING the general principle with a per-failure patch.
+v4 does not replace it; the principle and the operational test are retained unchanged and the
+explicit rules sit beneath them. Evidence basis: the numeric class carried an explicit rule
+under D90 and passed 9/9 in D92; that rule was removed in v3 and the class regressed to FAIL in
+D100 (SG-09). No case in the record supports the principle alone being sufficient.
+
+**Anti-overfitting condition:** no illustrative example added by v4 may reuse the content of any
+fixture in the gate fixture file. Verified by explicit string check before commit.
+
+**Success criteria (pre-registered).** One gate run, 15 cases, Groq llama-3.3-70b-versatile, on
+the commit implementing this decision.
+  PASS requires error_preserved in {YES, N/A} on all 15 AND no_unauthorized_addition = YES on
+  all 15. Zero tolerance, unchanged from D77.
+  transliteration_correct is recorded and reported for all applicable cases but is NON-BLOCKING
+  for this run only, being the first evidentiary measurement of a newly wired deterministic
+  component: it establishes a baseline. A poor result on it opens a decision about the glossary,
+  not about the model.
+  atomicity_verdict remains non-blocking.
+
+**Stop rule (binding):**
+  v4 PASSES  ⇒ the decomposition module is CLOSED; work moves to Q10.
+  v4 FAILS   ⇒ immediate model replacement under the D77 gate procedure. No v5. No sixth patch.
+  Replacement model also FAILS ⇒ work stops and the limit is documented as a measured
+  limitation, supported by the pre-registered gate, 15 fixtures, and the D77–D101 record.
+
+**Out of scope, unchanged:** D89-b remains HARD-GATED on a full gate PASS. F3, G4, Q2, Q7, G3,
+Q10, G1, and the Gold naming collision are untouched by this decision.
