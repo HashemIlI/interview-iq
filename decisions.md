@@ -1,5 +1,5 @@
 # decisions.md — Interview IQ / Unified Decision Log (D1–D81)
-**Version:** v3.3 — 28 July 2026 (D102 — first empirical measurement of the deterministic glossary layer on runtime output: pre-registered)
+**Version:** v3.4 — 28 July 2026 (D103 — outcome of D102: glossary layer measured; four findings recorded, F4-F7)
 **Status:** The sole legal project record. This file supersedes and merges the former Arabic `decisions.md` and `DECISIONS_RECONCILIATION_v1.1`. The pre-D81 Arabic original is archived (see D81), not deleted.
 
 **Governing numbering rule:** D1–D25 are fixed as in the master document `InterviewIQ_Pipeline_Docs_v2.0.md`. The pipeline-session decisions were renumbered D26–D34. Every new decision takes the next free number.
@@ -822,6 +822,7 @@ D88's F3 (zero-shot's positive SE-028 score partly explained by entailment VERIF
 
 ## Changelog (condensed)
 
+- **v3.4 (28 Jul 2026):** D103 — outcome of D102: both SE-028/GN-040 runs SUCCEEDED (commit `e7bc9fa`, verified by the notebook's commit guard); all D102 §5 glossary defect criteria PASSED (claim counts preserved 6=6/5=5, no meaning drift, no invented Latin forms, 12 substitutions across 3 terms). Four findings recorded: F4 — non-Arabic, non-Latin script (Cyrillic тест, CJK 故) emitted by the approved llama-3.3-70b-versatile model on real ASR input, undetected by the D77 gate fixtures, not mitigated by the glossary; F5 — knowledge injection and reasoning leakage under prompt v4 on GN-040 (model corrected then restored a wrong value, contaminating the claim judged CONTRADICTED); F6 — the D102 §6 conversion-rate figure is not computable, since transliteration_audit records substitutions but not undetected-term counts (denominator was never instrumented); F7 — the glossary's actual scope is wider than "substitution only" (D102 §5), also performing orthographic/diacritic/tatweel normalisation, requiring a description correction before publication. Also records an unregistered CONTRADICTED-on-correct-claim observation resembling F3 (not conflated with it, different decomposition/claim indices). No remedy applied; F3-F7 each deferred to their own decision.
 - **v3.3 (28 Jul 2026):** D102 — first empirical measurement of the deterministic glossary layer on real runtime output (PRE-REGISTERED before execution, NON-GATING -- a measurement, not a pass/fail gate). Instrument: kaggle/runners/run-pipeline-demo.ipynb on SE-028/GN-040 (iq-audio-pilot), zero-shot, writing to _v3.json outputs; the pre-glossary _v2 artifacts are retained unmodified as evidence. Measurement surface is claims_raw vs claims within the same run (isolates the glossary); _v2-vs-_v3 is explicitly excluded as confounded (prompt v4 changed too). Pre-registers expected mixed output, expected ABSENT terms as orthographic variants rather than missing concepts, and an expected multi-word matcher defect (Data سيت pattern); pre-registers defect criteria (claim-count preservation, no meaning drift, no invented Latin forms). Reports a conversion-rate figure from transliteration_audit, n=2 questions, DIRECTIONAL not statistical, raw counts not percentages. Does not supersede D82/D83 (produced by a script with no glossary call site in its history); does not address F3; does not close the sg05verify EXPECTED_COMMIT warning-vs-failure gap. Also recorded: D101 carries no changelog line of its own -- backfilling it is deferred to a separate decision, not part of this entry.
 - **v3.2 (27 Jul 2026):** D100 — D77 sanity gate rerun under prompt v3: FAIL (4/15 cases failed error_preserved: SG-01, SG-09, SG-10, SG-15). Regression on the D88 numeric class (SG-09) previously held by a targeted patch. Structural defect found: the gate never calls apply_glossary, so criterion 3 (transliteration_correct) is VOID for SG-10/12/15, not measured. New gate-design gap recorded (unforced distortion of an uninjected proposition, SG-14). Escalation path open but not exercised; remedy sequence deferred to gate-wiring fix + controlled comparison (D101).
 - **v3.1 (27 Jul 2026):** D99 — prompt v3 (generalized anti-knowledge-injection constraint) applied; fixtures SG-14 (POLARITY) / SG-15 (CAUSAL_DIRECTION) added; sanity-gate notebook hardened (dynamic n_cases + EXPECTED_COMMIT guard); two §5.13 violations recorded (D97's false git_commit-check claim; a withdrawn per-class-patch prompt draft); criterion-3 scope corrected to SG-10..15 with SG-14 registered non-gating. Outcome registered as D100.
@@ -1604,3 +1605,85 @@ Conversion rate: number of technical terms converted over number of technical-te
 - Does not address F3. F3 was diagnosed on a pre-glossary artifact; whether it persists must be re-checked against `SE-028_v3.json` under a separate entry.
 - Does not close the open item that `kaggle/runners/run-sanity-gate.ipynb` cell `sg05verify` treats an empty `EXPECTED_COMMIT` as a warning rather than a hard failure.
 - Does not close the open item that D101 carries no `## Changelog (condensed)` line.
+
+---
+
+## D103 — Outcome of D102: glossary layer measured; four findings recorded (2026-07-28)
+
+**Status:** OUTCOME. Registered against the pre-registration in D102. Executed at commit `e7bc9fa` on Kaggle T4, verified by the notebook's commit guard. No remedy is applied under this entry.
+
+### 1 — Execution record
+
+Both runs returned `status: SUCCESS`. Artifacts: `results/pipeline_demo/SE-028_v3.json` and `results/pipeline_demo/GN-040_v3.json`, committed immediately before this entry. Configuration as pre-registered: `llama-3.3-70b-versatile` decomposition, `nli_adapter_path: null` (zero-shot, D89 default), ASR `large-v3`. These are the first artifacts in the project produced by a pipeline containing the glossary layer.
+
+The notebook's commit guard confirmed the cloned commit as `e7bc9fa`. A first execution attempt failed at the audio conversion cell with `AudioSegmentationError: Video file not found`, because the Kaggle dataset had not yet been attached to the session. No artifact was produced and no measurement occurred, so that attempt is not recorded as a VOID run. The dataset was then attached and the notebook executed as committed, with no in-session code modification.
+
+### 2 — Glossary layer: all D102 §5 defect criteria passed
+
+| Criterion | SE-028 | GN-040 |
+|---|---|---|
+| `len(claims_raw) == len(claims)` | 6 = 6 | 5 = 5 |
+| Meaning drift after substitution | none | none |
+| Invented Latin form | none | none |
+| `residual_ambiguous_count` | 0 | 0 |
+
+Substitutions: SE-028 = 7 (`التست`→`Test` ×3, `الكود`/`كود`→`Code` ×4). GN-040 = 5 (`البيت`/`بت`/`بيت`→`bit` ×5). Total 12 substitutions across 3 distinct terms.
+
+D102 §4 expectation 1 (mixed output) confirmed. Expectations 2 and 3 were not exercised: no ABSENT classification and no multi-word compound occurred in this input.
+
+In support of D98's human-adjudication stance: `بيت` was substituted to `bit` in all five GN-040 occurrences, including inside `مجموعة من 16 بيت`, where `bit` is the contextually correct reading rather than `byte`. The closed-domain assumption held on this input. n=2; directional, not statistical.
+
+### 3 — F4: non-Arabic, non-Latin script emitted by the approved model
+
+`claims_raw` contains characters from neither script:
+
+- SE-028 claim 2: `тест` (Cyrillic), present in `claims_raw` before any glossary processing.
+- GN-040 claim 2: `故` (CJK).
+
+This is the same failure class that disqualified `llama-3.1-8b-instant` under D87 (Cyrillic characters in SG-07). It is now observed in `llama-3.3-70b-versatile`, the approved model, which passed the D77 sanity gate 8/8. The gate's fixtures did not elicit this class; real ASR input did.
+
+Both tokens are semantically correct substitutions in the wrong script, not random corruption: `тест` is the Russian word for *test*, and `故` is the Classical Chinese connective for *therefore*, occupying the position of Arabic `لذلك` in the sentence. This is cross-lingual token substitution, a known failure mode in multilingual decoders. It follows that detection does not require semantic analysis: a script whitelist (Arabic, Latin, digits, punctuation) would flag every instance of this class. No such check exists in the pipeline.
+
+The glossary cannot mitigate this: lookup matches registered forms, and a Cyrillic form is not registered.
+
+Note also that NLI scored the Cyrillic-bearing claim VERIFIED at `max_e = 0.998747`. mDeBERTa is multilingual and appears to have processed the Russian token correctly. The score was therefore not degraded — but this is undocumented, unintended behaviour, not a designed property.
+
+No remedy is registered here. Whether this warrants a new gate class, a model re-evaluation, or an output-validation layer is deferred.
+
+### 4 — F5: knowledge injection and reasoning leakage under prompt v4
+
+GN-040 `claims_raw` index 2, verbatim:
+
+> `الـ Byte يتكون من 8 بت، وليس 16 بت كما ذكر، ولكن هذا ما قيل،故 سوف أتركه كما هو: الـ Byte هو مجموعة من 16 بيت.`
+
+The model corrected the candidate's factual error (16 → 8), commented on the correction, leaked its own deliberation, then restored the original assertion. The injected error is preserved in the final position, so `error_preserved` would score YES under the D77 gate criteria, but the claim now carries the correct answer inside it.
+
+This violates the anti-knowledge-injection principle that is the substance of prompt v3 (D99) and preservation rules 1a–1e (D101). It is the first observation of prompt v4 behaviour on real ASR input rather than on gate fixtures.
+
+Consequence for scoring: the claim was judged CONTRADICTED at `max_c = 0.999063` against `GN040-C03`. The NLI judgment was made on mixed text containing both the wrong and the correct proposition, so the verdict cannot be attributed cleanly to the candidate's answer.
+
+### 5 — F6: the D102 §6 figure is not computable from the instrument
+
+D102 §6 pre-registered a conversion rate: converted terms over technical-term occurrences detected. `transliteration_audit` records substitutions only; it emits no record of terms that were detected and not converted. The numerator exists (7 and 5); the denominator was never instrumented.
+
+Recorded as a measurement-design defect, not corrected retroactively. Only raw substitution counts are reportable from this run. This is consistent with D102 §6's own instruction to report raw counts rather than percentages, but the rate itself is unavailable. Any denominator would require instrumenting the matcher and re-running.
+
+### 6 — F7: the layer's scope is wider than D102 §5 describes
+
+D102 §5 characterises the glossary as performing "substitution only". Comparison of `claims_raw` to `claims` shows orthographic normalisation is also applied: `أصغر`→`اصغر`, `تُسمى`→`تسمى`, `الـ Byte`→`ال Byte` (tatweel removal), with hamza and diacritic stripping throughout.
+
+No meaning drift resulted, so no D102 §5 criterion is breached. However, the description of the layer in D102 and in any external document is incomplete and must be corrected before publication.
+
+### 7 — Observation, not a finding: CONTRADICTED verdict on a correct claim
+
+SE-028 claim 4 (`تحسن وتنضف Code دون تغيير سلوكه`) received CONTRADICTED at `max_c = 0.999570` despite `max_e = 0.882707`. The proposition is correct with respect to TDD.
+
+This resembles the F3 pattern (false CONTRADICTED on Arabic paraphrase structure). It is NOT registered as the same instance: the decomposition differs from the pre-glossary run, so claim indices are not comparable across artifacts. Recorded as an independent observation for F3's separate investigation.
+
+### 8 — Scope limits
+
+- Does not supersede D82/D83; those remain pre-glossary figures.
+- Does not resolve F3, F4, F5, F6, or F7. Each requires its own registered decision.
+- Does not close the `sg05verify` `EXPECTED_COMMIT` warning-vs-failure gap.
+- Does not close the absence of a changelog line for D101.
+- D89-b remains HARD-GATED on a full gate PASS.
