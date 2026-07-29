@@ -1,0 +1,685 @@
+{
+  "meta": {
+    "run_timestamp_utc": "20260729T201635Z",
+    "model_used": "openai/gpt-oss-120b",
+    "git_commit": "eb16b3bd79c252f6b647afa5bb61369a23bcc60a",
+    "n_cases": 15,
+    "n_success": 14,
+    "n_error": 1
+  },
+  "records": [
+    {
+      "case_id": "SG-01",
+      "track": "CS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "LIFO دي صفة الـ Stack مش الـ Heap، والـ recursion/function calls بيتخزنوا في الـ Call Stack مش الـ Heap. الغلطة لازم تفضل زي ما هي في الـ claims.",
+      "latin_terms_expected": [
+        "heap",
+        "LIFO",
+        "function calls",
+        "recursion"
+      ],
+      "input_answer_text": "طب يعني الهيب ده هو نوع من الداتا ستركتشر بيشتغل بنظام لايفو يعني آخر حاجة تتحط هي أول حاجة تتشال وعشان كده بنستخدمه في تخزين الـ function calls والـ recursion",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:16:35.217671+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الهيب هو نوع من data structure.",
+        "الهيب يعمل بنظام LIFO.",
+        "في نظام LIFO، آخر شيء يُضاف هو أول شيء يُزال.",
+        "يُستخدم الهيب لتخزين function calls.",
+        "يُستخدم الهيب لتخزين recursion."
+      ],
+      "claims_final": [
+        "Heap هو نوع من data structure.",
+        "Heap يعمل بنظام LIFO.",
+        "في نظام LIFO، اخر شيء يضاف هو اول شيء يزال.",
+        "يستخدم Heap لتخزين function calls.",
+        "يستخدم Heap لتخزين recursion."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الهيب",
+            "replacement_term": "Heap"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "الهيب",
+            "replacement_term": "Heap"
+          },
+          {
+            "claim_index": 3,
+            "matched_form": "الهيب",
+            "replacement_term": "Heap"
+          },
+          {
+            "claim_index": 4,
+            "matched_form": "الهيب",
+            "replacement_term": "Heap"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 1.891,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-02",
+      "track": "CS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "ناقصة: مفيش ذكر إن الـ threads بتشارك نفس الـ memory جوه نفس الـ process. المفروض الـ claims متحتويش على إضافة الجزء الناقص ده من عند الموديل.",
+      "latin_terms_expected": [
+        "process",
+        "thread",
+        "memory"
+      ],
+      "input_answer_text": "آه يعني الفرق بين البروسيس والثريد إن كل بروسيس ليها ميموري منفصلة عن باقي البروسيسز",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:16:37.108823+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الفرق بين الـ process والـ thread هو أن كل process له ذاكرة منفصلة عن باقي الـ process."
+      ],
+      "claims_final": [
+        "الفرق بين ال process وال thread هو ان كل process له ذاكرة منفصلة عن باقي ال process."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 1.477,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-03",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "ده تعريف الـ Underfitting مش الـ Overfitting (العكس: موديل معقد بيحفظ الـ noise). الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "overfitting",
+        "patterns"
+      ],
+      "input_answer_text": "يعني الأوفرفيتينج ده بيحصل لما الموديل يكون بسيط جدا جدا وما بيقدرش يمسك الـ patterns اللي في الداتا فبيدي أداء ضعيف",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:16:38.585983+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الأوفرفيتينج يحدث عندما يكون النموذج بسيطًا جدًا جدًا.",
+        "النموذج البسيط جدًا جدًا لا يستطيع التقاط الأنماط الموجودة في البيانات.",
+        "عدم قدرة النموذج على التقاط الأنماط الموجودة في البيانات يؤدي إلى أداء ضعيف."
+      ],
+      "claims_final": [
+        "الاوفرفيتينج يحدث عندما يكون النموذج بسيطا جدا جدا.",
+        "النموذج البسيط جدا جدا لا يستطيع التقاط الانماط الموجودة في البيانات.",
+        "عدم قدرة النموذج على التقاط الانماط الموجودة في البيانات يؤدي الى اداء ضعيف."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 0.999,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-04",
+      "track": "DS",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ recall خالص في الإجابة. الاختبار هنا مختلف عن الباقي — مش بس 'هل الغلط فضل غلط' لكن كمان 'هل الموديل هيضيف claim عن recall من عنده رغم إنه مش موجود في الإدخال'. recall لازم يفضل غايب تمامًا من الـ output.",
+      "latin_terms_expected": [
+        "classification",
+        "precision",
+        "positive"
+      ],
+      "input_answer_text": "طب لما بنقيم موديل الكلاسيفيكيشن بنبص على البريسيجن يعني هي عدد التوقعات الصح من إجمالي اللي الموديل قال إنها بوزيتيف وده أهم مقياس عندي عشان أعرف الموديل شغال كويس ولا لأ",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:16:39.584680+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "عند تقييم نموذج تصنيف ننظر إلى الـ precision.",
+        "الـ precision هو عدد التوقعات الصحيحة من إجمالي ما قال النموذج إنه إيجابي.",
+        "الـ precision هو أهم مقياس عند المتحدث لتحديد ما إذا كان النموذج يعمل جيدًا أم لا."
+      ],
+      "claims_final": [
+        "عند تقييم نموذج تصنيف ننظر الى ال precision.",
+        "ال precision هو عدد التوقعات الصحيحة من اجمالي ما قال النموذج انه ايجابي.",
+        "ال precision هو اهم مقياس عند المتحدث لتحديد ما اذا كان النموذج يعمل جيدا ام لا."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 20.846,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-05",
+      "track": "DA",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "التعريفين مقلوبين: اللي اتوصف إنه Normalization هو تعريف الـ Standardization والعكس. الغلطة لازم تفضل زي ما هي.",
+      "latin_terms_expected": [
+        "Normalization",
+        "Standardization"
+      ],
+      "input_answer_text": "يعني الـ Normalization بتحول البيانات عشان يبقى المتوسط صفر والانحراف المعياري واحد أما الـ Standardization بتحول القيم لمدى بين صفر وواحد",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:17:00.431015+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الـ Normalization يحول البيانات بحيث يصبح المتوسط صفر.",
+        "الـ Normalization يحول البيانات بحيث يصبح الانحراف المعياري واحد.",
+        "الـ Standardization يحول القيم إلى مدى بين صفر وواحد."
+      ],
+      "claims_final": [
+        "ال Normalization يحول البيانات بحيث يصبح المتوسط صفر.",
+        "ال Normalization يحول البيانات بحيث يصبح الانحراف المعياري واحد.",
+        "ال Standardization يحول القيم الى مدى بين صفر وواحد."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 20.972,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-06",
+      "track": "DA",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST: مفيش ذكر لـ LEFT JOIN خالص في الإجابة. LEFT JOIN لازم يفضل غايب تمامًا من الـ output — الموديل ممنوع يضيفه من عنده حتى لو 'منطقيًا' كان متوقع كجزء من سؤال المقارنة.",
+      "latin_terms_expected": [
+        "SQL",
+        "INNER JOIN",
+        "Orders",
+        "Customers"
+      ],
+      "input_answer_text": "طب في الـ SQL لما بنستخدم INNER JOIN بين جدولين بيرجعلنا بس الصفوف اللي ليها تطابق على العمود اللي بنعمل عليه الجوين يعني مثلا لو عندي جدول Orders وجدول Customers الـ INNER JOIN هيجيب بس الأوردرات اللي ليها كستمر موجود فعلا",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:17:21.402936+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "في SQL، عندما يُستَخدم INNER JOIN بين جدولين يتم إرجاع الصفوف التي لها تطابق على العمود الذي يُجرى عليه الجوين.",
+        "إذا كان هناك جدول Orders وجدول Customers، فإن INNER JOIN سيجلب فقط الصفوف من جدول Orders التي لها عميل موجود فعلاً في جدول Customers."
+      ],
+      "claims_final": [
+        "في SQL، عندما يستخدم INNER JOIN بين جدولين يتم ارجاع الصفوف التي لها تطابق على العمود الذي يجرى عليه JOIN.",
+        "اذا كان هناك جدول Orders وجدول Customers، فان INNER JOIN سيجلب فقط الصفوف من جدول Orders التي لها عميل موجود فعلا في جدول Customers."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الجوين",
+            "replacement_term": "JOIN"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 6.276,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-07",
+      "track": "SE",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "غلطتين مع بعض: (1) الـ rebase فعليًا بيعيد كتابة الـ commit history (عكس الادعاء)، (2) الـ conflicts محتاجة تدخل يدوي غالبًا مش 'بيحلها لوحده'. الاتنين لازم يفضلوا زي ما هم غلط.",
+      "latin_terms_expected": [
+        "Git",
+        "merge",
+        "rebase",
+        "branches",
+        "commit history",
+        "conflicts"
+      ],
+      "input_answer_text": "يعني الفرق بين الميرج والريبيز في الجيت إن الريبيز بيدمج البرانشز من غير ما يغير الكوميت هيستوري خالص وده أأمن دايما من الميرج ومفيش داعي نتكلم عن الكونفليكتس لأن الجيت بيحلها لوحده",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:17:27.678539+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الريبيز يدمج البرانشز دون أن يغير الكوميت هيستوري.",
+        "الريبيز أأمن دائمًا من الميرج.",
+        "لا داعي للحديث عن الكونفليكتس لأن الجيت يحلها بنفسه."
+      ],
+      "claims_final": [
+        "Rebase يدمج Branches دون ان يغير Commit هيستوري.",
+        "Rebase اامن دائما من Merge.",
+        "لا داعي للحديث عن الكونفليكتس لان الجيت يحلها بنفسه."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الريبيز",
+            "replacement_term": "Rebase"
+          },
+          {
+            "claim_index": 0,
+            "matched_form": "البرانشز",
+            "replacement_term": "Branches"
+          },
+          {
+            "claim_index": 0,
+            "matched_form": "الكوميت",
+            "replacement_term": "Commit"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "الريبيز",
+            "replacement_term": "Rebase"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "الميرج",
+            "replacement_term": "Merge"
+          }
+        ],
+        "residual_ambiguous_count": 1
+      },
+      "error_message": null,
+      "elapsed_seconds": 21.813,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-08",
+      "track": "GN",
+      "injected_error_type": "BOTH",
+      "injected_error_anchor": "ثلاث غلطات: (1) الفرق الجوهري تشفير (TLS/SSL) مش سرعة، (2) البورت الافتراضي لـ HTTPS هو 443 مش 80، (3) 'من غير أي تشفير' تناقض مباشر مع تعريف HTTPS نفسه. الثلاثة لازم يفضلوا زي ما هم.",
+      "latin_terms_expected": [
+        "HTTP",
+        "HTTPS"
+      ],
+      "input_answer_text": "يعني الفرق بين HTTP و HTTPS إن HTTPS بس نسخة أسرع من HTTP وبتستخدم نفس البورت ثمانين وبتشتغل بنفس الطريقة بالظبط من غير أي تشفير إضافي",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:17:49.492103+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "HTTPS نسخة أسرع من HTTP.",
+        "HTTPS تستخدم نفس البورت ثمانين.",
+        "HTTPS تعمل بنفس الطريقة بالضبط دون أي تشفير إضافي."
+      ],
+      "claims_final": [
+        "HTTPS نسخة اسرع من HTTP.",
+        "HTTPS تستخدم نفس البورت ثمانين.",
+        "HTTPS تعمل بنفس الطريقة بالضبط دون اي تشفير اضافي."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 22.873,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-09",
+      "track": "DA",
+      "injected_error_type": "NUMERIC_FACT",
+      "injected_error_anchor": "قيمة alpha القياسية في A/B testing هي 0.05 مش 0.5 (خطأ فاصلة عشرية واقعي في ASR للعامية). الغلطة لازم تفضل زي ما هي (0.5) في الـ claims — القيمة الصحيحة 0.05 ما ينفعش تظهر في الإخراج. حالة D90 (نسخة مُستبدلة بعد مراجعة): رقم عشري في سياق إحصائي، بعيد تمامًا عن فئتي bit-width (GN-040, illustrative example 3) وport numbers (SG-08) لتجنب أي تداخل فئوي.",
+      "latin_terms_expected": [
+        "A/B testing",
+        "alpha",
+        "p-value",
+        "null hypothesis"
+      ],
+      "input_answer_text": "يعني بص لما بعمل A/B testing عادة بحدد significance level يعني alpha بقيمة 0.5 يعني لو الـ p-value طلع أقل من كده بارفض الـ null hypothesis وأقول في فرق حقيقي بين النسختين",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:18:12.365042+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "في اختبار A/B testing يحدد المتحدث عادةً مستوى الدلالة significance level المسمى alpha بقيمة 0.5.",
+        "إذا كان الـ p-value أقل من 0.5 يرفض المتحدث الفرضية الصفرية null hypothesis.",
+        "يعلن المتحدث وجود فرق حقيقي بين النسختين عندما يرفض الفرضية الصفرية."
+      ],
+      "claims_final": [
+        "في اختبار A/B testing يحدد المتحدث عادة مستوى الدلالة significance level المسمى alpha بقيمة 0.5.",
+        "اذا كان ال p-value اقل من 0.5 يرفض المتحدث الفرضية الصفرية null hypothesis.",
+        "يعلن المتحدث وجود فرق حقيقي بين النسختين عندما يرفض الفرضية الصفرية."
+      ],
+      "transliteration_audit": {
+        "substitutions": [],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 20.992,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-10",
+      "track": "SE",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "TDD (Test-Driven Development) بالتعريف الفعلي: التست بيتكتب الأول قبل الكود عشان يوجه التطوير (دورة red-green-refactor). الإجابة عكست الترتيب (الكود الأول وبعدين التست) — دي غلطة واقعية لازم تفضل زي ما هي في الـ claims، من غير ما الموديل يصلحها للترتيب الصحيح أو يعلّق عليها.",
+      "latin_terms_expected": [
+        "TDD",
+        "code",
+        "test",
+        "database"
+      ],
+      "input_answer_text": "طيب يعني بص لو عايز تعمل TDD الأول المفروض تكتب الكود بتاعك الأول وبعدين تيجي تكتب التست عليه عشان تتأكد إنه شغال والداتا بيز بتاعتك المفروض تتوصل بيها من جوه التست",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:18:33.356949+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "إذا أردت ممارسة TDD، يجب أن تكتب الكود أولاً.",
+        "بعد كتابة الكود، يجب أن تكتب الاختبار عليه لتتأكد من أنه يعمل.",
+        "يجب أن تتصل قاعدة البيانات من داخل الاختبار."
+      ],
+      "claims_final": [
+        "اذا اردت ممارسة TDD، يجب ان تكتب Code اولا.",
+        "بعد كتابة Code، يجب ان تكتب الاختبار عليه لتتاكد من انه يعمل.",
+        "يجب ان تتصل قاعدة البيانات من داخل الاختبار."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الكود",
+            "replacement_term": "Code"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "الكود",
+            "replacement_term": "Code"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 21.707,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-11",
+      "track": "GN",
+      "injected_error_type": "NUMERIC_FACT",
+      "injected_error_anchor": "الـ Byte الفعلي بيتكون من 8 bits مش 16. كلمة 'بيت' هنا استخدمت بشكل غامض للدلالة على كل من bit (الوحدة الصغيرة) و byte (الوحدة الأكبر المكوّنة من 16 منها) — تطابق شبه-حرفي حقيقي في الـ ASR المصري، تكرار متعمد لحالة GN-040 الميدانية (D94 C1 FAIL). المتحدث نفسه ذكر المقارنة بـ 8 كجزء من كلامه (مش إضافة من الموديل) — الـ claims لازم تحافظ على الرقم 16 والمقارنة بـ 8 بالظبط زي ما اتقالوا، من غير أي تعليق تفسيري أو تصحيحي إضافي من عند الموديل زي 'وليس 8 كما ذكر في الأصل' (ده بالضبط فشل D94 المزدوج: عدم حفظ + إضافة غير مصرح بها).",
+      "latin_terms_expected": [
+        "bit",
+        "byte"
+      ],
+      "input_answer_text": "طب يعني بص الـ بيت هو أصغر وحدة تخزين في الكمبيوتر وبعدين لما تجمع 16 من الـ بيت دول مع بعض بيبقى عندك وحدة أكبر اسمها برضو بيت وعشان كده بنقول إن البيت الكبير ده بيتكون من 16 بيت مش من 8",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:18:55.063726+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الـ بيت هو أصغر وحدة تخزين في الكمبيوتر.",
+        "عند جمع 16 من الـ بيت معًا يحصل على وحدة أكبر تُسمى أيضًا بيت.",
+        "يُقال إن الـ بيت الكبير يتكون من 16 بيت وليس من 8."
+      ],
+      "claims_final": [
+        "ال bit هو اصغر وحدة تخزين في Computer.",
+        "عند جمع 16 من ال bit معا يحصل على وحدة اكبر تسمى ايضا bit.",
+        "يقال ان ال bit الكبير يتكون من 16 bit وليس من 8."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "بيت",
+            "replacement_term": "bit"
+          },
+          {
+            "claim_index": 0,
+            "matched_form": "الكمبيوتر",
+            "replacement_term": "Computer"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "بيت",
+            "replacement_term": "bit"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "بيت",
+            "replacement_term": "bit"
+          },
+          {
+            "claim_index": 2,
+            "matched_form": "بيت",
+            "replacement_term": "bit"
+          },
+          {
+            "claim_index": 2,
+            "matched_form": "بيت",
+            "replacement_term": "bit"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 20.893,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-12",
+      "track": "SE",
+      "injected_error_type": "NONE",
+      "injected_error_anchor": "لا توجد غلطة واقعية متعمدة في هذه الحالة — الغرض الأساسي اختبار تحويل الاختصار المهجأ حرفيًا (تي دي دي) دون أي إضافة أو حذف. error_preserved يُسجَّل N/A (لا توجد غلطة لتُحفظ)؛ no_unauthorized_addition يبقى قابلاً للتطبيق كاملاً.",
+      "latin_terms_expected": [
+        "TDD",
+        "test",
+        "code"
+      ],
+      "input_answer_text": "طب يعني بص أسلوب الـ تي دي دي ده معناه إنك تكتب التست الأول قبل ما تكتب أي كود يعني بتحدد الحاجة اللي عايز تتأكد منها الأول وبعدين تيجي تكتب أقل كود ممكن عشان يعديها",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:19:15.957173+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "أسلوب TDD يعني كتابة الاختبار أولاً قبل كتابة أي كود.",
+        "أسلوب TDD يتضمن تحديد الحاجة التي تريد التأكد منها أولاً.",
+        "أسلوب TDD يتبع كتابة أقل كود ممكن لكي ينجح الاختبار."
+      ],
+      "claims_final": [
+        "اسلوب TDD يعني كتابة الاختبار اولا قبل كتابة اي Code.",
+        "اسلوب TDD يتضمن تحديد الحاجة التي تريد التاكد منها اولا.",
+        "اسلوب TDD يتبع كتابة اقل Code ممكن لكي ينجح الاختبار."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "كود",
+            "replacement_term": "Code"
+          },
+          {
+            "claim_index": 2,
+            "matched_form": "كود",
+            "replacement_term": "Code"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 1.03,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-13",
+      "track": "SE",
+      "injected_error_type": "INCOMPLETE",
+      "injected_error_anchor": "NO-ADDITION TEST (نوع جديد، P5): المتحدث بدأ يسمي الدورة ('اسمها يعني') وتوقف من غير ما يكمل الاسم أبدًا. هذه إعادة إنتاج مباشرة لـ D94 O-b (SE-028 claim 2 اخترع الموديل اسم 'دورة التطوير' من عنده رغم إن المتحدث ما سماهاش). الـ claims لازم تصف الخطوات (كتابة كود، عمل تست، تعديل، تكرار) من غير أي اسم يُنسب للدورة من عند الموديل — حتى لو الاسم بديهي أو شائع في الصناعة (زي 'Development Cycle' أو 'دورة التطوير').",
+      "latin_terms_expected": [
+        "code",
+        "test"
+      ],
+      "input_answer_text": "طيب يعني في التطوير فيه خطوات بتتكرر يعني بتكتب كود وبعدين تعمل تست وبعدين تعدل وترجع تاني للخطوة الأولى اسمها يعني",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:19:16.987509+00:00",
+      "execution_status": "ERROR",
+      "claims_raw": null,
+      "claims_final": null,
+      "transliteration_audit": null,
+      "error_message": "Groq returned 429: {\"error\":{\"message\":\"Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01ky4nfv54ed8rmyakc2w8bykr` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 7197, Requested 2699. Please try again in 14.219999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+      "elapsed_seconds": 48.084,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-14",
+      "track": "DS",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "error_class: POLARITY. Polarity inversion on a true property: the speaker negates that the model memorises the training noise, and reinforces the inversion by asserting the model learns only the general pattern. The final clause (poor performance on the test set) is deliberately correct. Preservation requirement: the negation must survive into the claims exactly as uttered. Any claim asserting that the model memorises the noise is a silent correction and fails the gate.",
+      "latin_terms_expected": [
+        "overfitting",
+        "training",
+        "noise",
+        "pattern",
+        "test set",
+        "data set"
+      ],
+      "input_answer_text": "يعني الاوفرفيتينج ده بيحصل لما الموديل يتدرب على الداتا سيت بتاعة التريننج ومايحفظش النويز اللي جواها هو بيتعلم الباترن العام بس وعشان كده لما نجربه على التيست سيت بيطلع اداؤه وحش قوي",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:20:05.071485+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الاوفرفيتينج يحدث عندما يتدرب الموديل على الداتا سيت الخاصة بالتريننج.",
+        "الاوفرفيتينج يعني أن الموديل لا يحفظ النويز الموجود داخل الداتا سيت.",
+        "الموديل يتعلم الباترن العام فقط.",
+        "عندما يُجرّب الموديل على التيست سيت، يكون أداؤه وحش قوي."
+      ],
+      "claims_final": [
+        "الاوفرفيتينج يحدث عندما يتدرب الموديل على Data سيت الخاصة بالتريننج.",
+        "الاوفرفيتينج يعني ان الموديل لا يحفظ النويز الموجود داخل Data سيت.",
+        "الموديل يتعلم الباترن العام فقط.",
+        "عندما يجرب الموديل على التيست سيت، يكون اداؤه وحش قوي."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الداتا",
+            "replacement_term": "Data"
+          },
+          {
+            "claim_index": 1,
+            "matched_form": "الداتا",
+            "replacement_term": "Data"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 26.76,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    },
+    {
+      "case_id": "SG-15",
+      "track": "SE",
+      "injected_error_type": "WRONG_FACT",
+      "injected_error_anchor": "error_class: CAUSAL_DIRECTION. Causal direction reversal with an explicit causal marker: the speaker makes deadlock the cause of the hold-and-wait condition, whereas hold-and-wait plus circular wait produce deadlock. The final clause (the application stops responding) is deliberately correct. Preservation requirement: the stated causal direction must survive into the claims exactly as uttered. Any claim that reverses it to the correct direction is a silent correction and fails the gate. Adding the Coffman conditions, or any domain knowledge not uttered, fails criterion 2.",
+      "latin_terms_expected": [
+        "deadlock",
+        "system",
+        "thread",
+        "resource",
+        "application"
+      ],
+      "input_answer_text": "الديدلوك لما بيحصل في السيستم هو اللي بيسبب ان التريدز تمسك الريسورسيز وتستنى بعضها وكل واحد فيهم مستني التاني يسيب اللي معاه وعشان كده الابليكيشن بيقف مش بيرد",
+      "model_used": "openai/gpt-oss-120b",
+      "timestamp_utc": "2026-07-29T20:20:31.831797+00:00",
+      "execution_status": "SUCCESS",
+      "claims_raw": [
+        "الديدلوك عندما يحدث في النظام يسبب أن الخيوط تمسك الموارد.",
+        "الخيوط التي تمسك الموارد تنتظر بعضها البعض.",
+        "كل خيط ينتظر الخيط الآخر أن يترك الموارد التي يمتلكها.",
+        "بسبب الديدلوك يتوقف التطبيق.",
+        "بسبب الديدلوك لا يستجيب التطبيق."
+      ],
+      "claims_final": [
+        "Deadlock عندما يحدث في النظام يسبب ان الخيوط تمسك الموارد.",
+        "الخيوط التي تمسك الموارد تنتظر بعضها البعض.",
+        "كل خيط ينتظر الخيط الاخر ان يترك الموارد التي يمتلكها.",
+        "بسبب Deadlock يتوقف التطبيق.",
+        "بسبب Deadlock لا يستجيب التطبيق."
+      ],
+      "transliteration_audit": {
+        "substitutions": [
+          {
+            "claim_index": 0,
+            "matched_form": "الديدلوك",
+            "replacement_term": "Deadlock"
+          },
+          {
+            "claim_index": 3,
+            "matched_form": "الديدلوك",
+            "replacement_term": "Deadlock"
+          },
+          {
+            "claim_index": 4,
+            "matched_form": "الديدلوك",
+            "replacement_term": "Deadlock"
+          }
+        ],
+        "residual_ambiguous_count": 0
+      },
+      "error_message": null,
+      "elapsed_seconds": 6.353,
+      "error_preserved": "",
+      "no_unauthorized_addition": "",
+      "atomicity_verdict": "",
+      "transliteration_correct": "",
+      "reviewer_notes": ""
+    }
+  ]
+}
