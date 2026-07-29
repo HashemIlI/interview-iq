@@ -1687,3 +1687,69 @@ This resembles the F3 pattern (false CONTRADICTED on Arabic paraphrase structure
 - Does not close the `sg05verify` `EXPECTED_COMMIT` warning-vs-failure gap.
 - Does not close the absence of a changelog line for D101.
 - D89-b remains HARD-GATED on a full gate PASS.
+
+---
+
+## D104 — D101 v4 gate outcome: FAIL — ordering class survives a third prompt version; first transliteration measurement (2026-07-29)
+
+**Run:** Kaggle sanity-gate thin-runner, run_20260729T192145Z, commit fc1925c5fd2780ad69d8bcef6082ef20ad37c21f, Groq llama-3.3-70b-versatile, 15/15 executed, 0 API errors. EXPECTED_COMMIT guard armed and did not fire. Dual judgment surface per D101: error_preserved and no_unauthorized_addition judged on claims_raw; transliteration_correct on claims_final. Human judgment: Ahmed.
+
+**Verdicts — error_preserved:**
+- SG-01 YES. The D100 entity-substitution regression is fixed: الهيب is preserved in all five claims (v3 emitted الهاش).
+- SG-02..SG-08 YES, unchanged.
+- SG-09 YES. The D100 numeric regression is fixed: alpha 0.5 preserved in claims 0 and 1 (v3 emitted 0.05).
+- SG-10 **NO**. Input states code first then test; claims 0 and 1 state test before code. A silent reversal to the correct TDD order. This class has now failed under prompt v2 (D96), v3 (D100) and v4 (this run), the last of which contained an explicit ordering rule (1b).
+- SG-11 YES. 16 and the speaker's own "وليس من 8" carried verbatim, no added commentary. P1 holds.
+- SG-12, SG-13 N/A per fixture designation. SG-13 invented no name; P5 holds.
+- SG-14 YES under its pre-registered criterion: the negation survived (دون حفظ الضوضاء). Recorded again, as in D100 §4: the deliberately-correct final clause was distorted — the speaker's اداؤه وحش قوي (very bad) became اداءه بشكل قوي (strong). This is Egyptian-dialect misparse of قوي as an adjective rather than an intensifier, not knowledge injection; it does not meet this fixture's failure condition but is a measured meaning-distortion defect.
+- SG-15 YES. The D100 causal-direction regression is fixed: الديدلوك هو السبب في is preserved (v3 emitted يحدث عندما).
+
+**no_unauthorized_addition = YES on 15/15.** No Coffman conditions in SG-15, no recall in SG-04, no LEFT JOIN in SG-06, no invented cycle name in SG-13.
+
+**Gate verdict: FAIL** (SG-10, zero tolerance per D77).
+
+**Net effect of prompt v4:** three of the four D100 failures were repaired (entity, numeric, causal direction) by adding explicit rules 1a–1e beneath the retained general principle. One class was not. Five prompt versions across D90, D95, D97/D99, D101 have not eliminated silent correction of the ordering class.
+
+**Transliteration baseline — first evidentiary measurement in the project (non-blocking for this run per D101).** Substitution fired correctly in nine cases (Heap, LIFO, Process, Thread, Classification, Precision, JOIN, Rebase, Branches, Commit, Merge, Test, Code, TDD, Deadlock, Application). Four defects measured:
+- T1 (SG-11, severe) The AMBIGUOUS near-homograph بيت was substituted to bit at every occurrence including those denoting Byte, so claim 2 reads "bit الكبير يتكون من 16 bit، وليس من 8". The bit/byte distinction the fixture exists to test is destroyed, and residual_ambiguous_count is 0 — the ambiguity was silently resolved, not flagged. This is the cost side named and accepted in D98, now observed destroying fixture content. It requires its own decision.
+- T2 (SG-02) The matched form والثريد consumed the conjunction, producing "الفرق بين Process Thread". Word-boundary matching does not exclude the proclitic waw.
+- T3 (SG-01, SG-10) The multi-word defect predicted in D99 is confirmed: الداتا ستركتشر → Data ستركتشر, and الداتا بيز → Data.
+- T4 (SG-15) F4 (D103) reproduced inside the gate: claim 2 contains a CJK character, ي释ع. Cross-lingual token substitution is not confined to real-audio input.
+- Also confirmed in-gate: F7 (D103) — the layer strips hamza/alef diacritics throughout (اخر, اامن, اداء), i.e. it performs orthographic normalisation beyond substitution.
+- SG-14 recorded 0 substitutions, matching the D99 registered exception (0 of its 11 forms are IN_GLOSSARY).
+
+**Consequence — binding stop rule from D101 fires:** v4 FAILED, therefore model replacement proceeds under the D77 gate procedure. No prompt v5. Pre-registered as D105.
+
+**Barriers unchanged:** D89-b remains HARD-GATED on a full gate PASS. F3, G4, Q2, Q7, G3, Q10, G1 untouched.
+
+---
+
+## D105 — Model replacement: D77 amended for reasoning models; fixed candidate ladder (pre-registered) (2026-07-29)
+
+**Status:** PRE-REGISTERED. Outcome registered separately per candidate.
+
+**Trigger:** D104 gate FAIL fires D101's stop rule. The decomposition module's failure is a model behaviour, not a prompt defect: five prompt versions repaired four error classes and left one.
+
+**Amendment to D77 (reasoning models).** D77 barred reasoning models after nemotron leaked chain-of-thought into the output (D76). The bar was empirical, not principled. It is amended: a reasoning model MAY be evaluated, subject to Criterion 0 below. If Criterion 0 fails, the candidate is rejected on D77 grounds and its run is recorded as non-evidentiary for the preservation criteria — not as a FAIL, since leaked reasoning invalidates the output surface rather than testing it.
+
+**Live model inventory (verified this session via GET https://api.groq.com/openai/v1/models, not from memory):** openai/gpt-oss-120b, openai/gpt-oss-20b, openai/gpt-oss-safeguard-20b, qwen/qwen3.6-27b, allam-2-7b, llama-3.3-70b-versatile, llama-3.1-8b-instant, groq/compound, groq/compound-mini, plus whisper/orpheus/prompt-guard models. Excluded from candidacy: audio and guard models (wrong task); groq/compound and compound-mini (agentic, tool- and search-enabled — non-deterministic for this task); llama-3.1-8b-instant (rejected D87, fabricated claim on SG-01, Cyrillic characters on SG-07 — not re-tested without a decision superseding D87); llama-3.3-70b-versatile (the incumbent under replacement).
+
+**Candidate ladder — order fixed before any run, and not to be reordered after seeing a result:**
+1. openai/gpt-oss-120b
+2. allam-2-7b
+3. qwen/qwen3.6-27b
+Rationale recorded before execution: the observed failure is instruction adherence under a competing knowledge prior, so the largest instruction-tuned candidate is tried first; allam-2-7b is Arabic-native, which is directly relevant to dialect-to-MSA normalisation, and is non-reasoning; qwen3.6-27b is a hybrid-thinking fallback.
+
+**The only variable that changes is GROQ_MODEL.** Verified this session: client.py:47 reads it from the repo-root .env at import; scripts/llm_decomposition_sanity_gate.py has no override and no model logic of its own. Therefore for each candidate the ONLY change is the model id written into .env by the gate notebook's credentials cell. No change to system_prompt.md, sg_cases.json, the gate script, transliteration.py, or the glossary. No request-parameter changes: reasoning_effort and response_format are NOT set for these runs. Any such change would confound the comparison and must be its own pre-registered decision.
+
+**Criteria per candidate, one gate run of 15 fixtures each:**
+- Criterion 0 (new, D77 amendment): no chain-of-thought, analysis channel, or reasoning preamble appears in any claim. Judged first, by human inspection of claims_raw. Failure ⇒ candidate rejected, run non-evidentiary for criteria 1–3.
+- Criterion 1: error_preserved in {YES, N/A} on all 15. Zero tolerance, unchanged from D77.
+- Criterion 2: no_unauthorized_addition = YES on all 15. Zero tolerance.
+- Criterion 3: transliteration_correct recorded, NON-BLOCKING — it measures the glossary, which is identical across candidates.
+- atomicity_verdict tracked, non-blocking.
+- Execution errors: if n_error > 0, the run is VOID for that candidate and is rerun once before judgment.
+
+**Stop rule (binding, replaces D101's):** the first candidate to satisfy Criteria 0–2 is adopted as GROQ_MODEL and the decomposition module is CLOSED; D89-b unblocks immediately. If all three candidates fail, work on this module stops and the limit is documented as a measured limitation supported by the D77–D105 record, 15 fixtures, five prompt versions and four models.
+
+**Out of scope, unchanged:** D89-b remains HARD-GATED until a candidate passes. F3, G4, Q2, Q7, G3, Q10, G1 untouched. T1 (the SG-11 AMBIGUOUS-substitution defect from D104) is registered as an open item and is NOT addressed by this decision — the glossary is held constant across candidates.
