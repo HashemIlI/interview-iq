@@ -1753,3 +1753,40 @@ Rationale recorded before execution: the observed failure is instruction adheren
 **Stop rule (binding, replaces D101's):** the first candidate to satisfy Criteria 0–2 is adopted as GROQ_MODEL and the decomposition module is CLOSED; D89-b unblocks immediately. If all three candidates fail, work on this module stops and the limit is documented as a measured limitation supported by the D77–D105 record, 15 fixtures, five prompt versions and four models.
 
 **Out of scope, unchanged:** D89-b remains HARD-GATED until a candidate passes. F3, G4, Q2, Q7, G3, Q10, G1 untouched. T1 (the SG-11 AMBIGUOUS-substitution defect from D104) is registered as an open item and is NOT addressed by this decision — the glossary is held constant across candidates.
+
+---
+
+## D106 — Model replacement outcome: openai/gpt-oss-120b PASSES the gate; decomposition module CLOSED (2026-07-29)
+
+**Candidate 1 of the D105 ladder. Two runs:**
+- run_20260729T201635Z — **VOID, non-evidentiary.** n_error=1: SG-13 returned Groq HTTP 429, tokens-per-minute limit (Limit 8000, Used 7197, Requested 2699). Per D105 the run was voided and rerun once. Recorded rather than discarded (D78/D79 precedent). Note that SG-13 is the P5 invented-name test, so the class that mattered most was precisely the one unavailable.
+- run_20260729T204855Z — **EVIDENTIARY.** model_used=openai/gpt-oss-120b, git_commit=eb16b3bd79c252f6b647afa5bb61369a23bcc60a, n_cases=15, n_success=15, n_error=0. EXPECTED_COMMIT guard armed and did not fire.
+
+**Only variable changed relative to D104: GROQ_MODEL.** system_prompt.md (v4), sg_cases.json (15 fixtures), the gate script, transliteration.py and glossary v2 are unchanged; verified by an empty git diff --stat across those five paths and no edits to them since. No request-parameter changes: reasoning_effort and response_format were not set.
+
+**Verdicts (human judgment, Ahmed):**
+- **Criterion 0** (D77 amendment, no reasoning leakage): **PASS.** No chain-of-thought, analysis channel or reasoning preamble in any claim across all 15 cases. The amendment's condition is satisfied for this model.
+- **Criterion 1 (error_preserved): YES on 14, N/A on SG-12, zero NO.**
+  - SG-10 (ordering) preserved — claims state code first, then the test. This class had failed under prompt v2 (D96), v3 (D100) and v4 (D104) with llama-3.3-70b-versatile, the last of which contained explicit rule 1b. The failure was a model property, not a prompt defect, as D105 hypothesised.
+  - SG-15 (causal direction) preserved — deadlock stated as the cause of the threads holding resources.
+  - SG-14 (polarity) preserved, and the dialect distortion recorded twice previously (D100 §4 and D104, where اداؤه وحش قوي became strong performance) did not recur: rendered سيئا جدا.
+  - SG-01 (entity) preserved, SG-09 (numeric 0.5) preserved, SG-11 (16 not 8) preserved, SG-03/05/07/08 preserved.
+  - Judgment note, ruled non-failing: SG-11 claim 2 supplied the elided unit (وليس من 8 بيت where the speaker said مش من 8). The asserted quantity and the negation are verbatim; this is ellipsis completion, not knowledge injection.
+- **Criterion 2 (no_unauthorized_addition): YES on 15/15.** No recall in SG-04, no LEFT JOIN in SG-06, no invented cycle name in SG-13, no Coffman conditions in SG-15.
+- **Criterion 3 (transliteration, non-blocking):** substitution fired in six cases (Heap, Rebase, Branches, Commit, Merge, Code, JOIN). T1 from D104 recurred unchanged: SG-11's AMBIGUOUS form بيت was substituted to bit at every occurrence, so the bit/byte distinction is destroyed post-glossary. Open item; the glossary was deliberately held constant across candidates.
+- **atomicity:** finer decomposition than D104 on SG-05, SG-13 and SG-15. Non-blocking, not a criterion.
+
+**GATE VERDICT: PASS.**
+
+**Consequences under the D105 stop rule:**
+- openai/gpt-oss-120b is ADOPTED as GROQ_MODEL for claim decomposition, superseding llama-3.3-70b-versatile (D86/D87). Ladder candidates 2 and 3 (allam-2-7b, qwen/qwen3.6-27b) are not run.
+- The decomposition module is CLOSED.
+- **D89-b is UNBLOCKED.** The hard gate registered in D89 and reaffirmed through D96, D98, D100, D101, D104 and D105 is satisfied. Corpus generation for the fine-tuning repair experiment must use prompt v4 with openai/gpt-oss-120b and must be pre-registered before any training run.
+
+**New behavioural finding, registered not resolved (F8):** the adopted model's term rendering differs from the incumbent's. It emits some English technical terms directly in Latin script (data structure, LIFO, precision, threads, resources, deadlock, application) while translating others into formal Arabic (الضوضاء for النويز, مجموعة البيانات for الداتا سيت). Fewer Arabic-transliterated surface forms therefore reach the glossary and substitution counts fall. The effect on NLI matching against Latin-bearing reference chunks is unmeasured and warrants its own experiment before any claim is made about it.
+
+**Free-tier operating constraint, measured from the 429 response body rather than documentation:** openai/gpt-oss-120b on the on-demand tier is capped at 8000 tokens per minute, below the 12000 available to the incumbent. A single 15-case gate run can exhaust it. Future multi-case batches must pace requests or expect VOID runs. Not fixed under this entry.
+
+**Known infrastructure issue:** the Kaggle notebook is not synchronised with its repo copy — a stale saved session ran with the previous GROQ_MODEL and required manual correction before the evidentiary run. Candidate fix: read the model id from a repo config file fetched by the clone instead of hardcoding it in a notebook cell. Registered, not fixed.
+
+**Barriers status:** D89-b UNBLOCKED. Open: F3 (NLI false contradiction), T1 (glossary AMBIGUOUS substitution), F4–F7 (D103), F8 (this entry), G4, Q2, Q7, G3, Q10, G1.
