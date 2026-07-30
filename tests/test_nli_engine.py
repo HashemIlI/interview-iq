@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
 from tokenizers import Tokenizer
 from tokenizers.models import WordLevel
 from tokenizers.pre_tokenizers import Whitespace
@@ -24,11 +25,13 @@ from transformers import DebertaV2Config, DebertaV2ForSequenceClassification, Pr
 
 from interview_iq.nli.engine import (
     LABEL_ORDER,
+    ClaimsChunksMatrix,
     build_claims_chunks_matrix,
     build_coverage_matrix,
     run_nli_matrix,
 )
 from interview_iq.refdocs.loader import load_reference_docs
+from interview_iq.scoring.aggregation import Verdict, score_claim
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 REFDOCS_MINI = FIXTURES_DIR / "refdocs_mini.json"
@@ -128,6 +131,14 @@ def test_build_claims_chunks_matrix_is_claim_major_and_valid() -> None:
         assert 0.0 <= c <= 1.0
         best = matrix.best_chunk_id(claim_idx)
         assert best in matrix.chunk_ids
+        # D110: best_evidence's chunk/entailment must agree with the
+        # existing best_chunk_id/max_entailment (both are argmax-entailment
+        # by definition); its contradiction is read from that same chunk,
+        # not independently maximised, so it need not equal max_contradiction.
+        best_evidence_chunk, best_evidence_e, best_evidence_c = matrix.best_evidence(claim_idx)
+        assert best_evidence_chunk == best
+        assert best_evidence_e == e
+        assert 0.0 <= best_evidence_c <= 1.0
 
 
 def test_build_coverage_matrix_is_keypoint_major_and_valid() -> None:
@@ -170,3 +181,44 @@ def test_id2label_mismatch_raises() -> None:
 
     with pytest.raises(ValueError, match="id2label mismatch"):
         run_nli_matrix(bad_model, tokenizer, premises=[chunks[0].text], hypotheses=[claim_texts[0]])
+
+
+def test_best_evidence_avoids_false_contradiction_from_unrelated_chunk() -> None:
+    """D110: hand-built matrix encoding the real SE-028 claim 4 case
+    ("تحسن وتنضف Code دون تغيير سلوكه", a factually correct claim). The
+    argmax-entailment chunk (SE028-C04, the Refactor-stage chunk this claim
+    is actually about) has low contradiction; a different, unrelated chunk
+    (SE028-C03, the Red-stage chunk) happens to have very high contradiction
+    against this claim's text. Before D110, max_contradiction() picked up
+    that unrelated chunk's 0.999570 independently of which chunk entailed
+    the claim, yielding CONTRADICTED at the maximum penalty for a correct
+    claim. best_evidence() reads contradiction off the SAME chunk that
+    produced max_e, so the verdict is NEUTRAL instead (max_e=0.882708 is
+    just below tau_e=0.9, and that chunk's own contradiction, 0.093219, is
+    below tau=0.5)."""
+    matrix = ClaimsChunksMatrix(
+        claims=("تحسن وتنضف Code دون تغيير سلوكه.",),
+        chunk_ids=("SE028-C04", "SE028-C03"),
+        matrix=(
+            (
+                {"entailment": 0.882708, "neutral": 0.024073, "contradiction": 0.093219},  # argmax entailment
+                {"entailment": 0.000089, "neutral": 0.000341, "contradiction": 0.999570},  # argmax contradiction, different chunk
+            ),
+        ),
+    )
+
+    best_chunk, max_e, max_c = matrix.best_evidence(0)
+    assert best_chunk == "SE028-C04"
+    assert max_e == pytest.approx(0.882708)
+    assert max_c == pytest.approx(0.093219)
+
+    verdict = score_claim(max_e, max_c, tau=0.5, tau_e=0.9, alpha=0.0)
+    assert verdict.verdict is Verdict.NEUTRAL
+
+    # Contrast with the pre-D110 independent aggregation, retained on the
+    # class for the D110 provenance measurement: it would have produced the
+    # false CONTRADICTED verdict this fix removes.
+    old_max_c = matrix.max_contradiction(0)
+    assert old_max_c == pytest.approx(0.999570)
+    old_verdict = score_claim(max_e, old_max_c, tau=0.5, tau_e=0.9, alpha=0.0)
+    assert old_verdict.verdict is Verdict.CONTRADICTED

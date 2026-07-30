@@ -227,9 +227,13 @@ def evaluate_answer(
             row_matrix = build_claims_chunks_matrix(
                 nli_model, nli_tokenizer, claims=[claim_text], chunks=capped, batch_size=batch_size, max_length=max_length
             )
-            max_e_per_claim.append(row_matrix.max_entailment(0))
-            max_c_per_claim.append(row_matrix.max_contradiction(0))
-            best_chunk_per_claim.append(row_matrix.best_chunk_id(0))
+            # D110: max_c is read from the SAME chunk that produced max_e
+            # (evidence-aligned), not maximised independently over the
+            # whole chunk set -- see ClaimsChunksMatrix.best_evidence.
+            best_chunk, max_e, max_c = row_matrix.best_evidence(0)
+            max_e_per_claim.append(max_e)
+            max_c_per_claim.append(max_c)
+            best_chunk_per_claim.append(best_chunk)
 
         key_point_chunks = resolve_key_point_chunks(document)
         coverage_matrix = build_coverage_matrix(

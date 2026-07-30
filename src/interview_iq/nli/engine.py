@@ -107,6 +107,11 @@ class ClaimsChunksMatrix:
         return max((cell["entailment"] for cell in row), default=0.0)
 
     def max_contradiction(self, claim_idx: int) -> float:
+        # Retained for the D110 provenance measurement (scripts/
+        # measure_aggregation_provenance.py), which deliberately needs the
+        # independent maximum to compare against best_evidence()'s
+        # same-chunk value. No longer used in the production verdict path
+        # (pipeline.py / cli/run_scoring.py) as of D110 -- see best_evidence.
         row = self.matrix[claim_idx]
         return max((cell["contradiction"] for cell in row), default=0.0)
 
@@ -118,6 +123,22 @@ class ClaimsChunksMatrix:
             return None
         best_j = max(range(len(row)), key=lambda j: row[j]["entailment"])
         return self.chunk_ids[best_j]
+
+    def best_evidence(self, claim_idx: int) -> tuple[str | None, float, float]:
+        """D110's evidence-aligned contradiction rule: returns (chunk_id,
+        entailment, contradiction) for the single chunk with the highest
+        P(entailment), reading both probabilities off that SAME cell.
+        Contradiction is no longer maximised independently because D110
+        measured that doing so lets an unrelated chunk elsewhere in the
+        document veto a claim the best-supporting chunk does not actually
+        contradict (11/11 claims in the D110 measurement had max_e and the
+        independent max_c come from different chunks)."""
+        row = self.matrix[claim_idx]
+        if not row:
+            return None, 0.0, 0.0
+        best_j = max(range(len(row)), key=lambda j: row[j]["entailment"])
+        cell = row[best_j]
+        return self.chunk_ids[best_j], cell["entailment"], cell["contradiction"]
 
 
 def build_claims_chunks_matrix(
