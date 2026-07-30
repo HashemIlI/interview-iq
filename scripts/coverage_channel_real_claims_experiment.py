@@ -9,12 +9,18 @@ For each of the 25 O9 questions (results/o9_decomposition_exercises.md, D51):
   3. Look up the question's official key_points via
      scoring.metrics.resolve_key_point_chunks (chunk_id strings resolved to
      Chunk objects, per refdocs/loader.py's schema).
-  4. Run the Coverage channel (nli.engine.build_coverage_matrix +
+  4. Apply the deterministic glossary (decomposition_llm.transliteration.
+     apply_glossary, D101) to the decomposed claims, producing claims_final
+     from claims_raw. Hard failure, no silent fallback: if apply_glossary
+     raises, the run stops rather than silently scoring claims_raw as if it
+     were claims_final (D107 C1).
+  5. Run the Coverage channel (nli.engine.build_coverage_matrix +
      CoverageMatrix.max_entailment_for_keypoint + scoring.metrics.
-     coverage_channel) TWICE on the SAME claims -- once against the
-     zero-shot base NLI model, once against the fine-tuned adapter
-     (iq-checkpoints-nli-v1) -- per the D82 two-arm addendum, matching the
-     D40/D46/D49 convention of comparing both arms rather than only one.
+     coverage_channel) FOUR times on the SAME decomposition -- {zero-shot,
+     adapter (iq-checkpoints-nli-v1)} NLI arms x {claims_raw, claims_final}
+     claim surfaces -- per the D107 four-arm design. No additional API
+     calls: decomposition runs once per question; all four Coverage
+     computations are local.
 
 This is a read-only diagnostic: it does not modify O9, key_points,
 reference_docs, or any file under src/interview_iq/. It reuses the real
@@ -42,13 +48,18 @@ Reference: D42 (Coverage-channel fragility hypotheses this experiment
 targets), D44 (defers real-claims measurement until a decomposition module
 exists and passes its sanity gate), D46/D49 (claim-free reversed-direction
 probe -- this experiment is the first WITH real claims), D82 (this
-experiment's pre-registration + two-arm addendum).
+experiment's pre-registration + two-arm addendum), D101 (glossary wiring +
+hard-failure convention this script's apply_glossary call site follows),
+D106 (openai/gpt-oss-120b free-tier pacing constraint motivating --resume
+and --inter-call-delay), D107 (glossary wiring (C1) and pacing/resume (C2)
+added to this script; four-arm design).
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import subprocess
 import sys
@@ -71,6 +82,7 @@ from interview_iq.decomposition_llm.client import (  # noqa: E402
     LLMDecompositionError,
     decompose_via_llm,
 )
+from interview_iq.decomposition_llm.transliteration import apply_glossary  # noqa: E402
 from interview_iq.evaluation.gold_eval import build_pretrained_model_and_tokenizer, load_adapter  # noqa: E402
 from interview_iq.nli.engine import build_coverage_matrix  # noqa: E402
 from interview_iq.refdocs.loader import Chunk, ReferenceDocs, load_reference_docs  # noqa: E402
@@ -136,7 +148,8 @@ def compute_coverage_for_arm(
 ) -> tuple[list[float], float]:
     """One NLI arm's Coverage result for one question's claims -- mirrors
     cli/run_scoring.py's own Coverage-only lines, factored out so it can run
-    twice (zero-shot, adapter) against the same claims."""
+    four times (zero-shot x claims_raw, zero-shot x claims_final, adapter x
+    claims_raw, adapter x claims_final -- D107 four-arm design)."""
     matrix = build_coverage_matrix(model, tokenizer, claims=claims, key_point_chunks=key_point_chunks)
     max_e_per_keypoint = [matrix.max_entailment_for_keypoint(i) for i in range(len(key_point_chunks))]
     coverage_score = coverage_channel(max_e_per_keypoint)
@@ -145,6 +158,12 @@ def compute_coverage_for_arm(
 
 def _empty_arm_result() -> dict[str, Any]:
     return {"status": None, "max_e_per_keypoint": None, "coverage_score": None, "error": None}
+
+
+# D107 four-arm design: {zero-shot, adapter} NLI models x {claims_raw,
+# claims_final} claim surfaces. Named as a module constant so run_one_question
+# and the reporting functions below cannot drift out of sync with each other.
+_ARM_NAMES: tuple[str, ...] = ("zero_shot_raw", "zero_shot_final", "adapter_raw", "adapter_final")
 
 
 def run_one_question(
@@ -156,12 +175,14 @@ def run_one_question(
     adapter_tokenizer: Any,
     decompose_fn: Callable[[str], Any] = decompose_via_llm,
 ) -> dict[str, Any]:
-    """Runs the full D82 procedure for one O9 question: one decomposition
-    call, then Coverage computed on both NLI arms against the same claims.
-    model/tokenizer/decompose_fn are always injected by the caller (never
-    constructed here) -- same pattern as nli/engine.py and cli/run_scoring.py
-    -- so this function is directly testable with tiny offline models and a
-    mocked decompose_fn, with zero real API/network calls."""
+    """Runs the full D107 procedure for one O9 question: one decomposition
+    call, then apply_glossary (D101) to derive claims_final from claims_raw,
+    then Coverage computed on both NLI arms against both claim surfaces (the
+    D107 four-arm design). model/tokenizer/decompose_fn are always injected
+    by the caller (never constructed here) -- same pattern as nli/engine.py
+    and cli/run_scoring.py -- so this function is directly testable with
+    tiny offline models and a mocked decompose_fn, with zero real API/
+    network calls."""
     record: dict[str, Any] = {
         "question_id": question.question_id,
         "track": None,
@@ -169,11 +190,12 @@ def run_one_question(
         "model_used": GROQ_MODEL,
         "decomposition_status": None,
         "decomposition_error": None,
-        "claims": None,
+        "claims_raw": None,
+        "claims_final": None,
+        "transliteration_audit": None,
         "key_point_count": None,
         "key_point_chunk_ids": None,
-        "zero_shot": _empty_arm_result(),
-        "adapter": _empty_arm_result(),
+        **{arm_name: _empty_arm_result() for arm_name in _ARM_NAMES},
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "elapsed_seconds": None,
     }
@@ -186,7 +208,7 @@ def run_one_question(
     try:
         result = decompose_fn(question.raw_answer_text)
         record["decomposition_status"] = "SUCCESS"
-        record["claims"] = result.claims
+        record["claims_raw"] = result.claims
     except LLMDecompositionError as exc:
         record["decomposition_status"] = "ERROR"
         record["decomposition_error"] = str(exc)
@@ -194,12 +216,25 @@ def run_one_question(
         record["decomposition_status"] = "UNEXPECTED_ERROR"
         record["decomposition_error"] = f"{type(exc).__name__}: {exc}"
 
+    if record["decomposition_status"] == "SUCCESS":
+        try:
+            claims_final, transliteration_audit = apply_glossary(record["claims_raw"])
+        except Exception as exc:  # noqa: BLE001 -- re-raised deliberately, see below
+            # D107 C1: hard failure, no silent fallback. A broken glossary
+            # must not be papered over by silently scoring claims_raw as if
+            # it were claims_final -- so this is NOT caught by the per-
+            # question error handling above; it propagates and stops the run.
+            raise RuntimeError(
+                f"{question.question_id}: apply_glossary failed: {type(exc).__name__}: {exc}"
+            ) from exc
+        record["claims_final"] = claims_final
+        record["transliteration_audit"] = transliteration_audit
+
     if document is None:
         msg = f"question_id {question.question_id!r} not found in reference_docs"
-        record["zero_shot"]["status"] = "SKIPPED"
-        record["zero_shot"]["error"] = msg
-        record["adapter"]["status"] = "SKIPPED"
-        record["adapter"]["error"] = msg
+        for arm_name in _ARM_NAMES:
+            record[arm_name]["status"] = "SKIPPED"
+            record[arm_name]["error"] = msg
         record["elapsed_seconds"] = round(time.monotonic() - start, 3)
         return record
 
@@ -209,40 +244,39 @@ def run_one_question(
         record["key_point_chunk_ids"] = [c.chunk_id for c in key_point_chunks]
     except DanglingKeyPointError as exc:
         msg = f"key_points resolution failed: {exc}"
-        record["zero_shot"]["status"] = "SKIPPED"
-        record["zero_shot"]["error"] = msg
-        record["adapter"]["status"] = "SKIPPED"
-        record["adapter"]["error"] = msg
+        for arm_name in _ARM_NAMES:
+            record[arm_name]["status"] = "SKIPPED"
+            record[arm_name]["error"] = msg
         record["elapsed_seconds"] = round(time.monotonic() - start, 3)
         return record
 
-    if record["claims"] is None:
-        # Decomposition itself failed -- no claims exist to score on either arm.
+    if record["claims_raw"] is None:
+        # Decomposition itself failed -- no claims exist to score on any arm.
         # (An empty claims list, e.g. NO_EXTRACTABLE_CLAIMS, is NOT this case --
         # that is a genuine result and flows through to coverage_channel below,
         # which returns 0.0 for an empty claim set rather than erroring.)
         msg = f"no claims available (decomposition {record['decomposition_status']}): {record['decomposition_error']}"
-        record["zero_shot"]["status"] = "SKIPPED_NO_CLAIMS"
-        record["zero_shot"]["error"] = msg
-        record["adapter"]["status"] = "SKIPPED_NO_CLAIMS"
-        record["adapter"]["error"] = msg
+        for arm_name in _ARM_NAMES:
+            record[arm_name]["status"] = "SKIPPED_NO_CLAIMS"
+            record[arm_name]["error"] = msg
         record["elapsed_seconds"] = round(time.monotonic() - start, 3)
         return record
 
-    claims = record["claims"]
     arms = (
-        ("zero_shot", zero_shot_model, zero_shot_tokenizer),
-        ("adapter", adapter_model, adapter_tokenizer),
+        ("zero_shot_raw", zero_shot_model, zero_shot_tokenizer, "claims_raw"),
+        ("zero_shot_final", zero_shot_model, zero_shot_tokenizer, "claims_final"),
+        ("adapter_raw", adapter_model, adapter_tokenizer, "claims_raw"),
+        ("adapter_final", adapter_model, adapter_tokenizer, "claims_final"),
     )
-    for arm_name, model, tokenizer in arms:
+    for arm_name, model, tokenizer, claims_key in arms:
         try:
             max_e_per_keypoint, coverage_score = compute_coverage_for_arm(
-                claims, key_point_chunks, model, tokenizer
+                record[claims_key], key_point_chunks, model, tokenizer
             )
             record[arm_name]["status"] = "SUCCESS"
             record[arm_name]["max_e_per_keypoint"] = max_e_per_keypoint
             record[arm_name]["coverage_score"] = coverage_score
-        except Exception as exc:  # noqa: BLE001 -- one arm's failure must not block the other
+        except Exception as exc:  # noqa: BLE001 -- one arm's failure must not block the others
             record[arm_name]["status"] = "ERROR"
             record[arm_name]["error"] = f"{type(exc).__name__}: {exc}"
 
@@ -280,13 +314,12 @@ def _write_report_md(records: list[dict[str, Any]], run_dir: Path, meta: dict[st
         f"- Questions: {meta['n_questions']} "
         f"({meta['n_decomposition_success']} decomposed successfully, "
         f"{meta['n_decomposition_failed']} decomposition failures)",
-        f"- Coverage arms: zero-shot {meta['n_zero_shot_success']}/{meta['n_questions']} scored, "
-        f"adapter {meta['n_adapter_success']}/{meta['n_questions']} scored",
+        f"- Coverage arms (D107 four-arm design): "
+        + ", ".join(f"{arm_name} {meta[f'n_{arm_name}_success']}/{meta['n_questions']} scored" for arm_name in _ARM_NAMES),
         "",
         "**Read this as a directional first reading (n=25), not a statistical result "
-        "(D82 pre-registered constraint).** Per the D82 two-arm addendum, this is the "
-        "first test of D42-b/D46-C's prediction (learned-neutral shift from HARD_POS "
-        "twins may make the adapter's Coverage worse than zero-shot's) on real claims.",
+        "(D82/D107 pre-registered constraint).** Per the D107 four-arm design, this "
+        "compares {zero-shot, adapter} against {claims_raw, claims_final} on real claims.",
         "",
     ]
 
@@ -297,14 +330,30 @@ def _write_report_md(records: list[dict[str, Any]], run_dir: Path, meta: dict[st
         if r["decomposition_error"]:
             lines.append(f"- **Decomposition error:** `{r['decomposition_error']}`")
         lines.append(f"- **Raw answer:** {r['raw_answer_text']}")
-        lines.append("- **Claims produced:**")
-        if r["claims"]:
-            for i, claim in enumerate(r["claims"], 1):
+        lines.append("- **Claims (raw, pre-glossary):**")
+        if r["claims_raw"]:
+            for i, claim in enumerate(r["claims_raw"], 1):
                 lines.append(f"  {i}. {claim}")
         else:
             lines.append("  (none -- decomposition failed or NO_EXTRACTABLE_CLAIMS)")
+        lines.append("- **Claims (final, post-glossary, D101):**")
+        if r["claims_final"]:
+            for i, claim in enumerate(r["claims_final"], 1):
+                lines.append(f"  {i}. {claim}")
+        else:
+            lines.append("  (none -- decomposition failed or NO_EXTRACTABLE_CLAIMS)")
+        if r["transliteration_audit"]:
+            audit = r["transliteration_audit"]
+            lines.append(
+                f"- **Transliteration audit:** {len(audit['substitutions'])} substitution(s), "
+                f"{audit['residual_ambiguous_count']} residual ambiguous form(s) left untouched."
+            )
+            for sub in audit["substitutions"]:
+                lines.append(
+                    f"  - claim {sub['claim_index']}: `{sub['matched_form']}` → `{sub['replacement_term']}`"
+                )
         lines.append(f"- **Key points:** {r['key_point_count']} ({', '.join(r['key_point_chunk_ids'] or [])})")
-        for arm_name in ("zero_shot", "adapter"):
+        for arm_name in _ARM_NAMES:
             arm = r[arm_name]
             lines.append(f"- **{arm_name} arm:** status={arm['status']}, coverage_score={arm['coverage_score']}")
             if arm["max_e_per_keypoint"] is not None:
@@ -326,16 +375,19 @@ def _write_report_csv(records: list[dict[str, Any]], run_dir: Path) -> None:
         "elapsed_seconds",
         "key_point_count",
         "key_point_chunk_ids",
-        "zero_shot_status",
-        "zero_shot_coverage_score",
-        "zero_shot_max_e_per_keypoint",
-        "zero_shot_error",
-        "adapter_status",
-        "adapter_coverage_score",
-        "adapter_max_e_per_keypoint",
-        "adapter_error",
+    ]
+    for arm_name in _ARM_NAMES:
+        fieldnames += [
+            f"{arm_name}_status",
+            f"{arm_name}_coverage_score",
+            f"{arm_name}_max_e_per_keypoint",
+            f"{arm_name}_error",
+        ]
+    fieldnames += [
         "raw_answer_text",
-        "claims",
+        "claims_raw",
+        "claims_final",
+        "transliteration_audit",
         "decomposition_error",
     ]
     with open(run_dir / "report.csv", "w", newline="", encoding="utf-8-sig") as f:
@@ -351,30 +403,30 @@ def _write_report_csv(records: list[dict[str, Any]], run_dir: Path) -> None:
                 "elapsed_seconds": r["elapsed_seconds"],
                 "key_point_count": r["key_point_count"],
                 "key_point_chunk_ids": "; ".join(r["key_point_chunk_ids"] or []),
-                "zero_shot_status": r["zero_shot"]["status"],
-                "zero_shot_coverage_score": r["zero_shot"]["coverage_score"],
-                "zero_shot_max_e_per_keypoint": "; ".join(
-                    str(v) for v in (r["zero_shot"]["max_e_per_keypoint"] or [])
-                ),
-                "zero_shot_error": r["zero_shot"]["error"],
-                "adapter_status": r["adapter"]["status"],
-                "adapter_coverage_score": r["adapter"]["coverage_score"],
-                "adapter_max_e_per_keypoint": "; ".join(
-                    str(v) for v in (r["adapter"]["max_e_per_keypoint"] or [])
-                ),
-                "adapter_error": r["adapter"]["error"],
                 "raw_answer_text": r["raw_answer_text"],
-                "claims": " | ".join(r["claims"]) if r["claims"] else "",
+                "claims_raw": " | ".join(r["claims_raw"]) if r["claims_raw"] else "",
+                "claims_final": " | ".join(r["claims_final"]) if r["claims_final"] else "",
+                "transliteration_audit": (
+                    json.dumps(r["transliteration_audit"], ensure_ascii=False) if r["transliteration_audit"] else ""
+                ),
                 "decomposition_error": r["decomposition_error"],
             }
+            for arm_name in _ARM_NAMES:
+                arm = r[arm_name]
+                row[f"{arm_name}_status"] = arm["status"]
+                row[f"{arm_name}_coverage_score"] = arm["coverage_score"]
+                row[f"{arm_name}_max_e_per_keypoint"] = "; ".join(
+                    str(v) for v in (arm["max_e_per_keypoint"] or [])
+                )
+                row[f"{arm_name}_error"] = arm["error"]
             writer.writerow(row)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "D82: Coverage channel measurement on real decomposition claims "
-            "(25 O9 questions, two NLI arms per the D82 addendum)."
+            "D82/D107: Coverage channel measurement on real decomposition claims "
+            "(25 O9 questions, four arms per the D107 four-arm design)."
         )
     )
     parser.add_argument("--o9-path", type=Path, default=_DEFAULT_O9_PATH)
@@ -390,6 +442,36 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument("--output-dir", type=Path, default=_DEFAULT_OUTPUT_ROOT)
+    parser.add_argument(
+        "--checkpoint-path",
+        type=Path,
+        default=None,
+        help=(
+            "Per-question checkpoint file (D107 C2). Defaults to "
+            "<output-dir>/checkpoint.json, outside the per-run timestamped directory, so "
+            "it survives across invocations for --resume."
+        ),
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help=(
+            "Skip questions already present in --checkpoint-path instead of "
+            "re-decomposing them (D107 C2). Without this flag, all questions are "
+            "(re)computed and the checkpoint is overwritten."
+        ),
+    )
+    parser.add_argument(
+        "--inter-call-delay",
+        type=float,
+        default=20.0,
+        help=(
+            "Seconds to sleep between decompose_via_llm calls (D107 C2). Default 20s: "
+            "openai/gpt-oss-120b's free-tier cap is 8000 tokens/minute (D106), and 25 "
+            "decompositions at roughly 2500 tokens each permits about three calls per "
+            "minute."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if not GROQ_MODEL:
@@ -422,21 +504,33 @@ def main(argv: list[str] | None = None) -> int:
     adapter_model = load_adapter(adapter_base_model, args.adapter_path)
     print(f"[D82] Loaded adapter: {args.adapter_path}")
 
+    checkpoint_path = args.checkpoint_path or (args.output_dir / "checkpoint.json")
+    checkpoint: dict[str, Any] = {}
+    if args.resume and checkpoint_path.exists():
+        checkpoint = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+        print(f"[D107] --resume: loaded {len(checkpoint)} checkpointed question(s) from {checkpoint_path}")
+
     records: list[dict[str, Any]] = []
-    for q in questions:
+    for i, q in enumerate(questions):
         print(f"  -> {q.question_id} ...", end=" ")
-        record = run_one_question(
-            q, refdocs, zero_shot_model, tokenizer, adapter_model, tokenizer
-        )
-        print(
-            f"decomposition={record['decomposition_status']} "
-            f"zero_shot={record['zero_shot']['status']} adapter={record['adapter']['status']}"
-        )
+        if args.resume and q.question_id in checkpoint:
+            record = checkpoint[q.question_id]
+            print("RESUMED from checkpoint")
+        else:
+            record = run_one_question(
+                q, refdocs, zero_shot_model, tokenizer, adapter_model, tokenizer
+            )
+            print(
+                f"decomposition={record['decomposition_status']} "
+                + " ".join(f"{arm_name}={record[arm_name]['status']}" for arm_name in _ARM_NAMES)
+            )
+            checkpoint[q.question_id] = record
+            checkpoint_path.write_text(json.dumps(checkpoint, ensure_ascii=False, indent=2), encoding="utf-8")
+            if i < len(questions) - 1:
+                time.sleep(args.inter_call_delay)
         records.append(record)
 
     n_decomposition_success = sum(1 for r in records if r["decomposition_status"] == "SUCCESS")
-    n_zero_shot_success = sum(1 for r in records if r["zero_shot"]["status"] == "SUCCESS")
-    n_adapter_success = sum(1 for r in records if r["adapter"]["status"] == "SUCCESS")
 
     meta = {
         "run_timestamp_utc": run_timestamp,
@@ -446,14 +540,13 @@ def main(argv: list[str] | None = None) -> int:
         "adapter_path": str(args.adapter_path),
         "o9_path": str(args.o9_path),
         "reference_docs_path": str(args.reference_docs_path),
+        "checkpoint_path": str(checkpoint_path),
         "n_questions": len(records),
         "n_decomposition_success": n_decomposition_success,
         "n_decomposition_failed": len(records) - n_decomposition_success,
-        "n_zero_shot_success": n_zero_shot_success,
-        "n_adapter_success": n_adapter_success,
     }
-
-    import json
+    for arm_name in _ARM_NAMES:
+        meta[f"n_{arm_name}_success"] = sum(1 for r in records if r[arm_name]["status"] == "SUCCESS")
 
     with open(run_dir / "raw_results.json", "w", encoding="utf-8") as f:
         json.dump({"meta": meta, "records": records}, f, ensure_ascii=False, indent=2)
@@ -464,8 +557,7 @@ def main(argv: list[str] | None = None) -> int:
     print()
     print(
         f"Execution complete: {n_decomposition_success}/{len(records)} decomposed, "
-        f"{n_zero_shot_success}/{len(records)} zero-shot Coverage scored, "
-        f"{n_adapter_success}/{len(records)} adapter Coverage scored."
+        + ", ".join(f"{arm_name} {meta[f'n_{arm_name}_success']}/{len(records)} scored" for arm_name in _ARM_NAMES)
     )
     print(f"Output written to: {run_dir}")
 

@@ -1790,3 +1790,30 @@ Rationale recorded before execution: the observed failure is instruction adheren
 **Known infrastructure issue:** the Kaggle notebook is not synchronised with its repo copy — a stale saved session ran with the previous GROQ_MODEL and required manual correction before the evidentiary run. Candidate fix: read the model id from a repo config file fetched by the clone instead of hardcoding it in a notebook cell. Registered, not fixed.
 
 **Barriers status:** D89-b UNBLOCKED. Open: F3 (NLI false contradiction), T1 (glossary AMBIGUOUS substitution), F4–F7 (D103), F8 (this entry), G4, Q2, Q7, G3, Q10, G1.
+
+## D107 — D89-b Step 0: re-derive the Coverage baseline on the production pipeline (pre-registered) (2026-07-29)
+
+**Status:** PRE-REGISTERED. Instrument built under this entry; the run and its outcome are registered separately as D108.
+
+**Two debts closed by one run.**
+(i) D82 was executed on 22 July but its result entry was deferred pending a clean rerun after two defects were fixed (provider null-content, English-language claims). That rerun never happened, so no D83 heading exists; the figures "adapter worse than zero-shot in 19/19, mean Coverage 0.180 vs 0.395" are cited in D89, the defence deck and the manuscript draft with no artifact in this repository and no registered outcome entry. The only recoverable Kaggle artifact is run 20260722T071215Z, which is a total failure (25/25 OpenRouter HTTP 429, free-models-per-day limit 50 — the measurement that motivated D86) and contains no Coverage figures. Committed under this entry as evidence for D86, not as a Coverage result.
+(ii) D89's binding reopening condition requires any new adapter to beat zero-shot on BOTH channels, evaluated on the D88 diagnostic set plus an O9 sample. A current zero-shot Coverage baseline on the production pipeline does not exist. This run produces it.
+
+**Documentation consequence, effective immediately:** the figures 0.180 / 0.395 / 19-of-19 must be marked "pending re-derivation (D107)" wherever they appear in presentation or manuscript material until D108 supersedes them. They were obtained on a defective run, on a superseded decomposition model (cohere/north-mini-code:free), and before the glossary existed. They are not retracted as measurements; they are unsupported as current figures.
+
+**Instrument changes required (built under this entry, before the run):**
+- C1 Glossary wiring. scripts/coverage_channel_real_claims_experiment.py has no apply_glossary call site and never had one; its Coverage figures are therefore pre-glossary by architectural necessity, while production applies the glossary before NLI (pipeline.py:197). The script is wired to record both claims_raw and claims_final, following the D101 pattern including hard failure (RuntimeError, no silent fallback) if apply_glossary raises.
+- C2 Pacing and resume. openai/gpt-oss-120b is capped at 8000 tokens per minute on the free tier (measured in D106). 25 decompositions at roughly 2500 tokens each permits about three calls per minute. The script gains: a per-question checkpoint written to disk immediately after each question, a --resume flag that skips questions already present in the checkpoint, and a configurable inter-call delay defaulting to 20 seconds. Without these a single 429 discards the whole run.
+- No other change. The prompt, the fixtures, the glossary data, the NLI engine, metrics and aggregation are untouched. GROQ_MODEL is supplied by the environment; the script has no model logic of its own.
+
+**Design — four arms, no additional API cost.** Decomposition runs once per question; both NLI arms and both claim surfaces are then evaluated locally. Arms: {zero-shot, adapter checkpoint27} × {claims_raw, claims_final}. Rationale registered before execution: zero-shot × claims_final is the production baseline and the reference for D89-b; adapter × claims_raw re-derives the previously published figure on a comparable surface; the raw-versus-final contrast measures the glossary's effect on the Coverage channel directly, which is finding F8 from D106.
+
+**Sample:** the same 25 O9 questions (results/o9_sample_selection.json, D50), key_points taken from reference_docs_250_FINAL_v1.json, not the O9 manual reference claims — the D44 self-consistency trap, unchanged from D82.
+
+**Pre-registered analysis and limits:**
+- n=25 ⇒ directional, not statistical. Thresholds remain PRE-CALIBRATION DEFAULT; G4 is not unblocked by this run.
+- Report per arm: mean Coverage, per-question Coverage, and the count of questions where each arm is higher.
+- Decomposition failures are reported as failures; any question whose decomposition errors is excluded from all four arms and counted explicitly. If more than 5 of 25 fail, the run is VOID and rerun once, as in D105.
+- This run does NOT evaluate any new adapter. It establishes the baseline that a future adapter must beat. D89-b's acceptance criteria for the new adapter will be pre-registered in their own entry before any training run, per D89's binding wording: "an adapter that outperforms zero-shot on BOTH channels, evaluated on the D88 diagnostic set plus an O9 sample, with acceptance criteria written and committed BEFORE the training run."
+
+**Out of scope, unchanged:** F3, T1, F4–F8, G4, Q2, Q7, G3, Q10, G1.
