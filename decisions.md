@@ -1901,3 +1901,23 @@ Rationale recorded before execution: the observed failure is instruction adheren
 **Pre-registered expectation, recorded before the re-run:** GN-040's claims 3 and 4 should no longer be VERIFIED, because "البيت هو الوحدة الاساسية التي تقيس حجم البيانات" should not entail a Byte-defining chunk as strongly as "bit هو..." did. GN-040's Precision should therefore fall from 0.6112938. SE-028 is expected to be unaffected, since it contains no occurrence of بيت — its D110 run recorded zero substitutions. If GN-040's Precision does NOT fall, the reclassification did not achieve its purpose and that outcome is registered as such rather than reinterpreted.
 
 **Registered as a revision, not a correction:** D98's adjudication was a reasoned decision with its cost named in advance. It is revised here because the cost was subsequently measured and found larger than estimated. D98 stands as the record of the original reasoning.
+
+## D112 — Run-to-run variability of the end-to-end score: n=5 repeated-measures protocol (pre-registered) (2026-07-30)
+
+**Status:** PRE-REGISTERED. Instrument built under this entry; outcome registered separately as D113.
+
+**Trigger — an unplanned observation, recorded before any further measurement.** Two consecutive end-to-end runs on the identical audio, identical commit family, identical model (openai/gpt-oss-120b), identical thresholds and identical glossary state for SE-028 produced: 6 claims, Precision 0.6672, score 56.1487 (results/pipeline_demo/SE-028_v4.json) versus 5 claims, Precision 0.4006, score 42.8495 (the D111 verification run). A difference of 13.3 score points, 24 percent, attributable to decomposition variability alone. The cause is visible in the claims: the second run merged two propositions into one claim ("تتبع دورة قصيرة متكررة تسمى (دورة) حيث تكتب test سيفشل اولا لان ال code غير موجود"), an atomicity violation that dropped that claim's max_e to 0.401733 and scored it NEUTRAL where the first run scored two separate VERIFIED claims. Atomicity has been tracked as non-gating since D77; this is the first measurement of its downstream cost on the final score.
+
+**Consequence for every score reported in the thesis:** a single-run figure is not reproducible and must not be presented as a point estimate. All end-to-end scores are to be reported as mean with range over repeated runs, with n stated.
+
+**Pre-registered protocol:**
+- n = 5 independent end-to-end runs per question, on the same two audio files (SE-028 correct, GN-040 deliberately wrong), same commit, same model, same thresholds (tau_E=0.9, tau=0.5, alpha=0, k=10), glossary state as of D111.
+- ASR is executed once per question and its transcript reused across all five runs, so the measured variability is attributable to decomposition and scoring only, not to ASR. The transcript used is recorded in the output.
+- Reported per question: every run's claim count, Precision, Coverage, harmonic F and score; then mean, min, max and range for each metric. Standard deviation is reported as descriptive only; with n=5 no inferential claim is made.
+- Reported per run: the claims themselves, so atomicity differences remain inspectable.
+- Pre-registered separation criterion: mean score for SE-028 must exceed mean score for GN-040, and the two ranges must not overlap. Range overlap would mean the system cannot reliably distinguish the correct from the deliberately wrong answer on this pair, and that outcome is to be registered as such, not reinterpreted.
+- Rate limit: openai/gpt-oss-120b is capped at 8000 tokens per minute (D106). Ten decomposition calls require pacing; the runner uses a fixed inter-call delay and writes a per-run checkpoint so a 429 does not discard completed runs.
+
+**Explicitly out of scope:** this measures variability, it does not reduce it. Constraining atomicity in the prompt, or accepting the merged-claim behaviour, is a separate decision that must not be taken while this measurement is in flight.
+
+**Registered limitations:** n=5 on 2 questions is descriptive, not statistical. It establishes the magnitude of variability on this pair, not a general variance estimate for the system.
