@@ -162,11 +162,18 @@ def test_run_one_question_end_to_end_success_both_arms() -> None:
     )
 
     assert record["decomposition_status"] == "SUCCESS"
-    assert record["claims"] == fake_claims
+    # D107: record["claims"] was replaced by claims_raw (pre-glossary) and
+    # claims_final (post-glossary, D101 apply_glossary -- a real, unmocked
+    # call in run_one_question). Both equal fake_claims here: verified
+    # directly (not assumed) that apply_glossary(fake_claims) is a no-op on
+    # this fixture text, since it contains no glossary Arabic forms.
+    assert record["claims_raw"] == fake_claims
+    assert record["claims_final"] == fake_claims
     assert record["track"] == "ZZ"
     assert record["key_point_count"] == 2  # ZZ-001 has 2 key_points in refdocs_mini.json
 
-    for arm_name in ("zero_shot", "adapter"):
+    # D107: two arms became four -- {zero_shot, adapter} x {raw, final}.
+    for arm_name in ("zero_shot_raw", "zero_shot_final", "adapter_raw", "adapter_final"):
         arm = record[arm_name]
         assert arm["status"] == "SUCCESS", arm["error"]
         assert arm["error"] is None
@@ -199,11 +206,15 @@ def test_run_one_question_decomposition_failure_skips_both_arms_without_crashing
     )
 
     assert record["decomposition_status"] == "ERROR"
-    assert record["claims"] is None
-    assert record["zero_shot"]["status"] == "SKIPPED_NO_CLAIMS"
-    assert record["adapter"]["status"] == "SKIPPED_NO_CLAIMS"
-    assert record["zero_shot"]["coverage_score"] is None
-    assert record["adapter"]["coverage_score"] is None
+    # D107: decomposition failed, so apply_glossary is never reached (it
+    # only runs when decomposition_status == "SUCCESS") -- both claims_raw
+    # and claims_final stay at their initial None.
+    assert record["claims_raw"] is None
+    assert record["claims_final"] is None
+    # D107: two arms became four -- all four are SKIPPED_NO_CLAIMS, not just two.
+    for arm_name in ("zero_shot_raw", "zero_shot_final", "adapter_raw", "adapter_final"):
+        assert record[arm_name]["status"] == "SKIPPED_NO_CLAIMS"
+        assert record[arm_name]["coverage_score"] is None
 
 
 def test_run_one_question_empty_claims_still_scores_coverage_as_zero() -> None:
@@ -233,8 +244,14 @@ def test_run_one_question_empty_claims_still_scores_coverage_as_zero() -> None:
     )
 
     assert record["decomposition_status"] == "SUCCESS"
-    assert record["claims"] == []
-    for arm_name in ("zero_shot", "adapter"):
+    # D107: claims_raw == [] (NO_EXTRACTABLE_CLAIMS) is not None, so
+    # apply_glossary([]) still runs -- verified directly that it is a no-op
+    # on an empty list (returns ([], {"substitutions": [], ...})), so
+    # claims_final == [] too.
+    assert record["claims_raw"] == []
+    assert record["claims_final"] == []
+    # D107: two arms became four.
+    for arm_name in ("zero_shot_raw", "zero_shot_final", "adapter_raw", "adapter_final"):
         arm = record[arm_name]
         assert arm["status"] == "SUCCESS"
         assert arm["coverage_score"] == 0.0
@@ -262,6 +279,7 @@ def test_run_one_question_unknown_question_id_skips_both_arms() -> None:
     )
 
     assert record["track"] is None
-    assert record["zero_shot"]["status"] == "SKIPPED"
-    assert record["adapter"]["status"] == "SKIPPED"
-    assert "ZZ-404" in record["zero_shot"]["error"]
+    # D107: two arms became four -- all four are SKIPPED, not just two.
+    for arm_name in ("zero_shot_raw", "zero_shot_final", "adapter_raw", "adapter_final"):
+        assert record[arm_name]["status"] == "SKIPPED"
+        assert "ZZ-404" in record[arm_name]["error"]
