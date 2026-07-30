@@ -1921,3 +1921,35 @@ Rationale recorded before execution: the observed failure is instruction adheren
 **Explicitly out of scope:** this measures variability, it does not reduce it. Constraining atomicity in the prompt, or accepting the merged-claim behaviour, is a separate decision that must not be taken while this measurement is in flight.
 
 **Registered limitations:** n=5 on 2 questions is descriptive, not statistical. It establishes the magnitude of variability on this pair, not a general variance estimate for the system.
+
+## D113 — D112 outcome: separation criterion PASSED; NLI brittleness to Arabic surface form isolated as F3's root cause (2026-07-30)
+
+**Run:** results/repeated_measures/run_20260730T124208Z, commit 20e3462ee0b882af71778fcf0df6717f82f29ed6, decomposition openai/gpt-oss-120b, zero-shot NLI, thresholds tau=0.5, tau_e=0.9, alpha=0, k=10, glossary state as of D111. ASR executed once per question and its transcript reused across all five runs, so all measured variation is attributable to decomposition and scoring. 10 of 10 runs SUCCESS.
+
+**Pre-registered separation criterion: PASSED.** SE-028 mean score 52.19788, range [39.71185, 62.58730]. GN-040 mean score 1.84160, range [1.84112, 1.84354]. Means correctly ordered; ranges do not overlap; the gap is approximately 28-fold. The system distinguishes the correct answer from the deliberately wrong one on this pair, reliably across five repetitions.
+
+**Variability is severe and asymmetric.**
+- SE-028: score range 22.87544 (44 percent of its own mean), stdev 9.98147 descriptive. Precision ranged from 0.6 to 1.0 — a range of 0.4 — and Coverage from 0.29552 to 0.48308. Claim count varied only between 5 and 6, so claim count is NOT the main driver.
+- GN-040: effectively deterministic. Identical claim count, identical Precision 0.6021484 in all five runs, score range 0.00242.
+- The asymmetry tracks input complexity: GN-040's transcript is short and factually flat, and decomposition reproduced it identically each time; SE-028's is longer and multi-step, and decomposition rephrased it every run. Variability therefore rises with the richness of the answer, which is the operationally worst case, since better answers are longer.
+
+**F3's root cause, isolated: the zero-shot NLI model is brittle to semantically inert Arabic surface variation.** Across the five runs the same proposition — the refactor step of TDD, a factually correct claim — appeared in four surface forms and received all three verdicts:
+- "يحسن وينظف ال code دون تغيير سلوكه." max_e = 0.985352, VERIFIED (run 2).
+- "ثم يحسن وينظف ال code دون تغيير سلوكه." max_e = 0.081299, NEUTRAL (runs 0 and 3). The only difference from the line above is the discourse connective ثم; entailment falls by a factor of twelve.
+- "ثم يتم تحسين وتنظيف ال code دون تغيير سلوكه." max_e = 0.000797, NEUTRAL (run 1). Nominalised/passive rendering of the same content.
+- "ثم تحسن وتنظف ال code دون تغيير سلوكه." max_e = 0.002230, max_c = 0.997070, CONTRADICTED (run 4). Differs from the NEUTRAL form only in grammatical person (second rather than third), and this flips the verdict to maximum contradiction.
+All four are scored against the same reference chunk set, under the D110 same-chunk rule, with the glossary applied identically. This supersedes the two earlier explanations of F3 as incomplete: the independent-max aggregation defect was real and is fixed (D110), and transliteration was measured not to be the cause (D111). What remains, and what is now measured on four points, is that mDeBERTa's entailment judgment on Arabic is not stable under a discourse connective or an inflectional change that carries no semantic content.
+
+**Corollary — variance is not noise around a stable estimate.** Because a single connective can move one claim's contribution from +1.0 to -1.0, a claim-averaged Precision on a 5-claim answer can move by 0.4 from surface rephrasing alone. This is the mechanism behind the SE-028 Precision range recorded above.
+
+**Also recorded, smallest observed instance:** GN-040 run 4 reproduced the ASR's misspelling الزاكرة verbatim where runs 0 to 3 normalised it to الذاكرة. That one-character difference changed Coverage from 0.0093485 to 0.009361 and the score from 1.84112 to 1.84354. Reported because it bounds the floor of the measured sensitivity, not because it is material.
+
+**Reporting rule adopted for the thesis:** no end-to-end score is reported as a single figure. Every such score is reported as mean with range and n. The figures of record for the pilot pair are SE-028 52.20 (range 39.71 to 62.59, n=5) and GN-040 1.84 (range 1.84 to 1.84, n=5).
+
+**D111's pre-registered expectation FAILED and is registered as failed.** D111 predicted that leaving بيت in Arabic would stop GN-040's claims 3 and 4 — factually wrong claims about the bit — from being VERIFIED. They remained VERIFIED at max_e 0.998793 and 0.998914, essentially unchanged from 0.998637 and 0.998755 with the Latin substitution. Subject-blindness is therefore a property of the zero-shot model itself and not an artefact of transliteration. D111 is NOT reverted: it still prevents vacuous output such as "bit هو مجموعة من 16 bit", which is an honesty gain independent of the failed prediction. This outcome also independently corroborates D89's registered cost: the adapter's subject-blindness fix, verified at 48 of 48 on the Gold Set in Phase 5, addressed a real defect that the zero-shot runtime does not address.
+
+**Infrastructure defects found during this run, both real, neither fixed under this entry:**
+- faster-whisper is not installed by requirements.txt on Kaggle, so the first attempt failed at ASR with ModuleNotFoundError. It was installed manually in-session. The install cell of kaggle/runners/run-repeated-measures.ipynb must install it explicitly, as the pipeline-demo runner apparently does; until that is committed, this notebook is not reproducible from the repository alone.
+- The failed run 0 was written to the checkpoint as if it were a completed record, so a resume replayed the failure and the checkpoint had to be deleted manually. scripts/repeated_measures_eval.py must not checkpoint a non-SUCCESS run, or --resume must skip non-SUCCESS records.
+
+**Open items after this entry:** NLI brittleness to Arabic surface form (this entry, now the dominant unresolved defect and the highest-value target for any future work); subject-blindness in the zero-shot runtime (D89 cost, corroborated here); low Coverage (D108); the two infrastructure defects above; G4 threshold calibration — every score in this thesis uses PRE-CALIBRATION DEFAULT thresholds; G1; T1; F4 to F8; Q2; Q7; G3; Q10.
