@@ -1817,3 +1817,29 @@ Rationale recorded before execution: the observed failure is instruction adheren
 - This run does NOT evaluate any new adapter. It establishes the baseline that a future adapter must beat. D89-b's acceptance criteria for the new adapter will be pre-registered in their own entry before any training run, per D89's binding wording: "an adapter that outperforms zero-shot on BOTH channels, evaluated on the D88 diagnostic set plus an O9 sample, with acceptance criteria written and committed BEFORE the training run."
 
 **Out of scope, unchanged:** F3, T1, F4–F8, G4, Q2, Q7, G3, Q10, G1.
+
+## D108 — D107 outcome: Coverage baseline re-derived; published figures superseded; glossary effect on Coverage measured as negligible (2026-07-30)
+
+**Run:** results/coverage_channel_real_claims/run_20260730T073157Z, commit 1f9a68c6686125496e2680848cd28aa361bf296e, decomposition openai/gpt-oss-120b (D106), prompt v4, glossary v2 applied, adapter checkpoint27 from the published Kaggle Model. 25/25 decompositions succeeded, 0 failures, all four arms scored on all 25 questions. Thresholds PRE-CALIBRATION DEFAULT (tau=0.5, tau_E=0.9, alpha=0, k=10). Judgment: Ahmed.
+
+**Both D82 defects are gone.** The 22 July run had 6 of 25 decomposition failures (provider null-content) and 8 of 19 successes emitting English claims. This run: 0 failures, no language defect. D82's deferred registration debt is closed by this entry; no D83 heading is created retroactively, and D82 remains a pre-registration only.
+
+**Four-arm result (mean Coverage over 25 questions):**
+- zero_shot_raw 0.2888 (median 0.2823, min 0.002, max 0.868)
+- zero_shot_final 0.2928 (median 0.3063, min 0.002, max 0.884)
+- adapter_raw 0.1187 (median 0.0514)
+- adapter_final 0.1211 (median 0.0606)
+
+**Finding 1 — the architectural conclusion holds, the published numbers do not.** zero_shot_final exceeds adapter_final on 23 of 25 questions. The direction that justified D89 (zero-shot as the runtime arm for both channels) is reproduced independently: a different decomposition model, a different prompt version, and the glossary in place. However the previously cited figures — mean 0.395 versus 0.180, adapter worse in 19 of 19 — are NOT reproduced. Both means are lower and the win rate is 92 percent, not 100 percent. Those figures are superseded by this entry and must be replaced wherever they appear in the deck or manuscript. They are not retracted as measurements; they were obtained on a defective run with a superseded model and are simply not the current numbers.
+
+**Documented exceptions (2 of 25):** GN-012 (zero_shot_final 0.002 vs adapter_final 0.006) and GN-042 (0.002 vs 0.006). Both arms are effectively at floor on these two questions and the margin is 0.004; the reversal is not evidence of adapter advantage, but it is recorded rather than rounded away, because the previously published claim of 19-of-19 with no exceptions is exactly the kind of absolute statement this project does not make without support.
+
+**Finding 2 — F8 measured: the glossary does not improve the Coverage channel.** zero-shot mean rises from 0.2888 to 0.2928, a change of +0.004. Per question it raised Coverage on 13 and lowered it on 12. The effect is noise at this sample size, not improvement. This does not invalidate the glossary: its registered purpose (D97/D98) is deterministic transliteration, and D106 measured it performing that function (Heap, Rebase, Code, JOIN substituted correctly). The finding is narrower and more useful: the Coverage channel's weakness is not caused by Arabic-rendered technical terms, so it must be sought elsewhere (F3, chunk quality, thresholds). Registered as a negative result with a diagnosed scope.
+
+**Finding 3 — Coverage is low in absolute terms, and this is now the primary open weakness.** Mean 0.293, median 0.306, with floor cases (DA-002 0.007, GN-012 0.002). No question scored exactly 0, so the harmonic merge is not nullified anywhere in this sample, but a channel averaging below 0.30 on correct-answer material is the dominant limitation of the scoring engine as configured. This is an input to G4 (threshold calibration) and is registered as an open item in its own right, not attributed to any single cause on present evidence.
+
+**Note on D42's OOD hypothesis:** key_point_count is 3 for 21 of the 25 questions (2 for three, 4 for one), so the correlation between Coverage and key-point count that D42 hypothesised cannot be tested on this sample. Recorded as untestable here, not as absent.
+
+**Baseline established for D89-b.** Any retrained adapter must be compared against these figures on this sample, plus the D88 diagnostic set for the Precision channel, per D89's binding reopening condition. The reference value the new adapter must beat on Coverage is zero_shot_final = 0.2928 (mean over 25 O9 questions, glossary applied, prompt v4, gpt-oss-120b). D89-b's own acceptance criteria are still to be pre-registered in their own entry before any training run.
+
+**Open items after this entry:** low Coverage (new, this entry), F3, T1, F4-F8, G4, Q2, Q7, G3, Q10, G1.
